@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatting Website</title>
+    <link rel="stylesheet" href="../style/chat/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Channels</h1>
+            <ul>
+                <li>Channel 1</li>
+                <li>Channel 2</li>
+                <li>Channel 3</li>
+            </ul>
+        </div>
+        <div class="main">
+            <div class="messages">
+            </div>
+            <div class="input-container">
+                <textarea id="input-field" placeholder="Type a message..."></textarea>
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+    <!--<script defer src="../script/chat/script.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script defer type="module">
+        const socket = io();
+
+        // Function to add a new message to the message container
+        function addMessage(message) {
+            const messagesContainer = document.querySelector('.messages');
+
+            if (messagesContainer) {
+                const p = document.createElement('p');
+                p.textContent = message;
+                messagesContainer.appendChild(p);
+            }
+        }
+
+        // Request default messages from the server
+        socket.emit('requestDefaultMessages');
+
+        // Receive default messages from the server
+        socket.on('defaultMessages', (messages) => {
+            messages.forEach((message) => {
+                addMessage(message);
+            });
+        });
+
+        // Send a new message to the server
+        const sendButton = document.getElementById('send-button');
+        const inputField = document.getElementById('input-field');
+
+        if (sendButton && inputField) {
+            function sendMessage() {
+                const message = inputField.value.trim();
+
+                if (message !== '') {
+                    socket.emit('sendMessage', message);
+                    inputField.value = '';
+                }
+            }
+
+            sendButton.addEventListener('click', sendMessage);
+            inputField.addEventListener('keydown', (event) => {
+                if (!event.shiftKey && event.key === 'Enter') {
+                    // Submit the message
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        // Receive new messages from the server
+        socket.on('newMessage', (message) => {
+            addMessage(message);
+        });
+    </script>
+</body>
+
+</html>
