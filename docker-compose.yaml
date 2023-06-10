@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: ./app/
+      target: builder
+    volumes:
+      - "./app:/app"
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    command:
+      sh -c 'npm install && node app.js'
+

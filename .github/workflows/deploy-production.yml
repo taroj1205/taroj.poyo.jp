@@ -1,0 +1,32 @@
+name: Deployment
+
+concurrency: 
+  group: production
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.PROD_DEPLOY_SSH_KEY}}
+        name: id_rsa # optional
+        known_hosts: ${{ secrets.PROD_DEPLOY_SSH_KNOWN_HOSTS }}
+        # config: ${{ secrets.CONFIG }} # ssh_config; optional
+        # if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+    - name: Deployment
+      run: rsync -avz --delete --exclude-from=.deployignore . ${{ secrets.PROD_DEPLOY_SSH_USER }}@${{secrets.PROD_DEPLOY_SSH_HOST }}:${{ secrets.PROD_DEPLOY_TARGET_DIR }}
+    - name: Docker Management
+      run: |
+              ssh ${{ secrets.PROD_DEPLOY_SSH_USER }}@${{secrets.PROD_DEPLOY_SSH_HOST }} 'cd ${{ secrets.PROD_DEPLOY_TARGET_DIR }} && docker compose run --rm app npm install'
+              ssh ${{ secrets.PROD_DEPLOY_SSH_USER }}@${{secrets.PROD_DEPLOY_SSH_HOST }} 'cd ${{ secrets.PROD_DEPLOY_TARGET_DIR }} && docker compose up -d'
+              ssh ${{ secrets.PROD_DEPLOY_SSH_USER }}@${{secrets.PROD_DEPLOY_SSH_HOST }} 'cd ${{ secrets.PROD_DEPLOY_TARGET_DIR }} && docker compose restart app'
