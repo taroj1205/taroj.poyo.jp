@@ -98,7 +98,7 @@ const formatMessage = (message: any) => {
     if (messageText.includes('>>')) {
         messageText = messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>');
     }
-    p.innerHTML = `${message.id} ${username}: ${sent_on}<br /><span >${messageText}</span>`;
+    p.innerHTML = `${message.id} ${username}: ${sent_on}<br /><span style="padding-left: 2ch;">${messageText}</span>`;
     p.id = message.id;
     return p;
 };
