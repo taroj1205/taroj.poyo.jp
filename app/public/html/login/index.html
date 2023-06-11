@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login and Signup Page</title>
+    <link rel="icon" type="image/png" href="../image/icon/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #212121;
+            color: #fff;
+        }
+
+        .container {
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .main {
+            background-color: #363636;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-top: 0;
+            color: #4CAF50;
+            /* Updated color for h1 in dark mode */
+        }
+
+        .form-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Added to center the login form */
+        }
+
+        .form {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background-color: #363636;
+            color: #fff;
+            height: 270px;
+            /* Increased height of the login form box */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        input {
+            width: 100%;
+            max-width: 300px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            background-color: #454545;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            max-width: 300px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #388E3C;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .tab {
+            padding: 10px;
+            margin: 0 5px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4CAF50;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s ease;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="main">
+            <h1 style="text-align: center;">Please Login or Sign Up</h1>
+            <div class="form-container">
+                <div class="form">
+                    <div id="login-form" class="tab">
+                        <form>
+                            <label for="username">Username or Email</label>
+                            <input type="text" id="username" name="username" placeholder="Enter your username or email">
+
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter your password">
+
+                            <button type="submit" id="login-button">Login</button>
+                        </form>
+                    </div>
+                    <div id="signup-form" class="tab" style="display: none;">
+                        <form>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name">
+
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email">
+
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter your password">
+
+                            <button type="submit" id="signup-button">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" id="login-tab">Login</div>
+                    <div class="tab" id="signup-tab">Sign Up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // JavaScript code to handle the tab switching
+        const loginTab = document.getElementById("login-tab");
+        const signupTab = document.getElementById("signup-tab");
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+
+        loginTab.addEventListener("click", () => {
+            loginTab.classList.add("active");
+            signupTab.classList.remove("active");
+            loginForm.style.display = "block";
+            signupForm.style.display = "none";
+        });
+
+        signupTab.addEventListener("click", () => {
+            signupTab.classList.add("active");
+            loginTab.classList.remove("active");
+            signupForm.style.display = "block";
+            loginForm.style.display = "none";
+        });
+    </script>
+</body>
+
+</html>

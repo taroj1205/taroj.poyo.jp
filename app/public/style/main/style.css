@@ -5,7 +5,12 @@ body {
     padding: 0;
 }
 
+a {
+    color: rgb(0, 128, 255);
+}
+
 body {
+    overflow: hidden;
     background-color: #212121;
     color: #fff;
     font-family: Arial, sans-serif;
@@ -30,10 +35,9 @@ body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 20px;
 }
 
-.messages {
+#messages {
     overflow-y: auto;
     flex-grow: 1;
 }
@@ -52,6 +56,10 @@ body {
     color: #fff;
     font-size: 16px;
     outline: none;
+    z-index: 1;
+    height: 3ch;
+    min-height: 3ch;
+    resize: none;
 }
 
 #send-button {
@@ -65,7 +73,58 @@ body {
     cursor: pointer;
     outline: none;
 }
+
 #send-button.disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+#hamburger-menu {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 720px) {
+    #hamburger-menu {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        height: 100%;
+    }
+
+    #messages {
+        margin-top: 30px;
+        padding-left: 15px;
+    }
+}
+
+@media only screen and (min-width: 720px) {
+    #hamburger-menu {
+        display: none;
+    }
+
+    #messages {
+        padding: 20px;
+    }
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.tab {
+    cursor: pointer;
+}
+
+.active {
+    color: #4CAF50;
 }

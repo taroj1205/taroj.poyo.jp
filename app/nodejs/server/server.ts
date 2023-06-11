@@ -1,5 +1,5 @@
 import fs from 'fs';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import http from 'http';
 import { Server, Socket } from 'socket.io';
 import path from 'path';
@@ -17,22 +17,74 @@ if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir);
 }
 
+// Create the database file if it doesn't exist
+if (!fs.existsSync(dbPath)) {
+    const db = new sqlite3.Database(dbPath);
+    db.run(
+        `CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        password TEXT,
+        current_date DATE DEFAULT (datetime('now','localtime'))
+    )`,
+        (err) => {
+            if (err) {
+                console.error('Error creating users table:', err);
+                return;
+            }
+
+            db.get(
+                `SELECT COUNT(*) as count FROM users`,
+                (err, row: { count: number }) => {
+                    if (err) {
+                        console.error('Error retrieving user count:', err);
+                        return;
+                    }
+
+                    if (row.count === 0) {
+                        db.run(
+                            `INSERT INTO users (username) VALUES (?)`,
+                            ['Anonymous'],
+                            (err) => {
+                                if (err) {
+                                    console.error('Error inserting user:', err);
+                                    return;
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        }
+    );
+}
+
+const db = new sqlite3.Database(dbPath);
+
 app.use(express.static('public'));
 
-app.get('/chat', (req, res) => {
+app.get('/chat', (req: Request, res: Response) => {
     res.sendFile(path.join(rootDir, 'public', 'html', 'chat', 'index.html'));
 });
 
+app.get('/login', (req: Request, res: Response) => {
+    res.sendFile(path.join(rootDir, 'public', 'html', 'login', 'index.html'));
+});
+
+interface UserRow {
+    id: number;
+    username: string;
+}
+
 io.on('connection', (socket: Socket) => {
     socket.join('chat');
-
-    const db = new sqlite3.Database(dbPath);
-
     // Create the messages table if it doesn't exist
     db.run(
         `CREATE TABLE IF NOT EXISTS messages (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      message TEXT
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        message TEXT,
+        user_id INTEGER DEFAULT "1",
+        sent_on DATE DEFAULT (datetime('now','localtime'))
     )`,
         (err) => {
             if (err) {
@@ -43,39 +95,68 @@ io.on('connection', (socket: Socket) => {
     );
 
     socket.on('requestDefaultMessages', () => {
-        db.all('SELECT message FROM messages', (err, rows) => {
+        db.all('SELECT messages.id, messages.message, users.username, messages.sent_on FROM messages JOIN users ON messages.user_id = users.id', (err, rows) => {
             if (err) {
                 console.error('Error retrieving default messages:', err);
                 return;
             }
 
-            const defaultMessages = rows.map((row: any) => row.message);
+            const defaultMessages = rows.map((row: any) => ({
+                id: row.id,
+                message: row.message,
+                username: row.username,
+                sent_on: row.sent_on
+            }));
             socket.emit('defaultMessages', defaultMessages);
         });
     });
 
-    socket.on('sendMessage', (message: string) => {
-        db.run('INSERT INTO messages (message) VALUES (?)', [message], (err) => {
-            if (err) {
-                console.error('Error inserting message:', err);
-                return;
+    socket.on('sendMessage', (message: string, userId: string) => {
+        const now = new Date().toISOString();
+        if (!userId) {
+            userId = '1';
+        }
+        db.run(
+            `INSERT INTO messages (message, sent_on, user_id)
+        VALUES (?, ?, ?)`,
+            [message, now, userId],
+            function (err) {
+                if (err) {
+                    console.error('Error inserting message:', err);
+                    return;
+                }
+
+                const id = this.lastID;
+                db.get(
+                    `SELECT username FROM users WHERE id = ?`,
+                    [userId],
+                    (err, row: UserRow) => {
+                        if (err) {
+                            console.error('Error retrieving username:', err);
+                            return;
+                        }
+
+                        const username = row ? row.username : null;
+                        io.to('chat').emit('newMessage', { id, message, sent_on: now, userId, username });
+                    }
+                );
             }
-
-            io.to('chat').emit('newMessage', message);
-        });
+        );
     });
+});
 
-    socket.on('disconnect', () => {
-        db.close();
+process.on('SIGINT', () => {
+    db.close((err) => {
+        if (err) {
+            console.error('Error closing database:', err);
+            process.exit(1);
+        }
+
+        console.log('Database connection closed.');
+        process.exit(0);
     });
 });
 
 server.listen(3000, () => {
-    // Create the database file if it doesn't exist
-    if (!fs.existsSync(dbPath)) {
-        const db = new sqlite3.Database(dbPath);
-        db.close();
-    }
-
     console.log('Server is running on http://localhost:3000');
 });
