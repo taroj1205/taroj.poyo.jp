@@ -1,20 +1,27 @@
 {
   "name": "taroj.poyo.jp",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "taroj.poyo.jp",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "tsc & node app/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taroj1205/taroj.poyo.jp.git"
+  },
+  "author": "taroj1205",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taroj1205/taroj.poyo.jp/issues"
+  },
+  "homepage": "https://github.com/taroj1205/taroj.poyo.jp#readme",
   "dependencies": {
-    "@types/node": "20.3.2",
-    "@types/react": "18.2.14",
-    "@types/react-dom": "18.2.6",
-    "next": "13.4.7",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "5.1.6"
-  }
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.6.2",
+    "sqlite3": "^5.1.6"
+  },
+  "keywords": []
 }
