@@ -50,6 +50,9 @@ if (!fs_1.default.existsSync(dbPath)) {
 }
 const db = new sqlite3_1.default.Database(dbPath);
 app.use(express_1.default.static('public'));
+app.get('/', (req, res) => {
+    res.redirect('/chat');
+});
 app.get('/chat', (req, res) => {
     res.sendFile(path_1.default.join(rootDir, 'public', 'html', 'chat', 'index.html'));
 });
