@@ -81,10 +81,10 @@ io.on('connection', (socket: Socket) => {
     // Create the messages table if it doesn't exist
     db.run(
         `CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    message TEXT,
-    user_id INTEGER DEFAULT "1",
-    sent_on DATE DEFAULT (datetime('utc', 'now'))
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        message TEXT,
+        user_id INTEGER DEFAULT "1",
+        sent_on DATE DEFAULT (datetime('now','localtime'))
     )`,
         (err) => {
             if (err) {
