@@ -17,6 +17,8 @@ if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir);
 }
 
+console.log(rootDir);
+
 // Create the database file if it doesn't exist
 if (!fs.existsSync(dbPath)) {
     const db = new sqlite3.Database(dbPath);
