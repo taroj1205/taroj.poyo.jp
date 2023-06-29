@@ -63,6 +63,10 @@ const db = new sqlite3.Database(dbPath);
 
 app.use(express.static('public'));
 
+app.get('/', (req: Request, res: Response) => {
+    res.redirect('/chat');
+});
+
 app.get('/chat', (req: Request, res: Response) => {
     res.sendFile(path.join(rootDir, 'public', 'html', 'chat', 'index.html'));
 });
