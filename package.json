@@ -4,7 +4,7 @@
   "description": "taroj.poyo.jp",
   "main": "index.js",
   "scripts": {
-    "start": "tsc & node pages/api/chat.js",
+    "start": "tsc",
     "build": "next build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev"
