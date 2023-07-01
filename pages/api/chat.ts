@@ -1,87 +1,133 @@
-import { Server, Socket } from 'socket.io';
 import { NextApiHandler } from 'next';
-import path from 'path';
-import sqlite3 from 'sqlite3';
+import Pusher from 'pusher';
+import { createClient } from '@vercel/postgres';
+
+console.log('chat.ts running');
+
+const appId = process.env.PUSHER_APP_ID || '';
+const key = process.env.PUSHER_KEY || '';
+const secret = process.env.PUSHER_SECRET || '';
+const cluster = process.env.PUSHER_CLUSTER || '';
+const pusher = new Pusher({
+    appId,
+    key,
+    secret,
+    cluster,
+    useTLS: true,
+});
+
+const DATABASE_URL = process.env.DATABASE_URL;
+
+const client = createClient({
+    connectionString: DATABASE_URL,
+});
+
+client.connect();
+
+client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+client.sql`
+    CREATE TABLE IF NOT EXISTS users(
+        id SERIAL PRIMARY KEY,
+        username TEXT UNIQUE,
+        password TEXT,
+        created_at DATE DEFAULT CURRENT_DATE
+    )
+`;
+client.sql`
+    CREATE TABLE IF NOT EXISTS messages (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        message TEXT NOT NULL,
+        sent_on TIMESTAMP NOT NULL,
+        user_id INTEGER NOT NULL REFERENCES users(id),
+        server_id INTEGER NOT NULL
+    )
+`;
 
 const chatHandler: NextApiHandler = async (req, res) => {
-    console.log(req);
-    if (req.method === 'GET') {
-        const rootDir = process.cwd();
-        const dbPath = path.join(rootDir, 'data', 'database.db');
+    console.log(req.body);
+    console.log(req.body.method);
 
-        const db = new sqlite3.Database(dbPath);
+    const client = createClient({
+        connectionString: DATABASE_URL,
+    });
 
-        const io = new Server();
+    await client.connect();
 
-        io.on('connection', (socket: Socket) => {
-            socket.join('chat');
+    if (req.body.method === 'defaultMessages') {
+        try {
+            const server_id = req.body.server_id;
+            console.log(`Getting default messages for ${server_id}`);
 
-            socket.on('requestDefaultMessages', () => {
-                db.all(
-                    `SELECT messages.id, messages.message, users.username, messages.sent_on
-                    FROM messages
-                    JOIN users ON messages.user_id = users.id`,
-                    (err, rows: { id: number; message: string; username: string; sent_on: string }[]) => {
-                        if (err) {
-                            console.error('Error retrieving default messages:', err);
-                            return;
-                        }
+            const { rows } = await client.sql`
+            SELECT messages.id,
+            messages.message,
+            users.username,
+            messages.sent_on
+            FROM messages
+            JOIN users ON messages.user_id = users.id
+            WHERE messages.server_id = ${server_id}
+            `;
 
-                        const defaultMessages = rows.map((row: { id: number; message: string; username: string; sent_on: string }) => ({
-                            id: row.id,
-                            message: row.message,
-                            username: row.username,
-                            sent_on: row.sent_on,
-                        }));
+            const defaultMessages = rows
+                .map((row) => ({
+                    id: row.id,
+                    message: row.message,
+                    username: row.username,
+                    sent_on: row.sent_on,
+                }))
+                .reverse();
 
-                        socket.emit('defaultMessages', defaultMessages);
-                    }
-                );
-            });
+            console.log(defaultMessages);
 
-            socket.on('sendMessage', (message: string, userId: string) => {
-                const now = new Date().toISOString();
-                if (!userId) {
-                    userId = '1';
-                }
-                db.run(
-                    `INSERT INTO messages (message, sent_on, user_id)
-                    VALUES (?, ?, ?)`,
-                    [message, now, userId],
-                    function (err) {
-                        if (err) {
-                            console.error('Error inserting message:', err);
-                            return;
-                        }
+            res.status(200).json(defaultMessages);
+        } catch (error) {
+            console.error('Error retrieving default messages:', error);
+            throw new Error(
+                'Failed to retrieve default messages from server'
+            ) as Error & { status: number };
+        }
+    } else if (req.body.method === 'newMessages') {
+        try {
+            console.log('Receiving sent message...');
 
-                        const id = this.lastID;
-                        db.get(
-                            `SELECT username FROM users WHERE id = ?`,
-                            [userId],
-                            (err, row: any) => {
-                                if (err) {
-                                    console.error('Error retrieving username:', err);
-                                    return;
-                                }
+            let { message, userId, server_id } = req.body;
+            console.log(message);
 
-                                const username = row ? row.username : null;
-                                io.to('chat').emit('newMessage', {
-                                    id,
-                                    message,
-                                    sent_on: now,
-                                    userId,
-                                    username,
-                                });
-                            }
-                        );
-                    }
-                );
-            });
-        });
+            const now = new Date().toISOString();
+            if (!userId) {
+                userId = 1;
+            }
 
-        io.listen(3000);
+            console.log(userId);
 
-        res.status(200).end();
+            const { rows } = await client.sql`
+                INSERT INTO messages (message, sent_on, user_id, server_id)
+                VALUES (${message}, ${now}, ${userId}, ${server_id})
+                RETURNING id
+            `;
+
+            const id = rows.length > 0 ? rows[0].id : null;
+
+            const { rows: userRows } = await client.sql`
+                SELECT username
+                FROM users
+                WHERE id = ${userId}
+            `;
+
+            const username = userRows.length > 0 ? userRows[0].username : null;
+
+            const newMessage = {
+                id,
+                message,
+                sent_on: now,
+                userId,
+                username,
+            };
+            await pusher.trigger('chat', 'newMessage', JSON.stringify(newMessage));
+            res.status(200).end();
+        } catch (error) {
+            console.error('Error inserting message:', error);
+        }
     } else {
         res.status(404).end();
     }

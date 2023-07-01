@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,21 +7,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var _this = this;
 // Send a new message to the server
-const sendButton = document.getElementById('send-button');
-const inputField = document.getElementById('input-field');
-const messagesContainer = document.getElementById('messages');
+var inputField = document.getElementById('input-field');
+var messagesContainer = document.getElementById('messages');
 // Toggle sidebar visibility when hamburger menu is clicked
-const hamburgerMenu = document.getElementById('hamburger-menu');
-const sidebar = document.querySelector('.sidebar');
+var hamburgerMenu = document.getElementById('hamburger-menu');
+var sidebar = document.querySelector('.sidebar');
 if (hamburgerMenu && sidebar) {
-    hamburgerMenu.addEventListener('click', () => {
-        sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+    hamburgerMenu.addEventListener('click', function () {
+        sidebar.style.display =
+            sidebar.style.display === 'none' ? 'block' : 'none';
     });
 }
-window.addEventListener('load', () => {
-    const hamburger = document.querySelector('#hamburger-menu');
-    const sidebar = document.querySelector('.sidebar');
+window.addEventListener('load', function () {
+    var hamburger = document.querySelector('#hamburger-menu');
+    var sidebar = document.querySelector('.sidebar');
     if (sidebar && window.innerWidth >= 720) {
         sidebar.style.display = 'block';
     }
@@ -31,28 +58,36 @@ window.addEventListener('load', () => {
     }
 });
 function showNotification(title, body) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const permission = yield Notification.requestPermission();
-        if (permission === 'granted' && document.visibilityState === 'hidden') {
-            const options = {
-                body,
-                icon: '../image/icon/icon.png',
-            };
-            const notification = new Notification(title, options);
-        }
-        else {
-            localStorage.setItem('notificationPermission', permission);
-        }
+    return __awaiter(this, void 0, void 0, function () {
+        var permission, options, notification;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Notification.requestPermission()];
+                case 1:
+                    permission = _a.sent();
+                    if (permission === 'granted' && document.visibilityState === 'hidden') {
+                        options = {
+                            body: body,
+                            icon: '../image/icon/icon.png',
+                        };
+                        notification = new Notification(title, options);
+                    }
+                    else {
+                        localStorage.setItem('notificationPermission', permission);
+                    }
+                    return [2 /*return*/];
+            }
+        });
     });
 }
-messagesContainer.addEventListener('scroll', () => {
-    const messagesContainer = document.getElementById('messages');
+messagesContainer.addEventListener('scroll', function () {
+    var messagesContainer = document.getElementById('messages');
     if (messagesContainer) {
-        const messages = messagesContainer.querySelectorAll('p');
-        let lastVisibleMessage = null;
-        for (let i = messages.length - 1; i >= 0; i--) {
-            const message = messages[i];
-            const rect = message.getBoundingClientRect();
+        var messages = messagesContainer.querySelectorAll('p');
+        var lastVisibleMessage = null;
+        for (var i = messages.length - 1; i >= 0; i--) {
+            var message = messages[i];
+            var rect = message.getBoundingClientRect();
             if (rect.bottom <= window.innerHeight) {
                 lastVisibleMessage = message;
                 break;
@@ -63,59 +98,100 @@ messagesContainer.addEventListener('scroll', () => {
         }
     }
 });
-window.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
-    const permission = localStorage.getItem('notificationPermission');
-    if (permission !== 'granted') {
-        yield showNotification('', '');
-    }
-    const input = localStorage.getItem('input');
-    if (input) {
-        inputField.value = input;
-        adjustInputHeight();
-    }
-}));
-const addMessage = (message) => {
-    console.debug(message);
-    const messagesContainer = document.getElementById('messages');
-    messagesContainer === null || messagesContainer === void 0 ? void 0 : messagesContainer.appendChild(formatMessage(message));
-};
-const formatMessage = (message) => {
-    const p = document.createElement('p');
-    let messageText = message.message;
-    let username = message.username;
-    let format = navigator.language;
-    format = format === 'ja' ? 'ja-JP' : 'en-NZ';
-    const sent_on = new Date(message.sent_on).toLocaleString(format, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false,
-        timeZoneName: 'short'
-    }).replace(',', '.');
-    if (format === 'ja-JP' && username === 'Anonymous') {
-        username = '名無し';
-    }
-    if (messageText.includes('>>')) {
-        messageText = messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>');
-    }
-    p.innerHTML = `${message.id} ${username}: ${sent_on}<br /><span style="padding-left: 2ch;">${messageText}</span>`;
-    p.id = message.id;
-    return p;
-};
-inputField.addEventListener('input', () => {
-    localStorage.setItem("input", inputField.value);
-    adjustInputHeight();
-});
-const adjustInputHeight = () => {
-    let lines = inputField.value.split('\n').length;
+var adjustInputHeight = function () {
+    var lines = inputField.value.split('\n').length;
     if (lines > 30) {
         lines = 30;
     }
     else if (lines <= 3) {
         lines = 3;
     }
-    inputField.style.height = `${lines}ch`;
+    inputField.style.height = "".concat(lines, "ch");
 };
+window.addEventListener('DOMContentLoaded', function () { return __awaiter(_this, void 0, void 0, function () {
+    var permission, input;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                permission = localStorage.getItem('notificationPermission');
+                if (!(permission !== 'granted')) return [3 /*break*/, 2];
+                return [4 /*yield*/, showNotification('', '')];
+            case 1:
+                _a.sent();
+                _a.label = 2;
+            case 2:
+                input = localStorage.getItem('input');
+                if (input) {
+                    inputField.value = input;
+                    adjustInputHeight();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+var addMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
+    var messagesContainer, _i, message_1, item, formattedMessage;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log('Running addMessage() ', message);
+                messagesContainer = document.getElementById('messages');
+                console.log(messagesContainer);
+                _i = 0, message_1 = message;
+                _a.label = 1;
+            case 1:
+                if (!(_i < message_1.length)) return [3 /*break*/, 4];
+                item = message_1[_i];
+                console.log("Item: ", item);
+                return [4 /*yield*/, formatMessage(item)];
+            case 2:
+                formattedMessage = (_a.sent());
+                messagesContainer.appendChild(formattedMessage);
+                _a.label = 3;
+            case 3:
+                _i++;
+                return [3 /*break*/, 1];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, new Promise(function (resolve) {
+                console.log("Formatting: ", message);
+                var messageText = message.message;
+                var username = message.username;
+                var sent_on = message.sent_on;
+                console.log(messageText);
+                var format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
+                var formattedSentOn = new Date(sent_on)
+                    .toLocaleString(format, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: false,
+                    timeZoneName: 'short',
+                })
+                    .replace(',', '.');
+                var isJapanese = format === 'ja-JP' && username === 'Anonymous';
+                var formattedUsername = isJapanese ? '名無し' : username;
+                var formattedMessageText = messageText.includes('>>')
+                    ? messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>')
+                    : messageText;
+                var messagesContainer = document.getElementById('messages');
+                var pCount = messagesContainer.getElementsByTagName('p').length;
+                var formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"padding-left: 2ch;\">").concat(formattedMessageText, "</span>");
+                var p = document.createElement('p');
+                p.innerHTML = formattedHtml;
+                p.id = message.id;
+                resolve(p);
+            })];
+    });
+}); };
+inputField.addEventListener('input', function () {
+    localStorage.setItem('input', inputField.value);
+    adjustInputHeight();
+});

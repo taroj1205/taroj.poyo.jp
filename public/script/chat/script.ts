@@ -1,5 +1,4 @@
 // Send a new message to the server
-const sendButton = document.getElementById('send-button') as HTMLButtonElement;
 const inputField = document.getElementById('input-field') as HTMLInputElement;
 const messagesContainer = document.getElementById('messages') as HTMLElement;
 
@@ -9,7 +8,8 @@ const sidebar = document.querySelector('.sidebar') as HTMLElement;
 
 if (hamburgerMenu && sidebar) {
     hamburgerMenu.addEventListener('click', () => {
-        sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+        sidebar.style.display =
+            sidebar.style.display === 'none' ? 'block' : 'none';
     });
 }
 
@@ -38,7 +38,9 @@ async function showNotification(title: string, body: string) {
 }
 
 messagesContainer.addEventListener('scroll', () => {
-    const messagesContainer = document.getElementById('messages') as HTMLElement;
+    const messagesContainer = document.getElementById(
+        'messages'
+    ) as HTMLElement;
     if (messagesContainer) {
         const messages = messagesContainer.querySelectorAll('p');
         let lastVisibleMessage: HTMLElement | null = null;
@@ -56,7 +58,15 @@ messagesContainer.addEventListener('scroll', () => {
     }
 });
 
-
+const adjustInputHeight = () => {
+    let lines = inputField.value.split('\n').length;
+    if (lines > 30) {
+        lines = 30;
+    } else if (lines <= 3) {
+        lines = 3;
+    }
+    inputField.style.height = `${lines}ch`;
+};
 window.addEventListener('DOMContentLoaded', async () => {
     const permission = localStorage.getItem('notificationPermission');
     if (permission !== 'granted') {
@@ -69,51 +79,66 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-const addMessage = (message: any) => {
-    console.debug(message);
-    const messagesContainer = document.getElementById('messages');
+const addMessage = async (message: any) => {
+    console.log('Running addMessage() ', message);
+    const messagesContainer = document.getElementById(
+        'messages'
+    ) as HTMLDivElement;
+    console.log(messagesContainer);
 
-    messagesContainer?.appendChild(formatMessage(message));
+    for (const item of message) {
+        console.log("Item: ", item);
+        const formattedMessage = (await formatMessage(item)) as HTMLElement;
+        messagesContainer.appendChild(formattedMessage);
+    }
 };
 
-const formatMessage = (message: any) => {
-    const p = document.createElement('p');
-    let messageText = message.message;
-    let username = message.username;
-    let format = navigator.language;
-    format = format === 'ja' ? 'ja-JP' : 'en-NZ';
-    const sent_on = new Date(message.sent_on).toLocaleString(format, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false,
-        timeZoneName: 'short'
-    }).replace(',', '.');
-    if (format === 'ja-JP' && username === 'Anonymous') {
-        username = '名無し';
-    }
-    if (messageText.includes('>>')) {
-        messageText = messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>');
-    }
-    p.innerHTML = `${message.id} ${username}: ${sent_on}<br /><span style="padding-left: 2ch;">${messageText}</span>`;
-    p.id = message.id;
-    return p;
+const formatMessage = async (message: any) => {
+    return new Promise((resolve) => {
+        console.log("Formatting: ", message);
+
+        const messageText = message.message;
+        const username = message.username;
+        const sent_on = message.sent_on;
+
+        console.log(messageText);
+
+        const format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
+        const formattedSentOn = new Date(sent_on)
+            .toLocaleString(format, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false,
+                timeZoneName: 'short',
+            })
+            .replace(',', '.');
+
+        const isJapanese = format === 'ja-JP' && username === 'Anonymous';
+        const formattedUsername = isJapanese ? '名無し' : username;
+
+        const formattedMessageText = messageText.includes('>>')
+            ? messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>')
+            : messageText;
+
+        const messagesContainer = document.getElementById(
+            'messages'
+        ) as HTMLElement;
+        const pCount = messagesContainer.getElementsByTagName('p').length;
+        const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="padding-left: 2ch;">${formattedMessageText}</span>`;
+
+        const p = document.createElement('p');
+        p.innerHTML = formattedHtml;
+        p.id = message.id;
+
+        resolve(p);
+    });
 };
 
 inputField.addEventListener('input', () => {
-    localStorage.setItem("input", inputField.value);
+    localStorage.setItem('input', inputField.value);
     adjustInputHeight();
 });
-
-const adjustInputHeight = () => {
-    let lines = inputField.value.split('\n').length;
-    if (lines > 30) {
-        lines = 30;
-    } else if (lines <= 3) {
-        lines = 3;
-    }
-    inputField.style.height = `${lines}ch`;
-};

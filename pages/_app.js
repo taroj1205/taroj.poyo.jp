@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps }) {
     useEffect(() => {
@@ -9,7 +10,12 @@ function MyApp({ Component, pageProps }) {
         document.head.appendChild(link);
     }, []);
 
-    return <Component {...pageProps} />;
+    return (
+        <>
+            <Component {...pageProps} />
+            <Analytics />
+        </>
+    );
 }
 
 export default MyApp;
