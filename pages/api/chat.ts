@@ -43,6 +43,8 @@ client.sql`
     )
 `;
 
+client.end();
+
 const chatHandler: NextApiHandler = async (req, res) => {
     console.log(req.body);
     console.log(req.body.method);
