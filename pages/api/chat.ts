@@ -51,10 +51,10 @@ const chatHandler: NextApiHandler = async (req, res) => {
         connectionString: DATABASE_URL,
     });
 
-    await client.connect();
+    try {
+        await client.connect();
 
-    if (req.body.method === 'defaultMessages') {
-        try {
+        if (req.body.method === 'defaultMessages') {
             const server_id = req.body.server_id;
             console.log(`Getting default messages for ${server_id}`);
 
@@ -80,14 +80,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
             console.log(defaultMessages);
 
             res.status(200).json(defaultMessages);
-        } catch (error) {
-            console.error('Error retrieving default messages:', error);
-            throw new Error(
-                'Failed to retrieve default messages from server'
-            ) as Error & { status: number };
-        }
-    } else if (req.body.method === 'newMessages') {
-        try {
+        } else if (req.body.method === 'newMessages') {
             console.log('Receiving sent message...');
 
             let { message, userId, server_id } = req.body;
@@ -123,13 +116,20 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 userId,
                 username,
             };
-            await pusher.trigger('chat', 'newMessage', JSON.stringify(newMessage));
+            await pusher.trigger(
+                'chat',
+                'newMessage',
+                JSON.stringify(newMessage)
+            );
             res.status(200).end();
-        } catch (error) {
-            console.error('Error inserting message:', error);
+        } else {
+            res.status(404).end();
         }
-    } else {
-        res.status(404).end();
+    } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Error in chatHandler') as Error & { status: number };
+    } finally {
+        await client.end();
     }
 };
 
