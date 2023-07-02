@@ -155,12 +155,12 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1;
+    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1, error_2;
     var _a, _b, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
-                _d.trys.push([0, 4, , 5]);
+                _d.trys.push([0, 7, , 8]);
                 console.log('Formatting: ', message);
                 messageText = message.message;
                 username = message.username;
@@ -192,15 +192,18 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 p.id = pCount.toString();
                 p.dataset.message = message.id;
                 console.log(p);
+                _d.label = 1;
+            case 1:
+                _d.trys.push([1, 5, , 6]);
                 linkRegex = /(https?:\/\/[^\s]+)/g;
                 linkMatches = messageText.match(linkRegex);
-                if (!linkMatches) return [3 /*break*/, 3];
+                if (!linkMatches) return [3 /*break*/, 4];
                 linkUrl = linkMatches[0];
                 return [4 /*yield*/, fetch(linkUrl)];
-            case 1:
+            case 2:
                 response = _d.sent();
                 return [4 /*yield*/, response.text()];
-            case 2:
+            case 3:
                 html = _d.sent();
                 parser = new DOMParser();
                 doc = parser.parseFromString(html, 'text/html');
@@ -243,16 +246,21 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 linkElement.appendChild(preview);
                 // Append the link element to the p element
                 p.appendChild(linkElement);
-                _d.label = 3;
-            case 3:
+                _d.label = 4;
+            case 4: return [3 /*break*/, 6];
+            case 5:
+                error_1 = _d.sent();
+                console.error('Error parsing link:', error_1);
+                return [3 /*break*/, 6];
+            case 6:
                 console.log(p);
                 messagesContainer_1.appendChild(p);
-                return [3 /*break*/, 5];
-            case 4:
-                error_1 = _d.sent();
-                console.error('Error formatting message:', error_1);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 7:
+                error_2 = _d.sent();
+                console.error('Error formatting message:', error_2);
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); };

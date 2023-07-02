@@ -121,13 +121,13 @@ const formatMessage = async (message: any) => {
 
         const formattedMessageText = messageText.includes('>>')
             ? messageText.replace(
-                  />>(\d+)/g,
-                  '<a href="#$1" class="jump">>>$1</a>'
-              )
+            />>(\d+)/g,
+            '<a href="#$1" class="jump">>>$1</a>'
+            )
             : messageText.replace(
-                  /(https?:\/\/[^\s]+)/g,
-                  '<a href="$1" target="_blank">$1</a>'
-              );
+            /(https?:\/\/[^\s]+)/g,
+            '<a href="$1" target="_blank">$1</a>'
+            );
 
         const messagesContainer = document.getElementById(
             'messages'
@@ -143,76 +143,80 @@ const formatMessage = async (message: any) => {
 
         console.log(p);
 
-        // Check if message contains a link
-        const linkRegex = /(https?:\/\/[^\s]+)/g;
-        const linkMatches = messageText.match(linkRegex);
-        if (linkMatches) {
-            const linkUrl = linkMatches[0];
+        try {
+            // Check if message contains a link
+            const linkRegex = /(https?:\/\/[^\s]+)/g;
+            const linkMatches = messageText.match(linkRegex);
+            if (linkMatches) {
+                const linkUrl = linkMatches[0];
 
-            // Fetch the metadata of the link
-            const response = await fetch(linkUrl);
-            const html = await response.text();
+                // Fetch the metadata of the link
+                const response = await fetch(linkUrl);
+                const html = await response.text();
 
-            // Parse the metadata from the HTML
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const title = doc
-                .querySelector('meta[property="og:title"]')
-                ?.getAttribute('content');
-            const description = doc
-                .querySelector('meta[property="og:description"]')
-                ?.getAttribute('content');
-            const imageUrl = doc
-                .querySelector('meta[property="og:image"]')
-                ?.getAttribute('content');
+                // Parse the metadata from the HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const title = doc
+                    .querySelector('meta[property="og:title"]')
+                    ?.getAttribute('content');
+                const description = doc
+                    .querySelector('meta[property="og:description"]')
+                    ?.getAttribute('content');
+                const imageUrl = doc
+                    .querySelector('meta[property="og:image"]')
+                    ?.getAttribute('content');
 
-            const linkElement = document.createElement('a');
-            linkElement.href = linkUrl;
-            linkElement.target = '_blank';
-            linkElement.classList.add('linkEmbed');
+                const linkElement = document.createElement('a');
+                linkElement.href = linkUrl;
+                linkElement.target = '_blank';
+                linkElement.classList.add('linkEmbed');
 
-            // Create a preview element
-            const preview = document.createElement('div');
-            preview.classList.add('link-preview');
+                // Create a preview element
+                const preview = document.createElement('div');
+                preview.classList.add('link-preview');
 
-            const width = Math.max(25, linkUrl.length * 0.6); // Adjust the multiplier as needed
-            const height = Math.max(19, linkUrl.length * 0.3); // Adjust the multiplier as needed
-            preview.style.width = `${width}rem`;
-            preview.style.height = `${height}rem`;
+                const width = Math.max(25, linkUrl.length * 0.6); // Adjust the multiplier as needed
+                const height = Math.max(19, linkUrl.length * 0.3); // Adjust the multiplier as needed
+                preview.style.width = `${width}rem`;
+                preview.style.height = `${height}rem`;
 
-            // Create and append the title element
-            const titleElement = document.createElement('h3');
-            titleElement.textContent = title || linkUrl;
-            preview.appendChild(titleElement);
+                // Create and append the title element
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = title || linkUrl;
+                preview.appendChild(titleElement);
 
-            const maxLines = 3;
-            const lineHeight = 1.2;
-            const fontSize = 0.8; // Adjust the font size as needed
+                const maxLines = 3;
+                const lineHeight = 1.2;
+                const fontSize = 0.8; // Adjust the font size as needed
 
-            // Calculate the maximum height of the description element
-            const maxHeight = maxLines * lineHeight + 'rem';
+                // Calculate the maximum height of the description element
+                const maxHeight = maxLines * lineHeight + 'rem';
 
-            // Create and append the description element
-            const descriptionElement = document.createElement('p');
-            descriptionElement.textContent = description || '';
-            descriptionElement.style.maxHeight = maxHeight;
-            descriptionElement.style.overflow = 'hidden';
-            descriptionElement.style.fontSize = `${fontSize}em`;
+                // Create and append the description element
+                const descriptionElement = document.createElement('p');
+                descriptionElement.textContent = description || '';
+                descriptionElement.style.maxHeight = maxHeight;
+                descriptionElement.style.overflow = 'hidden';
+                descriptionElement.style.fontSize = `${fontSize}em`;
 
-            preview.appendChild(descriptionElement);
+                preview.appendChild(descriptionElement);
 
-            // Create and append the image element
-            if (imageUrl) {
-                const imageElement = document.createElement('img');
-                imageElement.src = imageUrl;
-                preview.appendChild(imageElement);
+                // Create and append the image element
+                if (imageUrl) {
+                    const imageElement = document.createElement('img');
+                    imageElement.src = imageUrl;
+                    preview.appendChild(imageElement);
+                }
+
+                // Append the preview element to the link element
+                linkElement.appendChild(preview);
+
+                // Append the link element to the p element
+                p.appendChild(linkElement);
             }
-
-            // Append the preview element to the link element
-            linkElement.appendChild(preview);
-
-            // Append the link element to the p element
-            p.appendChild(linkElement);
+        } catch (error) {
+            console.error('Error parsing link:', error);
         }
 
         console.log(p);

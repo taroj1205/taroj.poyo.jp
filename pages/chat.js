@@ -55,6 +55,7 @@ const Chat = () => {
 
         // Clean up Pusher subscription on component unmount
         return () => {
+            console.log("Unmount pusher");
             pusher.unsubscribe('chat');
         };
     }, []);
@@ -80,7 +81,10 @@ const Chat = () => {
                     server_id: 1,
                 }),
             })
-                .then(() => setIsLoading(false)) // set loading state to false
+                .then((response) => {
+                    setIsLoading(false); // set loading state to false
+                    console.log(response); // log the response
+                })
                 .catch((error) => {
                     console.error('Error sending message:', error);
                     setIsLoading(false); // set loading state to false
