@@ -7,7 +7,7 @@ const Chat = () => {
 
     useEffect(() => {
         console.log("useEffect running");
-        const pusher = new Pusher('cd4e43e93ec6d4f424db', {
+        const pusher = new Pusher("cd4e43e93ec6d4f424db", {
             cluster: 'ap1',
             encrypted: true,
         });
