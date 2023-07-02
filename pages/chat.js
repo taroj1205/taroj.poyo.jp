@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
+import Script from 'next/script';
 import Pusher from 'pusher-js';
 
 const Chat = () => {
@@ -146,7 +147,7 @@ const ChatPage = () => (
                 defer
                 src="/script/chat/script.js"
             ></script>
-            <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+            <Script src="https://js.pusher.com/7.2/pusher.min.js" />
         </Head>
         <Chat />
     </>

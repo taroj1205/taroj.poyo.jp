@@ -1,6 +1,5 @@
 html {
     scroll-behavior: smooth;
-    height: 100%;
 }
 
 body {
@@ -11,6 +10,11 @@ body {
     font-size: 16px;
     margin: 0;
     padding: 0;
+}
+
+body {
+  width: var(--vvw);
+  height: var(--vvh);
 }
 
 a {
