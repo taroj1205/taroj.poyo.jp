@@ -116,7 +116,7 @@ const Chat = () => {
                         placeholder="Type a message..."
                         autoFocus
                     ></textarea>
-                    <button id="send-button" onClick={sendMessage}>
+                    <button id="send-button" onClick={sendMessage} disabled={isLoading}>
                         {isLoading ? 'Sending...' : 'Send'}
                     </button>
                 </div>

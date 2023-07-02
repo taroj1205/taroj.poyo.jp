@@ -130,7 +130,7 @@ window.addEventListener('DOMContentLoaded', function () { return __awaiter(_this
     });
 }); });
 var addMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messagesContainer, _i, message_1, item, formattedMessage;
+    var messagesContainer, _i, message_1, item;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -142,11 +142,10 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
             case 1:
                 if (!(_i < message_1.length)) return [3 /*break*/, 4];
                 item = message_1[_i];
-                console.log("Item: ", item);
+                console.log('Item: ', item);
                 return [4 /*yield*/, formatMessage(item)];
             case 2:
-                formattedMessage = (_a.sent());
-                messagesContainer.appendChild(formattedMessage);
+                _a.sent();
                 _a.label = 3;
             case 3:
                 _i++;
@@ -156,39 +155,56 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
+    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, iframe;
     return __generator(this, function (_a) {
-        return [2 /*return*/, new Promise(function (resolve) {
-                console.log("Formatting: ", message);
-                var messageText = message.message;
-                var username = message.username;
-                var sent_on = message.sent_on;
-                console.log(messageText);
-                var format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
-                var formattedSentOn = new Date(sent_on)
-                    .toLocaleString(format, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    hour12: false,
-                    timeZoneName: 'short',
-                })
-                    .replace(',', '.');
-                var isJapanese = format === 'ja-JP' && username === 'Anonymous';
-                var formattedUsername = isJapanese ? '名無し' : username;
-                var formattedMessageText = messageText.includes('>>')
-                    ? messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>')
-                    : messageText;
-                var messagesContainer = document.getElementById('messages');
-                var pCount = messagesContainer.getElementsByTagName('p').length;
-                var formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"padding-left: 2ch;\">").concat(formattedMessageText, "</span>");
-                var p = document.createElement('p');
-                p.innerHTML = formattedHtml;
-                p.id = message.id;
-                resolve(p);
-            })];
+        try {
+            console.log('Formatting: ', message);
+            messageText = message.message;
+            username = message.username;
+            sent_on = message.sent_on;
+            console.log(messageText);
+            format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
+            formattedSentOn = new Date(sent_on)
+                .toLocaleString(format, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false,
+                timeZoneName: 'short',
+            })
+                .replace(',', '.');
+            isJapanese = format === 'ja-JP' && username === 'Anonymous';
+            formattedUsername = isJapanese ? '名無し' : username;
+            formattedMessageText = messageText.includes('>>')
+                ? messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>')
+                : messageText;
+            messagesContainer_1 = document.getElementById('messages');
+            pCount = messagesContainer_1.getElementsByTagName('p').length;
+            formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"padding-left: 2ch;\">").concat(formattedMessageText, "</span>");
+            p = document.createElement('p');
+            p.innerHTML = formattedHtml;
+            p.id = message.id;
+            linkRegex = /(https?:\/\/[^\s]+)/g;
+            linkMatches = messageText.match(linkRegex);
+            if (linkMatches) {
+                iframe = document.createElement('iframe');
+                iframe.src = linkMatches[0];
+                iframe.width = '400';
+                iframe.height = '400';
+                iframe.style.display = 'block';
+                iframe.style.marginTop = '10px';
+                // Append iframe element to p element
+                p.appendChild(iframe);
+            }
+            messagesContainer_1.appendChild(p);
+        }
+        catch (error) {
+            console.error('Error formatting message:', error);
+        }
+        return [2 /*return*/];
     });
 }); };
 inputField.addEventListener('input', function () {

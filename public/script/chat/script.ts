@@ -87,15 +87,14 @@ const addMessage = async (message: any) => {
     console.log(messagesContainer);
 
     for (const item of message) {
-        console.log("Item: ", item);
-        const formattedMessage = (await formatMessage(item)) as HTMLElement;
-        messagesContainer.appendChild(formattedMessage);
+        console.log('Item: ', item);
+        await formatMessage(item);
     }
 };
 
 const formatMessage = async (message: any) => {
-    return new Promise((resolve) => {
-        console.log("Formatting: ", message);
+    try {
+        console.log('Formatting: ', message);
 
         const messageText = message.message;
         const username = message.username;
@@ -126,7 +125,7 @@ const formatMessage = async (message: any) => {
 
         const messagesContainer = document.getElementById(
             'messages'
-        ) as HTMLElement;
+        ) as HTMLDivElement;
         const pCount = messagesContainer.getElementsByTagName('p').length;
         const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="padding-left: 2ch;">${formattedMessageText}</span>`;
 
@@ -134,8 +133,26 @@ const formatMessage = async (message: any) => {
         p.innerHTML = formattedHtml;
         p.id = message.id;
 
-        resolve(p);
-    });
+        // Check if message contains a link
+        const linkRegex = /(https?:\/\/[^\s]+)/g;
+        const linkMatches = messageText.match(linkRegex);
+        if (linkMatches) {
+            // Create iframe element
+            const iframe = document.createElement('iframe');
+            iframe.src = linkMatches[0];
+            iframe.width = '400';
+            iframe.height = '400';
+            iframe.style.display = 'block';
+            iframe.style.marginTop = '10px';
+
+            // Append iframe element to p element
+            p.appendChild(iframe);
+        }
+        messagesContainer.appendChild(p);
+    } catch (error) {
+        console.error('Error formatting message:', error);
+    }
+    
 };
 
 inputField.addEventListener('input', () => {
