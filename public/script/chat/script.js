@@ -163,7 +163,7 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1, isAtBottom, error_2;
+    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, lineHeight, maxLines, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
     var _a, _b, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -241,23 +241,32 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 height = Math.max(19, linkUrl.length * 0.3);
                 preview.style.width = "".concat(width, "rem");
                 preview.style.height = "".concat(height, "rem");
+                messagesWidth = messagesContainer_1.offsetWidth;
+                previewWidth = preview.offsetWidth;
+                if (previewWidth < messagesWidth) {
+                    preview.style.width = "".concat(messagesWidth * 0.9, "px");
+                }
                 titleElement = document.createElement('h3');
                 titleElement.textContent = title || linkUrl;
                 preview.appendChild(titleElement);
-                maxLines = 3;
-                lineHeight = 1.2;
                 fontSize = 0.8;
-                maxHeight = maxLines * lineHeight + 'rem';
                 descriptionElement = document.createElement('p');
                 descriptionElement.textContent = description || '';
-                descriptionElement.style.maxHeight = maxHeight;
                 descriptionElement.style.overflow = 'hidden';
                 descriptionElement.style.fontSize = "".concat(fontSize, "em");
+                lineHeight = parseFloat(getComputedStyle(descriptionElement).lineHeight);
+                maxLines = Math.ceil(height / lineHeight);
+                descriptionElement.style.lineHeight = lineHeight + 'px';
                 preview.appendChild(descriptionElement);
                 // Create and append the image element
                 if (imageUrl) {
                     imageElement = document.createElement('img');
                     imageElement.src = imageUrl;
+                    messagesWidth_1 = messagesContainer_1.offsetWidth;
+                    imageWidth = imageElement.offsetWidth;
+                    if (imageWidth < messagesWidth_1) {
+                        imageElement.style.width = "".concat(messagesWidth_1 * 0.9, "px");
+                    }
                     preview.appendChild(imageElement);
                 }
                 // Append the preview element to the link element

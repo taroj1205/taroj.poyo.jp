@@ -35,16 +35,19 @@ a {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin: 0;
 }
 
 #messages {
     overflow-y: auto;
+    overflow-wrap: break-word;
     flex-grow: 1;
+    max-width: 90vw;
 }
 
 .input-container {
     display: flex;
-    width: 90vw;
+    width: 100%;
 }
 
 #input-field {
@@ -64,7 +67,6 @@ a {
 
 #send-button {
     padding: 10px 20px;
-    margin-left: 10px;
     border: none;
     border-radius: 20px;
     background-color: #4caf50;
@@ -130,7 +132,7 @@ a {
 }
 
 .link-preview {
-    min-width: 25rem;
+    max-width: 30rem;
     max-height: 19rem;
     display: flex;
     flex-direction: column;
@@ -167,10 +169,10 @@ a {
 }
 
 .linkEmbed {
-    width: 25rem;
     height: 19rem;
     display: block;
     color: #fff;
+    max-width: 90vw;
 }
 
 .linkEmbed h3:hover {
@@ -182,5 +184,6 @@ a {
 
 img {
     max-width: 90%;
+    max-width: 90vw;
     max-height: 300px;
 }

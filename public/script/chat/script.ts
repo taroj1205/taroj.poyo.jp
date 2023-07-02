@@ -201,24 +201,34 @@ const formatMessage = async (message: any) => {
                     preview.style.width = `${width}rem`;
                     preview.style.height = `${height}rem`;
 
+                    const messagesWidth = messagesContainer.offsetWidth;
+                    const previewWidth = preview.offsetWidth;
+
+                    if (previewWidth < messagesWidth) {
+                        preview.style.width = `${messagesWidth * 0.9}px`;
+                    }
+
                     // Create and append the title element
                     const titleElement = document.createElement('h3');
                     titleElement.textContent = title || linkUrl;
                     preview.appendChild(titleElement);
 
-                    const maxLines = 3;
-                    const lineHeight = 1.2;
                     const fontSize = 0.8; // Adjust the font size as needed
-
-                    // Calculate the maximum height of the description element
-                    const maxHeight = maxLines * lineHeight + 'rem';
 
                     // Create and append the description element
                     const descriptionElement = document.createElement('p');
                     descriptionElement.textContent = description || '';
-                    descriptionElement.style.maxHeight = maxHeight;
                     descriptionElement.style.overflow = 'hidden';
                     descriptionElement.style.fontSize = `${fontSize}em`;
+
+                    // Split the text content of the description element by line breaks and count the number of lines
+                    const lineHeight = parseFloat(
+                        getComputedStyle(descriptionElement).lineHeight
+                    );
+
+                    // Calculate the line height and maximum height of the description element
+                    const maxLines = Math.ceil(height / lineHeight);
+                    descriptionElement.style.lineHeight = lineHeight + 'px';
 
                     preview.appendChild(descriptionElement);
 
@@ -226,6 +236,15 @@ const formatMessage = async (message: any) => {
                     if (imageUrl) {
                         const imageElement = document.createElement('img');
                         imageElement.src = imageUrl;
+
+                        const messagesWidth = messagesContainer.offsetWidth;
+                        const imageWidth = imageElement.offsetWidth;
+
+                        if (imageWidth < messagesWidth) {
+                            imageElement.style.width = `${
+                                messagesWidth * 0.9
+                            }px`;
+                        }
                         preview.appendChild(imageElement);
                     }
 
