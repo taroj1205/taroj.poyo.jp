@@ -214,7 +214,6 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 imageElement.src = linkUrl;
                 imageElement.style.display = 'block';
                 imageElement.style.marginTop = '10px';
-                imageElement.style.height = '300px';
                 // Append image element to p element
                 p.appendChild(imageElement);
                 return [3 /*break*/, 5];

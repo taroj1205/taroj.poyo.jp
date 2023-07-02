@@ -166,7 +166,6 @@ const formatMessage = async (message: any) => {
                     imageElement.src = linkUrl;
                     imageElement.style.display = 'block';
                     imageElement.style.marginTop = '10px';
-                    imageElement.style.height = '300px';
 
                     // Append image element to p element
                     p.appendChild(imageElement);

@@ -179,3 +179,8 @@ a {
 .linkEmbed {
     text-decoration: none;
 }
+
+img {
+    max-width: 90%;
+    max-height: 300px;
+}
