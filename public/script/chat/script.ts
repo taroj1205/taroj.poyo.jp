@@ -86,9 +86,14 @@ const addMessage = async (message: any) => {
     ) as HTMLDivElement;
     console.log(messagesContainer);
 
-    for (const item of message) {
-        console.log('Item: ', item);
-        await formatMessage(item);
+    if (Array.isArray(message)) {
+        for (const item of message) {
+            console.log('Item: ', item);
+            await formatMessage(item);
+        }
+    } else {
+        console.log('Item: ', message);
+        await formatMessage(message);
     }
 };
 
@@ -121,13 +126,13 @@ const formatMessage = async (message: any) => {
 
         const formattedMessageText = messageText.includes('>>')
             ? messageText.replace(
-            />>(\d+)/g,
-            '<a href="#$1" class="jump">>>$1</a>'
-            )
+                  />>(\d+)/g,
+                  '<a href="#$1" class="jump">>>$1</a>'
+              )
             : messageText.replace(
-            /(https?:\/\/[^\s]+)/g,
-            '<a href="$1" target="_blank">$1</a>'
-            );
+                  /(https?:\/\/[^\s]+)/g,
+                  '<a href="$1" target="_blank">$1</a>'
+              );
 
         const messagesContainer = document.getElementById(
             'messages'
@@ -221,7 +226,15 @@ const formatMessage = async (message: any) => {
 
         console.log(p);
 
+        const isAtBottom =
+            messagesContainer.scrollTop + messagesContainer.clientHeight ===
+            messagesContainer.scrollHeight;
+
         messagesContainer.appendChild(p);
+
+        if (isAtBottom) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
     } catch (error) {
         console.error('Error formatting message:', error);
     }

@@ -115,14 +115,13 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 const newMessage = {
                     id,
                     message,
-                    sent_on: now,
-                    userId,
                     username,
+                    sent_on: now,
                 };
                 await pusher.trigger(
                     'chat',
                     'newMessage',
-                    JSON.stringify(newMessage)
+                    newMessage
                 );
                 res.status(200).end();
             } catch (error) {

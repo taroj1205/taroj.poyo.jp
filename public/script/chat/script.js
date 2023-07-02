@@ -137,6 +137,7 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
                 console.log('Running addMessage() ', message);
                 messagesContainer = document.getElementById('messages');
                 console.log(messagesContainer);
+                if (!Array.isArray(message)) return [3 /*break*/, 5];
                 _i = 0, message_1 = message;
                 _a.label = 1;
             case 1:
@@ -150,12 +151,19 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
             case 3:
                 _i++;
                 return [3 /*break*/, 1];
-            case 4: return [2 /*return*/];
+            case 4: return [3 /*break*/, 7];
+            case 5:
+                console.log('Item: ', message);
+                return [4 /*yield*/, formatMessage(message)];
+            case 6:
+                _a.sent();
+                _a.label = 7;
+            case 7: return [2 /*return*/];
         }
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1, error_2;
+    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1, isAtBottom, error_2;
     var _a, _b, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -254,7 +262,12 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 return [3 /*break*/, 6];
             case 6:
                 console.log(p);
+                isAtBottom = messagesContainer_1.scrollTop + messagesContainer_1.clientHeight ===
+                    messagesContainer_1.scrollHeight;
                 messagesContainer_1.appendChild(p);
+                if (isAtBottom) {
+                    messagesContainer_1.scrollTop = messagesContainer_1.scrollHeight;
+                }
                 return [3 /*break*/, 8];
             case 7:
                 error_2 = _d.sent();
