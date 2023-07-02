@@ -4,6 +4,7 @@ html {
 
 body {
     overflow: hidden;
+    touch-action: none;
     background-color: #212121;
     color: #fff;
     font-family: Roboto, Arial, sans-serif;
@@ -13,8 +14,8 @@ body {
 }
 
 body {
-  width: var(--vvw);
-  height: var(--vvh);
+    width: var(--vvw);
+    height: var(--vvh);
 }
 
 a {
