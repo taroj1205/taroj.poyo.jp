@@ -1,5 +1,13 @@
-html,
+html {
+    scroll-behavior: smooth;
+}
+
 body {
+    overflow: hidden;
+    background-color: #212121;
+    color: #fff;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 16px;
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -7,14 +15,6 @@ body {
 
 a {
     color: #00bfff;
-}
-
-body {
-    overflow: hidden;
-    background-color: #212121;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
 }
 
 .container {
@@ -67,7 +67,7 @@ body {
     margin-left: 10px;
     border: none;
     border-radius: 20px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
@@ -126,5 +126,56 @@ body {
 }
 
 .active {
-    color: #4CAF50;
+    color: #4caf50;
+}
+
+.link-preview {
+    min-width: 25rem;
+    max-height: 19rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #111111;
+    line-height: 1.2;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.link-preview:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.link-preview h3 {
+    margin: 0;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+.link-preview p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0; /* Reset the margin to remove any extra spacing */
+    font-size: 0.8em;
+}
+
+.link-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 0 0 8px 8px;
+}
+
+.linkEmbed {
+    width: 25rem;
+    height: 19rem;
+    display: block;
+    color: #fff;
+}
+
+.linkEmbed h3:hover {
+    text-decoration: underline;
+}
+.linkEmbed {
+    text-decoration: none;
 }

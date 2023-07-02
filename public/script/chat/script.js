@@ -155,56 +155,105 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, iframe;
-    return __generator(this, function (_a) {
-        try {
-            console.log('Formatting: ', message);
-            messageText = message.message;
-            username = message.username;
-            sent_on = message.sent_on;
-            console.log(messageText);
-            format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
-            formattedSentOn = new Date(sent_on)
-                .toLocaleString(format, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: false,
-                timeZoneName: 'short',
-            })
-                .replace(',', '.');
-            isJapanese = format === 'ja-JP' && username === 'Anonymous';
-            formattedUsername = isJapanese ? '名無し' : username;
-            formattedMessageText = messageText.includes('>>')
-                ? messageText.replace(/>>(\d+)/g, '<a href="#$1">>>$1</a>')
-                : messageText;
-            messagesContainer_1 = document.getElementById('messages');
-            pCount = messagesContainer_1.getElementsByTagName('p').length;
-            formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"padding-left: 2ch;\">").concat(formattedMessageText, "</span>");
-            p = document.createElement('p');
-            p.innerHTML = formattedHtml;
-            p.id = message.id;
-            linkRegex = /(https?:\/\/[^\s]+)/g;
-            linkMatches = messageText.match(linkRegex);
-            if (linkMatches) {
-                iframe = document.createElement('iframe');
-                iframe.src = linkMatches[0];
-                iframe.width = '400';
-                iframe.height = '400';
-                iframe.style.display = 'block';
-                iframe.style.marginTop = '10px';
-                // Append iframe element to p element
-                p.appendChild(iframe);
-            }
-            messagesContainer_1.appendChild(p);
+    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1;
+    var _a, _b, _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                _d.trys.push([0, 4, , 5]);
+                console.log('Formatting: ', message);
+                messageText = message.message;
+                username = message.username;
+                sent_on = message.sent_on;
+                console.log(messageText);
+                format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
+                formattedSentOn = new Date(sent_on)
+                    .toLocaleString(format, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: false,
+                    timeZoneName: 'short',
+                })
+                    .replace(',', '.');
+                isJapanese = format === 'ja-JP' && username === 'Anonymous';
+                formattedUsername = isJapanese ? '名無し' : username;
+                formattedMessageText = messageText.includes('>>')
+                    ? messageText.replace(/>>(\d+)/g, '<a href="#$1" class="jump">>>$1</a>')
+                    : messageText.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                messagesContainer_1 = document.getElementById('messages');
+                pCount = messagesContainer_1.getElementsByTagName('p').length;
+                formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"padding-left: 2ch;\">").concat(formattedMessageText, "</span>");
+                p = document.createElement('p');
+                p.innerHTML = formattedHtml;
+                p.id = pCount.toString();
+                p.dataset.message = message.id;
+                console.log(p);
+                linkRegex = /(https?:\/\/[^\s]+)/g;
+                linkMatches = messageText.match(linkRegex);
+                if (!linkMatches) return [3 /*break*/, 3];
+                linkUrl = linkMatches[0];
+                return [4 /*yield*/, fetch(linkUrl)];
+            case 1:
+                response = _d.sent();
+                return [4 /*yield*/, response.text()];
+            case 2:
+                html = _d.sent();
+                parser = new DOMParser();
+                doc = parser.parseFromString(html, 'text/html');
+                title = (_a = doc
+                    .querySelector('meta[property="og:title"]')) === null || _a === void 0 ? void 0 : _a.getAttribute('content');
+                description = (_b = doc
+                    .querySelector('meta[property="og:description"]')) === null || _b === void 0 ? void 0 : _b.getAttribute('content');
+                imageUrl = (_c = doc
+                    .querySelector('meta[property="og:image"]')) === null || _c === void 0 ? void 0 : _c.getAttribute('content');
+                linkElement = document.createElement('a');
+                linkElement.href = linkUrl;
+                linkElement.target = '_blank';
+                linkElement.classList.add('linkEmbed');
+                preview = document.createElement('div');
+                preview.classList.add('link-preview');
+                width = Math.max(25, linkUrl.length * 0.6);
+                height = Math.max(19, linkUrl.length * 0.3);
+                preview.style.width = "".concat(width, "rem");
+                preview.style.height = "".concat(height, "rem");
+                titleElement = document.createElement('h3');
+                titleElement.textContent = title || linkUrl;
+                preview.appendChild(titleElement);
+                maxLines = 3;
+                lineHeight = 1.2;
+                fontSize = 0.8;
+                maxHeight = maxLines * lineHeight + 'rem';
+                descriptionElement = document.createElement('p');
+                descriptionElement.textContent = description || '';
+                descriptionElement.style.maxHeight = maxHeight;
+                descriptionElement.style.overflow = 'hidden';
+                descriptionElement.style.fontSize = "".concat(fontSize, "em");
+                preview.appendChild(descriptionElement);
+                // Create and append the image element
+                if (imageUrl) {
+                    imageElement = document.createElement('img');
+                    imageElement.src = imageUrl;
+                    preview.appendChild(imageElement);
+                }
+                // Append the preview element to the link element
+                linkElement.appendChild(preview);
+                // Append the link element to the p element
+                p.appendChild(linkElement);
+                _d.label = 3;
+            case 3:
+                console.log(p);
+                messagesContainer_1.appendChild(p);
+                return [3 /*break*/, 5];
+            case 4:
+                error_1 = _d.sent();
+                console.error('Error formatting message:', error_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
-        catch (error) {
-            console.error('Error formatting message:', error);
-        }
-        return [2 /*return*/];
     });
 }); };
 inputField.addEventListener('input', function () {
