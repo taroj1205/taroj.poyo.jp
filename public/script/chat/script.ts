@@ -155,70 +155,87 @@ const formatMessage = async (message: any) => {
             if (linkMatches) {
                 const linkUrl = linkMatches[0];
 
-                // Fetch the metadata of the link
-                const response = await fetch(linkUrl);
-                const html = await response.text();
+                const imageRegex = /\.(gif|jpe?g|png)$/i;
+                const isImage = imageRegex.test(linkUrl);
 
-                // Parse the metadata from the HTML
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const title = doc
-                    .querySelector('meta[property="og:title"]')
-                    ?.getAttribute('content');
-                const description = doc
-                    .querySelector('meta[property="og:description"]')
-                    ?.getAttribute('content');
-                const imageUrl = doc
-                    .querySelector('meta[property="og:image"]')
-                    ?.getAttribute('content');
+                if (isImage) {
+                    // Create image element
+                    const imageElement = document.createElement(
+                        'img'
+                    ) as HTMLImageElement;
+                    imageElement.src = linkUrl;
+                    imageElement.style.display = 'block';
+                    imageElement.style.marginTop = '10px';
+                    imageElement.style.height = '300px';
 
-                const linkElement = document.createElement('a');
-                linkElement.href = linkUrl;
-                linkElement.target = '_blank';
-                linkElement.classList.add('linkEmbed');
+                    // Append image element to p element
+                    p.appendChild(imageElement);
+                } else {
+                    // Fetch the metadata of the link
+                    const response = await fetch(linkUrl);
+                    const html = await response.text();
 
-                // Create a preview element
-                const preview = document.createElement('div');
-                preview.classList.add('link-preview');
+                    // Parse the metadata from the HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const title = doc
+                        .querySelector('meta[property="og:title"]')
+                        ?.getAttribute('content');
+                    const description = doc
+                        .querySelector('meta[property="og:description"]')
+                        ?.getAttribute('content');
+                    const imageUrl = doc
+                        .querySelector('meta[property="og:image"]')
+                        ?.getAttribute('content');
 
-                const width = Math.max(25, linkUrl.length * 0.6); // Adjust the multiplier as needed
-                const height = Math.max(19, linkUrl.length * 0.3); // Adjust the multiplier as needed
-                preview.style.width = `${width}rem`;
-                preview.style.height = `${height}rem`;
+                    const linkElement = document.createElement('a');
+                    linkElement.href = linkUrl;
+                    linkElement.target = '_blank';
+                    linkElement.classList.add('linkEmbed');
 
-                // Create and append the title element
-                const titleElement = document.createElement('h3');
-                titleElement.textContent = title || linkUrl;
-                preview.appendChild(titleElement);
+                    // Create a preview element
+                    const preview = document.createElement('div');
+                    preview.classList.add('link-preview');
 
-                const maxLines = 3;
-                const lineHeight = 1.2;
-                const fontSize = 0.8; // Adjust the font size as needed
+                    const width = Math.max(25, linkUrl.length * 0.6); // Adjust the multiplier as needed
+                    const height = Math.max(19, linkUrl.length * 0.3); // Adjust the multiplier as needed
+                    preview.style.width = `${width}rem`;
+                    preview.style.height = `${height}rem`;
 
-                // Calculate the maximum height of the description element
-                const maxHeight = maxLines * lineHeight + 'rem';
+                    // Create and append the title element
+                    const titleElement = document.createElement('h3');
+                    titleElement.textContent = title || linkUrl;
+                    preview.appendChild(titleElement);
 
-                // Create and append the description element
-                const descriptionElement = document.createElement('p');
-                descriptionElement.textContent = description || '';
-                descriptionElement.style.maxHeight = maxHeight;
-                descriptionElement.style.overflow = 'hidden';
-                descriptionElement.style.fontSize = `${fontSize}em`;
+                    const maxLines = 3;
+                    const lineHeight = 1.2;
+                    const fontSize = 0.8; // Adjust the font size as needed
 
-                preview.appendChild(descriptionElement);
+                    // Calculate the maximum height of the description element
+                    const maxHeight = maxLines * lineHeight + 'rem';
 
-                // Create and append the image element
-                if (imageUrl) {
-                    const imageElement = document.createElement('img');
-                    imageElement.src = imageUrl;
-                    preview.appendChild(imageElement);
+                    // Create and append the description element
+                    const descriptionElement = document.createElement('p');
+                    descriptionElement.textContent = description || '';
+                    descriptionElement.style.maxHeight = maxHeight;
+                    descriptionElement.style.overflow = 'hidden';
+                    descriptionElement.style.fontSize = `${fontSize}em`;
+
+                    preview.appendChild(descriptionElement);
+
+                    // Create and append the image element
+                    if (imageUrl) {
+                        const imageElement = document.createElement('img');
+                        imageElement.src = imageUrl;
+                        preview.appendChild(imageElement);
+                    }
+
+                    // Append the preview element to the link element
+                    linkElement.appendChild(preview);
+
+                    // Append the link element to the p element
+                    p.appendChild(linkElement);
                 }
-
-                // Append the preview element to the link element
-                linkElement.appendChild(preview);
-
-                // Append the link element to the p element
-                p.appendChild(linkElement);
             }
         } catch (error) {
             console.error('Error parsing link:', error);

@@ -163,12 +163,12 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1, isAtBottom, error_2;
+    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, titleElement, maxLines, lineHeight, fontSize, maxHeight, descriptionElement, imageElement, error_1, isAtBottom, error_2;
     var _a, _b, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
-                _d.trys.push([0, 7, , 8]);
+                _d.trys.push([0, 8, , 9]);
                 console.log('Formatting: ', message);
                 messageText = message.message;
                 username = message.username;
@@ -202,16 +202,27 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 console.log(p);
                 _d.label = 1;
             case 1:
-                _d.trys.push([1, 5, , 6]);
+                _d.trys.push([1, 6, , 7]);
                 linkRegex = /(https?:\/\/[^\s]+)/g;
                 linkMatches = messageText.match(linkRegex);
-                if (!linkMatches) return [3 /*break*/, 4];
+                if (!linkMatches) return [3 /*break*/, 5];
                 linkUrl = linkMatches[0];
-                return [4 /*yield*/, fetch(linkUrl)];
-            case 2:
+                imageRegex = /\.(gif|jpe?g|png)$/i;
+                isImage = imageRegex.test(linkUrl);
+                if (!isImage) return [3 /*break*/, 2];
+                imageElement = document.createElement('img');
+                imageElement.src = linkUrl;
+                imageElement.style.display = 'block';
+                imageElement.style.marginTop = '10px';
+                imageElement.style.height = '300px';
+                // Append image element to p element
+                p.appendChild(imageElement);
+                return [3 /*break*/, 5];
+            case 2: return [4 /*yield*/, fetch(linkUrl)];
+            case 3:
                 response = _d.sent();
                 return [4 /*yield*/, response.text()];
-            case 3:
+            case 4:
                 html = _d.sent();
                 parser = new DOMParser();
                 doc = parser.parseFromString(html, 'text/html');
@@ -254,13 +265,13 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 linkElement.appendChild(preview);
                 // Append the link element to the p element
                 p.appendChild(linkElement);
-                _d.label = 4;
-            case 4: return [3 /*break*/, 6];
-            case 5:
+                _d.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 error_1 = _d.sent();
                 console.error('Error parsing link:', error_1);
-                return [3 /*break*/, 6];
-            case 6:
+                return [3 /*break*/, 7];
+            case 7:
                 console.log(p);
                 isAtBottom = messagesContainer_1.scrollTop + messagesContainer_1.clientHeight ===
                     messagesContainer_1.scrollHeight;
@@ -268,12 +279,12 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 if (isAtBottom) {
                     messagesContainer_1.scrollTop = messagesContainer_1.scrollHeight;
                 }
-                return [3 /*break*/, 8];
-            case 7:
+                return [3 /*break*/, 9];
+            case 8:
                 error_2 = _d.sent();
                 console.error('Error formatting message:', error_2);
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                return [3 /*break*/, 9];
+            case 9: return [2 /*return*/];
         }
     });
 }); };
