@@ -1,5 +1,6 @@
 html {
     scroll-behavior: smooth;
+    height: 100%;
 }
 
 body {
@@ -8,7 +9,6 @@ body {
     color: #fff;
     font-family: Roboto, Arial, sans-serif;
     font-size: 16px;
-    height: 100vh;
     margin: 0;
     padding: 0;
 }
@@ -44,6 +44,7 @@ a {
 
 .input-container {
     display: flex;
+    width: 90vw;
 }
 
 #input-field {
