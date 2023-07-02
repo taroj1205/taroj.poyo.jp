@@ -22,12 +22,13 @@ const chatHandler: NextApiHandler = async (req, res) => {
     console.log(req.body);
     console.log(req.body.method);
 
-    try {
-        const client = createClient({
-            connectionString: DATABASE_URL,
-        });
+    const client = createClient({
+        connectionString: DATABASE_URL,
+    });
 
-        await client.connect();
+    await client.connect();
+
+    try {
 
         client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
         client.sql`
@@ -131,10 +132,11 @@ const chatHandler: NextApiHandler = async (req, res) => {
             res.status(404).end();
         }
 
-        await client.end();
-        console.log('Disconnected from the database');
     } catch (error) {
         console.error('Error connecting to the database:', error);
+    } finally {
+        await client.end();
+        console.log('Disconnected from the database');
     }
 };
 
