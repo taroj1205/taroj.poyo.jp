@@ -4,21 +4,10 @@ html {
 
 body {
     touch-action: none;
-    color: #fff;
-    background-color: #090c10;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 16px;
     margin: 0;
     padding: 0;
     width: var(--vvw);
     height: var(--vvh);
-}
-body.light {
-    background-color: #212121;
-}
-
-a {
-    color: #00bfff;
 }
 
 .container {

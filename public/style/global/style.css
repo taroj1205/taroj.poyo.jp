@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'NotoSansJP';
+    src: url('../font/NotoSansJP/static/NotoSansJP-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'NotoSansThin';
+    src: url('../font/NotoSans/NotoSans-Thin.ttf') format('truetype');
+}
+
+body {
+    color: #fff;
+    background-color: #090c10;
+    font-family: 'NotoSansThin', 'NotoSansJP', Arial, sans-serif;
+    font-size: 16px;
+}
+body.light {
+    background-color: #212121;
+}
+
+a {
+    color: #00bfff;
+}
