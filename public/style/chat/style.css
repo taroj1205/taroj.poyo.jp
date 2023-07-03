@@ -79,6 +79,7 @@ a {
     border-radius: 0 10px 10px 0;
     background-color: #4caf50;
     cursor: pointer;
+    display: block;
 }
 
 #send-button.disabled {
@@ -114,10 +115,6 @@ a {
         max-height: 18rem;
     }
 
-    #send-button {
-        display: block;
-    }
-
     #input-field {
         border-radius: 10px 0 0 10px;
     }
@@ -134,10 +131,6 @@ a {
 
     .link-preview {
         max-height: 23rem;
-    }
-
-    #send-button {
-        display: none;
     }
 
     #input-field {

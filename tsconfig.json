@@ -117,6 +117,7 @@
     "**/*.tsx"
 , "pages/chat.js", "pages/index.js"  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "out"
   ]
 }
