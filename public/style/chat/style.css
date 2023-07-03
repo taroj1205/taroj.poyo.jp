@@ -39,9 +39,22 @@ body.light .sidebar {
 
 #messages {
     overflow-y: auto;
-    overflow-wrap: break-word;
+    overflow-x: hidden;
     flex-grow: 1;
     scroll-behavior: smooth;
+}
+#messages pre {
+    white-space: pre-wrap; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+#messages pre:not(body.phone) {
+    width: var(--vvw);
+}
+body.phone #messages pre {
+    width: calc(var(--vvw) - 1.5rem);
 }
 #messages p:not(:last-child) {
     margin: 0;
@@ -55,10 +68,10 @@ body.light .sidebar {
 #messages pre {
     margin: 0;
 }
-#messages p:hover {
+#messages p[data-server]:hover {
     background-color: #000;
 }
-body.light #messages p:hover {
+body.light #messages p[data-server]:hover {
     background-color: #282828;
 }
 
@@ -129,9 +142,6 @@ body.phone #messages p[data-server] {
 body.phone .link-preview {
     max-height: 18rem;
 }
-body.phone #input-container {
-    /*position: fixed;*/
-}
 
 @media only screen and (min-width: 720px) {
     #messages {
@@ -175,7 +185,6 @@ body.phone #input-container {
     line-height: 1.2;
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
-    margin-left: 2ch;
 }
 .noIMG {
     display: flex;
@@ -234,7 +243,12 @@ body.phone #input-container {
 img {
     max-width: calc(var(--vvw) * 0.9);
     max-height: 300px;
+}
+img:not(body.phone), .link-preview:not(body.phone) {
     margin-left: 2ch;
+}
+body.phone img, body.phone .link-preview {
+    margin: 0;
 }
 
 .loading-circle {

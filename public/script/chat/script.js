@@ -174,7 +174,6 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                     minute: 'numeric',
                     second: 'numeric',
                     hour12: false,
-                    timeZoneName: 'short',
                 };
                 formatter = new Intl.DateTimeFormat(format, options);
                 formattedSentOn = formatter

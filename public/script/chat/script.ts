@@ -114,7 +114,6 @@ const formatMessage = async (message: any) => {
             minute: 'numeric',
             second: 'numeric',
             hour12: false,
-            timeZoneName: 'short',
         };
 
         const formatter = new Intl.DateTimeFormat(format, options);
