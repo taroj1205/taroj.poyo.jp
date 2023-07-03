@@ -38,6 +38,7 @@ var _this = this;
 // Send a new message to the server
 var inputField = document.getElementById('input-field');
 var messagesContainer = document.getElementById('messages');
+var inputContainer = document.getElementById('input-container');
 // Toggle sidebar visibility when hamburger menu is clicked
 var hamburgerMenu = document.getElementById('hamburger-menu');
 var sidebar = document.querySelector('.sidebar');
@@ -94,6 +95,12 @@ var adjustInputHeight = function () {
         lines = 3;
     }
     inputField.style.height = "".concat(lines, "ch");
+    adjustMessagesHeight();
+};
+var adjustMessagesHeight = function () {
+    var inputHeight = inputContainer.offsetHeight;
+    var paddingBottom = "".concat(inputHeight, "px");
+    messagesContainer.style.paddingBottom = paddingBottom;
 };
 window.addEventListener('DOMContentLoaded', function () { return __awaiter(_this, void 0, void 0, function () {
     var permission, input;

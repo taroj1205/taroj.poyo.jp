@@ -49,7 +49,9 @@ a {
     flex-grow: 1;
 }
 
-.input-container {
+#input-container {
+    position: fixed;
+    bottom: 0;
     display: flex;
     width: 100%;
 }

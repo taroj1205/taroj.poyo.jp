@@ -1,6 +1,7 @@
 // Send a new message to the server
 const inputField = document.getElementById('input-field') as HTMLInputElement;
-const messagesContainer = document.getElementById('messages') as HTMLElement;
+const messagesContainer = document.getElementById('messages') as HTMLDivElement;
+const inputContainer = document.getElementById('input-container') as HTMLElement;
 
 // Toggle sidebar visibility when hamburger menu is clicked
 const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLElement;
@@ -52,8 +53,18 @@ const adjustInputHeight = () => {
     } else if (lines <= 3) {
         lines = 3;
     }
+    
     inputField.style.height = `${lines}ch`;
+
+    adjustMessagesHeight();
 };
+
+const adjustMessagesHeight = () => {
+    const inputHeight = inputContainer.offsetHeight;
+    const paddingBottom = `${inputHeight}px`;
+    messagesContainer.style.paddingBottom = paddingBottom;
+};
+
 window.addEventListener('DOMContentLoaded', async () => {
     const permission = localStorage.getItem('notificationPermission');
     if (permission !== 'granted') {

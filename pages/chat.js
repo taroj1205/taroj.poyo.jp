@@ -91,6 +91,7 @@ const Chat = () => {
             if (hamburger && window.innerWidth <= 720) {
                 hamburger.style.display = 'block';
             }
+            adjustMessagesHeight();
         };
 
         setVisualViewport();
@@ -126,6 +127,7 @@ const Chat = () => {
     const sendMessage = () => {
         const inputField = document.getElementById('input-field');
         const message = inputField.value.trim();
+        inputField.value = '';
 
         if (message !== '') {
             setIsLoading(true); // set loading state to true
@@ -146,12 +148,13 @@ const Chat = () => {
                     setIsLoading(false); // set loading state to false
                     console.log(response); // log the response
                     
-                    inputField.value = '';
                     localStorage.removeItem('input');
                 })
                 .catch((error) => {
                     console.error('Error sending message:', error);
                     setIsLoading(false); // set loading state to false
+
+                    inputField.value = localStorage.getItem('input');
                 });
         }
     };
@@ -168,7 +171,7 @@ const Chat = () => {
             </div>
             <div className="main">
                 <div id="messages"></div>
-                <div className="input-container">
+                <div id="input-container">
                     <textarea
                         id="input-field"
                         ref={inputRef}
