@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import Pusher from 'pusher-js';
+import { FaPaperPlane } from 'react-icons/fa';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
@@ -157,6 +158,7 @@ const Chat = () => {
                     inputField.value = localStorage.getItem('input');
                 });
         }
+        inputField.focus();
     };
 
     return (
@@ -183,7 +185,11 @@ const Chat = () => {
                         onClick={sendMessage}
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Sending...' : 'Send'}
+                        {isLoading ? (
+                            <div className="loading-circle"></div>
+                        ) : (
+                            <FaPaperPlane />
+                        )}
                     </button>
                 </div>
             </div>

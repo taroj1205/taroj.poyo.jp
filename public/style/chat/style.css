@@ -75,7 +75,7 @@ a {
 }
 
 #send-button {
-    padding: 10px 20px;
+    width: 3rem;
     border-radius: 0 10px 10px 0;
     background-color: #4caf50;
     cursor: pointer;
@@ -223,4 +223,23 @@ img {
     max-width: 90%;
     max-width: 90vw;
     max-height: 300px;
+}
+
+.loading-circle {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 auto;
+    border: 0.1875rem solid #ccc;
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
