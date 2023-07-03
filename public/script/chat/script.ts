@@ -1,7 +1,9 @@
 // Send a new message to the server
 const inputField = document.getElementById('input-field') as HTMLInputElement;
 const messagesContainer = document.getElementById('messages') as HTMLDivElement;
-const inputContainer = document.getElementById('input-container') as HTMLElement;
+const inputContainer = document.getElementById(
+    'input-container'
+) as HTMLElement;
 
 // Toggle sidebar visibility when hamburger menu is clicked
 const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLElement;
@@ -22,6 +24,8 @@ async function showNotification(title: string, body: string) {
             icon: '../image/icon/icon.png',
         };
         const notification = new Notification(title, options);
+    } else {
+        return;
     }
 }
 
@@ -53,7 +57,7 @@ const adjustInputHeight = () => {
     } else if (lines <= 3) {
         lines = 3;
     }
-    
+
     inputField.style.height = `${lines}ch`;
 
     adjustMessagesHeight();
@@ -118,7 +122,9 @@ const formatMessage = async (message: any) => {
         };
 
         const formatter = new Intl.DateTimeFormat(format, options);
-        const formattedSentOn = formatter.format(new Date(sent_on)).replace(',', '.');
+        const formattedSentOn = formatter
+            .format(new Date(sent_on))
+            .replace(',', '.');
 
         const isJapanese = format === 'ja-JP' && username === 'Anonymous';
         const formattedUsername = isJapanese ? '名無し' : username;
@@ -140,7 +146,7 @@ const formatMessage = async (message: any) => {
             'messages'
         ) as HTMLDivElement;
         const pCount = messagesContainer.getElementsByTagName('p').length + 1;
-        const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="padding-left: 2ch;">${formattedMessageText}</span>`;
+        const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="margin-left: 2ch;">${formattedMessageText}</span>`;
 
         const p = document.createElement('p');
         p.innerHTML = formattedHtml;
@@ -179,15 +185,40 @@ const formatMessage = async (message: any) => {
                     // Parse the metadata from the HTML
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-                    const title = doc
-                        .querySelector('meta[property="og:title"]')
-                        ?.getAttribute('content');
-                    const description = doc
-                        .querySelector('meta[property="og:description"]')
-                        ?.getAttribute('content');
-                    const imageUrl = doc
-                        .querySelector('meta[property="og:image"]')
-                        ?.getAttribute('content');
+
+                    const meta_title  = doc.querySelector(
+                        'meta[property="og:title"]'
+                    );
+                    const meta_description = doc.querySelector(
+                        'meta[property="og:description"]'
+                    );
+                    const meta_image = doc.querySelector(
+                        'meta[property="og:image"]'
+                    );
+
+                    let title, description, imageUrl;
+
+                    if (meta_title) {
+                        title = meta_title.getAttribute('content');
+                    } else {
+                        title = doc
+                            .querySelector('meta[name="description"]')
+                            ?.getAttribute('content');
+                    }
+
+                    if (meta_description) {
+                        description = meta_description.getAttribute('content');
+                    } else {
+                        description = doc
+                            .querySelector('meta[name="description"]')
+                            ?.getAttribute('content');
+                    }
+
+                    if (meta_image) {
+                        imageUrl = meta_image.getAttribute('content');
+                    } else {
+                        imageUrl = '';
+                    }
 
                     const linkElement = document.createElement('a');
                     linkElement.href = linkUrl;
@@ -246,7 +277,9 @@ const formatMessage = async (message: any) => {
                                 messagesWidth * 0.9
                             }px`;
                         }
-                        preview.appendChild(imageElement);
+                        //preview.appendChild(imageElement);
+                    } else {
+                        preview.classList.add('noIMG');
                     }
 
                     // Append the preview element to the link element

@@ -24,14 +24,13 @@ a {
 .container {
     display: flex;
     height: var(--vvh);
-    width: 100%;
+    width: var(--vvw);
     box-sizing: border-box;
     margin: 0;
 }
 
 .sidebar {
     background-color: #0d1117;
-    width: 250px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -163,11 +162,18 @@ body.phone #input-container {
     max-width: 30rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     background-color: #111111;
     line-height: 1.2;
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
+    margin-left: 2ch;
+}
+.noIMG {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10px;
 }
 
 .link-preview:hover {
@@ -176,7 +182,7 @@ body.phone #input-container {
 
 .link-preview h3 {
     margin: 0;
-    margin-top: 10px;
+    margin-bottom: 10px; /* Add margin to the bottom to separate from the image */
     font-size: 1em;
 }
 
@@ -185,6 +191,7 @@ body.phone #input-container {
     text-overflow: ellipsis;
     margin: 0; /* Reset the margin to remove any extra spacing */
     font-size: 0.8em;
+    margin-bottom: 10px; /* Add margin to the bottom to separate from the image */
 }
 
 .link-preview p,
@@ -200,6 +207,7 @@ body.phone #input-container {
     object-fit: contain;
     margin: 0 auto;
     border-radius: 0 0 8px 8px;
+    align-self: flex-end; /* Align the image to the bottom */
 }
 
 .linkEmbed {
@@ -216,9 +224,9 @@ body.phone #input-container {
 }
 
 img {
-    max-width: 90%;
-    max-width: 90vw;
+    max-width: calc(var(--vvw) * 0.9);
     max-height: 300px;
+    margin-left: 2ch;
 }
 
 .loading-circle {

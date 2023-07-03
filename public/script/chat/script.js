@@ -63,6 +63,9 @@ function showNotification(title, body) {
                         };
                         notification = new Notification(title, options);
                     }
+                    else {
+                        return [2 /*return*/];
+                    }
                     return [2 /*return*/];
             }
         });
@@ -157,12 +160,12 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
-    var _a, _b, _c;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    var messageText, username, sent_on, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, meta_title, meta_description, meta_image, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                _d.trys.push([0, 8, , 9]);
+                _c.trys.push([0, 8, , 9]);
                 console.log('Formatting: ', message);
                 messageText = message.message;
                 username = message.username;
@@ -180,7 +183,9 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                     timeZoneName: 'short',
                 };
                 formatter = new Intl.DateTimeFormat(format, options);
-                formattedSentOn = formatter.format(new Date(sent_on)).replace(',', '.');
+                formattedSentOn = formatter
+                    .format(new Date(sent_on))
+                    .replace(',', '.');
                 isJapanese = format === 'ja-JP' && username === 'Anonymous';
                 formattedUsername = isJapanese ? '名無し' : username;
                 formattedMessageText = messageText.replace(/((?:>>\d+)|(?:https?:\/\/[^\s]+))/g, function (match) {
@@ -193,15 +198,15 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 });
                 messagesContainer_1 = document.getElementById('messages');
                 pCount = messagesContainer_1.getElementsByTagName('p').length + 1;
-                formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"padding-left: 2ch;\">").concat(formattedMessageText, "</span>");
+                formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"margin-left: 2ch;\">").concat(formattedMessageText, "</span>");
                 p = document.createElement('p');
                 p.innerHTML = formattedHtml;
                 p.id = pCount.toString();
                 p.dataset.server = message.id;
                 console.log(p);
-                _d.label = 1;
+                _c.label = 1;
             case 1:
-                _d.trys.push([1, 6, , 7]);
+                _c.trys.push([1, 6, , 7]);
                 linkRegex = /(https?:\/\/[^\s]+)/g;
                 linkMatches = messageText.match(linkRegex);
                 if (!linkMatches) return [3 /*break*/, 5];
@@ -218,18 +223,36 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 return [3 /*break*/, 5];
             case 2: return [4 /*yield*/, fetch(linkUrl)];
             case 3:
-                response = _d.sent();
+                response = _c.sent();
                 return [4 /*yield*/, response.text()];
             case 4:
-                html = _d.sent();
+                html = _c.sent();
                 parser = new DOMParser();
                 doc = parser.parseFromString(html, 'text/html');
-                title = (_a = doc
-                    .querySelector('meta[property="og:title"]')) === null || _a === void 0 ? void 0 : _a.getAttribute('content');
-                description = (_b = doc
-                    .querySelector('meta[property="og:description"]')) === null || _b === void 0 ? void 0 : _b.getAttribute('content');
-                imageUrl = (_c = doc
-                    .querySelector('meta[property="og:image"]')) === null || _c === void 0 ? void 0 : _c.getAttribute('content');
+                meta_title = doc.querySelector('meta[property="og:title"]');
+                meta_description = doc.querySelector('meta[property="og:description"]');
+                meta_image = doc.querySelector('meta[property="og:image"]');
+                title = void 0, description = void 0, imageUrl = void 0;
+                if (meta_title) {
+                    title = meta_title.getAttribute('content');
+                }
+                else {
+                    title = (_a = doc
+                        .querySelector('meta[name="description"]')) === null || _a === void 0 ? void 0 : _a.getAttribute('content');
+                }
+                if (meta_description) {
+                    description = meta_description.getAttribute('content');
+                }
+                else {
+                    description = (_b = doc
+                        .querySelector('meta[name="description"]')) === null || _b === void 0 ? void 0 : _b.getAttribute('content');
+                }
+                if (meta_image) {
+                    imageUrl = meta_image.getAttribute('content');
+                }
+                else {
+                    imageUrl = '';
+                }
                 linkElement = document.createElement('a');
                 linkElement.href = linkUrl;
                 linkElement.target = '_blank';
@@ -269,16 +292,19 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                     if (imageWidth < messagesWidth_1) {
                         imageElement.style.width = "".concat(messagesWidth_1 * 0.9, "px");
                     }
-                    preview.appendChild(imageElement);
+                    //preview.appendChild(imageElement);
+                }
+                else {
+                    preview.classList.add('noIMG');
                 }
                 // Append the preview element to the link element
                 linkElement.appendChild(preview);
                 // Append the link element to the p element
                 p.appendChild(linkElement);
-                _d.label = 5;
+                _c.label = 5;
             case 5: return [3 /*break*/, 7];
             case 6:
-                error_1 = _d.sent();
+                error_1 = _c.sent();
                 console.error('Error parsing link:', error_1);
                 return [3 /*break*/, 7];
             case 7:
@@ -291,7 +317,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 }
                 return [3 /*break*/, 9];
             case 8:
-                error_2 = _d.sent();
+                error_2 = _c.sent();
                 console.error('Error formatting message:', error_2);
                 return [3 /*break*/, 9];
             case 9: return [2 /*return*/];
