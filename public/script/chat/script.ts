@@ -32,8 +32,6 @@ async function showNotification(title: string, body: string) {
             icon: '../image/icon/icon.png',
         };
         const notification = new Notification(title, options);
-    } else {
-        localStorage.setItem('notificationPermission', permission);
     }
 }
 
@@ -158,7 +156,7 @@ const formatMessage = async (message: any) => {
             if (linkMatches) {
                 const linkUrl = linkMatches[0];
 
-                const imageRegex = /\.(gif|jpe?g|png)$/i;
+                const imageRegex = /\.(gif|jpe?g|png)(\?.*)?$/i;
                 const isImage = imageRegex.test(linkUrl);
 
                 if (isImage) {

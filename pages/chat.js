@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import Pusher from 'pusher-js';
@@ -6,9 +6,21 @@ import Pusher from 'pusher-js';
 const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleKeyDown = (event) => {
+        console.log(event.key);
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    };
+    
+    const inputRef = useRef(null);
 
     useEffect(() => {
         console.log('useEffect running');
+
         const pusher = new Pusher('cd4e43e93ec6d4f424db', {
             cluster: 'ap1',
             encrypted: true,
@@ -63,6 +75,10 @@ const Chat = () => {
 
         fetchDefaultMessages();
 
+        if (inputRef.current) {
+            inputRef.current.addEventListener('keydown', handleKeyDown);
+        }
+
         // Receive new messages from the server
         channel.bind('newMessage', (data) => {
             console.log('Received new message: ', data);
@@ -71,14 +87,16 @@ const Chat = () => {
             addMessage(data);
         });
 
+        console.log('script loaded!');
+
         // Clean up Pusher subscription on component unmount
         return () => {
-            console.log('Unmount pusher');
             pusher.unsubscribe('chat');
+            if (inputRef.current) {
+                inputRef.current.removeEventListener('keydown', handleKeyDown);
+            }
         };
     }, []);
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const sendMessage = () => {
         const inputField = document.getElementById('input-field');
@@ -113,8 +131,6 @@ const Chat = () => {
         }
     };
 
-    console.log('script loaded!');
-
     return (
         <div className="container">
             <div className="sidebar" style={{ display: 'none' }}>
@@ -126,11 +142,11 @@ const Chat = () => {
                 </ul>
             </div>
             <div className="main">
-                <div id="messages">
-                </div>
+                <div id="messages"></div>
                 <div className="input-container">
                     <textarea
                         id="input-field"
+                        ref={inputRef}
                         placeholder="Type a message..."
                         autoFocus
                     ></textarea>

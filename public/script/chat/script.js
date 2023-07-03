@@ -73,9 +73,6 @@ function showNotification(title, body) {
                         };
                         notification = new Notification(title, options);
                     }
-                    else {
-                        localStorage.setItem('notificationPermission', permission);
-                    }
                     return [2 /*return*/];
             }
         });
@@ -204,7 +201,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 p = document.createElement('p');
                 p.innerHTML = formattedHtml;
                 p.id = pCount.toString();
-                p.dataset.message = message.id;
+                p.dataset.server = message.id;
                 console.log(p);
                 _d.label = 1;
             case 1:
@@ -213,7 +210,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 linkMatches = messageText.match(linkRegex);
                 if (!linkMatches) return [3 /*break*/, 5];
                 linkUrl = linkMatches[0];
-                imageRegex = /\.(gif|jpe?g|png)$/i;
+                imageRegex = /\.(gif|jpe?g|png)(\?.*)?$/i;
                 isImage = imageRegex.test(linkUrl);
                 if (!isImage) return [3 /*break*/, 2];
                 imageElement = document.createElement('img');
