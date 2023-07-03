@@ -260,6 +260,8 @@ const formatMessage = async (message: any) => {
 
                     preview.appendChild(descriptionElement);
 
+                    console.log(imageUrl);
+                    
                     // Create and append the image element
                     if (imageUrl) {
                         const imageElement = document.createElement('img');
@@ -273,7 +275,8 @@ const formatMessage = async (message: any) => {
                                 messagesWidth * 0.9
                             }px`;
                         }
-                        //preview.appendChild(imageElement);
+                        
+                        preview.appendChild(imageElement);
                     } else {
                         preview.classList.add('noIMG');
                     }

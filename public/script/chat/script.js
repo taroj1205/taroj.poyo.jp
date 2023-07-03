@@ -276,6 +276,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 // Calculate the line height and maximum height of the description element
                 //descriptionElement.style.lineHeight = lineHeight + 'px';
                 preview.appendChild(descriptionElement);
+                console.log(imageUrl);
                 // Create and append the image element
                 if (imageUrl) {
                     imageElement = document.createElement('img');
@@ -285,7 +286,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                     if (imageWidth < messagesWidth_1) {
                         imageElement.style.width = "".concat(messagesWidth_1 * 0.9, "px");
                     }
-                    //preview.appendChild(imageElement);
+                    preview.appendChild(imageElement);
                 }
                 else {
                     preview.classList.add('noIMG');
