@@ -37,15 +37,30 @@ const adjustInputHeight = () => {
         lines = 3;
     }
 
+    const scrollableHeight =
+        messagesContainer.scrollHeight - messagesContainer.clientHeight;
+    const isScrolledToBottom =
+        Math.abs(messagesContainer.scrollTop - scrollableHeight) <= 1;
+
     inputField.style.height = `${lines}ch`;
 
-    adjustMessagesHeight();
+    adjustMessagesHeight(isScrolledToBottom);
 };
 
-const adjustMessagesHeight = () => {
-    const inputHeight = inputContainer.offsetHeight;
-    const paddingBottom = `${inputHeight}px`;
-    messagesContainer.style.paddingBottom = paddingBottom;
+const adjustMessagesHeight = (isScrolledToBottom: Boolean) => {
+    const inputHeight = window.getComputedStyle(inputContainer).height;
+    const inputHeightInCh =
+        parseFloat(inputHeight) /
+        parseFloat(getComputedStyle(document.documentElement).fontSize);
+    console.log('Input height: ', inputHeightInCh);
+    const paddingBottom = `${inputHeightInCh}ch`;
+
+    //messagesContainer.style.paddingBottom = paddingBottom;
+
+    console.log(isScrolledToBottom, messagesContainer.scrollTop);
+    if (isScrolledToBottom) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -82,9 +97,11 @@ const formatMessage = async (message: any) => {
     try {
         console.log('Formatting: ', message);
 
-        const messageText = message.message;
+        const messageString = message.message;
         const username = message.username;
         const sent_on = message.sent_on;
+
+        const messageText = await wrapCodeInTags(messageString);
 
         console.log(messageText);
 
@@ -125,7 +142,7 @@ const formatMessage = async (message: any) => {
             'messages'
         ) as HTMLDivElement;
         const pCount = messagesContainer.getElementsByTagName('p').length + 1;
-        const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="margin-left: 2ch;">${formattedMessageText}</span>`;
+        const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><pre class="messageText">${formattedMessageText}</pre>`;
 
         const p = document.createElement('p');
 
@@ -288,6 +305,19 @@ const formatMessage = async (message: any) => {
         console.error('Error formatting message:', error);
     }
 };
+
+async function wrapCodeInTags(text: string): Promise<string> {
+    const codeRegex = /^```([\s\S]*)```$/;
+    const match = text.match(codeRegex);
+
+    if (match) {
+        const codeContent = match[1];
+        const wrappedCode = `<code>${codeContent}</code>`;
+        return wrappedCode;
+    }
+
+    return text;
+}
 
 const deleteMessage = (messageId: number) => {
     fetch('/api/chat', {

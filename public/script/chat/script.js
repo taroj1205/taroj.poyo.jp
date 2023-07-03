@@ -79,13 +79,22 @@ var adjustInputHeight = function () {
     else if (lines <= 3) {
         lines = 3;
     }
+    var scrollableHeight = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+    var isScrolledToBottom = Math.abs(messagesContainer.scrollTop - scrollableHeight) <= 1;
     inputField.style.height = "".concat(lines, "ch");
-    adjustMessagesHeight();
+    adjustMessagesHeight(isScrolledToBottom);
 };
-var adjustMessagesHeight = function () {
-    var inputHeight = inputContainer.offsetHeight;
-    var paddingBottom = "".concat(inputHeight, "px");
-    messagesContainer.style.paddingBottom = paddingBottom;
+var adjustMessagesHeight = function (isScrolledToBottom) {
+    var inputHeight = window.getComputedStyle(inputContainer).height;
+    var inputHeightInCh = parseFloat(inputHeight) /
+        parseFloat(getComputedStyle(document.documentElement).fontSize);
+    console.log('Input height: ', inputHeightInCh);
+    var paddingBottom = "".concat(inputHeightInCh, "ch");
+    //messagesContainer.style.paddingBottom = paddingBottom;
+    console.log(isScrolledToBottom, messagesContainer.scrollTop);
+    if (isScrolledToBottom) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
 };
 window.addEventListener('DOMContentLoaded', function () { return __awaiter(_this, void 0, void 0, function () {
     var permission, input;
@@ -142,16 +151,19 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, meta_title, meta_description, meta_image, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
+    var messageString, username, sent_on, messageText, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, meta_title, meta_description, meta_image, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
     var _a, _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                _c.trys.push([0, 8, , 9]);
+                _c.trys.push([0, 9, , 10]);
                 console.log('Formatting: ', message);
-                messageText = message.message;
+                messageString = message.message;
                 username = message.username;
                 sent_on = message.sent_on;
+                return [4 /*yield*/, wrapCodeInTags(messageString)];
+            case 1:
+                messageText = _c.sent();
                 console.log(messageText);
                 format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
                 options = {
@@ -180,34 +192,34 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 });
                 messagesContainer_1 = document.getElementById('messages');
                 pCount = messagesContainer_1.getElementsByTagName('p').length + 1;
-                formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><span style=\"margin-left: 2ch;\">").concat(formattedMessageText, "</span>");
+                formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><pre class=\"messageText\">").concat(formattedMessageText, "</pre>");
                 p = document.createElement('p');
                 p.innerHTML = formattedHtml;
                 p.id = pCount.toString();
                 p.dataset.server = message.id;
                 console.log(p);
-                _c.label = 1;
-            case 1:
-                _c.trys.push([1, 6, , 7]);
+                _c.label = 2;
+            case 2:
+                _c.trys.push([2, 7, , 8]);
                 linkRegex = /(https?:\/\/[^\s]+)/g;
                 linkMatches = messageText.match(linkRegex);
-                if (!linkMatches) return [3 /*break*/, 5];
+                if (!linkMatches) return [3 /*break*/, 6];
                 linkUrl = linkMatches[0];
                 imageRegex = /\.(gif|jpe?g|png)(\?.*)?$/i;
                 isImage = imageRegex.test(linkUrl);
-                if (!isImage) return [3 /*break*/, 2];
+                if (!isImage) return [3 /*break*/, 3];
                 imageElement = document.createElement('img');
                 imageElement.src = linkUrl;
                 imageElement.style.display = 'block';
                 imageElement.style.marginTop = '10px';
                 // Append image element to p element
                 p.appendChild(imageElement);
-                return [3 /*break*/, 5];
-            case 2: return [4 /*yield*/, fetch(linkUrl)];
-            case 3:
+                return [3 /*break*/, 6];
+            case 3: return [4 /*yield*/, fetch(linkUrl)];
+            case 4:
                 response = _c.sent();
                 return [4 /*yield*/, response.text()];
-            case 4:
+            case 5:
                 html = _c.sent();
                 parser = new DOMParser();
                 doc = parser.parseFromString(html, 'text/html');
@@ -283,13 +295,13 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 linkElement.appendChild(preview);
                 // Append the link element to the p element
                 p.appendChild(linkElement);
-                _c.label = 5;
-            case 5: return [3 /*break*/, 7];
-            case 6:
+                _c.label = 6;
+            case 6: return [3 /*break*/, 8];
+            case 7:
                 error_1 = _c.sent();
                 console.error('Error parsing link:', error_1);
-                return [3 /*break*/, 7];
-            case 7:
+                return [3 /*break*/, 8];
+            case 8:
                 console.log(p);
                 isAtBottom = messagesContainer_1.scrollTop + messagesContainer_1.clientHeight ===
                     messagesContainer_1.scrollHeight;
@@ -297,15 +309,30 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 if (isAtBottom) {
                     messagesContainer_1.scrollTop = messagesContainer_1.scrollHeight;
                 }
-                return [3 /*break*/, 9];
-            case 8:
+                return [3 /*break*/, 10];
+            case 9:
                 error_2 = _c.sent();
                 console.error('Error formatting message:', error_2);
-                return [3 /*break*/, 9];
-            case 9: return [2 /*return*/];
+                return [3 /*break*/, 10];
+            case 10: return [2 /*return*/];
         }
     });
 }); };
+function wrapCodeInTags(text) {
+    return __awaiter(this, void 0, void 0, function () {
+        var codeRegex, match, codeContent, wrappedCode;
+        return __generator(this, function (_a) {
+            codeRegex = /^```([\s\S]*)```$/;
+            match = text.match(codeRegex);
+            if (match) {
+                codeContent = match[1];
+                wrappedCode = "<code>".concat(codeContent, "</code>");
+                return [2 /*return*/, wrappedCode];
+            }
+            return [2 /*return*/, text];
+        });
+    });
+}
 var deleteMessage = function (messageId) {
     fetch('/api/chat', {
         method: 'POST',

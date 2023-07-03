@@ -43,6 +43,18 @@ body.light .sidebar {
     flex-grow: 1;
     scroll-behavior: smooth;
 }
+#messages p:not(:last-child) {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#messages p:last-child/*:not(body.phone)*/ {
+    padding-bottom: 20px;
+    margin-bottom: 0;
+}
+#messages pre {
+    margin: 0;
+}
 #messages p:hover {
     background-color: #000;
 }
@@ -118,12 +130,13 @@ body.phone .link-preview {
     max-height: 18rem;
 }
 body.phone #input-container {
-    position: fixed;
+    /*position: fixed;*/
 }
 
 @media only screen and (min-width: 720px) {
     #messages {
-        padding: 20px;
+        padding-top: 20px;
+        padding-left: 20px;
     }
 
     .link-preview {
@@ -289,4 +302,9 @@ body.light .slider-icon {
 
 .switch-slider.on .slider-circle {
     transform: translateX(10px);
+}
+
+.messageText {
+    margin-left: 2ch;
+    display: block;
 }

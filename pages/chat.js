@@ -22,7 +22,7 @@ const Chat = () => {
         setIsLightTheme((prevIsLightTheme) => !prevIsLightTheme); // Toggle the light theme state
         document.body.classList.toggle('light');
     };
-    
+
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -89,7 +89,7 @@ const Chat = () => {
 
             const hamburger = document.querySelector('#hamburger-menu');
             const sidebar = document.querySelector('.sidebar');
-            
+
             if (sidebar && vv.width >= 720) {
                 sidebar.style.display = 'flex';
             }
@@ -159,7 +159,7 @@ const Chat = () => {
                 .then((response) => {
                     setIsLoading(false); // set loading state to false
                     console.log(response); // log the response
-                    
+
                     localStorage.removeItem('input');
                 })
                 .catch((error) => {
@@ -182,7 +182,9 @@ const Chat = () => {
                     <li>Channel 3</li>
                 </ul>
                 <div className="theme-switch" onClick={handleSwitchClick}>
-                    <div className={`switch-slider ${isLightTheme ? 'on' : ''}`}>
+                    <div
+                        className={`switch-slider ${isLightTheme ? 'on' : ''}`}
+                    >
                         {isLightTheme ? (
                             <FaSun className="slider-icon" />
                         ) : (
@@ -234,7 +236,17 @@ const ChatPage = () => (
                 src="/script/chat/script.js"
             ></script>
             <Script src="https://js.pusher.com/7.2/pusher.min.js" />
-            <link href="/style/chat/style.css" rel="stylesheet" type="text/css"></link>
+            <script
+                type="text/javascript"
+                charset="utf-8"
+                defer
+                src="https://yamacraft.github.io/textar-font/webfont.js"
+            ></script>
+            <link
+                href="/style/chat/style.css"
+                rel="stylesheet"
+                type="text/css"
+            ></link>
         </Head>
         <Chat />
     </>
