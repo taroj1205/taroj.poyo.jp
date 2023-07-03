@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 function MyApp({ Component, pageProps }) {
     useEffect(() => {
         const link = document.createElement('link');
-        link.href = '/style/chat/style.css';
+        link.href = '/style/global/style.css';
         link.rel = 'stylesheet';
         link.type = 'text/css';
         document.head.appendChild(link);

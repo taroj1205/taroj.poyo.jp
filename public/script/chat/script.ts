@@ -10,7 +10,7 @@ const sidebar = document.querySelector('.sidebar') as HTMLElement;
 if (hamburgerMenu && sidebar) {
     hamburgerMenu.addEventListener('click', () => {
         sidebar.style.display =
-            sidebar.style.display === 'none' ? 'block' : 'none';
+            sidebar.style.display === 'none' ? 'flex' : 'none';
     });
 }
 
@@ -106,18 +106,19 @@ const formatMessage = async (message: any) => {
         console.log(messageText);
 
         const format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
-        const formattedSentOn = new Date(sent_on)
-            .toLocaleString(format, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: false,
-                timeZoneName: 'short',
-            })
-            .replace(',', '.');
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: false,
+            timeZoneName: 'short',
+        };
+
+        const formatter = new Intl.DateTimeFormat(format, options);
+        const formattedSentOn = formatter.format(new Date(sent_on)).replace(',', '.');
 
         const isJapanese = format === 'ja-JP' && username === 'Anonymous';
         const formattedUsername = isJapanese ? '名無し' : username;

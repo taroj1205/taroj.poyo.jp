@@ -3,11 +3,13 @@ import Head from 'next/head';
 import Script from 'next/script';
 import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
+import { FaSun, FaMoon } from 'react-icons/fa';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isLightTheme, setIsLightTheme] = useState(false);
 
     const handleKeyDown = (event) => {
         console.log(event.key);
@@ -15,6 +17,10 @@ const Chat = () => {
             event.preventDefault();
             sendMessage();
         }
+    };
+    const handleSwitchClick = () => {
+        setIsLightTheme((prevIsLightTheme) => !prevIsLightTheme); // Toggle the light theme state
+        document.body.classList.toggle('light');
     };
     
     const inputRef = useRef(null);
@@ -84,14 +90,24 @@ const Chat = () => {
                 root.style.setProperty('--vvh', `${vv.height}px`);
             }
 
+            console.log(vv.height);
+
             const hamburger = document.querySelector('#hamburger-menu');
             const sidebar = document.querySelector('.sidebar');
-            if (sidebar && window.innerWidth >= 720) {
-                sidebar.style.display = 'block';
+            
+            if (sidebar && vv.width >= 720) {
+                sidebar.style.display = 'flex';
             }
-            if (hamburger && window.innerWidth <= 720) {
-                hamburger.style.display = 'block';
+            if (hamburger && vv.width <= 720) {
+                hamburger.style.display = 'flex';
             }
+
+            if (vv.width <= 720) {
+                document.body.classList.add('phone');
+            } else {
+                document.body.classList.remove('phone');
+            }
+
             adjustMessagesHeight();
         };
 
@@ -170,6 +186,15 @@ const Chat = () => {
                     <li>Channel 2</li>
                     <li>Channel 3</li>
                 </ul>
+                <div className="theme-switch" onClick={handleSwitchClick}>
+                    <div className={`switch-slider ${isLightTheme ? 'on' : ''}`}>
+                        {isLightTheme ? (
+                            <FaSun className="slider-icon" />
+                        ) : (
+                            <FaMoon className="slider-icon" />
+                        )}
+                    </div>
+                </div>
             </div>
             <div className="main">
                 <div id="messages"></div>
@@ -214,6 +239,7 @@ const ChatPage = () => (
                 src="/script/chat/script.js"
             ></script>
             <Script src="https://js.pusher.com/7.2/pusher.min.js" />
+            <link href="/style/chat/style.css" rel="stylesheet" type="text/css"></link>
         </Head>
         <Chat />
     </>

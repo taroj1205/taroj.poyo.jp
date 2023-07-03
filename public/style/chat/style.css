@@ -1,18 +1,20 @@
 html {
-    scroll-behavior: smooth;
+    overflow: hidden;
 }
 
 body {
-    overflow: hidden;
     touch-action: none;
-    background-color: #212121;
     color: #fff;
+    background-color: #090c10;
     font-family: Roboto, Arial, sans-serif;
     font-size: 16px;
     margin: 0;
     padding: 0;
     width: var(--vvw);
     height: var(--vvh);
+}
+body.light {
+    background-color: #212121;
 }
 
 a {
@@ -21,16 +23,23 @@ a {
 
 .container {
     display: flex;
-    height: 100vh;
+    height: var(--vvh);
     width: 100%;
     box-sizing: border-box;
     margin: 0;
 }
 
 .sidebar {
-    background-color: #282828;
+    background-color: #0d1117;
     width: 250px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: var(--vvh);
+}
+
+body.light .sidebar {
+    background-color: #282828;
 }
 
 .main {
@@ -44,6 +53,7 @@ a {
     overflow-y: auto;
     overflow-wrap: break-word;
     flex-grow: 1;
+    scroll-behavior: smooth;
 }
 
 #input-container {
@@ -56,11 +66,15 @@ a {
 #send-button {
     padding: 10px;
     border: none;
-    background-color: #363636;
+    background-color: #242424;
     color: #fff;
     font-size: 16px;
     outline: none;
     z-index: 1;
+}
+
+body.light #input-field {
+    background-color: #363636;
 }
 
 #input-field {
@@ -85,42 +99,35 @@ a {
 }
 
 #hamburger-menu {
-    display: none;
     font-size: 24px;
     cursor: pointer;
+    height: fit-content;
+    display: none;
 }
 
-@media only screen and (max-width: 720px) {
-    #hamburger-menu {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        height: 100%;
-    }
+body.phone #hamburger-menu {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+body.phone #messages {
+    padding-top: 30px;
+    width: var(--vvw);
+}
+body.phone #messages p[data-server] {
+    padding-left: 15px;
+}
 
-    #messages {
-        padding-top: 30px;
-        width: var(--vvw);
-    }
-    #messages p[data-server] {
-        padding-left: 15px;
-    }
-
-    .link-preview {
-        max-height: 18rem;
-    }
-    #input-container {
-        position: fixed;
-    }
+body.phone .link-preview {
+    max-height: 18rem;
+}
+body.phone #input-container {
+    position: fixed;
 }
 
 @media only screen and (min-width: 720px) {
-    #hamburger-menu {
-        display: none;
-    }
-
     #messages {
         padding: 20px;
     }
@@ -231,4 +238,52 @@ img {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.theme-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background-color: #333;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+    bottom: 30px;
+}
+.switch-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.switch-slider.on {
+    transform: translateX(30px);
+}
+
+.slider-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #888888;
+}
+body.light .slider-icon {
+    color: #ffa500; /* Change the color to your desired color */
+}
+
+.slider-circle {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.switch-slider.on .slider-circle {
+    transform: translateX(10px);
 }

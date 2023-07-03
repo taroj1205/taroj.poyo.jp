@@ -45,7 +45,7 @@ var sidebar = document.querySelector('.sidebar');
 if (hamburgerMenu && sidebar) {
     hamburgerMenu.addEventListener('click', function () {
         sidebar.style.display =
-            sidebar.style.display === 'none' ? 'block' : 'none';
+            sidebar.style.display === 'none' ? 'flex' : 'none';
     });
 }
 function showNotification(title, body) {
@@ -157,7 +157,7 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageText, username, sent_on, format, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
+    var messageText, username, sent_on, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
     var _a, _b, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -169,8 +169,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 sent_on = message.sent_on;
                 console.log(messageText);
                 format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
-                formattedSentOn = new Date(sent_on)
-                    .toLocaleString(format, {
+                options = {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -179,8 +178,9 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                     second: 'numeric',
                     hour12: false,
                     timeZoneName: 'short',
-                })
-                    .replace(',', '.');
+                };
+                formatter = new Intl.DateTimeFormat(format, options);
+                formattedSentOn = formatter.format(new Date(sent_on)).replace(',', '.');
                 isJapanese = format === 'ja-JP' && username === 'Anonymous';
                 formattedUsername = isJapanese ? '名無し' : username;
                 formattedMessageText = messageText.replace(/((?:>>\d+)|(?:https?:\/\/[^\s]+))/g, function (match) {
