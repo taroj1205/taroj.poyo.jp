@@ -138,6 +138,9 @@ body.phone #messages {
 body.phone #messages p[data-server] {
     padding-left: 15px;
 }
+#messages p[data-server]:not(body.phone) {
+    padding-left: 20px;
+}
 
 body.phone .link-preview {
     max-height: 18rem;
@@ -146,7 +149,6 @@ body.phone .link-preview {
 @media only screen and (min-width: 720px) {
     #messages {
         padding-top: 20px;
-        padding-left: 20px;
     }
 
     .link-preview {
@@ -244,10 +246,12 @@ img {
     max-width: calc(var(--vvw) * 0.9);
     max-height: 300px;
 }
-img:not(body.phone), .link-preview:not(body.phone) {
+img:not(body.phone),
+.link-preview:not(body.phone) {
     margin-left: 2ch;
 }
-body.phone img, body.phone .link-preview {
+body.phone img,
+body.phone .link-preview {
     margin: 0;
 }
 
