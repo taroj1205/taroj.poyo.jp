@@ -54,6 +54,12 @@ body.light .sidebar {
     flex-grow: 1;
     scroll-behavior: smooth;
 }
+#messages p:hover {
+    background-color: #000;
+}
+body.light #messages p:hover {
+    background-color: #282828;
+}
 
 #input-container {
     bottom: 0;

@@ -29,27 +29,6 @@ async function showNotification(title: string, body: string) {
     }
 }
 
-messagesContainer.addEventListener('scroll', () => {
-    const messagesContainer = document.getElementById(
-        'messages'
-    ) as HTMLElement;
-    if (messagesContainer) {
-        const messages = messagesContainer.querySelectorAll('p');
-        let lastVisibleMessage: HTMLElement | null = null;
-        for (let i = messages.length - 1; i >= 0; i--) {
-            const message = messages[i];
-            const rect = message.getBoundingClientRect();
-            if (rect.bottom <= window.innerHeight) {
-                lastVisibleMessage = message;
-                break;
-            }
-        }
-        if (lastVisibleMessage) {
-            localStorage.setItem('scrollPos', lastVisibleMessage.id);
-        }
-    }
-});
-
 const adjustInputHeight = () => {
     let lines = inputField.value.split('\n').length;
     if (lines > 30) {
@@ -149,6 +128,7 @@ const formatMessage = async (message: any) => {
         const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="margin-left: 2ch;">${formattedMessageText}</span>`;
 
         const p = document.createElement('p');
+
         p.innerHTML = formattedHtml;
 
         p.id = pCount.toString();
@@ -186,7 +166,7 @@ const formatMessage = async (message: any) => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
 
-                    const meta_title  = doc.querySelector(
+                    const meta_title = doc.querySelector(
                         'meta[property="og:title"]'
                     );
                     const meta_description = doc.querySelector(
@@ -307,6 +287,32 @@ const formatMessage = async (message: any) => {
     } catch (error) {
         console.error('Error formatting message:', error);
     }
+};
+
+const deleteMessage = (messageId: number) => {
+    fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            method: 'deleteMessage',
+            message_id: messageId,
+            server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+        }),
+    })
+        .then((response) => {
+            console.log(response); // log the response
+            const messageElement = document.getElementById(
+                messageId.toString()
+            );
+            if (messageElement) {
+                messageElement.remove();
+            }
+        })
+        .catch((error) => {
+            console.error('Error deleting message:', error);
+        });
 };
 
 inputField.addEventListener('input', () => {

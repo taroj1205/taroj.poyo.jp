@@ -71,24 +71,6 @@ function showNotification(title, body) {
         });
     });
 }
-messagesContainer.addEventListener('scroll', function () {
-    var messagesContainer = document.getElementById('messages');
-    if (messagesContainer) {
-        var messages = messagesContainer.querySelectorAll('p');
-        var lastVisibleMessage = null;
-        for (var i = messages.length - 1; i >= 0; i--) {
-            var message = messages[i];
-            var rect = message.getBoundingClientRect();
-            if (rect.bottom <= window.innerHeight) {
-                lastVisibleMessage = message;
-                break;
-            }
-        }
-        if (lastVisibleMessage) {
-            localStorage.setItem('scrollPos', lastVisibleMessage.id);
-        }
-    }
-});
 var adjustInputHeight = function () {
     var lines = inputField.value.split('\n').length;
     if (lines > 30) {
@@ -324,6 +306,29 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
         }
     });
 }); };
+var deleteMessage = function (messageId) {
+    fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            method: 'deleteMessage',
+            message_id: messageId,
+            server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+        }),
+    })
+        .then(function (response) {
+        console.log(response); // log the response
+        var messageElement = document.getElementById(messageId.toString());
+        if (messageElement) {
+            messageElement.remove();
+        }
+    })
+        .catch(function (error) {
+        console.error('Error deleting message:', error);
+    });
+};
 inputField.addEventListener('input', function () {
     localStorage.setItem('input', inputField.value);
     adjustInputHeight();

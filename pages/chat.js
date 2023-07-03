@@ -67,11 +67,6 @@ const Chat = () => {
                 console.log(data);
                 setMessages(data.messages);
                 await addMessage(data.messages);
-                const savedScrollPos = localStorage.getItem('scrollPos');
-                const savedMessage = document.getElementById(savedScrollPos);
-                if (savedMessage) {
-                    savedMessage.scrollIntoView();
-                }
             } catch (error) {
                 console.error(
                     'An error occurred while fetching default messages:',
