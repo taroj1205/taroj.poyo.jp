@@ -11,9 +11,6 @@ body {
     font-size: 16px;
     margin: 0;
     padding: 0;
-}
-
-body {
     width: var(--vvw);
     height: var(--vvh);
 }
@@ -50,7 +47,6 @@ a {
 }
 
 #input-container {
-    position: fixed;
     bottom: 0;
     display: flex;
     width: 100%;
@@ -72,6 +68,7 @@ a {
     height: 3ch;
     min-height: 3ch;
     resize: none;
+    border-radius: 10px 0 0 10px;
 }
 
 #send-button {
@@ -82,7 +79,7 @@ a {
     display: block;
 }
 
-#send-button.disabled {
+#send-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
@@ -114,9 +111,8 @@ a {
     .link-preview {
         max-height: 18rem;
     }
-
-    #input-field {
-        border-radius: 10px 0 0 10px;
+    #input-container {
+        position: fixed;
     }
 }
 
@@ -133,8 +129,8 @@ a {
         max-height: 23rem;
     }
 
-    #input-field {
-        border-radius: 10px 10px 10px 10px;
+    #input-container {
+        position: block;
     }
 }
 
