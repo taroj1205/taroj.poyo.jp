@@ -138,7 +138,7 @@ a {
 
 .link-preview {
     max-width: 30rem;
-    max-height: 19rem;
+    max-height: 23rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -165,6 +165,10 @@ a {
     font-size: 0.8em;
 }
 
+.link-preview p, .link-preview h3 {
+    margin-left: 10px;
+}
+
 .link-preview img {
     max-width: 100%;
     max-height: 100%;
@@ -174,7 +178,6 @@ a {
 }
 
 .linkEmbed {
-    height: 19rem;
     display: block;
     color: #fff;
     max-width: 90vw;

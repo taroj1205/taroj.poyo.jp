@@ -5,10 +5,11 @@ import Pusher from 'pusher-js';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
+    const [serverId, setServerId] = useState('');
 
     useEffect(() => {
-        console.log("useEffect running");
-        const pusher = new Pusher("cd4e43e93ec6d4f424db", {
+        console.log('useEffect running');
+        const pusher = new Pusher('cd4e43e93ec6d4f424db', {
             cluster: 'ap1',
             encrypted: true,
         });
@@ -17,6 +18,22 @@ const Chat = () => {
 
         const fetchDefaultMessages = async () => {
             try {
+                /*
+                const askServerId = () => {
+                    const input = prompt('Please enter the server ID:');
+                    if (input) {
+                        setServerId(input);
+                    } else {
+                        askServerId();
+                    }
+                };
+
+                if (serverId !== '') {
+                    fetchDefaultMessages();
+                } else {
+                    askServerId();
+                }
+                */
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {
@@ -24,13 +41,13 @@ const Chat = () => {
                     },
                     body: JSON.stringify({
                         method: 'defaultMessages',
-                        server_id: 1,
+                        server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                     }),
                 });
                 const data = await response.json();
                 console.log(data);
                 setMessages(data.messages);
-                await addMessage(data);
+                await addMessage(data.messages);
                 const savedScrollPos = localStorage.getItem('scrollPos');
                 const savedMessage = document.getElementById(savedScrollPos);
                 if (savedMessage) {
@@ -48,8 +65,7 @@ const Chat = () => {
 
         // Receive new messages from the server
         channel.bind('newMessage', (data) => {
-            console.log("Received new message: ", data);
-
+            console.log('Received new message: ', data);
 
             showNotification('New message', data.message);
             addMessage(data);
@@ -57,7 +73,7 @@ const Chat = () => {
 
         // Clean up Pusher subscription on component unmount
         return () => {
-            console.log("Unmount pusher");
+            console.log('Unmount pusher');
             pusher.unsubscribe('chat');
         };
     }, []);
@@ -80,7 +96,7 @@ const Chat = () => {
                 body: JSON.stringify({
                     method: 'newMessages',
                     message,
-                    server_id: 1,
+                    server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
             })
                 .then((response) => {
@@ -111,10 +127,6 @@ const Chat = () => {
             </div>
             <div className="main">
                 <div id="messages">
-                    {messages &&
-                        messages.map((message) => (
-                            <div key={message.id}>{message.message}</div>
-                        ))}
                 </div>
                 <div className="input-container">
                     <textarea
@@ -122,7 +134,11 @@ const Chat = () => {
                         placeholder="Type a message..."
                         autoFocus
                     ></textarea>
-                    <button id="send-button" onClick={sendMessage} disabled={isLoading}>
+                    <button
+                        id="send-button"
+                        onClick={sendMessage}
+                        disabled={isLoading}
+                    >
                         {isLoading ? 'Sending...' : 'Send'}
                     </button>
                 </div>

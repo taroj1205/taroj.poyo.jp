@@ -124,27 +124,30 @@ const formatMessage = async (message: any) => {
         const isJapanese = format === 'ja-JP' && username === 'Anonymous';
         const formattedUsername = isJapanese ? '名無し' : username;
 
-        const formattedMessageText = messageText.includes('>>')
-            ? messageText.replace(
-                  />>(\d+)/g,
-                  '<a href="#$1" class="jump">>>$1</a>'
-              )
-            : messageText.replace(
-                  /(https?:\/\/[^\s]+)/g,
-                  '<a href="$1" target="_blank">$1</a>'
-              );
+        const formattedMessageText = messageText.replace(
+            /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
+            (match: any) => {
+                if (match.startsWith('>>')) {
+                    return `<a href="#${match.slice(
+                        2
+                    )}" class="jump">${match}</a>`;
+                } else {
+                    return `<a href="${match}" target="_blank">${match}</a>`;
+                }
+            }
+        );
 
         const messagesContainer = document.getElementById(
             'messages'
         ) as HTMLDivElement;
-        const pCount = messagesContainer.getElementsByTagName('p').length;
+        const pCount = messagesContainer.getElementsByTagName('p').length + 1;
         const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span style="padding-left: 2ch;">${formattedMessageText}</span>`;
 
         const p = document.createElement('p');
         p.innerHTML = formattedHtml;
 
         p.id = pCount.toString();
-        p.dataset.message = message.id;
+        p.dataset.server = message.id;
 
         console.log(p);
 
@@ -197,7 +200,7 @@ const formatMessage = async (message: any) => {
                     preview.classList.add('link-preview');
 
                     const width = Math.max(25, linkUrl.length * 0.6); // Adjust the multiplier as needed
-                    const height = Math.max(19, linkUrl.length * 0.3); // Adjust the multiplier as needed
+                    const height = Math.max(23, linkUrl.length * 0.3); // Adjust the multiplier as needed
                     preview.style.width = `${width}rem`;
                     preview.style.height = `${height}rem`;
 
@@ -221,14 +224,13 @@ const formatMessage = async (message: any) => {
                     descriptionElement.style.overflow = 'hidden';
                     descriptionElement.style.fontSize = `${fontSize}em`;
 
-                    // Split the text content of the description element by line breaks and count the number of lines
+                    /* Split the text content of the description element by line breaks and count the number of lines
                     const lineHeight = parseFloat(
                         getComputedStyle(descriptionElement).lineHeight
-                    );
+                    );*/
 
                     // Calculate the line height and maximum height of the description element
-                    const maxLines = Math.ceil(height / lineHeight);
-                    descriptionElement.style.lineHeight = lineHeight + 'px';
+                    //descriptionElement.style.lineHeight = lineHeight + 'px';
 
                     preview.appendChild(descriptionElement);
 
