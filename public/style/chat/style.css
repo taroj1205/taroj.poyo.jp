@@ -47,7 +47,6 @@ a {
     overflow-y: auto;
     overflow-wrap: break-word;
     flex-grow: 1;
-    max-width: 90vw;
 }
 
 .input-container {
@@ -104,6 +103,9 @@ a {
 
     #messages {
         margin-top: 30px;
+        width: var(--vvw);
+    }
+    #messages p:has(data-server) {
         padding-left: 15px;
     }
 }

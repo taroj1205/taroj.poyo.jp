@@ -34,7 +34,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _a;
 var _this = this;
 // Send a new message to the server
 var inputField = document.getElementById('input-field');
@@ -306,13 +305,3 @@ inputField.addEventListener('input', function () {
     localStorage.setItem('input', inputField.value);
     adjustInputHeight();
 });
-var setVisualViewport = function () {
-    var vv = window.visualViewport;
-    var root = document.documentElement;
-    if (vv) {
-        root.style.setProperty('--vvw', "".concat(vv.width, "px"));
-        root.style.setProperty('--vvh', "".concat(vv.height, "px"));
-    }
-};
-setVisualViewport();
-(_a = window.visualViewport) === null || _a === void 0 ? void 0 : _a.addEventListener('resize', setVisualViewport);

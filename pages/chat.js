@@ -75,6 +75,17 @@ const Chat = () => {
 
         fetchDefaultMessages();
 
+        const setVisualViewport = () => {
+            const vv = window.visualViewport;
+            const root = document.documentElement;
+            if (vv) {
+                root.style.setProperty('--vvw', `${vv.width}px`);
+                root.style.setProperty('--vvh', `${vv.height}px`);
+            }
+        };
+        setVisualViewport();
+        window.visualViewport?.addEventListener('resize', setVisualViewport);
+
         if (inputRef.current) {
             inputRef.current.addEventListener('keydown', handleKeyDown);
         }
@@ -95,6 +106,10 @@ const Chat = () => {
             if (inputRef.current) {
                 inputRef.current.removeEventListener('keydown', handleKeyDown);
             }
+            window.visualViewport?.removeEventListener(
+                'resize',
+                setVisualViewport
+            );
         };
     }, []);
 
@@ -120,14 +135,14 @@ const Chat = () => {
                 .then((response) => {
                     setIsLoading(false); // set loading state to false
                     console.log(response); // log the response
+                    
+                    inputField.value = '';
+                    localStorage.removeItem('input');
                 })
                 .catch((error) => {
                     console.error('Error sending message:', error);
                     setIsLoading(false); // set loading state to false
                 });
-
-            inputField.value = '';
-            localStorage.removeItem('input');
         }
     };
 

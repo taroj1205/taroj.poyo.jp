@@ -279,14 +279,3 @@ inputField.addEventListener('input', () => {
     localStorage.setItem('input', inputField.value);
     adjustInputHeight();
 });
-
-const setVisualViewport = () => {
-    const vv = window.visualViewport;
-    const root = document.documentElement;
-    if (vv) {
-        root.style.setProperty('--vvw', `${vv.width}px`);
-        root.style.setProperty('--vvh', `${vv.height}px`);
-    }
-};
-setVisualViewport();
-window.visualViewport?.addEventListener('resize', setVisualViewport);
