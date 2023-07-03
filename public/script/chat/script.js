@@ -47,16 +47,6 @@ if (hamburgerMenu && sidebar) {
             sidebar.style.display === 'none' ? 'block' : 'none';
     });
 }
-window.addEventListener('load', function () {
-    var hamburger = document.querySelector('#hamburger-menu');
-    var sidebar = document.querySelector('.sidebar');
-    if (sidebar && window.innerWidth >= 720) {
-        sidebar.style.display = 'block';
-    }
-    if (hamburger && window.innerWidth <= 720) {
-        hamburger.style.display = 'block';
-    }
-});
 function showNotification(title, body) {
     return __awaiter(this, void 0, void 0, function () {
         var permission, options, notification;

@@ -82,7 +82,17 @@ const Chat = () => {
                 root.style.setProperty('--vvw', `${vv.width}px`);
                 root.style.setProperty('--vvh', `${vv.height}px`);
             }
+
+            const hamburger = document.querySelector('#hamburger-menu');
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar && window.innerWidth >= 720) {
+                sidebar.style.display = 'block';
+            }
+            if (hamburger && window.innerWidth <= 720) {
+                hamburger.style.display = 'block';
+            }
         };
+
         setVisualViewport();
         window.visualViewport?.addEventListener('resize', setVisualViewport);
 

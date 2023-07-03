@@ -13,17 +13,6 @@ if (hamburgerMenu && sidebar) {
     });
 }
 
-window.addEventListener('load', () => {
-    const hamburger = document.querySelector('#hamburger-menu') as HTMLElement;
-    const sidebar = document.querySelector('.sidebar') as HTMLElement;
-    if (sidebar && window.innerWidth >= 720) {
-        sidebar.style.display = 'block';
-    }
-    if (hamburger && window.innerWidth <= 720) {
-        hamburger.style.display = 'block';
-    }
-});
-
 async function showNotification(title: string, body: string) {
     const permission = await Notification.requestPermission();
     if (permission === 'granted' && document.visibilityState === 'hidden') {
