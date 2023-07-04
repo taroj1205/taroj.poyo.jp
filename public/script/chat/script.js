@@ -209,8 +209,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 if (!isImage) return [3 /*break*/, 3];
                 imageElement = document.createElement('img');
                 imageElement.src = linkUrl;
-                imageElement.style.display = 'block';
-                imageElement.style.marginTop = '10px';
+                imageElement.classList.add("linkImage");
                 // Append image element to p element
                 p.appendChild(imageElement);
                 return [3 /*break*/, 6];
@@ -281,6 +280,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 if (imageUrl) {
                     imageElement = document.createElement('img');
                     imageElement.src = imageUrl;
+                    imageElement.classList.add('previewImage');
                     messagesWidth_1 = messagesContainer_1.offsetWidth;
                     imageWidth = imageElement.offsetWidth;
                     if (imageWidth < messagesWidth_1) {

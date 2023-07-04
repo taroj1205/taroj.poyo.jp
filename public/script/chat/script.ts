@@ -168,8 +168,7 @@ const formatMessage = async (message: any) => {
                         'img'
                     ) as HTMLImageElement;
                     imageElement.src = linkUrl;
-                    imageElement.style.display = 'block';
-                    imageElement.style.marginTop = '10px';
+                    imageElement.classList.add("linkImage");
 
                     // Append image element to p element
                     p.appendChild(imageElement);
@@ -266,6 +265,7 @@ const formatMessage = async (message: any) => {
                     if (imageUrl) {
                         const imageElement = document.createElement('img');
                         imageElement.src = imageUrl;
+                        imageElement.classList.add('previewImage');
 
                         const messagesWidth = messagesContainer.offsetWidth;
                         const imageWidth = imageElement.offsetWidth;

@@ -238,7 +238,6 @@ const ChatPage = () => (
             <Script src="https://js.pusher.com/7.2/pusher.min.js" />
             <script
                 type="text/javascript"
-                charset="utf-8"
                 defer
                 src="https://yamacraft.github.io/textar-font/webfont.js"
             ></script>

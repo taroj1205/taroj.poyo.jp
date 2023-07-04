@@ -57,7 +57,6 @@ body.phone #messages pre {
     width: calc(var(--vvw) - 1.5rem);
 }
 #messages p:not(:last-child) {
-    margin: 0;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -201,7 +200,7 @@ body.phone .link-preview {
 
 .link-preview h3 {
     margin: 0;
-    margin-bottom: 10px; /* Add margin to the bottom to separate from the image */
+    margin-top: 10px;
     font-size: 1em;
 }
 
@@ -211,12 +210,12 @@ body.phone .link-preview {
     margin: 0; /* Reset the margin to remove any extra spacing */
     font-size: 0.8em;
     margin-bottom: 10px; /* Add margin to the bottom to separate from the image */
+    width: 95%;
 }
 
 .link-preview p,
 .link-preview h3 {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0.5rem;
     text-align: justify;
 }
 
@@ -242,15 +241,17 @@ body.phone .link-preview {
     width: fit-content;
 }
 
-img {
+.linkImage {
     max-width: calc(var(--vvw) * 0.9);
     max-height: 300px;
+    display: block;
+    margin-top: 10px;
 }
-img:not(body.phone),
+.linkImage:not(body.phone),
 .link-preview:not(body.phone) {
     margin-left: 2ch;
 }
-body.phone img,
+body.phone .linkImage,
 body.phone .link-preview {
     margin: 0;
 }
