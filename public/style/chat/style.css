@@ -51,7 +51,7 @@ body.light .sidebar {
     word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 #messages pre:not(body.phone) {
-    width: var(--vvw);
+    width: 100%;
 }
 body.phone #messages pre {
     width: calc(var(--vvw) - 1.5rem);
@@ -97,6 +97,7 @@ body.light #input-field {
 
 #input-field {
     flex-grow: 1;
+    display: block;
     height: 3ch;
     min-height: 3ch;
     resize: none;
@@ -132,7 +133,7 @@ body.phone #hamburger-menu {
 }
 body.phone #messages {
     padding-top: 30px;
-    width: var(--vvw);
+    width: 100%;
 }
 body.phone #messages p[data-server] {
     padding-left: 15px;
@@ -142,7 +143,7 @@ body.phone #messages p[data-server] {
 }
 
 body.phone .link-preview {
-    max-height: 18rem;
+    max-height: 23rem;
 }
 
 @media only screen and (min-width: 720px) {
@@ -152,10 +153,6 @@ body.phone .link-preview {
 
     .link-preview {
         max-height: 23rem;
-    }
-
-    #input-container {
-        position: block;
     }
 }
 
