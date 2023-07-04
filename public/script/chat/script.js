@@ -191,6 +191,9 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 });
                 messagesContainer_1 = document.getElementById('messages');
                 pCount = messagesContainer_1.getElementsByTagName('p').length + 1;
+                if (formattedMessageText && formattedMessageText.includes('\\')) {
+                    formattedMessageText = formattedMessageText.replace(/\\/g, '');
+                }
                 formattedHtml = "".concat(pCount, " ").concat(formattedUsername, ": ").concat(formattedSentOn, "<br /><pre class=\"messageText\">").concat(formattedMessageText, "</pre>");
                 p = document.createElement('p');
                 p.innerHTML = formattedHtml;
@@ -209,7 +212,7 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 if (!isImage) return [3 /*break*/, 3];
                 imageElement = document.createElement('img');
                 imageElement.src = linkUrl;
-                imageElement.classList.add("linkImage");
+                imageElement.classList.add('linkImage');
                 // Append image element to p element
                 p.appendChild(imageElement);
                 return [3 /*break*/, 6];

@@ -124,7 +124,7 @@ const formatMessage = async (message: any) => {
         const isJapanese = format === 'ja-JP' && username === 'Anonymous';
         const formattedUsername = isJapanese ? '名無し' : username;
 
-        const formattedMessageText = messageText.replace(
+        let formattedMessageText = messageText.replace(
             /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
             (match: any) => {
                 if (match.startsWith('>>')) {
@@ -141,9 +141,14 @@ const formatMessage = async (message: any) => {
             'messages'
         ) as HTMLDivElement;
         const pCount = messagesContainer.getElementsByTagName('p').length + 1;
+
+        if (formattedMessageText && formattedMessageText.includes('\\')) {
+            formattedMessageText = formattedMessageText.replace(/\\/g, '');
+        }
+
         const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><pre class="messageText">${formattedMessageText}</pre>`;
 
-        const p = document.createElement('p');
+        const p = document.createElement('p') as HTMLParagraphElement;
 
         p.innerHTML = formattedHtml;
 
@@ -168,7 +173,7 @@ const formatMessage = async (message: any) => {
                         'img'
                     ) as HTMLImageElement;
                     imageElement.src = linkUrl;
-                    imageElement.classList.add("linkImage");
+                    imageElement.classList.add('linkImage');
 
                     // Append image element to p element
                     p.appendChild(imageElement);
@@ -260,7 +265,7 @@ const formatMessage = async (message: any) => {
                     preview.appendChild(descriptionElement);
 
                     console.log(imageUrl);
-                    
+
                     // Create and append the image element
                     if (imageUrl) {
                         const imageElement = document.createElement('img');
@@ -275,7 +280,7 @@ const formatMessage = async (message: any) => {
                                 messagesWidth * 0.9
                             }px`;
                         }
-                        
+
                         preview.appendChild(imageElement);
                     } else {
                         preview.classList.add('noIMG');
@@ -315,7 +320,9 @@ async function wrapCodeInTags(text: string): Promise<string> {
     if (match) {
         const lang = match[1];
         const codeContent = match[2];
-        const wrappedCode = `<code${lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`}>${codeContent}</code>`;
+        const wrappedCode = `<code${
+            lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
+        }>${codeContent}</code>`;
         return text.replace(codeRegex, wrappedCode);
     }
 
