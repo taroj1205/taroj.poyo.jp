@@ -236,11 +236,6 @@ const ChatPage = () => (
                 src="/script/chat/script.js"
             ></script>
             <Script src="https://js.pusher.com/7.2/pusher.min.js" />
-            <script
-                type="text/javascript"
-                defer
-                src="https://yamacraft.github.io/textar-font/webfont.js"
-            ></script>
             <link
                 href="/style/chat/style.css"
                 rel="stylesheet"

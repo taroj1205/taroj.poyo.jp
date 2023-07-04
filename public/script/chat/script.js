@@ -320,14 +320,15 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
 }); };
 function wrapCodeInTags(text) {
     return __awaiter(this, void 0, void 0, function () {
-        var codeRegex, match, codeContent, wrappedCode;
+        var codeRegex, match, lang, codeContent, wrappedCode;
         return __generator(this, function (_a) {
-            codeRegex = /^```([\s\S]*)```$/;
+            codeRegex = /```(\w*)([\s\S]*?)```/;
             match = text.match(codeRegex);
             if (match) {
-                codeContent = match[1];
-                wrappedCode = "<code>".concat(codeContent, "</code>");
-                return [2 /*return*/, wrappedCode];
+                lang = match[1];
+                codeContent = match[2];
+                wrappedCode = "<code".concat(lang === 'aa' ? ' class="textar-aa"' : " lang=\"".concat(lang, "\""), ">").concat(codeContent, "</code>");
+                return [2 /*return*/, text.replace(codeRegex, wrappedCode)];
             }
             return [2 /*return*/, text];
         });

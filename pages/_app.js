@@ -18,6 +18,10 @@ function MyApp({ Component, pageProps }) {
                 font-family: 'NotoSansThin';
                 src: url('../font/NotoSans/NotoSans-Regular.ttf') format('truetype');
             }
+            @font-face {
+                font-family: 'Textar';
+                src: url(../font/textar/textar.ttf') format ('truetype');
+            }
         `;
         const style = document.createElement('style');
         style.type = 'text/css';

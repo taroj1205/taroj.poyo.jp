@@ -309,13 +309,14 @@ const formatMessage = async (message: any) => {
 };
 
 async function wrapCodeInTags(text: string): Promise<string> {
-    const codeRegex = /^```([\s\S]*)```$/;
+    const codeRegex = /```(\w*)([\s\S]*?)```/;
     const match = text.match(codeRegex);
 
     if (match) {
-        const codeContent = match[1];
-        const wrappedCode = `<code>${codeContent}</code>`;
-        return wrappedCode;
+        const lang = match[1];
+        const codeContent = match[2];
+        const wrappedCode = `<code${lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`}>${codeContent}</code>`;
+        return text.replace(codeRegex, wrappedCode);
     }
 
     return text;
