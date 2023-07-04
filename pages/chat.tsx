@@ -173,10 +173,21 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
                         } else {
                             inputRef.current.value = '';
                         }
+                        inputRef.current.classList.add('shake-animation'); // add shake animation class
+                        setTimeout(() => {
+                            inputRef.current?.classList.remove(
+                                'shake-animation'
+                            ); // remove shake animation class after 0.5s
+                        }, 500);
                     }
                 });
+        } else {
+            inputRef.current?.classList.add('shake-animation'); // add shake animation class if message is empty
+            setTimeout(() => {
+                inputRef.current?.classList.remove('shake-animation'); // remove shake animation class after 0.5s
+            }, 500);
         }
-        inputField.focus();
+        inputField?.focus();
     };
 
     return (
