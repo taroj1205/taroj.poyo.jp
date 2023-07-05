@@ -60,14 +60,18 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
         fetchDefaultMessages();
 
         const setVisualViewport = () => {
-            const vv = window.visualViewport as VisualViewport;
-            const root = document.documentElement;
-            if (vv) {
-                root.style.setProperty('--vvw', `${vv.width}px`);
-                root.style.setProperty('--vvh', `${vv.height}px`);
-            }
+            const w = Math.max(
+                document.documentElement.clientWidth,
+                window.innerWidth || 0
+            );
+            const h = Math.max(
+                document.documentElement.clientHeight,
+                window.innerHeight || 0
+            );
+            document.documentElement.style.setProperty('--vvw', `${w}px`);
+            document.documentElement.style.setProperty('--vvh', `${h}px`);
 
-            console.log(vv.height);
+            console.log(h);
 
             const hamburger = document.querySelector(
                 '#hamburger-menu'
@@ -76,14 +80,14 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
                 '.sidebar'
             ) as HTMLDivElement;
 
-            if (sidebar && vv.width >= 720) {
+            if (sidebar && w >= 720) {
                 sidebar.style.display = 'flex';
             }
-            if (hamburger && vv.width <= 720) {
+            if (hamburger && w <= 720) {
                 hamburger.style.display = 'flex';
             }
 
-            if (vv.width <= 720) {
+            if (w <= 720) {
                 document.body.classList.add('phone');
             } else {
                 document.body.classList.remove('phone');
