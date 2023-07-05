@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n';
+import { AppProps } from 'next/app';
+import i18n from '../../i18n';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
     useEffect(() => {
         const link = document.createElement('link');
         link.href = '/style/global/style.css';

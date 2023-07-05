@@ -1,8 +1,14 @@
-// @refresh disable
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaGlobe, FaGoogle } from 'react-icons/fa';
+import Header from '../components/Header';
+
+declare global {
+    interface Window {
+        gapi: any;
+    }
+}
 
 const Container = styled.div`
     display: flex;
@@ -20,16 +26,16 @@ const Title = styled.h1`
 `;
 
 const GoogleButton = styled.button`
-    padding: 1.5rem 4rem; /* Adjusted padding */
+    padding: 1.5rem 4rem;
     font-size: 2rem;
     background-color: #db4437;
     color: white;
     border: none;
     cursor: pointer;
     margin-top: 1rem;
-    display: flex; /* Added */
-    align-items: center; /* Added */
-    gap: 1rem; /* Added */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 
     &:hover {
         background-color: #c33c30;
@@ -45,7 +51,7 @@ const ButtonIcon = styled.span`
     font-size: 2.5rem;
 `;
 
-const LanguageOption = styled.span`
+const LanguageOption = styled.span<{ active: string }>`
     font-size: 1.2rem;
     color: ${(props) => (props.active === 'true' ? '#db4437' : '#333')};
     opacity: ${(props) => (props.active === 'true' ? '1' : '0.7')};
@@ -79,7 +85,7 @@ const GlobeIcon = styled(FaGlobe)`
     }
 `;
 
-const Login = () => {
+const Login = (): JSX.Element => {
     const { t, i18n } = useTranslation();
     const [showLanguageOptions, setShowLanguageOptions] = useState(false);
 
@@ -97,7 +103,7 @@ const Login = () => {
         };
     }, []);
 
-    const initializeGoogleSignIn = () => {
+    const initializeGoogleSignIn = (): void => {
         window.gapi.load('auth2', () => {
             window.gapi.auth2
                 .init({
@@ -107,13 +113,13 @@ const Login = () => {
                 .then(() => {
                     console.log('Google Sign-In initialized');
                 })
-                .catch((error) => {
+                .catch((error: Error) => {
                     console.error('Error initializing Google Sign-In:', error);
                 });
         });
     };
 
-    const handleGoogleSignIn = () => {
+    const handleGoogleSignIn = (): void => {
         // Handle Google Sign-In button click
         if (window.gapi && window.gapi.auth2) {
             const auth2 = window.gapi.auth2.getAuthInstance();
@@ -121,55 +127,62 @@ const Login = () => {
                 .signIn({
                     prompt: 'select_account', // Add this line to prompt account selection
                 })
-                .then((googleUser) => {
+                .then((googleUser: any) => {
                     // Handle successful sign-in
                     console.log(googleUser);
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     // Handle sign-in error
                     console.error(error);
                 });
         }
     };
 
-    const changeLanguage = (language) => {
+    const changeLanguage = (language: string): void => {
         i18n.changeLanguage(language);
     };
 
     return (
-        <Container>
-            <LanguageSelector
-                onMouseEnter={() => setShowLanguageOptions(true)}
-                onMouseLeave={() => setShowLanguageOptions(false)}
-            >
-                <GlobeIcon />
-                {showLanguageOptions && (
-                    <>
-                        <LanguageOption
-                            active={i18n.language === 'en' ? 'true' : 'false'}
-                            onClick={() => changeLanguage('en')}
-                        >
-                            {t('english')}
-                        </LanguageOption>
-                        <LanguageOption
-                            active={i18n.language === 'ja' ? 'true' : 'false'}
-                            onClick={() => changeLanguage('ja')}
-                        >
-                            {t('japanese')}
-                        </LanguageOption>
-                        {/* Add more language options as needed */}
-                    </>
-                )}
-            </LanguageSelector>
-            <Title>{t('welcome')}</Title>
-            <GoogleButton onClick={handleGoogleSignIn}>
-                <ButtonIcon>
-                    <FaGoogle />
-                </ButtonIcon>
-                <ButtonText>{t('signInWithGoogle')}</ButtonText>
-            </GoogleButton>
-            <p>{t('moreWaysToLogin')}</p>
-        </Container>
+        <>
+            <Header />
+            <Container>
+                <LanguageSelector
+                    onMouseEnter={() => setShowLanguageOptions(true)}
+                    onMouseLeave={() => setShowLanguageOptions(false)}
+                >
+                    <GlobeIcon />
+                    {showLanguageOptions && (
+                        <>
+                            <LanguageOption
+                                active={
+                                    i18n.language === 'en' ? 'true' : 'false'
+                                }
+                                onClick={() => changeLanguage('en')}
+                            >
+                                {t('english')}
+                            </LanguageOption>
+                            <LanguageOption
+                                active={
+                                    i18n.language === 'ja' ? 'true' : 'false'
+                                }
+                                onClick={() => changeLanguage('ja')}
+                            >
+                                {t('japanese')}
+                            </LanguageOption>
+                            {/* Add more language options as needed */}
+                        </>
+                    )}
+                </LanguageSelector>
+                <Title>{t('welcome')}</Title>
+                <GoogleButton onClick={handleGoogleSignIn}>
+                    <ButtonIcon>
+                        <FaGoogle />
+                    </ButtonIcon>
+                    <ButtonText>{t('signInWithGoogle')}</ButtonText>
+                </GoogleButton>
+                <p>{t('moreWaysToLogin')}</p>
+            </Container>
+        </>
     );
 };
 

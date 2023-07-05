@@ -141,7 +141,7 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
             inputRef.current.value = '';
         }
 
-        if (message !== '') {
+        if (message && message.length < 500) {
             setIsLoading(true); // set loading state to true
 
             // Send a new message to the server
