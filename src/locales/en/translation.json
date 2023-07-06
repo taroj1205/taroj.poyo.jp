@@ -3,5 +3,32 @@
     "signInWithGoogle": "Sign In with Google",
     "english": "English",
     "japanese": "Japanese",
-    "moreWaysToLogin": "More ways to login planned"
+    "moreWaysToLogin": "More ways to login planned",
+    "login": "Login",
+    "about": {
+        "about": "About Me",
+        "birthdate": "Born on December 5, 2005. Originally from Tokyo, Japan. Moved to Ehime after the earthquake in 2011.",
+        "events": "Significant Events",
+        "injury": "Underwent knee surgery (ACL) in July 2020.",
+        "countries": "Countries I've Lived In",
+        "country": {
+            "japan": "Japan",
+            "philippines": "Philippines",
+            "newzealand": "New Zealand"
+        },
+        "hobbies": "Hobbies",
+        "hobby": {
+            "kendama": "Kendama",
+            "jumprope": "Jump Rope",
+            "programming": "Programming",
+            "reading": "Reading News"
+        },
+        "school_history": "School History",
+        "start": "Start",
+        "end": "End",
+        "school_name": "School Name",
+        "grade": "Grade",
+        "duration": "Duration",
+        "location": "Location"
+    }
 }

@@ -1,5 +1,6 @@
 html {
     overflow: hidden;
+    margin: 0;
 }
 
 body {
@@ -8,6 +9,7 @@ body {
     padding: 0;
     width: var(--vvw);
     height: var(--vvh);
+    overflow: hidden;
 }
 
 .container {

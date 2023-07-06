@@ -3,5 +3,32 @@
     "signInWithGoogle": "Googleでログイン",
     "english": "英語",
     "japanese": "日本語",
-    "moreWaysToLogin": "他のログイン方法追加予定"
+    "moreWaysToLogin": "他のログイン方法追加予定",
+    "login": "ログイン",
+    "about": {
+        "about": "僕について",
+        "birthdate": "2005年12月05日生まれ。東京出身。2011年の震災の後愛媛に引っ越した。",
+        "events": "重要な出来事など",
+        "injury": "2020年7月に膝の怪我（ACL）の手術。",
+        "countries": "住んだことがある国",
+        "country": {
+            "japan": "日本",
+            "philippines": "フィリピン",
+            "newzealand": "ニュージーランド"
+        },
+        "hobbies": "趣味",
+        "hobby": {
+            "kendama": "けん玉",
+            "jumprope": "縄跳び",
+            "programming": "プログラミング",
+            "reading": "ニュース読むこと"
+        },
+        "school_history": "学校歴",
+        "start": "始",
+        "end": "終",
+        "school_name": "学校名",
+        "grade": "学年",
+        "duration": "期間",
+        "location": "場所"
+    }
 }

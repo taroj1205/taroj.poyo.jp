@@ -48,29 +48,42 @@ if (hamburgerMenu && sidebar) {
             sidebar.style.display === 'none' ? 'flex' : 'none';
     });
 }
-function showNotification(title, body) {
-    return __awaiter(this, void 0, void 0, function () {
-        var permission, options, notification;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, Notification.requestPermission()];
-                case 1:
-                    permission = _a.sent();
-                    if (permission === 'granted' && document.visibilityState === 'hidden') {
-                        options = {
-                            body: body,
-                            icon: '../image/icon/icon.png',
-                        };
-                        notification = new Notification(title, options);
-                    }
-                    else {
-                        return [2 /*return*/];
-                    }
-                    return [2 /*return*/];
-            }
-        });
+var showNotification = function (title, body) { return __awaiter(_this, void 0, void 0, function () {
+    var registration, permission, options, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log('Running showNotification() ', title, body);
+                if (!('serviceWorker' in navigator)) return [3 /*break*/, 7];
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 6, , 7]);
+                return [4 /*yield*/, navigator.serviceWorker.ready];
+            case 2:
+                registration = _a.sent();
+                if (!('showNotification' in registration)) return [3 /*break*/, 5];
+                return [4 /*yield*/, Notification.requestPermission()];
+            case 3:
+                permission = _a.sent();
+                if (!(permission === 'granted')) return [3 /*break*/, 5];
+                options = {
+                    body: body,
+                    icon: '../image/icon/icon.png',
+                    data: {},
+                };
+                return [4 /*yield*/, registration.showNotification(title, options)];
+            case 4:
+                _a.sent();
+                _a.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                error_1 = _a.sent();
+                console.error('Error accessing service worker:', error_1);
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
+        }
     });
-}
+}); };
 var adjustInputHeight = function () {
     var lines = inputField.value.split('\n').length;
     if (lines > 30) {
@@ -97,28 +110,18 @@ var adjustMessagesHeight = function (isScrolledToBottom) {
     }
 };
 window.addEventListener('DOMContentLoaded', function () { return __awaiter(_this, void 0, void 0, function () {
-    var permission, input;
+    var input;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                permission = localStorage.getItem('notificationPermission');
-                if (!(permission !== 'granted')) return [3 /*break*/, 2];
-                return [4 /*yield*/, showNotification('', '')];
-            case 1:
-                _a.sent();
-                _a.label = 2;
-            case 2:
-                input = localStorage.getItem('input');
-                if (input) {
-                    inputField.value = input;
-                    adjustInputHeight();
-                }
-                return [2 /*return*/];
+        input = localStorage.getItem('input');
+        if (input) {
+            inputField.value = input;
+            adjustInputHeight();
         }
+        return [2 /*return*/];
     });
 }); });
 var addMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messagesContainer, _i, message_1, item;
+    var messagesContainer, _i, message_1, item, isAtBottom;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -135,6 +138,11 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
                 return [4 /*yield*/, formatMessage(item)];
             case 2:
                 _a.sent();
+                isAtBottom = messagesContainer.scrollTop + messagesContainer.clientHeight ===
+                    messagesContainer.scrollHeight;
+                if (isAtBottom) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
                 _a.label = 3;
             case 3:
                 _i++;
@@ -151,7 +159,7 @@ var addMessage = function (message) { return __awaiter(_this, void 0, void 0, fu
     });
 }); };
 var formatMessage = function (message) { return __awaiter(_this, void 0, void 0, function () {
-    var messageString, username, sent_on, messageText, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, meta_title, meta_description, meta_image, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_1, isAtBottom, error_2;
+    var messageString, username, sent_on, messageText, format, options, formatter, formattedSentOn, isJapanese, formattedUsername, formattedMessageText, messagesContainer_1, pCount, formattedHtml, p, linkRegex, linkMatches, linkUrl, imageRegex, isImage, imageElement, response, html, parser, doc, meta_title, meta_description, meta_image, title, description, imageUrl, linkElement, preview, width, height, messagesWidth, previewWidth, titleElement, fontSize, descriptionElement, imageElement, messagesWidth_1, imageWidth, error_2, error_3;
     var _a, _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -301,21 +309,16 @@ var formatMessage = function (message) { return __awaiter(_this, void 0, void 0,
                 _c.label = 6;
             case 6: return [3 /*break*/, 8];
             case 7:
-                error_1 = _c.sent();
-                console.error('Error parsing link:', error_1);
+                error_2 = _c.sent();
+                console.error('Error parsing link:', error_2);
                 return [3 /*break*/, 8];
             case 8:
                 console.log(p);
-                isAtBottom = messagesContainer_1.scrollTop + messagesContainer_1.clientHeight ===
-                    messagesContainer_1.scrollHeight;
                 messagesContainer_1.appendChild(p);
-                if (isAtBottom) {
-                    messagesContainer_1.scrollTop = messagesContainer_1.scrollHeight;
-                }
                 return [3 /*break*/, 10];
             case 9:
-                error_2 = _c.sent();
-                console.error('Error formatting message:', error_2);
+                error_3 = _c.sent();
+                console.error('Error formatting message:', error_3);
                 return [3 /*break*/, 10];
             case 10: return [2 /*return*/];
         }

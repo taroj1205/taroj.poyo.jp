@@ -16,18 +16,30 @@ if (hamburgerMenu && sidebar) {
     });
 }
 
-async function showNotification(title: string, body: string) {
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted' && document.visibilityState === 'hidden') {
-        const options = {
-            body,
-            icon: '../image/icon/icon.png',
-        };
-        const notification = new Notification(title, options);
-    } else {
-        return;
+const showNotification = async (title: string, body: string) => {
+    console.log('Running showNotification() ', title, body);
+    if ('serviceWorker' in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.ready;
+
+            if ('showNotification' in registration) {
+                const permission = await Notification.requestPermission();
+
+                if (permission === 'granted') {
+                    const options = {
+                        body,
+                        icon: '../image/icon/icon.png',
+                        data: {},
+                    };
+
+                    await registration.showNotification(title, options);
+                }
+            }
+        } catch (error) {
+            console.error('Error accessing service worker:', error);
+        }
     }
-}
+};
 
 const adjustInputHeight = () => {
     let lines = inputField.value.split('\n').length;
@@ -64,10 +76,6 @@ const adjustMessagesHeight = (isScrolledToBottom: Boolean) => {
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
-    const permission = localStorage.getItem('notificationPermission');
-    if (permission !== 'granted') {
-        await showNotification('', '');
-    }
     const input = localStorage.getItem('input');
     if (input) {
         inputField.value = input;
@@ -86,6 +94,12 @@ const addMessage = async (message: any) => {
         for (const item of message) {
             console.log('Item: ', item);
             await formatMessage(item);
+            const isAtBottom =
+                messagesContainer.scrollTop + messagesContainer.clientHeight ===
+                messagesContainer.scrollHeight;
+            if (isAtBottom) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
         }
     } else {
         console.log('Item: ', message);
@@ -299,15 +313,7 @@ const formatMessage = async (message: any) => {
 
         console.log(p);
 
-        const isAtBottom =
-            messagesContainer.scrollTop + messagesContainer.clientHeight ===
-            messagesContainer.scrollHeight;
-
         messagesContainer.appendChild(p);
-
-        if (isAtBottom) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
     } catch (error) {
         console.error('Error formatting message:', error);
     }

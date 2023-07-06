@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
+import Profile from '../components/Profile';
 
 const Container = styled.div`
     padding: 20px;
@@ -23,6 +24,7 @@ const HomePage = () => {
             <Header />
             <Title>Welcome to taroj.poyo.jp</Title>
             <Paragraph>This is the home page of taroj.poyo.jp.</Paragraph>
+            <Profile />
         </Container>
     );
 };
