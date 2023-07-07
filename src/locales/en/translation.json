@@ -5,6 +5,9 @@
     "japanese": "Japanese",
     "moreWaysToLogin": "More ways to login planned",
     "login": "Login",
+    "index": {
+        "welcome": "Welcome to my website!"
+    },
     "about": {
         "title": "About me",
         "birthdate": "Born on 5th of December 2005, in Tokyo. Moved to Ehime after the 2011 earthquake.",

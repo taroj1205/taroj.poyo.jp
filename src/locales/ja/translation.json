@@ -5,6 +5,9 @@
     "japanese": "日本語",
     "moreWaysToLogin": "他のログイン方法追加予定",
     "login": "ログイン",
+    "index": {
+        "welcome": "僕のサイトへようこそ！!"
+    },
     "about": {
         "title": "僕について",
         "birthdate": "2005年12月05日生まれ。東京出身。2011年の震災の後愛媛に引っ越した。",
