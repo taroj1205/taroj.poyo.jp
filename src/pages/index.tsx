@@ -1,29 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '../components/Header';
+import React, { useEffect } from 'react';
 
-const Container = styled.div`
-    padding: 20px;
-`;
-
-const Title = styled.h1`
-    font-size: 24px;
-    margin-top: 20px;
-    color: #fff;
-`;
-
-const Paragraph = styled.p`
-    margin-top: 10px;
-    color: #666;
-`;
+import Profile from '../components/Profile';
+import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {
+    const { t, i18n } = useTranslation('translation'); // Specify the translation key
+
+    useEffect(() => {
+        const userLanguage = window.navigator.language;
+        let language;
+
+        // Check if user language is Japanese
+        if (userLanguage.includes('ja')) {
+            language = 'ja'; // Set Japanese language
+        } else {
+            language = 'en'; // Set English as fallback language
+        }
+        i18n.changeLanguage(language);
+    }, []);
     return (
-        <Container>
-            <Header />
-            <Title>Welcome to taroj.poyo.jp</Title>
-            <Paragraph>This is the home page of taroj.poyo.jp.</Paragraph>
-        </Container>
+        <main className="container mx-auto py-10 max-w-6xl">
+            <h2 className="text-4xl">{t('index.welcome')}</h2>
+            <Profile />
+        </main>
     );
 };
 

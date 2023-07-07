@@ -237,7 +237,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                         console.log(results);
 
                         const defaultMessages = results.map((row) => ({
-                            id: row.id,
+                            id: server_nanoid,
                             message: row.message,
                             username: row.username,
                             sent_on: row.sent_on,
@@ -272,7 +272,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                     'Failed to retrieve default messages from the server'
                 );
             }
-        } else if (req.body.method === 'newMessages') {
+        } else if (req.body.method === 'newMessage') {
             try {
                 console.log('Receiving sent message...');
 
@@ -312,8 +312,6 @@ const chatHandler: NextApiHandler = async (req, res) => {
 
                                 console.log(results);
 
-                                const id = results.insertId;
-
                                 connection.query(
                                     'SELECT username ' +
                                         'FROM users ' +
@@ -332,7 +330,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                                 : null;
 
                                         const newMessage = {
-                                            id,
+                                            id: server_id,
                                             message,
                                             username,
                                             sent_on: now,
@@ -353,8 +351,6 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 console.error('Error inserting message:', error);
                 res.status(500).send(error);
             }
-        } else {
-            res.status(404).end();
         }
     } catch (error) {
         console.error('Error connecting to the database:', error);
