@@ -42,11 +42,6 @@ export default function App({ Component, pageProps }: AppProps) {
             document.head.appendChild(style);
         };
 
-        // Get the file name of the component accessing the _app.js file
-        const fileName = Component.name || 'Unknown';
-
-        addLink('global');
-        addLink(fileName);
         addFontStyles(
             'NotoSansJP',
             '../font/NotoSansJP/static/NotoSansJP-Regular.ttf',
