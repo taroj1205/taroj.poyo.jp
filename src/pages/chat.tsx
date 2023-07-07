@@ -9,14 +9,8 @@ import React, {
 import Head from 'next/head';
 import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
-import { FaSun, FaMoon } from 'react-icons/fa';
 
-interface ChatProps {
-    handleSwitchClick: () => void;
-    isLightTheme: boolean;
-}
-
-const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
+const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -61,50 +55,9 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
 
         fetchDefaultMessages();
 
-        const setVisualViewport = () => {
-            const w = Math.max(
-                document.documentElement.clientWidth,
-                window.innerWidth || 0
-            );
-            const h = Math.max(
-                document.documentElement.clientHeight,
-                window.innerHeight || 0
-            );
-            document.documentElement.style.setProperty('--vvw', `${w}px`);
-            document.documentElement.style.setProperty('--vvh', `${h}px`);
-
-            console.log(h);
-
-            const hamburger = document.querySelector(
-                '#hamburger-menu'
-            ) as HTMLDivElement;
-            const sidebar = document.querySelector(
-                '.sidebar'
-            ) as HTMLDivElement;
-
-            if (sidebar && w >= 720) {
-                sidebar.style.display = 'flex';
-            }
-            if (hamburger && w <= 720) {
-                hamburger.style.display = 'flex';
-            }
-
-            if (w <= 720) {
-                document.body.classList.add('phone');
-            } else {
-                document.body.classList.remove('phone');
-            }
-
-            const scrollableHeight =
-                messagesContainer.scrollHeight - messagesContainer.clientHeight;
-            const isScrolledToBottom =
-                Math.abs(messagesContainer.scrollTop - scrollableHeight) <= 1;
-
-            adjustMessagesHeight(isScrolledToBottom);
-        };
-
-        setVisualViewport();
-        window.visualViewport?.addEventListener('resize', setVisualViewport);
+        const messagesContainer = document.getElementById(
+            'messages'
+        ) as HTMLDivElement;
 
         const handleKeyDown = (event: any) => {
             console.log(event.key);
@@ -154,7 +107,9 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
                     console.log(id);
 
                     // Check if the stored ID is null or lower than the current visible element's ID
-                    const storedId = parseInt(localStorage.getItem('read') || '0') as number;
+                    const storedId = parseInt(
+                        localStorage.getItem('read') || '0'
+                    ) as number;
                     if (storedId < parseInt(id)) {
                         localStorage.setItem('read', id);
                     }
@@ -167,13 +122,170 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
 
         messagesContainer.addEventListener('scroll', handleScroll);
 
+        const deleteMessage = (messageId: number) => {
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    method: 'deleteMessage',
+                    message_id: messageId,
+                    server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+                }),
+            })
+                .then((response) => {
+                    console.log(response); // log the response
+                    const messageElement = document.getElementById(
+                        messageId.toString()
+                    );
+                    if (messageElement) {
+                        messageElement.remove();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error deleting message:', error);
+                });
+        };
+
         // Receive new messages from the server
         channel.bind('newMessage', (data: any) => {
             console.log('Received new message: ', data);
 
-            showNotification('New message', data.message);
             addMessage(data);
         });
+
+        async function wrapCodeInTags(text: string): Promise<string> {
+            const codeRegex = /```(\w*)([\s\S]*?)```/;
+            const match = text.match(codeRegex);
+
+            if (match) {
+                const lang = match[1];
+                const codeContent = match[2];
+                const wrappedCode = `<code${
+                    lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
+                }>${codeContent}</code>`;
+                return text.replace(codeRegex, wrappedCode);
+            }
+
+            return text;
+        }
+
+        const addMessage = async (message: any) => {
+            console.log('Running addMessage() ', message);
+            const messagesContainer = document.getElementById(
+                'messages'
+            ) as HTMLDivElement;
+            console.log(messagesContainer);
+
+            if (Array.isArray(message)) {
+                for (const item of message) {
+                    console.log('Item: ', item);
+                    await formatMessage(item);
+                    const isAtBottom =
+                        messagesContainer.scrollTop +
+                            messagesContainer.clientHeight ===
+                        messagesContainer.scrollHeight;
+                    if (isAtBottom) {
+                        messagesContainer.scrollTop =
+                            messagesContainer.scrollHeight;
+                    }
+                }
+            } else {
+                console.log('Item: ', message);
+                await formatMessage(message);
+            }
+        };
+
+        const formatMessage = async (message: any) => {
+            try {
+                console.log('Formatting: ', message);
+
+                const messageString = message.message;
+                const username = message.username;
+                const sent_on = message.sent_on;
+
+                const messageText = await wrapCodeInTags(messageString);
+
+                console.log(messageText);
+
+                const format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
+                const options: Intl.DateTimeFormatOptions = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: false,
+                };
+
+                const formatter = new Intl.DateTimeFormat(format, options);
+                const formattedSentOn = formatter
+                    .format(new Date(sent_on))
+                    .replace(',', '.');
+
+                const isJapanese =
+                    format === 'ja-JP' && username === 'Anonymous';
+                const formattedUsername = isJapanese ? '名無し' : username;
+
+                let formattedMessageText = messageText.replace(
+                    /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
+                    (match: any) => {
+                        if (match.startsWith('>>')) {
+                            return `<a href="#${match.slice(
+                                2
+                            )}" class="jump">${match}</a>`;
+                        } else {
+                            return `<a href="${match}" target="_blank">${match}</a>`;
+                        }
+                    }
+                );
+
+                const messagesContainer = document.getElementById(
+                    'messages'
+                ) as HTMLDivElement;
+                const pCount =
+                    messagesContainer.getElementsByTagName('p').length + 1;
+
+                if (
+                    formattedMessageText &&
+                    formattedMessageText.includes('\\')
+                ) {
+                    formattedMessageText = formattedMessageText.replace(
+                        /\\/g,
+                        ''
+                    );
+                }
+
+                const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span class="messageText">${formattedMessageText}</span>`;
+
+                const p = document.createElement('p') as HTMLParagraphElement;
+
+                p.innerHTML = formattedHtml;
+
+                p.id = pCount.toString();
+                p.dataset.server = message.id;
+
+                console.log(p);
+
+                messagesContainer.appendChild(p);
+            } catch (error) {
+                console.error('Error formatting message:', error);
+            }
+        };
+
+        inputRef.current?.addEventListener('input', () => {
+            localStorage.setItem('input', inputRef.current?.value || '');
+        });
+
+        const input = localStorage.getItem('input');
+        if (inputRef.current) {
+            inputRef.current.rows = 1;
+            if (input) {
+                inputRef.current.value = input;
+            }
+        }
 
         console.log('script loaded!');
 
@@ -183,10 +295,6 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
             if (inputRef.current) {
                 inputRef.current.removeEventListener('keydown', handleKeyDown);
             }
-            window.visualViewport?.removeEventListener(
-                'resize',
-                setVisualViewport
-            );
             messagesContainer.removeEventListener('scroll', handleScroll);
         };
     }, []);
@@ -243,79 +351,89 @@ const Chat: React.FC<ChatProps> = ({ handleSwitchClick, isLightTheme }) => {
                 inputRef.current?.classList.remove('shake-animation'); // remove shake animation class after 0.5s
             }, 500);
         }
-        inputField?.focus();
+        inputRef?.current?.focus();
     };
 
     return (
         <>
             <Container>
-                <Sidebar
-                    handleSwitchClick={handleSwitchClick}
-                    isLightTheme={isLightTheme}
-                />
                 <Main
                     inputRef={inputRef}
                     sendMessage={sendMessage}
                     isLoading={isLoading}
                 />
-                <HamburgerMenu />
             </Container>
         </>
     );
 };
 
-const Sidebar = ({
-    handleSwitchClick,
-    isLightTheme,
-}: {
-    handleSwitchClick: () => void;
-    isLightTheme: boolean;
-}) => (
-    <div className="sidebar" style={{ display: 'none' }}>
-        <h1>Channels</h1>
-        <ul>
-            <li>Channel 1</li>
-            <li>Channel 2</li>
-            <li>Channel 3</li>
-        </ul>
-        <div className="theme-switch" onClick={handleSwitchClick}>
-            <div className={`switch-slider ${isLightTheme ? 'on' : ''}`}>
-                {isLightTheme ? (
-                    <FaSun className="slider-icon" />
-                ) : (
-                    <FaMoon className="slider-icon" />
-                )}
-            </div>
-        </div>
-    </div>
-);
-
 interface MainProps {
-    inputRef: RefObject<HTMLTextAreaElement>;
+    inputRef: React.RefObject<HTMLTextAreaElement>;
     sendMessage: () => void;
     isLoading: boolean;
 }
 
 const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkIfMobile = () => {
+            const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
+            const isMobileDevice =
+                mobileMediaQuery.matches ||
+                typeof window.orientation !== 'undefined';
+            setIsMobile(isMobileDevice);
+        };
+
+        checkIfMobile();
+
+        window.addEventListener('resize', checkIfMobile);
+        return () => {
+            window.removeEventListener('resize', checkIfMobile);
+        };
+    }, []);
+
+    const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const target = event.target;
+        let rows = target.value.split('\n').length;
+        if (rows > 5 && isMobile) {
+            rows = 5;
+        } else if (rows > 10) {
+            rows = 10;
+        }
+        target.rows = rows;
+    };
+
     return (
-        <div className="main">
-            <div id="messages"></div>
-            <div id="input-container">
-                <textarea
-                    id="input-field"
-                    ref={inputRef}
-                    placeholder="Type a message..."
-                    autoFocus
-                ></textarea>
+        <div className="flex flex-col flex-grow">
+            <div
+                id="messages"
+                className="overflow-y-auto overflow-x-hidden flex-grow pt-4 pb-0 sm:pb-3 md:pb-30 whitespace-pre-wrap"
+            >
+                {/* Messages content */}
+            </div>
+            <div id="input-container" className="flex relative bg-gray-900">
+                <span className="grow-wrap flex-grow">
+                    <textarea
+                        id="input-field"
+                        ref={inputRef}
+                        placeholder="Type a message..."
+                        autoFocus
+                        className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
+                        onInput={handleInput} // Add onInput event handler
+                    ></textarea>
+                </span>
+                <div className="w-12 h-11 min-w-[56px]"></div>
                 <button
                     id="send-button"
                     onClick={sendMessage}
                     disabled={isLoading}
+                    className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-r-lg bg-green-500 cursor-pointer flex items-center justify-center"
                 >
                     {isLoading ? (
-                        <div className="loading-circle"></div>
+                        <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                     ) : (
-                        <FaPaperPlane />
+                        <FaPaperPlane className="text-white" />
                     )}
                 </button>
             </div>
@@ -323,33 +441,17 @@ const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
     );
 };
 
-const HamburgerMenu = () => (
-    <div id="hamburger-menu" style={{ display: 'none' }}>
-        &#9776;
-    </div>
-);
-
 interface ContainerProps {
     children: ReactNode;
 }
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
-    return <div className="container">{children}</div>;
+    return (
+        <div className="flex h-screen w-screen box-border m-0">{children}</div>
+    );
 };
 
 const ChatPage = () => {
-    const [isLightTheme, setIsLightTheme] = useState(false);
-
-    const handleSwitchClick = () => {
-        setIsLightTheme((prevIsLightTheme) => !prevIsLightTheme);
-        document.body.classList.toggle('light');
-    };
-
-    useEffect(() => {
-        // Add or remove 'light' class to the body based on isLightTheme state
-        document.body.classList.toggle('light', isLightTheme);
-    }, [isLightTheme]);
-
     return (
         <>
             <Head>
@@ -368,17 +470,16 @@ const ChatPage = () => {
                     rel="stylesheet"
                     type="text/css"
                 />
-                <script
+                {/*<script
                     type="text/javascript"
                     defer
                     src="/script/chat/script.js"
-                ></script>
+                ></script>*/}
                 <script defer src="https://js.pusher.com/7.2/pusher.min.js" />
             </Head>
-            <Chat
-                handleSwitchClick={handleSwitchClick}
-                isLightTheme={isLightTheme}
-            />
+            <main className="w-screen max-w-screen">
+                <Chat />
+            </main>
         </>
     );
 };

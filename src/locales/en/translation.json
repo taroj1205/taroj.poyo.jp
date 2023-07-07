@@ -6,29 +6,115 @@
     "moreWaysToLogin": "More ways to login planned",
     "login": "Login",
     "about": {
-        "about": "About Me",
-        "birthdate": "Born on December 5, 2005. Originally from Tokyo, Japan. Moved to Ehime after the earthquake in 2011.",
-        "events": "Significant Events",
-        "injury": "Underwent knee surgery (ACL) in July 2020.",
-        "countries": "Countries I've Lived In",
+        "title": "About me",
+        "birthdate": "Born on 5th of December 2005, in Tokyo. Moved to Ehime after the 2011 earthquake.",
+        "events": "Important events",
+        "injury": "Underwent surgery for an ACL injury on the knee in July 2020.",
+        "countries": "Countries I've lived in",
         "country": {
             "japan": "Japan",
-            "philippines": "Philippines",
+            "philippines": "The Philippines",
             "newzealand": "New Zealand"
         },
         "hobbies": "Hobbies",
         "hobby": {
             "kendama": "Kendama",
-            "jumprope": "Jump Rope",
+            "jumprope": "Jump rope",
             "programming": "Programming",
-            "reading": "Reading News"
+            "reading": "Reading news"
         },
-        "school_history": "School History",
-        "start": "Start",
-        "end": "End",
-        "school_name": "School Name",
-        "grade": "Grade",
-        "duration": "Duration",
-        "location": "Location"
+        "education": {
+            "schoolHistory": "Academy Background",
+            "headings": {
+                "start": "Start",
+                "end": "End",
+                "name": "Name",
+                "grade": "Year Level",
+                "duration": "Period",
+                "location": "Location"
+            },
+            "schools": [
+                {
+                    "start": "04/2009",
+                    "end": "05/2010",
+                    "name": "Tokyo Tomonokai Setagaya Infant Life Group",
+                    "grade": "First and Second Year of Kindergarten",
+                    "duration": "About a year",
+                    "location": "Tokyo"
+                },
+                {
+                    "start": "05/2010",
+                    "end": "04/2011",
+                    "name": "Kinuta Kindergarten",
+                    "grade": "Second Year of Kindergarten",
+                    "duration": "A year",
+                    "location": "Tokyo"
+                },
+                {
+                    "start": "05/2011",
+                    "end": "03/2012",
+                    "name": "Wakakusa Kindergarten",
+                    "grade": "Last (3rd) year of Kindergarten",
+                    "duration": "A year",
+                    "location": "Ehime"
+                },
+                {
+                    "start": "04/2012",
+                    "end": "06/2012",
+                    "name": "Habu Elementary School",
+                    "grade": "Year 1",
+                    "duration": "2 months",
+                    "location": "Ehime"
+                },
+                {
+                    "start": "06/2012",
+                    "end": "12/2016",
+                    "name": "Hiura Elementary School",
+                    "grade": "Year 1 to Year 5",
+                    "duration": "4.5 years",
+                    "location": "Ehime"
+                },
+                {
+                    "start": "02/2017",
+                    "end": "12/2017",
+                    "name": "Balmoral Intermediate",
+                    "grade": "Year 7",
+                    "duration": "A year",
+                    "location": "Auckland"
+                },
+                {
+                    "start": "01/2018",
+                    "end": "03/2018",
+                    "name": "Hiura Elementary School",
+                    "grade": "Year 6",
+                    "duration": "3 months",
+                    "location": "Ehime"
+                },
+                {
+                    "start": "04/2018",
+                    "end": "07/2018",
+                    "name": "Takahari English School",
+                    "grade": "-",
+                    "duration": "3 months",
+                    "location": "Cebu"
+                },
+                {
+                    "start": "07/2018",
+                    "end": "07/2018",
+                    "name": "Kuwabara Junior High School",
+                    "grade": "Year 7",
+                    "duration": "2 to 3 Weeks",
+                    "location": "Ehime"
+                },
+                {
+                    "start": "08/2018",
+                    "end": "...",
+                    "name": "Westlake Boys High School (Expected graduation)",
+                    "grade": "Year 9 to Year 13",
+                    "duration": "5 years",
+                    "location": "Auckland"
+                }
+            ]
+        }
     }
 }
