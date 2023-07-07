@@ -35,12 +35,21 @@ const Header = () => {
                     <LanguageSwitch />
                     <div className="ml-4">
                         {user ? (
-                            <a
-                                className="text-white hover:shadow-md hover:bg-blue-600 transition duration-300 ease-in-out py-2 px-3 rounded-lg menu-block text-base"
-                                href="/api/auth/logout"
-                            >
-                                Log out
-                            </a>
+                            <div className="flex items-center">
+                                <a href="/profile" className="ml-4">
+                                    <img
+                                        className="w-8 h-8 rounded-full"
+                                        src={user?.picture ?? ''}
+                                        alt="Profile picture"
+                                    />
+                                </a>
+                                <a
+                                    className="text-white hover:shadow-md hover:bg-blue-600 transition duration-300 ease-in-out py-2 px-3 rounded-lg menu-block text-base"
+                                    href="/api/auth/logout"
+                                >
+                                    Log out
+                                </a>
+                            </div>
                         ) : (
                             <a
                                 className="text-white hover:shadow-md hover:bg-blue-600 transition duration-300 ease-in-out py-2 px-3 rounded-lg menu-block text-base"
