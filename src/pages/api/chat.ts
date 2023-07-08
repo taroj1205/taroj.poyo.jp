@@ -2,6 +2,7 @@ import { NextApiHandler } from 'next';
 import Pusher from 'pusher';
 import mysql from 'mysql';
 import { nanoid } from 'nanoid';
+import Filter from 'bad-words';
 
 console.log('chat.ts running');
 
@@ -18,6 +19,7 @@ const pusher = new Pusher({
 });
 
 const DATABASE_URL = process.env.DATABASE_URL || '';
+const filter = new Filter();
 
 const chatHandler: NextApiHandler = async (req, res) => {
     console.log(req.body);
@@ -169,6 +171,21 @@ const chatHandler: NextApiHandler = async (req, res) => {
                             sent_on: row.sent_on,
                         }));
 
+                        const filteredMessages = defaultMessages.filter(
+                            (message) => {
+                                return (
+                                    filter.isProfane(message.message) ||
+                                    filter.isProfane(message.username)
+                                );
+                            }
+                        );
+
+                        if (filteredMessages.length > 0) {
+                            res.status(400).send({
+                                error: 'Content contains inappropriate words',
+                            });
+                        }
+
                         connection.query(
                             `UPDATE servers SET last_login = ? WHERE nanoid = ?`,
                             [now, server_nanoid],
@@ -214,6 +231,13 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 }
 
                 console.log(username);
+
+                if (filter.isProfane(username) || filter.isProfane(message)) {
+                    res.status(400).send({
+                        error: 'Username or message contains inappropriate content',
+                    });
+                    return;
+                }
 
                 connection.query(
                     'SELECT id FROM servers WHERE nanoid = ?',

@@ -48,17 +48,22 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                 });
                 const data = await response.json();
                 console.log(data);
+                if (data.status !== 200) {
+                    errorPopup(data.error.toString());
+                    return;
+                }
                 setMessages(data.messages);
                 await addMessage(data.messages);
                 const read = localStorage.getItem('read') || '0';
                 document.getElementById(read)?.scrollIntoView();
                 const mainElement = document.querySelector('main');
                 mainElement?.classList.remove('animate-pulse');
-            } catch (error) {
+            } catch (error: any) {
                 console.error(
                     'An error occurred while fetching default messages:',
                     error
                 );
+                errorPopup(error.toString());
             }
         };
 
@@ -301,6 +306,26 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
         };
     }, []);
 
+    const errorPopup = (message: string) => {
+        const popup = document.createElement('div') as HTMLDivElement;
+        popup.innerText = message.toString();
+        popup.classList.add(
+            'popup',
+            'fixed',
+            'top-0',
+            'left-0',
+            'bg-red-500',
+            'text-white',
+            'text-center',
+            'p-4',
+            'rounded-md'
+        );
+        document.body.appendChild(popup);
+        setTimeout(() => {
+            document.body.removeChild(popup);
+        }, 3000);
+    }
+
     const sendMessage = () => {
         const message = inputRef.current?.value.trim();
         if (inputRef.current) {
@@ -323,7 +348,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
             })
-                .then((response) => {
+                .then(async (response) =>  {
                     setisLoadingState(false); // set loading state to false
                     console.log(response); // log the response
 
@@ -347,25 +372,10 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                             }, 500);
                         }
 
-                        const popup = document.createElement('div');
-                        popup.innerText =
-                            'Please login or sign up to send message';
-                        popup.classList.add(
-                            'popup',
-                            'fixed',
-                            'top-0',
-                            'left-0',
-                            'bg-red-500',
-                            'text-white',
-                            'text-center',
-                            'p-4',
-                            'rounded-md'
-                        );
-                        document.body.appendChild(popup);
+                        const responseJson = await response.json();
+                        const message = responseJson.error;
 
-                        setTimeout(() => {
-                            document.body.removeChild(popup);
-                        }, 3000);
+                        errorPopup(message.toString());
                     } else {
                         localStorage.removeItem('input');
                     }
