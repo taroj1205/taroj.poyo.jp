@@ -43,7 +43,11 @@ const Profile = () => {
     }, []);
     return (
         <div className="md:ml-4 flex items-center relative" ref={dropdownRef}>
-            <button className="focus:outline-none" onClick={toggleDropdown}>
+            <button
+                aria-label="profile picture"
+                className="focus:outline-none"
+                onClick={toggleDropdown}
+            >
                 <img
                     className="w-8 h-8 m-1 rounded-full"
                     src={user?.picture ?? ''}
@@ -54,6 +58,7 @@ const Profile = () => {
                 <div className="absolute top-8 right-2 mt-2 w-48 bg-white rounded-md shadow-lg">
                     <div className="py-1">
                         <button
+                            aria-label="go to profile"
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             onClick={() => handleLink('/profile')}
                         >
@@ -61,6 +66,7 @@ const Profile = () => {
                             {t('profile')}
                         </button>
                         <button
+                            aria-label="logout"
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             onClick={() => handleLink('/api/auth/logout')}
                         >

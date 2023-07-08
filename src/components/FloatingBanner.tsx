@@ -104,6 +104,7 @@ const FloatingBanner = () => {
                         <Tooltip id="Blog" />
                     </div>
                     <button
+                        aria-label="toggle the menu"
                         className="bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-700 transition-colors duration-300"
                         onClick={handleToggle}
                     >
