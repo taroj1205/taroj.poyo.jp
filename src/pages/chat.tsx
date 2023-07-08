@@ -318,7 +318,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                 },
                 body: JSON.stringify({
                     method: 'newMessage',
-                    user_id: userId,
+                    username: userId,
                     message,
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
@@ -480,39 +480,41 @@ const Main: React.FC<MainProps> = ({
             >
                 {/* Messages content */}
             </div>
-            <button
-                className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
-                onClick={scrollToBottom}
-            >
-                Scroll to Bottom{' '}
-                <span className="ml-1 animate-bounce">&#8595;</span>
-            </button>
-
-            <div id="input-container" className="flex relative bg-gray-900">
-                <span className="grow-wrap flex-grow">
-                    <textarea
-                        id="input-field"
-                        ref={inputRef}
-                        placeholder="Type a message..."
-                        autoFocus
-                        disabled
-                        className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
-                        onInput={handleInput} // Add onInput event handler
-                    ></textarea>
-                </span>
-                <div className="w-12 h-11 min-w-[56px]"></div>
+            <div className="absolute bottom-0 w-full">
                 <button
-                    id="send-button"
-                    onClick={sendMessage}
-                    disabled={isLoadingState}
-                    className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
+                    className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
+                    onClick={scrollToBottom}
                 >
-                    {isLoadingState ? (
-                        <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
-                    ) : (
-                        <FaPaperPlane className="text-white" />
-                    )}
+                    Scroll to Bottom{' '}
+                    <span className="ml-1 animate-bounce">&#8595;</span>
                 </button>
+
+                <div id="input-container" className="flex relative bg-gray-900">
+                    <span className="grow-wrap flex-grow">
+                        <textarea
+                            id="input-field"
+                            ref={inputRef}
+                            placeholder="Type a message..."
+                            autoFocus
+                            disabled
+                            className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
+                            onInput={handleInput} // Add onInput event handler
+                        ></textarea>
+                    </span>
+                    <div className="w-12 h-11 min-w-[56px]"></div>
+                    <button
+                        id="send-button"
+                        onClick={sendMessage}
+                        disabled={isLoadingState}
+                        className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
+                    >
+                        {isLoadingState ? (
+                            <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                        ) : (
+                            <FaPaperPlane className="text-white" />
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -538,7 +540,7 @@ const ChatPage = () => {
         if (!user) {
             router.push('/api/auth/login');
         } else {
-            const id = user.sub ?? '';
+            const id = user.nickname ?? ''; //sub
             setUserId(id);
             document.getElementById('send-button')?.removeAttribute('disabled');
             document
