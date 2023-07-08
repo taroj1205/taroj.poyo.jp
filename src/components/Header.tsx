@@ -53,6 +53,7 @@ const Header = () => {
             <nav className="w-full flex items-center justify-between px-0 py-4">
                 <div className="flex items-center font-medium ml-2 md:ml-0 space-x-6 flex-grow justify-center">
                     <button
+                        aria-label="home"
                         onClick={() => handleLink('/')}
                         className="flex items-center text-white text-lg hover:text-blue-600"
                     >
@@ -60,6 +61,7 @@ const Header = () => {
                         <span className="text-base">Home</span>
                     </button>
                     <button
+                        aria-label="about"
                         onClick={() => handleLink('/about')}
                         className="flex items-center text-white text-lg hover:text-blue-600"
                     >
@@ -67,6 +69,7 @@ const Header = () => {
                         <span className="text-base">About</span>
                     </button>
                     <button
+                        aria-label="chat"
                         onClick={() => handleLink('/chat')}
                         className="flex items-center text-white text-lg hover:text-blue-600"
                     >
@@ -83,6 +86,7 @@ const Header = () => {
                         {user ? (
                             <>
                                 <button
+                                    aria-label="profile"
                                     className="focus:outline-none"
                                     onClick={toggleDropdown}
                                 >
@@ -96,6 +100,7 @@ const Header = () => {
                                     <div className="absolute top-8 right-2 mt-2 w-48 bg-white rounded-md shadow-lg">
                                         <div className="py-1">
                                             <button
+                                                aria-label="go to profile"
                                                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                 onClick={() =>
                                                     handleLink('/profile')
@@ -105,6 +110,7 @@ const Header = () => {
                                                 Profile
                                             </button>
                                             <button
+                                                aria-label="logout"
                                                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                 onClick={() =>
                                                     handleLink(
@@ -121,6 +127,7 @@ const Header = () => {
                             </>
                         ) : (
                             <button
+                                aria-label="login"
                                 className="text-white hover:shadow-md hover:bg-blue-600 transition duration-300 ease-in-out py-2 px-3 rounded-lg menu-block text-base"
                                 onClick={() => handleLink('/api/auth/login')}
                             >

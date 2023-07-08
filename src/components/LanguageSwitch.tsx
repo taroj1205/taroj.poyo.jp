@@ -61,6 +61,7 @@ const LanguageSwitch = () => {
     return (
         <div className="language-switch switch z-10 relative" ref={switchRef}>
             <button
+                aria-label="lang switch button"
                 className="switch m-1 focus:outline-none flex items-center justify-center"
                 onClick={() => {
                     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -83,6 +84,7 @@ const LanguageSwitch = () => {
                 <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-gray-800 ring-1 ring-gray-700 ring-opacity-50 transition-all duration-300">
                     <div className="py-1">
                         <button
+                            aria-label="switch to english"
                             className={`w-full flex items-center justify-between px-4 py-2 ${
                                 hoveredLanguage === 'en'
                                     ? 'bg-blue-500 text-white hover:bg-blue-400'
@@ -106,6 +108,7 @@ const LanguageSwitch = () => {
                             )}
                         </button>
                         <button
+                            aria-label="switch to japanese"
                             className={`w-full flex items-center justify-between px-4 py-2 ${
                                 hoveredLanguage === 'ja'
                                     ? 'bg-blue-500 text-white hover:bg-blue-400'

@@ -482,6 +482,7 @@ const Main: React.FC<MainProps> = ({
             </div>
             <div className="fixed bottom-0 w-full">
                 <button
+                    aria-label="Scroll to bottom"
                     className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
                     onClick={scrollToBottom}
                 >
@@ -504,6 +505,7 @@ const Main: React.FC<MainProps> = ({
                     <div className="w-12 h-11 min-w-[56px]"></div>
                     <button
                         id="send-button"
+                        aria-label="send button"
                         onClick={sendMessage}
                         disabled={isLoadingState}
                         className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
