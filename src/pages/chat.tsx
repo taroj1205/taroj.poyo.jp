@@ -480,7 +480,7 @@ const Main: React.FC<MainProps> = ({
             >
                 {/* Messages content */}
             </div>
-            <div className="absolute bottom-0 w-full">
+            <div className="fixed bottom-0 w-full">
                 <button
                     className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
                     onClick={scrollToBottom}
@@ -543,9 +543,7 @@ const ChatPage = () => {
             const id = user.nickname ?? ''; //sub
             setUserId(id);
             document.getElementById('send-button')?.removeAttribute('disabled');
-            document
-                .getElementById('input-field')
-                ?.removeAttribute('disabled');
+            document.getElementById('input-field')?.removeAttribute('disabled');
         }
     }, [user, isLoading, error, router]);
 
@@ -563,7 +561,7 @@ const ChatPage = () => {
                 <title>Chat</title>
                 <meta
                     name="viewport"
-                    content="width=device-width, initial-scale=1.0"
+                    content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
                 />
                 <link
                     rel="icon"
