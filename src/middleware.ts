@@ -1,8 +1,6 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-// The country to block from accessing the secret page
-const BLOCKED_COUNTRY = '';
+const PUBLIC_FILE = /\.(.*)$/;
 
 // Trigger this middleware to run on the `/secret-page` route
 export const config = {
@@ -15,11 +13,23 @@ export function middleware(request: NextRequest) {
 
     console.log(`Visitor from ${country}`);
 
-    // Specify the correct route based on the requests location
-    if (country === BLOCKED_COUNTRY) {
-        request.nextUrl.pathname = '/';
-    } else {
-        request.nextUrl.pathname = `/chat`;
+    if (
+        request.nextUrl.pathname.startsWith('/_next') ||
+        request.nextUrl.pathname.includes('/api/') ||
+        PUBLIC_FILE.test(request.nextUrl.pathname)
+    ) {
+        return;
+    }
+
+    if (request.nextUrl.locale === 'default') {
+        const locale = request.cookies.get('NEXT_LOCALE')?.value || 'en';
+
+        return NextResponse.redirect(
+            new URL(
+                `/${locale}${request.nextUrl.pathname}${request.nextUrl.search}`,
+                request.url
+            )
+        );
     }
 
     // Rewrite to URL

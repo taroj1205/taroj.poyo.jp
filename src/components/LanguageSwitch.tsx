@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiGlobe } from 'react-icons/fi';
 import { ImEarth } from 'react-icons/im';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const LanguageSwitch = () => {
     const { i18n } = useTranslation();
@@ -12,29 +14,24 @@ const LanguageSwitch = () => {
     const switchRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    const router = useRouter();
+
     const handleLanguageChange = (language: string) => {
+        console.log(language, currentLanguage);
+        const currentPath = router.asPath;
+        const newPath = currentPath.replace(
+            `/${language}/`,
+            `/${currentLanguage}/`
+        );
+        router.push(newPath, newPath, { locale: language });
+
         if (language !== currentLanguage) {
             i18n.changeLanguage(language);
             setCurrentLanguage(language);
+            Cookies.set('defaultLanguage', language); // Update the cookie with the new language
         }
         setIsOpen(false);
     };
-
-    /*const handleHover = (language: string) => {
-        setHoveredLanguage(language);
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-        i18n.changeLanguage(language);
-    };
-
-    const handleMouseLeave = () => {
-        timeoutRef.current = setTimeout(() => {
-            setIsOpen(false);
-            setHoveredLanguage('');
-            i18n.changeLanguage(currentLanguage);
-        }, 500);
-    };*/
 
     const handleClicks = (event: MouseEvent) => {
         if (
@@ -46,6 +43,10 @@ const LanguageSwitch = () => {
     };
 
     useEffect(() => {
+        const lang = router.locale as string;
+        console.log(lang);
+        handleLanguageChange(lang);
+
         document.addEventListener('mousedown', handleClicks);
 
         return () => {
@@ -61,16 +62,14 @@ const LanguageSwitch = () => {
         <div className="language-switch switch z-10 relative" ref={switchRef}>
             <button
                 className="switch m-1 focus:outline-none flex items-center justify-center"
-                /*onMouseEnter={() => handleHover(i18n.language)}
-                onMouseLeave={handleMouseLeave}*/
                 onClick={() => {
                     setIsOpen((prevIsOpen) => !prevIsOpen);
-                        if (!isOpen && currentLanguage === '') {
-                            setHoveredLanguage(i18n.language);
-                            setCurrentLanguage(i18n.language);
-                        } else {
-                            setHoveredLanguage(currentLanguage);
-                        }
+                    if (!isOpen && currentLanguage === '') {
+                        setHoveredLanguage(i18n.language);
+                        setCurrentLanguage(i18n.language);
+                    } else {
+                        setHoveredLanguage(currentLanguage);
+                    }
                 }}
             >
                 {isOpen ? (
@@ -81,21 +80,15 @@ const LanguageSwitch = () => {
             </button>
 
             {isOpen && (
-                <div
-                    className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-gray-800 ring-1 ring-gray-700 ring-opacity-50 transition-all duration-300"
-                    /*onMouseEnter={() => handleHover(i18n.language)}
-                    onMouseLeave={handleMouseLeave}*/
-                >
+                <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-gray-800 ring-1 ring-gray-700 ring-opacity-50 transition-all duration-300">
                     <div className="py-1">
                         <button
-                            className={` w-full flex items-center justify-between px-4 py-2 ${
+                            className={`w-full flex items-center justify-between px-4 py-2 ${
                                 hoveredLanguage === 'en'
                                     ? 'bg-blue-500 text-white hover:bg-blue-400'
                                     : 'text-gray-300 hover:bg-gray-700'
                             }`}
                             onClick={() => handleLanguageChange('en')}
-                            /*onMouseEnter={() => handleHover('en')}
-                            onMouseLeave={handleMouseLeave}*/
                         >
                             <span>A</span>
                             {hoveredLanguage === 'en' && (
@@ -119,8 +112,6 @@ const LanguageSwitch = () => {
                                     : 'text-gray-300 hover:bg-gray-700'
                             }`}
                             onClick={() => handleLanguageChange('ja')}
-                            /*onMouseEnter={() => handleHover('ja')}
-                            onMouseLeave={handleMouseLeave}*/
                         >
                             <span>あ</span>
                             {hoveredLanguage === 'ja' && (
