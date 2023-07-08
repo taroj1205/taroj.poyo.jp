@@ -8,11 +8,11 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 
 interface ChatProps {
-    username: string;
-    setUserName: React.Dispatch<React.SetStateAction<string>>;
+    userId: string;
+    setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Chat = ({ username, setUserName }: ChatProps) => {
+const Chat = ({ userId, setUserId }: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const [isLoadingState, setisLoadingState] = useState(false);
@@ -309,7 +309,7 @@ const Chat = ({ username, setUserName }: ChatProps) => {
 
         if (message && message.length < 500) {
             setisLoadingState(true); // set loading state to true
-
+            console.log('User id', userId);
             // Send a new message to the server
             fetch('/api/chat', {
                 method: 'POST',
@@ -318,7 +318,7 @@ const Chat = ({ username, setUserName }: ChatProps) => {
                 },
                 body: JSON.stringify({
                     method: 'newMessage',
-                    username,
+                    user_id: userId,
                     message,
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
@@ -527,7 +527,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 };
 
 const ChatPage = () => {
-    const [username, setUserName] = useState('');
+    const [userId, setUserId] = useState('');
 
     const { user, error, isLoading } = useUser();
     const router = useRouter();
@@ -538,8 +538,8 @@ const ChatPage = () => {
         if (!user) {
             router.push('/api/auth/login');
         } else {
-            const nickname = user.nickname ?? '';
-            setUserName(nickname);
+            const id = user.sub ?? '';
+            setUserId(id);
             document.getElementById('send-button')?.removeAttribute('disabled');
             document
                 .getElementById('input-field')
@@ -583,7 +583,7 @@ const ChatPage = () => {
             <ChatHeader />
             <div className="flex flex-col max-h-full w-full max-w-full">
                 <main className="animate-pulse">
-                    <Chat username={username} setUserName={setUserName} />
+                    <Chat userId={userId} setUserId={setUserId} />
                 </main>
             </div>
         </>
