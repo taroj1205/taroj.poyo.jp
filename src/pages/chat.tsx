@@ -1,21 +1,24 @@
 // @refresh disable
-import React, {
-    useEffect,
-    useState,
-    useRef,
-    RefObject,
-    ReactNode,
-} from 'react';
+import React, { useEffect, useState, useRef, ReactNode } from 'react';
 import Head from 'next/head';
 import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
+import ChatHeader from '../components/ChatHeader';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/router';
 
-const Chat = () => {
+interface ChatProps {
+    username: string;
+    setUserName: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Chat = ({ username, setUserName }: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingState, setisLoadingState] = useState(false);
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
+    const scrollPosRef = useRef<number>(0);
 
     useEffect(() => {
         console.log('useEffect running');
@@ -25,6 +28,10 @@ const Chat = () => {
         });
 
         const channel = pusher.subscribe('chat');
+
+        const messagesContainer = document.getElementById(
+            'messages'
+        ) as HTMLDivElement;
 
         const fetchDefaultMessages = async () => {
             try {
@@ -45,6 +52,8 @@ const Chat = () => {
                 await addMessage(data.messages);
                 const read = localStorage.getItem('read') || '0';
                 document.getElementById(read)?.scrollIntoView();
+                const mainElement = document.querySelector('main');
+                mainElement?.classList.remove('animate-pulse');
             } catch (error) {
                 console.error(
                     'An error occurred while fetching default messages:',
@@ -54,10 +63,6 @@ const Chat = () => {
         };
 
         fetchDefaultMessages();
-
-        const messagesContainer = document.getElementById(
-            'messages'
-        ) as HTMLDivElement;
 
         const handleKeyDown = (event: any) => {
             console.log(event.key);
@@ -104,6 +109,7 @@ const Chat = () => {
 
                     console.log(lowestVisibleElement);
                     const id = lowestVisibleElement.id;
+                    scrollPosRef.current = parseInt(id);
                     console.log(id);
 
                     // Check if the stored ID is null or lower than the current visible element's ID
@@ -225,10 +231,6 @@ const Chat = () => {
                     .format(new Date(sent_on))
                     .replace(',', '.');
 
-                const isJapanese =
-                    format === 'ja-JP' && username === 'Anonymous';
-                const formattedUsername = isJapanese ? '名無し' : username;
-
                 let formattedMessageText = messageText.replace(
                     /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
                     (match: any) => {
@@ -258,7 +260,7 @@ const Chat = () => {
                     );
                 }
 
-                const formattedHtml = `${pCount} ${formattedUsername}: ${formattedSentOn}<br /><span class="messageText">${formattedMessageText}</span>`;
+                const formattedHtml = `${pCount} ${username}: ${formattedSentOn}<br /><span class="messageText max-w-[90%]">${formattedMessageText}</span>`;
 
                 const p = document.createElement('p') as HTMLParagraphElement;
 
@@ -306,7 +308,7 @@ const Chat = () => {
         }
 
         if (message && message.length < 500) {
-            setIsLoading(true); // set loading state to true
+            setisLoadingState(true); // set loading state to true
 
             // Send a new message to the server
             fetch('/api/chat', {
@@ -316,19 +318,61 @@ const Chat = () => {
                 },
                 body: JSON.stringify({
                     method: 'newMessage',
+                    username,
                     message,
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
             })
                 .then((response) => {
-                    setIsLoading(false); // set loading state to false
+                    setisLoadingState(false); // set loading state to false
                     console.log(response); // log the response
 
-                    localStorage.removeItem('input');
+                    if (response.status !== 200) {
+                        const inputValue = localStorage.getItem('input');
+                        if (inputRef.current) {
+                            if (inputValue !== null) {
+                                inputRef.current.value = inputValue;
+                            }
+                        }
+
+                        const rootContainer =
+                            document.getElementById('messages');
+
+                        if (rootContainer) {
+                            rootContainer.classList.add('shake-animation'); // add shake animation class to the root container
+                            setTimeout(() => {
+                                rootContainer?.classList.remove(
+                                    'shake-animation'
+                                ); // remove shake animation class after 0.5s
+                            }, 500);
+                        }
+
+                        const popup = document.createElement('div');
+                        popup.innerText =
+                            'Please login or sign up to send message';
+                        popup.classList.add(
+                            'popup',
+                            'fixed',
+                            'top-0',
+                            'left-0',
+                            'bg-red-500',
+                            'text-white',
+                            'text-center',
+                            'p-4',
+                            'rounded-md'
+                        );
+                        document.body.appendChild(popup);
+
+                        setTimeout(() => {
+                            document.body.removeChild(popup);
+                        }, 3000);
+                    } else {
+                        localStorage.removeItem('input');
+                    }
                 })
                 .catch((error) => {
                     console.error('Error sending message:', error);
-                    setIsLoading(false); // set loading state to false
+                    setisLoadingState(false); // set loading state to false
 
                     if (inputRef.current) {
                         const inputValue = localStorage.getItem('input');
@@ -360,7 +404,8 @@ const Chat = () => {
                 <Main
                     inputRef={inputRef}
                     sendMessage={sendMessage}
-                    isLoading={isLoading}
+                    isLoadingState={isLoadingState}
+                    scrollPosRef={scrollPosRef}
                 />
             </Container>
         </>
@@ -370,11 +415,18 @@ const Chat = () => {
 interface MainProps {
     inputRef: React.RefObject<HTMLTextAreaElement>;
     sendMessage: () => void;
-    isLoading: boolean;
+    isLoadingState: boolean;
+    scrollPosRef: React.RefObject<number>;
 }
 
-const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
+const Main: React.FC<MainProps> = ({
+    inputRef,
+    sendMessage,
+    isLoadingState,
+    scrollPosRef,
+}) => {
     const [isMobile, setIsMobile] = useState(false);
+    const messagesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -393,6 +445,21 @@ const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
         };
     }, []);
 
+    useEffect(
+        () => {
+            scrollToBottom();
+        },
+        [
+            /* any dependencies that may affect the number of <p> in #messages */
+        ]
+    );
+
+    const scrollToBottom = () => {
+        if (messagesRef.current) {
+            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+        }
+    };
+
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const target = event.target;
         let rows = target.value.split('\n').length;
@@ -405,13 +472,22 @@ const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
     };
 
     return (
-        <div className="flex flex-col flex-grow">
+        <div className="flex flex-col pt-20 flex-grow h-screen max-h-full">
             <div
                 id="messages"
-                className="overflow-y-auto overflow-x-hidden flex-grow pt-4 pb-0 sm:pb-3 md:pb-30 whitespace-pre-wrap"
+                ref={messagesRef}
+                className="overflow-y-auto overflow-x-hidden flex-grow pb-0 sm:pb-3 md:pb-30 whitespace-pre-wrap"
             >
                 {/* Messages content */}
             </div>
+            <button
+                className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
+                onClick={scrollToBottom}
+            >
+                Scroll to Bottom{' '}
+                <span className="ml-1 animate-bounce">&#8595;</span>
+            </button>
+
             <div id="input-container" className="flex relative bg-gray-900">
                 <span className="grow-wrap flex-grow">
                     <textarea
@@ -419,6 +495,7 @@ const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
                         ref={inputRef}
                         placeholder="Type a message..."
                         autoFocus
+                        disabled
                         className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
                         onInput={handleInput} // Add onInput event handler
                     ></textarea>
@@ -427,10 +504,10 @@ const Main: React.FC<MainProps> = ({ inputRef, sendMessage, isLoading }) => {
                 <button
                     id="send-button"
                     onClick={sendMessage}
-                    disabled={isLoading}
-                    className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-r-lg bg-green-500 cursor-pointer flex items-center justify-center"
+                    disabled={isLoadingState}
+                    className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                 >
-                    {isLoading ? (
+                    {isLoadingState ? (
                         <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                     ) : (
                         <FaPaperPlane className="text-white" />
@@ -446,12 +523,38 @@ interface ContainerProps {
 }
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
-    return (
-        <div className="flex h-screen w-screen box-border m-0">{children}</div>
-    );
+    return <div className="flex box-border m-0">{children}</div>;
 };
 
 const ChatPage = () => {
+    const [username, setUserName] = useState('');
+
+    const { user, error, isLoading } = useUser();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isLoading) return;
+        if (error) return;
+        if (!user) {
+            router.push('/api/auth/login');
+        } else {
+            const nickname = user.nickname ?? '';
+            setUserName(nickname);
+            document.getElementById('send-button')?.removeAttribute('disabled');
+            document
+                .getElementById('input-field')
+                ?.removeAttribute('disabled');
+        }
+    }, [user, isLoading, error, router]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
     return (
         <>
             <Head>
@@ -477,9 +580,12 @@ const ChatPage = () => {
                 ></script>*/}
                 <script defer src="https://js.pusher.com/7.2/pusher.min.js" />
             </Head>
-            <main className="w-screen max-w-screen">
-                <Chat />
-            </main>
+            <ChatHeader />
+            <div className="flex flex-col max-h-full w-full max-w-full">
+                <main className="animate-pulse">
+                    <Chat username={username} setUserName={setUserName} />
+                </main>
+            </div>
         </>
     );
 };
