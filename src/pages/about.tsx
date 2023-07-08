@@ -3,20 +3,7 @@ import { useTranslation } from 'react-i18next';
 import SchoolHistory from '../components/SchoolHistory';
 
 const About = () => {
-    const { t, i18n } = useTranslation('translation'); // Specify the translation key
-
-    useEffect(() => {
-        const userLanguage = window.navigator.language;
-        let language;
-
-        // Check if user language is Japanese
-        if (userLanguage.includes('ja')) {
-            language = 'ja'; // Set Japanese language
-        } else {
-            language = 'en'; // Set English as fallback language
-        }
-        i18n.changeLanguage(language);
-    }, []);
+    const { t } = useTranslation('translation'); // Specify the translation key
 
     return (
         <main className="bg-cover bg-no-repeat bg-fixed bg-center" style={{ backgroundImage: "url('https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png')" }}>
