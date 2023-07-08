@@ -12,6 +12,20 @@ module.exports = {
                     'sans-serif',
                 ],
             },
+            keyframes: {
+                announcement: {
+                    '0%': {
+                        transform: 'translateX(150%)',
+                    },
+                    '100%': {
+                        transform: 'translateX(-150%)',
+                    },
+                },
+            },
+            animation: {
+                announcement:
+                    'announcement 20s linear infinite',
+            },
         },
     },
     plugins: [],

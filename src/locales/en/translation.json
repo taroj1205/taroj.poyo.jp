@@ -5,8 +5,13 @@
     "japanese": "Japanese",
     "moreWaysToLogin": "More ways to login planned",
     "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
     "index": {
         "welcome": "Welcome to my website!"
+    },
+    "header": {
+        "home": "Home"
     },
     "about": {
         "title": "About me",
@@ -119,5 +124,9 @@
                 }
             ]
         }
+    },
+    "announcement": {
+        "title": "Announcement",
+        "content": "Usernames are now supported in the chat."
     }
 }

@@ -5,8 +5,13 @@
     "japanese": "日本語",
     "moreWaysToLogin": "他のログイン方法追加予定",
     "login": "ログイン",
+    "logout": "ログアウト",
+    "profile": "プロフィール",
     "index": {
         "welcome": "僕のサイトへようこそ！!"
+    },
+    "header": {
+        "home": "ホーム"
     },
     "about": {
         "title": "僕について",
@@ -127,5 +132,9 @@
                 }
             ]
         }
+    },
+    "announcement": {
+        "title": "お知らせ",
+        "content": "チャットでのユーザー名のサポートが追加されました。"
     }
 }
