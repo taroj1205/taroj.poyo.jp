@@ -3,5 +3,138 @@
     "signInWithGoogle": "Googleでログイン",
     "english": "英語",
     "japanese": "日本語",
-    "moreWaysToLogin": "他のログイン方法追加予定"
+    "moreWaysToLogin": "他のログイン方法追加予定",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "profile": "プロフィール",
+    "index": {
+        "welcome": "僕のサイトへようこそ！!"
+    },
+    "header": {
+        "home": "ホーム"
+    },
+    "about": {
+        "title": "僕について",
+        "birthdate": "2005年12月05日生まれ。東京出身。2011年の震災の後愛媛に引っ越した。",
+        "events": "重要な出来事など",
+        "injury": "2020年7月に膝の怪我（ACL）の手術。",
+        "countries": "住んだことがある国",
+        "country": {
+            "japan": "日本",
+            "philippines": "フィリピン",
+            "newzealand": "ニュージーランド"
+        },
+        "hobbies": "趣味",
+        "hobby": {
+            "kendama": "けん玉",
+            "jumprope": "縄跳び",
+            "programming": "プログラミング",
+            "reading": "ニュース読むこと"
+        },
+        "education": {
+            "schoolHistory": "学校歴",
+            "headings": {
+                "start": "始",
+                "end": "終",
+                "schoolName": "学校名",
+                "grade": "学年",
+                "duration": "期間",
+                "location": "場所"
+            },
+            "schools": [
+                {
+                    "start": "2009年4月",
+                    "end": "2010年5月",
+                    "name": "世田谷幼児生活団",
+                    "grade": "年少～年中",
+                    "duration": "1年ちょい",
+                    "location": "東京"
+                },
+                {
+                    "start": "2010年5月",
+                    "end": "2011年4月",
+                    "name": "砧幼稚園",
+                    "grade": "年中",
+                    "duration": "1年",
+                    "location": "東京"
+                },
+                {
+                    "start": "2011年5月",
+                    "end": "2012年3月",
+                    "name": "若草幼稚園",
+                    "grade": "年長",
+                    "duration": "1年",
+                    "location": "愛媛県"
+                },
+                {
+                    "start": "2012年4月",
+                    "end": "2012年6月",
+                    "name": "垣生小学校",
+                    "grade": "1年生",
+                    "duration": "2か月",
+                    "location": "愛媛県"
+                },
+                {
+                    "start": "2012年6月",
+                    "end": "2016年12月",
+                    "name": "日浦小学校",
+                    "grade": "1年生～5年生",
+                    "duration": "4年半",
+                    "location": "愛媛県"
+                },
+                {
+                    "start": "2017年2月",
+                    "end": "2017年12月",
+                    "name": "Balmoral Intermediate",
+                    "grade": "Year 7",
+                    "duration": "1年",
+                    "location": "オークランド"
+                },
+                {
+                    "start": "2018年1月",
+                    "end": "2018年3月",
+                    "name": "日浦小学校",
+                    "grade": "6年生",
+                    "duration": "3か月",
+                    "location": "愛媛県"
+                },
+                {
+                    "start": "2018年4月",
+                    "end": "2018年7月",
+                    "name": "Takahari English School",
+                    "grade": "-",
+                    "duration": "3か月",
+                    "location": "セブ"
+                },
+                {
+                    "start": "2018年7月",
+                    "end": "2018年7月",
+                    "name": "桑原中学校",
+                    "grade": "1年生",
+                    "duration": "2~3週間",
+                    "location": "愛媛県"
+                },
+                {
+                    "start": "2018年8月",
+                    "end": "2019年5月",
+                    "name": "Centre for International Education British School",
+                    "grade": "Year 8",
+                    "duration": "1年",
+                    "location": "セブ"
+                },
+                {
+                    "start": "2019年8月",
+                    "end": "2023年12月",
+                    "name": "Westlake Boys High School （卒業予定）",
+                    "grade": "Year 9～Year 13",
+                    "duration": "5年",
+                    "location": "オークランド"
+                }
+            ]
+        }
+    },
+    "announcement": {
+        "title": "お知らせ",
+        "content": "チャットでのユーザー名のサポートが追加されました。"
+    }
 }

@@ -1,5 +1,6 @@
 html {
     overflow: hidden;
+    margin: 0;
 }
 
 body {
@@ -8,22 +9,7 @@ body {
     padding: 0;
     width: var(--vvw);
     height: var(--vvh);
-}
-
-.container {
-    display: flex;
-    height: var(--vvh);
-    width: var(--vvw);
-    box-sizing: border-box;
-    margin: 0;
-}
-
-.sidebar {
-    background-color: #0d1117;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: var(--vvh);
+    overflow: hidden;
 }
 
 body.light .sidebar {
@@ -37,230 +23,14 @@ body.light .sidebar {
     margin: 0;
 }
 
-#messages {
-    overflow-y: auto;
-    overflow-x: hidden;
-    flex-grow: 1;
-    scroll-behavior: smooth;
-}
-#messages pre {
-    white-space: pre-wrap; /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
-    white-space: -o-pre-wrap; /* Opera 7 */
-    word-wrap: break-word; /* Internet Explorer 5.5+ */
-}
-#messages pre:not(body.phone) {
-    width: 100%;
-}
-body.phone #messages pre {
-    width: calc(var(--vvw) - 1.5rem);
-}
-#messages p:not(:last-child) {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-#messages p:last-child/*:not(body.phone)*/ {
-    padding-bottom: 20px;
-    margin-bottom: 0;
-}
-#messages pre {
-    margin: 0;
-}
-#messages p[data-server]:hover {
-    background-color: #000;
-}
-body.light #messages p[data-server]:hover {
-    background-color: #282828;
-}
-
-#input-container {
-    bottom: 0;
-    display: flex;
-    width: 100%;
-}
-
-#input-field,
-#send-button {
-    padding: 10px;
-    border: none;
-    background-color: #242424;
-    color: #fff;
-    font-size: 16px;
-    outline: none;
-    z-index: 1;
-}
-
-body.light #input-field {
-    background-color: #363636;
-}
-
-#input-field {
-    flex-grow: 1;
-    display: block;
-    height: 3ch;
-    min-height: 3ch;
-    resize: none;
-    border-radius: 10px 0 0 10px;
-}
-
-#send-button {
-    width: 3rem;
-    border-radius: 0 10px 10px 0;
-    background-color: #4caf50;
-    cursor: pointer;
-    display: block;
-}
-
-#send-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-#hamburger-menu {
-    font-size: 24px;
-    cursor: pointer;
-    height: fit-content;
-    display: none;
-}
-
-body.phone #hamburger-menu {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 10px;
-}
 body.phone #messages {
     padding-top: 30px;
-    width: 100%;
 }
 body.phone #messages p[data-server] {
     padding-left: 15px;
 }
 #messages p[data-server]:not(body.phone) {
     padding-left: 20px;
-}
-
-body.phone .link-preview {
-    max-height: 23rem;
-}
-
-@media only screen and (min-width: 720px) {
-    #messages {
-        padding-top: 20px;
-    }
-
-    .link-preview {
-        max-height: 23rem;
-    }
-}
-
-.form-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.form {
-    flex-grow: 1;
-    padding: 20px;
-}
-
-.tab {
-    cursor: pointer;
-}
-
-.active {
-    color: #4caf50;
-}
-
-.link-preview {
-    max-width: 30rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    background-color: #111111;
-    line-height: 1.2;
-    border-radius: 8px;
-    transition: box-shadow 0.3s ease;
-}
-.noIMG {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 10px;
-}
-
-.link-preview:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.link-preview h3 {
-    margin: 0;
-    margin-top: 10px;
-    font-size: 1em;
-}
-
-.link-preview p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0; /* Reset the margin to remove any extra spacing */
-    font-size: 0.8em;
-    margin-bottom: 10px; /* Add margin to the bottom to separate from the image */
-    width: 95%;
-}
-
-.link-preview p,
-.link-preview h3 {
-    margin-left: 0.5rem;
-    text-align: justify;
-}
-
-.link-preview img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    margin: 0 auto;
-    border-radius: 0 0 8px 8px;
-    align-self: flex-end; /* Align the image to the bottom */
-}
-
-.linkEmbed {
-    display: block;
-    color: #fff;
-}
-
-.linkEmbed h3:hover {
-    text-decoration: underline;
-}
-.linkEmbed {
-    text-decoration: none;
-    width: fit-content;
-}
-
-.linkImage {
-    max-width: calc(var(--vvw) * 0.9);
-    max-height: 300px;
-    display: block;
-    margin-top: 10px;
-}
-.linkImage:not(body.phone),
-.link-preview:not(body.phone) {
-    margin-left: 2ch;
-}
-body.phone .linkImage,
-body.phone .link-preview {
-    margin: 0;
-}
-
-.loading-circle {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin: 0 auto;
-    border: 0.1875rem solid #ccc;
-    border-top-color: #000;
-    border-radius: 50%;
-    animation: spin 1s infinite linear;
 }
 
 @keyframes spin {
@@ -272,58 +42,16 @@ body.phone .link-preview {
     }
 }
 
-.theme-switch {
-    position: relative;
-    width: 60px;
-    height: 30px;
-    background-color: #333;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: auto;
-    bottom: 30px;
-}
-.switch-slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 30px;
-    height: 30px;
-    transition: transform 0.3s ease;
-}
-
-.switch-slider.on {
-    transform: translateX(30px);
-}
-
-.slider-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #888888;
-}
-body.light .slider-icon {
-    color: #ffa500; /* Change the color to your desired color */
-}
-
-.slider-circle {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s ease;
-}
-
-.switch-slider.on .slider-circle {
-    transform: translateX(10px);
-}
-
 .messageText {
     margin-left: 2ch;
+    margin-right: 1ch;
     display: block;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    width: 100%;
+    max-width: 100%;
 }
+
 
 .shake-animation {
     animation: shake 0.5s;

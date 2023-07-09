@@ -3,41 +3,68 @@ import { Analytics } from '@vercel/analytics/react';
 import { I18nextProvider } from 'react-i18next';
 import { AppProps } from 'next/app';
 import i18n from '../../i18n';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/router';
 
-function MyApp({ Component, pageProps }: AppProps) {
+import '../../styles/globals.css';
+import '../styles.css';
+
+import Header from '../components/Header';
+import FloatingBanner from '../components/FloatingBanner';
+
+export default function App({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+    const { pathname, query } = router;
+
     useEffect(() => {
-        const link = document.createElement('link');
-        link.href = '/style/global/style.css';
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        document.head.appendChild(link);
+        const addLink = (href: string) => {
+            const link = document.createElement('link');
+            link.href = `/style/${href}/style.css`;
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            document.head.appendChild(link);
+        };
 
-        const fontStyles = `
-        @font-face {
-            font-family: 'NotoSansJP';
-            src: url('../font/NotoSansJP/static/NotoSansJP-Regular.ttf') format('truetype');
-        }
-        @font-face {
-            font-family: 'NotoSansThin';
-            src: url('../font/NotoSans/NotoSans-Regular.ttf') format('truetype');
-        }
-        @font-face {
-            font-family: 'Textar';
-            src: url('../font/textar/textar.ttf') format('truetype');
-        }
-        `;
-        const style = document.createElement('style');
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(fontStyles));
-        document.head.appendChild(style);
+        const addFontStyles = (
+            fontFamily: string,
+            src: string,
+            format: string
+        ) => {
+            const fontStyles = `
+            @font-face {
+                font-family: '${fontFamily}';
+                src: url('${src}') format('${format}');
+            }
+            `;
+            const style = document.createElement('style');
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(fontStyles));
+            document.head.appendChild(style);
+        };
+
+        addFontStyles(
+            'NotoSansJP',
+            '../font/NotoSansJP/static/NotoSansJP-Regular.ttf',
+            'truetype'
+        );
+        addFontStyles(
+            'NotoSansThin',
+            '../font/NotoSans/NotoSans-Regular.ttf',
+            'truetype'
+        );
+        addFontStyles('Textar', '../font/textar/textar.ttf', 'truetype');
     }, []);
 
+    const shouldRenderHeaderAndBanner = pathname !== '/chat';
+
     return (
-        <I18nextProvider i18n={i18n}>
-            <Component {...pageProps} />
-            <Analytics />
-        </I18nextProvider>
+        <UserProvider>
+            <I18nextProvider i18n={i18n}>
+                {shouldRenderHeaderAndBanner && <Header />}
+                <Component {...pageProps} />
+                {shouldRenderHeaderAndBanner && <FloatingBanner />}
+                <Analytics />
+            </I18nextProvider>
+        </UserProvider>
     );
 }
-
-export default MyApp;

@@ -1,29 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '../components/Header';
-
-const Container = styled.div`
-    padding: 20px;
-`;
-
-const Title = styled.h1`
-    font-size: 24px;
-    margin-top: 20px;
-    color: #fff;
-`;
-
-const Paragraph = styled.p`
-    margin-top: 10px;
-    color: #666;
-`;
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 
 const HomePage = () => {
+    const { t } = useTranslation('translation'); // Specify the translation key
+
     return (
-        <Container>
-            <Header />
-            <Title>Welcome to taroj.poyo.jp</Title>
-            <Paragraph>This is the home page of taroj.poyo.jp.</Paragraph>
-        </Container>
+        <main className="container mx-auto py-10 max-w-6xl">
+            <h2 className="text-4xl">{t('index.welcome')}</h2>
+        </main>
     );
 };
 
