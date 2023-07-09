@@ -14,7 +14,7 @@ import FloatingBanner from '../components/FloatingBanner';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
-    const { pathname, query } = router;
+    const { pathname } = router;
 
     useEffect(() => {
         const addLink = (href: string) => {
