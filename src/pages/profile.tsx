@@ -12,10 +12,6 @@ interface ProfileData {
 const Profile = () => {
     const router = useRouter();
     const { user, error, isLoading } = useUser();
-    const [editingName, setEditingName] = useState(false);
-    const [editingPassword, setEditingPassword] = useState(false);
-    const [newName, setNewName] = useState('');
-    const [newPassword, setNewPassword] = useState('');
     const [userData, setUserData] = useState<ProfileData>({
         email: '',
         username: '',
@@ -29,24 +25,6 @@ const Profile = () => {
         router.push('/api/auth/login');
         return null;
     }
-
-    const handleNameEdit = () => {
-        if (editingName) {
-            // Perform API request to update the name
-            // You can replace the alert with your own logic
-            alert(`Name updated to: ${newName}`);
-        }
-        setEditingName(!editingName);
-    };
-
-    const handlePasswordEdit = () => {
-        if (editingPassword) {
-            // Perform API request to update the password
-            // You can replace the alert with your own logic
-            alert(`Password updated`);
-        }
-        setEditingPassword(!editingPassword);
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -80,28 +58,8 @@ const Profile = () => {
                 src={userData.picture ?? undefined}
                 alt={userData.name ?? undefined}
             />
-            <h2 className="text-2xl font-bold mb-2">
-                {editingName ? (
-                    <input
-                        type="text"
-                        value={newName}
-                        onChange={(e) => setNewName(e.target.value)}
-                    />
-                ) : (
-                    userData.name
-                )}
-            </h2>
-            <p className="text-gray-500">{userData.email}</p>
-            <h2>{userData.username}</h2>
-
-            <div>
-                <button onClick={handleNameEdit}>
-                    {editingName ? 'Save Name' : 'Edit Name'}
-                </button>
-                <button onClick={handlePasswordEdit}>
-                    {editingPassword ? 'Save Password' : 'Edit Password'}
-                </button>
-            </div>
+            <h2>Your username: {userData.username}</h2>
+            <p className="text-gray-500">Your email: {userData.email}</p>
         </div>
     );
 };
