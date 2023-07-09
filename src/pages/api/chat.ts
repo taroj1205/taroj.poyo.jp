@@ -7,6 +7,7 @@ import Filter from 'bad-words';
 console.log('chat.ts running');
 
 const api_key = process.env.AUTH0_API_KEY;
+const base_url = process.env.AUTH0_ISSUER_BASE_URL;
 
 const appId = process.env.PUSHER_APP_ID || '';
 const key = process.env.PUSHER_KEY || '';
@@ -223,7 +224,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
 
                             const fields = 'email,username,picture';
                             const includeFields = true;
-                            const url = `https://taroj.jp.auth0.com/api/v2/users/${userId}?fields=${encodeURIComponent(
+                            const url = `${base_url}/api/v2/users/${userId}?fields=${encodeURIComponent(
                                 fields
                             )}&include_fields=${encodeURIComponent(
                                 includeFields
@@ -240,6 +241,12 @@ const chatHandler: NextApiHandler = async (req, res) => {
 
                             const data = await response.json();
                             const username = data.username;
+                            if (!username || username === '') {
+                                res.status(400).send({
+                                    error: 'Missing username, please go to your profile and add username',
+                                });
+                                return;
+                            }
                             console.log('username: ', username);
                             if (
                                 filter.isProfane(username) ||
