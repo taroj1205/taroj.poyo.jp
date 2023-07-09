@@ -9,7 +9,7 @@ export default function SchoolHistory() {
                 {t('about.education.schoolHistory')}
             </h2>
             <div className="overflow-x-auto w-full">
-                <table className="w-full table-auto rounded-lg overflow-hidden border-collapse text-left transition-shadow duration-300 shadow-md hover:shadow-lg">
+                <table className="w-full table-auto rounded-lg overflow-hidden border-collapse whitespace-nowrap transition-shadow duration-300 shadow-md hover:shadow-lg">
                     <thead>
                         <tr className="bg-teal-700 text-white">
                             <th className="py-2 px-4 rounded-tl-lg">
