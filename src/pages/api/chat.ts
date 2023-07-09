@@ -6,6 +6,8 @@ import Filter from 'bad-words';
 
 console.log('chat.ts running');
 
+const api_key = process.env.AUTH0_API_KEY;
+
 const appId = process.env.PUSHER_APP_ID || '';
 const key = process.env.PUSHER_KEY || '';
 const secret = process.env.PUSHER_SECRET || '';
@@ -171,21 +173,6 @@ const chatHandler: NextApiHandler = async (req, res) => {
                             sent_on: row.sent_on,
                         }));
 
-                        const filteredMessages = defaultMessages.filter(
-                            (message) => {
-                                return (
-                                    filter.isProfane(message.message) ||
-                                    filter.isProfane(message.username)
-                                );
-                            }
-                        );
-
-                        if (filteredMessages.length > 0) {
-                            res.status(400).send({
-                                error: 'Content contains inappropriate words',
-                            });
-                        }
-
                         connection.query(
                             `UPDATE servers SET last_login = ? WHERE nanoid = ?`,
                             [now, server_nanoid],
@@ -219,44 +206,86 @@ const chatHandler: NextApiHandler = async (req, res) => {
             try {
                 console.log('Receiving sent message...');
 
-                let { username, message, server_id } = req.body;
+                let { user, message, server_id } = req.body;
                 console.log(message);
 
                 const now = new Date().toISOString().replace('Z', '');
-                if (!username) {
+                if (!user) {
                     setTimeout(() => {
-                        res.status(400).send({ error: 'Missing username' });
+                        res.status(400).end({ error: 'Missing username' });
                     }, 5000);
                     return;
-                }
+                } else {
+                    const fetchData = async () => {
+                        try {
+                            const userId = req.body.user as string;
+                            console.log(userId);
 
-                console.log(username);
+                            const fields = 'email,username,picture';
+                            const includeFields = true;
+                            const url = `https://taroj.jp.auth0.com/api/v2/users/${userId}?fields=${encodeURIComponent(
+                                fields
+                            )}&include_fields=${encodeURIComponent(
+                                includeFields
+                            )}`;
+                            const headers: RequestInit = {
+                                headers: {
+                                    Authorization: `Bearer ${api_key}`,
+                                },
+                            };
 
-                if (filter.isProfane(username) || filter.isProfane(message)) {
-                    res.status(400).send({
-                        error: 'Username or message contains inappropriate content',
-                    });
-                    return;
-                }
+                            console.log(url, api_key);
 
-                connection.query(
-                    'SELECT id FROM servers WHERE nanoid = ?',
-                    [server_id],
-                    (error, serverResults) => {
-                        if (error) {
-                            console.error('Error retrieving server id:', error);
-                            res.status(500).send(error);
-                            return;
+                            const response = await fetch(url, headers);
+
+                            const data = await response.json();
+                            const username = data.username;
+                            console.log('username: ', username);
+                            if (
+                                filter.isProfane(username) ||
+                                filter.isProfane(message)
+                            ) {
+                                res.status(400).send({
+                                    error: 'Username or message contains inappropriate content',
+                                });
+                                return;
+                            } else {
+                                console.log(username);
+
+                                connection.query(
+                                    'SELECT id FROM servers WHERE nanoid = ?',
+                                    [server_id],
+                                    (error, serverResults) => {
+                                        if (error) {
+                                            console.error(
+                                                'Error retrieving server id:',
+                                                error
+                                            );
+                                            res.status(500).send(error);
+                                            return;
+                                        }
+                                        const serverId =
+                                            serverResults.length > 0
+                                                ? serverResults[0].id
+                                                : null;
+
+                                        // Proceed with message insertion
+                                        insertMessage(
+                                            message,
+                                            now,
+                                            username,
+                                            serverId
+                                        );
+                                    }
+                                );
+                            }
+                        } catch (error) {
+                            console.error(error);
                         }
-                        const serverId =
-                            serverResults.length > 0
-                                ? serverResults[0].id
-                                : null;
+                    };
 
-                        // Proceed with message insertion
-                        insertMessage(message, now, username, serverId);
-                    }
-                );
+                    fetchData();
+                }
 
                 function insertMessage(
                     message: string,
@@ -264,6 +293,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                     username: string,
                     serverId: number
                 ) {
+                    console.log(`Inserting message ${message} for ${username}`);
                     connection.query(
                         `INSERT INTO messages (message, sent_on, username, server_id) VALUES (?, ?, ?, ?)`,
                         [message, sent_on, username, serverId],
