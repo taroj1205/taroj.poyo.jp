@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const api_key = process.env.AUTH0_API_KEY;
+const base_url = process.env.AUTH0_ISSUER_BASE_URL;
 
 interface ProfileData {
     email: string;
@@ -18,7 +19,7 @@ export default async function handler(
         const userId = req.query.user as string;
         const fields = 'email,username,picture';
         const includeFields = true;
-        const url = `https://taroj.jp.auth0.com/api/v2/users/${userId}?fields=${encodeURIComponent(
+        const url = `${base_url}/api/v2/users/${userId}?fields=${encodeURIComponent(
             fields
         )}&include_fields=${encodeURIComponent(includeFields)}`;
         const headers = {
