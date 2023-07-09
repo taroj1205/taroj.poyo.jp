@@ -333,8 +333,7 @@ const Chat = ({ userId }: ChatProps) => {
 
         if (message && message.length < 500) {
             setisLoadingState(true); // set loading state to true
-            const user_id = userId.toString();
-            console.log('User id', user_id);
+            console.log('User id', userId);
             // Send a new message to the server
             fetch('/api/chat', {
                 method: 'POST',
@@ -343,7 +342,7 @@ const Chat = ({ userId }: ChatProps) => {
                 },
                 body: JSON.stringify({
                     method: 'newMessage',
-                    user: user_id,
+                    user: userId,
                     message,
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
