@@ -48,7 +48,7 @@ const Header = () => {
         setIsDropdownOpen(false);
     };
     return (
-        <header className="sticky top-0 left-0 z-100 w-full bg-gray-950 shadow-xl transition-all duration-350 ease">
+        <header className="fixed top-0 left-0 z-100 w-full bg-gray-950 shadow-xl transition-all duration-350 ease">
             <Announcement />
             <nav className="w-full flex items-center justify-between px-0 py-4">
                 <div className="flex items-center font-medium ml-2 md:ml-0 space-x-6 flex-grow justify-center">
