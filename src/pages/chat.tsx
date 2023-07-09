@@ -572,14 +572,10 @@ const ChatPage = () => {
         <>
             <Head>
                 <title>Chat</title>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
-                />
                 <link
                     rel="icon"
                     type="image/png"
-                    href="/image/icon/favicon.ico"
+                    href="/image/icon/chat/favicon.ico"
                 />
                 <link
                     href="/style/chat/style.css"
