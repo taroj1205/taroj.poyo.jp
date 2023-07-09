@@ -33,7 +33,7 @@ export default function SchoolHistory() {
                         </tr>
                     </thead>
                     <tbody>
-                        {Array.from(Array(10).keys()).map((index) => (
+                        {Array.from(Array(11).keys()).map((index) => (
                             <tr
                                 key={index}
                                 className={

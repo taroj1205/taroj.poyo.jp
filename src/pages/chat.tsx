@@ -9,10 +9,9 @@ import { useRouter } from 'next/router';
 
 interface ChatProps {
     userId: string;
-    setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Chat = ({ userId, setUserId }: ChatProps) => {
+const Chat = ({ userId }: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const [isLoadingState, setisLoadingState] = useState(false);
@@ -48,7 +47,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                 });
                 const data = await response.json();
                 console.log(data);
-                if (data.status !== 200) {
+                if (data.status === 400) {
                     errorPopup(data.error.toString());
                     return;
                 }
@@ -308,7 +307,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
 
     const errorPopup = (message: string) => {
         const popup = document.createElement('div') as HTMLDivElement;
-        popup.innerText = message.toString();
+        popup.innerText = message;
         popup.classList.add(
             'popup',
             'fixed',
@@ -324,7 +323,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
         setTimeout(() => {
             document.body.removeChild(popup);
         }, 3000);
-    }
+    };
 
     const sendMessage = () => {
         const message = inputRef.current?.value.trim();
@@ -334,7 +333,8 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
 
         if (message && message.length < 500) {
             setisLoadingState(true); // set loading state to true
-            console.log('User id', userId);
+            const user_id = userId.toString();
+            console.log('User id', user_id);
             // Send a new message to the server
             fetch('/api/chat', {
                 method: 'POST',
@@ -343,12 +343,12 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                 },
                 body: JSON.stringify({
                     method: 'newMessage',
-                    username: userId,
+                    user: user_id,
                     message,
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
             })
-                .then(async (response) =>  {
+                .then(async (response) => {
                     setisLoadingState(false); // set loading state to false
                     console.log(response); // log the response
 
@@ -375,7 +375,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                         const responseJson = await response.json();
                         const message = responseJson.error;
 
-                        errorPopup(message.toString());
+                        errorPopup(message);
                     } else {
                         localStorage.removeItem('input');
                     }
@@ -542,6 +542,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 
 const ChatPage = () => {
     const [userId, setUserId] = useState('');
+    const [userData, setUserData] = useState('');
 
     const { user, error, isLoading } = useUser();
     const router = useRouter();
@@ -552,8 +553,8 @@ const ChatPage = () => {
         if (!user) {
             router.push('/api/auth/login');
         } else {
-            const id = user.nickname ?? ''; //sub
-            setUserId(id);
+            const user_id = user?.sub;
+            setUserId(user_id as string);
             document.getElementById('send-button')?.removeAttribute('disabled');
             document.getElementById('input-field')?.removeAttribute('disabled');
         }
@@ -595,7 +596,7 @@ const ChatPage = () => {
             <ChatHeader />
             <div className="flex flex-col max-h-full w-full max-w-full">
                 <main className="animate-pulse">
-                    <Chat userId={userId} setUserId={setUserId} />
+                    <Chat userId={userId} />
                 </main>
             </div>
         </>
