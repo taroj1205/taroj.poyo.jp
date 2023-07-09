@@ -8,7 +8,7 @@ export default function SchoolHistory() {
             <h2 className="text-2xl mt-4 leading-loose">
                 {t('about.education.schoolHistory')}
             </h2>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto w-full">
                 <table className="w-full table-auto rounded-lg overflow-hidden border-collapse text-left transition-shadow duration-300 shadow-md hover:shadow-lg">
                     <thead>
                         <tr className="bg-teal-700 text-white">
