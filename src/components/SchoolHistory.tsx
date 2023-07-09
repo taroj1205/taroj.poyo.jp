@@ -11,7 +11,7 @@ export default function SchoolHistory() {
             <div className="overflow-x-auto">
                 <table className="w-full table-auto rounded-lg overflow-hidden border-collapse text-left transition-shadow duration-300 shadow-md hover:shadow-lg">
                     <thead>
-                        <tr className="bg-teal-700 text-white">
+                        <tr className="bg-teal-700 text-white sticky">
                             <th className="py-2 px-4 rounded-tl-lg">
                                 {t('about.education.headings.start')}
                             </th>
