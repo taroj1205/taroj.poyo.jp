@@ -48,7 +48,7 @@ const Chat = ({ userId, setUserId }: ChatProps) => {
                 });
                 const data = await response.json();
                 console.log(data);
-                if (data.status !== 200) {
+                if (data.status === 400) {
                     errorPopup(data.error.toString());
                     return;
                 }
