@@ -8,7 +8,8 @@
     "logout": "Logout",
     "profile": "Profile",
     "index": {
-        "welcome": "Welcome to my website!"
+        "welcome": "Welcome to my website!",
+        "title": "Homepage"
     },
     "header": {
         "home": "Home"

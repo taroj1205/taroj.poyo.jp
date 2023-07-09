@@ -587,6 +587,36 @@ const ChatPage = () => {
                     src="/script/chat/script.js"
                 ></script>*/}
                 <script defer src="https://js.pusher.com/7.2/pusher.min.js" />
+                <meta property="og:title" content="taroj.poyo.jp" />
+                <meta
+                    property="og:description"
+                    content="A website for Shintaro Jokagi"
+                />
+                <meta
+                    property="og:image"
+                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
+                />
+                <meta
+                    property="og:image:alt"
+                    content="Shintaro Jokagi Website Thumbnail"
+                />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="taroj.poyo.jp" />
+                <meta
+                    name="twitter:description"
+                    content="A website for Shintaro Jokagi"
+                />
+                <meta
+                    name="twitter:image"
+                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
+                />
+                <meta
+                    name="twitter:image:alt"
+                    content="Shintaro Jokagi Website Thumbnail"
+                />
+                <meta name="twitter:site" content="@taroj1205" />
+                <meta name="twitter:creator" content="@taroj1205" />
+                <title>Chat</title>
             </Head>
             <ChatHeader />
             <div className="flex flex-col max-h-full w-full max-w-full">
