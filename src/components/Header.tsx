@@ -77,7 +77,7 @@ const Header = () => {
                         <span className="text-base">Chat</span>
                     </button>
                 </div>
-                <div className="flex md:absolute md:right-64 items-center justify-end font-medium w-full md:w-auto">
+                <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                     <LanguageSwitch />
                     <div
                         className="ml-4 flex items-center relative"
