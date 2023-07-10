@@ -15,6 +15,7 @@ export default class MyDocument extends Document {
                         type="image/x-icon"
                         href="/image/icon/global/favicon.ico"
                     />
+                    <meta name="theme-color" content="#090808" />
                     {/* Add other custom metadata and tags */}
                 </Head>
                 <body className="max-h-full">
