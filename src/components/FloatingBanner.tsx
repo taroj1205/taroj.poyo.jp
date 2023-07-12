@@ -7,6 +7,7 @@ import {
     FaYoutube,
     FaGithub,
     FaTwitter,
+    FaLinkedin,
     FaPencilAlt,
 } from 'react-icons/fa';
 import { Tooltip } from 'react-tooltip';
@@ -30,7 +31,7 @@ const FloatingBanner = () => {
             )}
 
             {isExpanded && (
-                <div className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10">
+                <div className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300">
                     <div className="flex items-center font-medium">
                         <a
                             className="text-lg flex items-center text-blue-600"
@@ -39,7 +40,7 @@ const FloatingBanner = () => {
                             data-tooltip-id="Facebook"
                             href="https://facebook.com/taroj1205"
                         >
-                            <FaFacebook className="mr-1 text-xl hover:text-blue-600 transition-colors duration-300" />
+                            <FaFacebook className="mr-1 text-xl hover:text-blue-600" />
                         </a>
                         <Tooltip id="Facebook" />
                     </div>
@@ -69,13 +70,13 @@ const FloatingBanner = () => {
                     </div>
                     <div className="flex items-center font-medium">
                         <a
-                            className="text-lg flex items-center text-gray-600"
+                            className="text-lg flex items-center text-white"
                             data-tooltip-content="GitHub"
                             data-tooltip-place="top"
                             data-tooltip-id="GitHub"
                             href="https://github.com/taroj1205"
                         >
-                            <FaGithub className="mr-1 text-xl hover:text-gray-600 transition-colors duration-300" />
+                            <FaGithub className="mr-1 text-xl hover:text-white transition-colors duration-300" />
                         </a>
                         <Tooltip id="GitHub" />
                     </div>
@@ -90,6 +91,18 @@ const FloatingBanner = () => {
                             <FaTwitter className="mr-1 text-xl hover:text-blue-400 transition-colors duration-300" />
                         </a>
                         <Tooltip id="Twitter" />
+                    </div>
+                    <div className="flex items-center font-medium">
+                        <a
+                            className="text-lg flex items-center text-indigo-600"
+                            data-tooltip-content="LinkedIn"
+                            data-tooltip-place="top"
+                            data-tooltip-id="LinkedIn"
+                            href="https://www.linkedin.com/in/taroj1205/"
+                        >
+                            <FaLinkedin className="mr-1 text-xl hover:text-indigo-600 transition-colors duration-300" />
+                        </a>
+                        <Tooltip id="LinkedIn" />
                     </div>
                     <div className="flex items-center font-medium">
                         <a

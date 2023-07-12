@@ -9,7 +9,8 @@
     "profile": "プロフィール",
     "index": {
         "welcome": "僕のサイトへようこそ！!",
-        "title": "ホームページ"
+        "title": "ホームページ",
+        "contact": "連絡先"
     },
     "header": {
         "home": "ホーム"
