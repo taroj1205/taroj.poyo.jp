@@ -9,7 +9,8 @@
     "profile": "Profile",
     "index": {
         "welcome": "Welcome to my website!",
-        "title": "Homepage"
+        "title": "Homepage",
+        "contact": "Contact me"
     },
     "header": {
         "home": "Home"
