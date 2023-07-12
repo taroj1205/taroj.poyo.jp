@@ -26,8 +26,6 @@ export default async function handler(
             Authorization: `Bearer ${api_key}`,
         };
 
-        console.log(url, api_key);
-
         const response = await fetch(url, { headers });
         const data = await response.json();
 

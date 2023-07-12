@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     FaChevronUp,
     FaChevronDown,
@@ -16,6 +17,8 @@ import copy from 'copy-to-clipboard';
 
 const FloatingBanner = () => {
     const [isExpanded, setExpanded] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const { t } = useTranslation('translation');
 
     const handleToggle = () => {
         setExpanded(!isExpanded);
@@ -23,6 +26,10 @@ const FloatingBanner = () => {
 
     const handleCopy = (text: string) => {
         copy(text);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
     };
 
     return (
@@ -37,7 +44,10 @@ const FloatingBanner = () => {
             )}
 
             {isExpanded && (
-                <div className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300 rounded-md" style={{backgroundColor: 'rgba(9, 9, 11, 0.7)'}}>
+                <div
+                    className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300 rounded-md"
+                    style={{ backgroundColor: 'rgba(9, 9, 11, 0.7)' }}
+                >
                     <div className="flex items-center font-medium mt-4">
                         <a
                             className="text-lg flex items-center text-blue-600"
@@ -107,9 +117,9 @@ const FloatingBanner = () => {
                             onClick={() => handleCopy('taroj1205')}
                             style={{ cursor: 'pointer', color: '#7289DA' }} // Apply cursor and color styles
                         >
-                            <FaDiscord className="mr-1 text-xl transition-colors duration-300" />
+                            <FaDiscord className="mr-1 text-xl" />
                         </a>
-                        <Tooltip id="Discord" />
+                        <Tooltip id="Discord" content={copied ? (t('copied')) : ("Discord")} />
                     </div>
                     <div className="flex items-center font-medium">
                         <a
