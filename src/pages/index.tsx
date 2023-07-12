@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 import FloatingBanner from '../components/FloatingBanner';
 import { Tooltip } from 'react-tooltip';
 import copy from 'copy-to-clipboard';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import {
     FaFacebook,
     FaInstagram,
@@ -40,11 +41,60 @@ const ContactLink = ({ hover, icon, label, href }: ContactLinkProps) => {
     );
 };
 
+interface ProfileData {
+    email: string;
+    username: string;
+    picture: string;
+    name: string;
+}
+
 const HomePage = () => {
     const { t } = useTranslation('translation');
+    const { user, error, isLoading } = useUser();
+    const [copied, setCopied] = useState(false);
+
+    const [userData, setUserData] = useState<ProfileData>({
+        email: '',
+        username: '',
+        picture: '',
+        name: '',
+    });
+    
     const handleCopy = (text: string) => {
         copy(text);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userId = user?.sub;
+                const url = `/api/getUser?user=${userId}`;
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user: userId,
+                    }),
+                };
+                const response = await fetch(url, requestOptions);
+                const data = await response.json();
+                setUserData(data);
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (!isLoading) {
+            fetchData();
+        }
+    }, [user, isLoading]);
 
     return (
         <div>
@@ -84,7 +134,10 @@ const HomePage = () => {
             </Head>
 
             <main className="container mx-auto py-10 max-w-6xl">
-                <h2 className="text-4xl">{t('index.welcome')}</h2>
+                <h2 className="text-4xl">
+                    {t('index.welcome')}
+                    {userData.username && ` ${userData.username}`}!
+                </h2>
 
                 <section className="mt-10">
                     <h3 className="text-2xl mb-5">{t('index.contact')}</h3>
@@ -119,7 +172,10 @@ const HomePage = () => {
                                 <FaDiscord className="mr-1 text-xl" />
                                 <span className="ml-2">Discord</span>
                             </a>
-                            <Tooltip id="Discord" />
+                            <Tooltip
+                                id="Discord"
+                                content={copied ? t('copied') : 'Discord'}
+                            />
                         </div>
                         <ContactLink
                             hover="hover:bg-blue-400 hover:text-white text-blue-400"

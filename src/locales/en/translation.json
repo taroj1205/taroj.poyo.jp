@@ -7,8 +7,9 @@
     "login": "Login",
     "logout": "Logout",
     "profile": "Profile",
+    "copied": "Copied!",
     "index": {
-        "welcome": "Welcome to my website!",
+        "welcome": "Welcome",
         "title": "Homepage",
         "contact": "Contact me"
     },

@@ -7,8 +7,9 @@
     "login": "ログイン",
     "logout": "ログアウト",
     "profile": "プロフィール",
+    "copied": "コピーしました",
     "index": {
-        "welcome": "僕のサイトへようこそ！!",
+        "welcome": "ようこそ",
         "title": "ホームページ",
         "contact": "連絡先"
     },
