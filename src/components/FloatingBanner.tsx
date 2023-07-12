@@ -7,16 +7,22 @@ import {
     FaYoutube,
     FaGithub,
     FaTwitter,
+    FaDiscord,
     FaLinkedin,
     FaPencilAlt,
 } from 'react-icons/fa';
 import { Tooltip } from 'react-tooltip';
+import copy from 'copy-to-clipboard';
 
 const FloatingBanner = () => {
     const [isExpanded, setExpanded] = useState(false);
 
     const handleToggle = () => {
         setExpanded(!isExpanded);
+    };
+
+    const handleCopy = (text: string) => {
+        copy(text);
     };
 
     return (
@@ -31,8 +37,8 @@ const FloatingBanner = () => {
             )}
 
             {isExpanded && (
-                <div className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300">
-                    <div className="flex items-center font-medium">
+                <div className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300 rounded-md" style={{backgroundColor: 'rgba(9, 9, 11, 0.7)'}}>
+                    <div className="flex items-center font-medium mt-4">
                         <a
                             className="text-lg flex items-center text-blue-600"
                             data-tooltip-content="Facebook"
@@ -91,6 +97,19 @@ const FloatingBanner = () => {
                             <FaTwitter className="mr-1 text-xl hover:text-blue-400 transition-colors duration-300" />
                         </a>
                         <Tooltip id="Twitter" />
+                    </div>
+                    <div className="flex items-center font-medium">
+                        <a
+                            className="text-lg flex items-center"
+                            data-tooltip-content="Discord"
+                            data-tooltip-place="top"
+                            data-tooltip-id="Discord"
+                            onClick={() => handleCopy('taroj1205')}
+                            style={{ cursor: 'pointer', color: '#7289DA' }} // Apply cursor and color styles
+                        >
+                            <FaDiscord className="mr-1 text-xl transition-colors duration-300" />
+                        </a>
+                        <Tooltip id="Discord" />
                     </div>
                     <div className="flex items-center font-medium">
                         <a

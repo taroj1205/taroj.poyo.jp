@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 import FloatingBanner from '../components/FloatingBanner';
 import { Tooltip } from 'react-tooltip';
+import copy from 'copy-to-clipboard';
 import {
     FaFacebook,
     FaInstagram,
     FaYoutube,
-    FaGithub,
     FaTwitter,
     FaLinkedin,
+    FaDiscord,
 } from 'react-icons/fa';
 
 import { IconType } from 'react-icons';
@@ -41,6 +42,9 @@ const ContactLink = ({ hover, icon, label, href }: ContactLinkProps) => {
 
 const HomePage = () => {
     const { t } = useTranslation('translation');
+    const handleCopy = (text: string) => {
+        copy(text);
+    };
 
     return (
         <div>
@@ -103,12 +107,20 @@ const HomePage = () => {
                             label="YouTube"
                             href="https://www.youtube.com/@user-le6xc5nx5k"
                         />
-                        <ContactLink
-                            hover="hover:bg-white hover:text-black text-white"
-                            icon={<FaGithub className="mr-1 text-xl" />}
-                            label="GitHub"
-                            href="https://github.com/taroj1205"
-                        />
+                        <div className="flex items-center">
+                            <a
+                                className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:bg-white hover:text-black text-white`}
+                                data-tooltip-content="Discord"
+                                data-tooltip-place="top"
+                                data-tooltip-id="Discord"
+                                style={{ cursor: 'pointer', color: '#7289DA' }}
+                                onClick={() => handleCopy('taroj1205')}
+                            >
+                                <FaDiscord className="mr-1 text-xl" />
+                                <span className="ml-2">Discord</span>
+                            </a>
+                            <Tooltip id="Discord" />
+                        </div>
                         <ContactLink
                             hover="hover:bg-blue-400 hover:text-white text-blue-400"
                             icon={<FaTwitter className="mr-1 text-xl" />}
