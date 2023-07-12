@@ -552,7 +552,7 @@ const ChatPage = () => {
         if (!user) {
             router.push('/api/auth/login');
         } else {
-            const user_id = user?.sub;
+            const user_id = user.sub;
             if (user_id === undefined || user_id === '' || !user_id) { return; }
             else {
                 setUserId(user_id as string);
