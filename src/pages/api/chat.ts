@@ -3,10 +3,10 @@ import Pusher from 'pusher';
 import mysql from 'mysql';
 import { nanoid } from 'nanoid';
 import Filter from 'bad-words';
+import request from 'request';
 
 console.log('chat.ts running');
 
-const api_key = process.env.AUTH0_API_KEY;
 const base_url = process.env.AUTH0_ISSUER_BASE_URL;
 
 const appId = process.env.PUSHER_APP_ID || '';
@@ -222,77 +222,94 @@ const chatHandler: NextApiHandler = async (req, res) => {
                             const userId = req.body.user as string;
                             console.log(userId);
 
-                            const fields = 'email,username,picture';
-                            const includeFields = true;
-                            const url = `${base_url}/api/v2/users/${userId}?fields=${encodeURIComponent(
-                                fields
-                            )}&include_fields=${encodeURIComponent(
-                                includeFields
-                            )}`;
-                            const headers: RequestInit = {
-                                headers: {
-                                    Authorization: `Bearer ${api_key}`,
-                                },
+                            const options = {
+                                method: 'POST',
+                                url: 'https://poyo.jp.auth0.com/oauth/token',
+                                headers: { 'content-type': 'application/json' },
+                                body: '{"client_id":"iuNeYwRJKZh3IO1jrAu69ztPE3o7AV9m","client_secret":"XefJ4_QS2gR2IptiooWSem6Y3qFu8-yvV60AU-SQ5BylRaAE6wTGTiQS-Bltq5fW","audience":"https://poyo.jp.auth0.com/api/v2/","grant_type":"client_credentials"}',
                             };
 
-                            console.log(url, api_key);
+                            request(
+                                options,
+                                async function (error, response: any, body) {
+                                    if (error) throw new Error(error);
 
-                            const response = await fetch(url, headers);
+                                    const api_key =
+                                        JSON.parse(body).access_token;
 
-                            const data = await response.json();
-                            const username = data.username;
-                            if (!username || username === '') {
-                                res.status(400).send({
-                                    error: 'Missing username, please go to your profile and add username',
-                                });
-                                return;
-                            }
-                            console.log('username: ', username);
-                            if (
-                                filter.isProfane(username) ||
-                                filter.isProfane(message)
-                            ) {
-                                res.status(400).send({
-                                    error: 'Username or message contains inappropriate content',
-                                });
-                                return;
-                            } else {
-                                console.log(username);
+                                    const fields = 'email,username,picture';
+                                    const includeFields = true;
+                                    const url = `${base_url}/api/v2/users/${userId}?fields=${encodeURIComponent(
+                                        fields
+                                    )}&include_fields=${encodeURIComponent(
+                                        includeFields
+                                    )}`;
+                                    const headers: RequestInit = {
+                                        headers: {
+                                            Authorization: `Bearer ${api_key}`,
+                                        },
+                                    };
 
-                                connection.query(
-                                    'SELECT id FROM servers WHERE nanoid = ?',
-                                    [server_id],
-                                    (error, serverResults) => {
-                                        if (error) {
-                                            console.error(
-                                                'Error retrieving server id:',
-                                                error
-                                            );
-                                            res.status(500).send(error);
-                                            return;
-                                        }
-                                        const serverId =
-                                            serverResults.length > 0
-                                                ? serverResults[0].id
-                                                : null;
+                                    console.log(url);
 
-                                        // Proceed with message insertion
-                                        insertMessage(
-                                            message,
-                                            now,
-                                            username,
-                                            serverId
+                                    const responseData = await fetch(url, headers);
+
+                                    const data = await responseData.json();
+                                    const username = data.username;
+                                    if (!username || username === '') {
+                                        res.status(400).send({
+                                            error: 'Missing username, please go to your profile and add username',
+                                        });
+                                        return;
+                                    }
+                                    console.log('username: ', username);
+                                    if (
+                                        filter.isProfane(username) ||
+                                        filter.isProfane(message)
+                                    ) {
+                                        res.status(400).send({
+                                            error: 'Username or message contains inappropriate content',
+                                        });
+                                        return;
+                                    } else {
+                                        console.log(username);
+
+                                        connection.query(
+                                            'SELECT id FROM servers WHERE nanoid = ?',
+                                            [server_id],
+                                            (error, serverResults) => {
+                                                if (error) {
+                                                    console.error(
+                                                        'Error retrieving server id:',
+                                                        error
+                                                    );
+                                                    res.status(500).send(error);
+                                                    return;
+                                                }
+                                                const serverId =
+                                                    serverResults.length > 0
+                                                        ? serverResults[0].id
+                                                        : null;
+
+                                                // Proceed with message insertion
+                                                insertMessage(
+                                                    message,
+                                                    now,
+                                                    username,
+                                                    serverId
+                                                );
+                                            }
                                         );
                                     }
-                                );
-                            }
+                                }
+                            );
                         } catch (error) {
-                            console.error(error);
-                        }
-                    };
+                                console.error(error);
+                            }
+                        };
 
-                    fetchData();
-                }
+                        fetchData();
+                    }
 
                 function insertMessage(
                     message: string,

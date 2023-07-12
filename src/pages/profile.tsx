@@ -19,14 +19,14 @@ const Profile = () => {
         name: '',
     });
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error occurred: {error.message}</div>;
-    if (!user) {
-        router.push('/api/auth/login');
-        return null;
-    }
-
     useEffect(() => {
+        if (isLoading) return;
+        if (error) return;
+        if (!user) {
+            router.push('/api/auth/login');
+            return;
+        }
+
         const fetchData = async () => {
             try {
                 const userId = user.sub;
@@ -49,7 +49,11 @@ const Profile = () => {
         };
 
         fetchData();
-    }, []);
+    }, [isLoading, error, user, router]);
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error occurred: {error.message}</div>;
+    if (!user) return null;
 
     return (
         <div className="flex flex-col items-center">
