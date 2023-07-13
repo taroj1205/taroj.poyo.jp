@@ -214,6 +214,7 @@ const Chat = ({ userId }: ChatProps) => {
                 const messageString = message.message;
                 const username = message.username;
                 const sent_on = message.sent_on;
+                const profilePicture = message.profilePicture;
 
                 const messageText = await wrapCodeInTags(messageString);
 
@@ -264,7 +265,22 @@ const Chat = ({ userId }: ChatProps) => {
                     );
                 }
 
-                const formattedHtml = `${pCount} ${username}: ${formattedSentOn}<br /><span class="messageText max-w-[90%]">${formattedMessageText}</span>`;
+const formattedHtml = `
+<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
+  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2">
+  <div>
+    <div class="flex items-center">
+      <span class="font-semibold text-sm">${pCount} ${username}</span>
+      <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
+    </div>
+    <div text-sm">
+      <span class="messageText whitespace-pre-line text-left max-w-[90%]">${formattedMessageText}</span>
+    </div>
+  </div>
+</div>
+
+`;
+
 
                 const p = document.createElement('p') as HTMLParagraphElement;
 
@@ -331,7 +347,7 @@ const Chat = ({ userId }: ChatProps) => {
             inputRef.current.value = '';
         }
 
-        if (message && message.length < 500) {
+        if (message && message.length < 500 && userId) {
             setisLoadingState(true); // set loading state to true
             console.log('User id', userId);
             // Send a new message to the server
@@ -399,12 +415,14 @@ const Chat = ({ userId }: ChatProps) => {
                     }
                 });
         } else {
-            inputRef.current?.classList.add('shake-animation'); // add shake animation class if message is empty
-            setTimeout(() => {
-                inputRef.current?.classList.remove('shake-animation'); // remove shake animation class after 0.5s
-            }, 500);
+            if (userId) {
+                inputRef.current?.classList.add('shake-animation'); // add shake animation class if message is empty
+                setTimeout(() => {
+                    inputRef.current?.classList.remove('shake-animation'); // remove shake animation class after 0.5s
+                }, 500);
+                inputRef?.current?.focus();
+            }
         }
-        inputRef?.current?.focus();
     };
 
     return (
@@ -485,7 +503,7 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden flex-grow pb-0 sm:pb-3 md:pb-30 whitespace-pre-wrap"
+                className="overflow-y-auto overflow-x-hidden flex-grow pb-0 sm:pb-3 md:pb-30"
             >
                 {/* Messages content */}
             </div>
@@ -553,11 +571,16 @@ const ChatPage = () => {
             router.push('/api/auth/login');
         } else {
             const user_id = user.sub;
-            if (user_id === undefined || user_id === '' || !user_id) { return; }
-            else {
+            if (user_id === undefined || user_id === '' || !user_id) {
+                return;
+            } else if (user_id.length > 0) {
                 setUserId(user_id as string);
-                document.getElementById('send-button')?.removeAttribute('disabled');
-                document.getElementById('input-field')?.removeAttribute('disabled');
+                document
+                    .getElementById('send-button')
+                    ?.removeAttribute('disabled');
+                document
+                    .getElementById('input-field')
+                    ?.removeAttribute('disabled');
             }
         }
     }, [user, isLoading, error, router]);

@@ -8,6 +8,8 @@ import request from 'request';
 console.log('chat.ts running');
 
 const base_url = process.env.AUTH0_ISSUER_BASE_URL;
+const client_secret = process.env.AUTH0_CLIENT_SECRET_TOKEN;
+const client_id = process.env.AUTH0_CLIENT_ID_TOKEN;
 
 const appId = process.env.PUSHER_APP_ID || '';
 const key = process.env.PUSHER_KEY || '';
@@ -67,7 +69,8 @@ const chatHandler: NextApiHandler = async (req, res) => {
                             message TEXT NOT NULL,
                             sent_on TIMESTAMP NOT NULL,
                             username TEXT NOT NULL,
-                            server_id INT
+                            server_id INT,
+                            userId TEXT NOT NULL
                             )`,
                             (error) => {
                                 if (error) {
@@ -91,6 +94,9 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 }
             );
         });
+        const cachedUserdata: {
+            [key: string]: { username: string; profilePicture: string };
+        } = {};
 
         if (req.body.method === 'defaultMessages') {
             try {
@@ -109,12 +115,12 @@ const chatHandler: NextApiHandler = async (req, res) => {
 
                     connection.query(
                         `INSERT INTO servers (server_name, created_at, last_login, nanoid)
-                        SELECT 'default', ?, NULL, ?
-                        FROM DUAL 
-                        WHERE NOT EXISTS (
-                        SELECT * FROM servers LIMIT 1
-                        )
-                        ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
+          SELECT 'default', ?, NULL, ?
+          FROM DUAL 
+          WHERE NOT EXISTS (
+            SELECT * FROM servers LIMIT 1
+          )
+          ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
                         [now, generatedNanoid],
                         (error, result) => {
                             if (error) {
@@ -135,17 +141,17 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 }
 
                 connection.query(
-                    `SELECT messages.id, messages.message, messages.username, messages.sent_on, servers.id AS id
-                    FROM messages
-                    JOIN servers ON messages.server_id = servers.id
-                    WHERE servers.id = (SELECT id FROM servers WHERE nanoid = ?)`,
+                    `SELECT messages.id, messages.message, messages.userId, messages.sent_on, servers.id AS id
+        FROM messages
+        JOIN servers ON messages.server_id = servers.id
+        WHERE servers.id = (SELECT id FROM servers WHERE nanoid = ?)`,
                     server_nanoid,
-                    (
+                    async (
                         error,
                         results: {
                             id: string;
                             message: string;
-                            username: string;
+                            userId: string;
                             sent_on: Date;
                         }[]
                     ) => {
@@ -160,39 +166,107 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                     message: '',
                                     username: '',
                                     sent_on: '',
+                                    profilePicture: '',
                                 },
                             });
                             return;
                         }
 
                         console.log(results);
+                        const options = {
+                            method: 'POST',
+                            url: 'https://poyo.jp.auth0.com/oauth/token',
+                            headers: { 'content-type': 'application/json' },
+                            body: `{"client_id":"${client_id}","client_secret":"${client_secret}","audience":"https://poyo.jp.auth0.com/api/v2/","grant_type":"client_credentials"}`,
+                        };
 
-                        const defaultMessages = results.map((row) => ({
-                            id: server_nanoid,
-                            message: row.message,
-                            username: row.username,
-                            sent_on: row.sent_on,
-                        }));
+                        request(
+                            options,
+                            async function (error, response: any, body) {
+                                if (error) throw new Error(error);
+                                const api_key = JSON.parse(body).access_token;
+                                const defaultMessages: {
+                                    id: string;
+                                    message: string;
+                                    userId: string;
+                                    sent_on: Date;
+                                    username?: string;
+                                    profilePicture?: string;
+                                }[] = [];
 
-                        connection.query(
-                            `UPDATE servers SET last_login = ? WHERE nanoid = ?`,
-                            [now, server_nanoid],
-                            (error) => {
-                                if (error) {
-                                    console.error(
-                                        'Error updating last_login:',
-                                        error
-                                    );
-                                    throw new Error(
-                                        'Failed to update last_login'
-                                    );
+                                for (const row of results) {
+                                    const { id, message, userId, sent_on } =
+                                        row;
+                                    if (userId in cachedUserdata) {
+                                        // Use cached user data if available
+                                        const userData = cachedUserdata[userId];
+                                        defaultMessages.push({
+                                            id: server_nanoid,
+                                            message,
+                                            userId,
+                                            sent_on,
+                                            username: userData.username,
+                                            profilePicture:
+                                                userData.profilePicture,
+                                        });
+                                    } else {
+                                        try {
+                                            const userData =
+                                                await fetchUserDataFromAuth0(
+                                                    userId,
+                                                    api_key
+                                                );
+                                            cachedUserdata[userId] = userData; // Cache the user data
+                                            defaultMessages.push({
+                                                id: server_nanoid,
+                                                message,
+                                                userId,
+                                                sent_on,
+                                                username: userData.username,
+                                                profilePicture:
+                                                    userData.profilePicture,
+                                            });
+                                        } catch (error) {
+                                            console.error(
+                                                `Error retrieving user data for userId '${userId}':`,
+                                                error
+                                            );
+                                            defaultMessages.push({
+                                                id: server_nanoid,
+                                                message,
+                                                userId,
+                                                sent_on,
+                                            });
+                                        }
+                                    }
                                 }
 
-                                console.log(defaultMessages);
+                                connection.query(
+                                    `UPDATE servers SET last_login = ? WHERE nanoid = ?`,
+                                    [now, server_nanoid],
+                                    (error) => {
+                                        if (error) {
+                                            console.error(
+                                                'Error updating last_login:',
+                                                error
+                                            );
+                                            throw new Error(
+                                                'Failed to update last_login'
+                                            );
+                                        }
 
-                                res.status(200).json({
-                                    messages: defaultMessages,
-                                });
+                                        console.log(
+                                            'Default messages:',
+                                            defaultMessages
+                                        );
+
+                                        res.status(200).json({
+                                            messages: defaultMessages.map(
+                                                ({ userId, ...rest }) => rest
+                                            ),
+                                        });
+                                    }
+                                );
                             }
                         );
                     }
@@ -226,36 +300,39 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                 method: 'POST',
                                 url: 'https://poyo.jp.auth0.com/oauth/token',
                                 headers: { 'content-type': 'application/json' },
-                                body: '{"client_id":"iuNeYwRJKZh3IO1jrAu69ztPE3o7AV9m","client_secret":"XefJ4_QS2gR2IptiooWSem6Y3qFu8-yvV60AU-SQ5BylRaAE6wTGTiQS-Bltq5fW","audience":"https://poyo.jp.auth0.com/api/v2/","grant_type":"client_credentials"}',
+                                body: `{"client_id":"${client_id}","client_secret":"${client_secret}","audience":"https://poyo.jp.auth0.com/api/v2/","grant_type":"client_credentials"}`,
                             };
 
                             request(
                                 options,
                                 async function (error, response: any, body) {
                                     if (error) throw new Error(error);
-
                                     const api_key =
                                         JSON.parse(body).access_token;
-
+                                    console.log(req.query);
+                                    const userId = req.body.user as string;
                                     const fields = 'email,username,picture';
                                     const includeFields = true;
-                                    const url = `${base_url}/api/v2/users/${userId}?fields=${encodeURIComponent(
+                                    const url = `${base_url}/api/v2/users/${encodeURIComponent(
+                                        userId
+                                    )}?fields=${encodeURIComponent(
                                         fields
                                     )}&include_fields=${encodeURIComponent(
                                         includeFields
                                     )}`;
-                                    const headers: RequestInit = {
-                                        headers: {
-                                            Authorization: `Bearer ${api_key}`,
-                                        },
+
+                                    const headers = {
+                                        Authorization: `Bearer ${api_key}`,
                                     };
 
-                                    console.log(url);
-
-                                    const responseData = await fetch(url, headers);
-
+                                    const responseData = await fetch(url, {
+                                        headers,
+                                    });
                                     const data = await responseData.json();
+                                    console.log(data);
                                     const username = data.username;
+                                    const picture = data.picture;
+                                    console.log(username);
                                     if (!username || username === '') {
                                         res.status(400).send({
                                             error: 'Missing username, please go to your profile and add username',
@@ -295,8 +372,10 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                                 insertMessage(
                                                     message,
                                                     now,
+                                                    userId,
+                                                    serverId,
                                                     username,
-                                                    serverId
+                                                    picture
                                                 );
                                             }
                                         );
@@ -304,23 +383,26 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                 }
                             );
                         } catch (error) {
-                                console.error(error);
-                            }
-                        };
+                            console.error(error);
+                            res.end(400).send(error);
+                        }
+                    };
 
-                        fetchData();
-                    }
+                    fetchData();
+                }
 
                 function insertMessage(
                     message: string,
                     sent_on: string,
+                    userId: string,
+                    serverId: number,
                     username: string,
-                    serverId: number
+                    picture: string
                 ) {
-                    console.log(`Inserting message ${message} for ${username}`);
+                    console.log(`Inserting message ${message} for ${userId}`);
                     connection.query(
-                        `INSERT INTO messages (message, sent_on, username, server_id) VALUES (?, ?, ?, ?)`,
-                        [message, sent_on, username, serverId],
+                        `INSERT INTO messages (message, sent_on, username, server_id, userId) VALUES (?, ?, ?, ?, ?)`,
+                        [message, sent_on, username, serverId, userId],
                         async (error, results) => {
                             if (error) {
                                 console.error(
@@ -338,6 +420,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                 message,
                                 username,
                                 sent_on: now,
+                                profilePicture: picture,
                             };
                             await pusher.trigger(
                                 'chat',
@@ -352,6 +435,35 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 console.error('Error inserting message:', error);
                 res.status(500).send(error);
             }
+        }
+        async function fetchUserDataFromAuth0(
+            userId: string,
+            api_key: string
+        ): Promise<{ username: string; profilePicture: string }> {
+            return new Promise(async (resolve, reject) => {
+                const fields = 'username,picture';
+                const includeFields = true;
+                const url = `${base_url}/api/v2/users/${encodeURIComponent(
+                    userId
+                )}?fields=${encodeURIComponent(
+                    fields
+                )}&include_fields=${encodeURIComponent(includeFields)}`;
+                const headers = {
+                    Authorization: `Bearer ${api_key}`,
+                };
+
+                try {
+                    const responseData = await fetch(url, { headers });
+                    const data = await responseData.json();
+
+                    const username = data.username;
+                    const profilePicture = data.picture;
+
+                    resolve({ username, profilePicture });
+                } catch (error) {
+                    reject(error);
+                }
+            });
         }
     } catch (error) {
         console.error('Error connecting to the database:', error);

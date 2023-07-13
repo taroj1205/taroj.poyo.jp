@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import request from 'request';
 
 const base_url = process.env.AUTH0_ISSUER_BASE_URL;
+const client_id = process.env.AUTH0_CLIENT_ID_TOKEN;
+const client_secret = process.env.AUTH0_CLIENT_SECRET_TOKEN;
 
 interface ProfileData {
     email: string;
@@ -19,7 +21,7 @@ export default async function handler(
             method: 'POST',
             url: 'https://poyo.jp.auth0.com/oauth/token',
             headers: { 'content-type': 'application/json' },
-            body: '{"client_id":"iuNeYwRJKZh3IO1jrAu69ztPE3o7AV9m","client_secret":"XefJ4_QS2gR2IptiooWSem6Y3qFu8-yvV60AU-SQ5BylRaAE6wTGTiQS-Bltq5fW","audience":"https://poyo.jp.auth0.com/api/v2/","grant_type":"client_credentials"}',
+            body: `{"client_id":"${client_id}","client_secret":"${client_secret}","audience":"https://poyo.jp.auth0.com/api/v2/","grant_type":"client_credentials"}`,
         };
 
         request(options, async function (error, response: any, body) {
