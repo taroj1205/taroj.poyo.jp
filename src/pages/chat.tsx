@@ -480,15 +480,6 @@ const Main: React.FC<MainProps> = ({
         };
     }, []);
 
-    useEffect(
-        () => {
-            scrollToBottom();
-        },
-        [
-            /* any dependencies that may affect the number of <p> in #messages */
-        ]
-    );
-
     const scrollToBottom = () => {
         if (messagesRef.current) {
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
@@ -541,7 +532,7 @@ const Main: React.FC<MainProps> = ({
                     <button
                         id="send-button"
                         aria-label="send button"
-                        onClick={sendMessage}
+                        onClick={!isLoadingState ? sendMessage : undefined}
                         disabled={isLoadingState}
                         className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                     >
