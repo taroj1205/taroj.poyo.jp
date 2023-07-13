@@ -155,18 +155,18 @@ const HomePage = () => {
                             href="https://instagram.com/taroj1205"
                         />
                         <ContactLink
-                            hover="hover:bg-white hover:text-red-600 text-red-600"
+                            hover="hover:text-white hover:bg-red-600 text-red-600"
                             icon={<FaYoutube className="mr-1 text-xl" />}
                             label="YouTube"
                             href="https://www.youtube.com/@user-le6xc5nx5k"
                         />
                         <div className="flex items-center">
                             <a
-                                className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:bg-white hover:text-black text-white`}
+                                className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:text-white hover:bg-[#7289DA] text-[#7289DA]`}
                                 data-tooltip-content="Discord"
                                 data-tooltip-place="top"
                                 data-tooltip-id="Discord"
-                                style={{ cursor: 'pointer', color: '#7289DA' }}
+                                style={{ cursor: 'pointer' }}
                                 onClick={() => handleCopy('taroj1205')}
                             >
                                 <FaDiscord className="mr-1 text-xl" />
