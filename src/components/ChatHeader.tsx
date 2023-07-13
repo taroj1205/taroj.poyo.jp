@@ -16,13 +16,13 @@ const ChatHeader = () => {
     };
 
     return (
-        <header className="absolute top-0 h-20">
-            <div className="fixed z-100 w-full bg-transparent shadow-xl transition-all duration-350 ease">
+        <header className="relative h-[4.5rem]">
+            <div className="fixed top-0 z-100 w-full bg-transparent shadow-xl transition-all duration-350 ease">
                 {/* Announcement section */}
                 <Announcement />
 
                 {/* Navigation */}
-                <nav className="w-full flex items-center bg-gray-950 justify-between p-0">
+                <nav className="w-full flex items-center bg-gray-950 justify-between p-0 h-10">
                     <div className="flex ml-2 items-center font-medium space-x-2 flex-grow justify-center">
                         <button
                             aria-label="go to home"

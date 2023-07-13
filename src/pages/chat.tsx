@@ -537,7 +537,7 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col pt-[4.5rem] flex-grow h-screen max-h-full">
+        <div className="flex flex-col flex-grow h-screen max-h-full">
             <div
                 id="messages"
                 ref={messagesRef}
