@@ -265,7 +265,7 @@ const Chat = ({ userId }: ChatProps) => {
                     );
                 }
 
-const formattedHtml = `
+                const formattedHtml = `
 <div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
   <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2">
   <div>
@@ -280,7 +280,6 @@ const formattedHtml = `
 </div>
 
 `;
-
 
                 const p = document.createElement('p') as HTMLParagraphElement;
 
@@ -347,9 +346,12 @@ const formattedHtml = `
             inputRef.current.value = '';
         }
 
-        if (message && message.length < 500 && userId) {
+        if (message && message.length < 500) {
             setisLoadingState(true); // set loading state to true
             console.log('User id', userId);
+            if (!userId) {
+                errorPopup('Could not indentify you... reloading...');
+            }
             // Send a new message to the server
             fetch('/api/chat', {
                 method: 'POST',
@@ -571,9 +573,9 @@ const ChatPage = () => {
             router.push('/api/auth/login');
         } else {
             const user_id = user.sub;
-            if (user_id === undefined || user_id === '' || !user_id) {
+            if (!user_id) {
                 return;
-            } else if (user_id.length > 0) {
+            } else {
                 setUserId(user_id as string);
                 document
                     .getElementById('send-button')
