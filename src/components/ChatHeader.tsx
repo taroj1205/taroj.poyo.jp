@@ -16,7 +16,7 @@ const ChatHeader = () => {
     };
 
     return (
-        <header className="fixed top-0 z-100 w-full bg-transparent shadow-xl transition-all duration-350 ease h-[4.5rem]">
+        <header className="absolute top-0 z-100 w-full bg-transparent shadow-xl transition-all duration-350 ease h-[4.5rem]">
                 {/* Announcement section */}
                 <Announcement />
 
