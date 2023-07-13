@@ -276,7 +276,7 @@ const Chat = ({ userId }: ChatProps) => {
   <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2">
   <div>
     <div class="flex items-center">
-      <span class="font-semibold text-sm">${pCount} ${username}</span>
+      <span class="text-sm">${pCount} <span class="font-semibold">${username}</span></span>
       <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
     </div>
     <div text-sm">
@@ -311,6 +311,20 @@ const Chat = ({ userId }: ChatProps) => {
             inputRef.current.rows = 1;
             if (input) {
                 inputRef.current.value = input;
+                        let rows = input.split('\n').length;
+            const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
+            const isMobileDevice =
+                mobileMediaQuery.matches ||
+                    typeof window.orientation !== 'undefined';
+                
+                        if (rows > 5 && isMobileDevice) {
+                            rows = 5;
+                        } else if (rows > 10) {
+                            rows = 10;
+                        }
+
+                
+                inputRef.current.rows = rows;
             }
         }
 
@@ -462,6 +476,7 @@ const Main: React.FC<MainProps> = ({
 }) => {
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
+    const [inputContainerHeight, setInputContainerHeight] = useState(0);
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -473,6 +488,12 @@ const Main: React.FC<MainProps> = ({
         };
 
         checkIfMobile();
+
+        const inputContainerHeight =
+            inputRef.current?.parentElement?.offsetHeight;
+        setInputContainerHeight(
+            inputContainerHeight ? inputContainerHeight + 20 : 0
+        );
 
         window.addEventListener('resize', checkIfMobile);
         return () => {
@@ -487,14 +508,32 @@ const Main: React.FC<MainProps> = ({
     };
 
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        let bottom = false;
+        if (
+            messagesRef.current?.scrollTop === messagesRef.current?.scrollHeight
+        ) {
+            bottom = true;
+        }
         const target = event.target;
         let rows = target.value.split('\n').length;
+
         if (rows > 5 && isMobile) {
             rows = 5;
         } else if (rows > 10) {
             rows = 10;
         }
+
         target.rows = rows;
+
+        const inputContainerHeight =
+            inputRef.current?.parentElement?.offsetHeight;
+        setInputContainerHeight(
+            inputContainerHeight ? inputContainerHeight + 20 : 0
+        );
+
+        if (bottom && messagesRef.current) {
+            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+        }
     };
 
     return (
@@ -502,7 +541,8 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden flex-grow pb-20 sm:pb-30 md:pb-30"
+                className="overflow-y-auto overflow-x-hidden pb-30"
+                style={{ height: `calc(100% - ${inputContainerHeight}px)` }}
             >
                 {/* Messages content */}
             </div>
