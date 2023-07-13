@@ -33,15 +33,6 @@ body.phone #messages p[data-server] {
     padding-left: 20px;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 .messageText {
     margin-left: 2ch;
     margin-right: 1ch;
@@ -52,6 +43,14 @@ body.phone #messages p[data-server] {
     max-width: 100%;
 }
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .shake-animation {
     animation: shake 0.5s;
