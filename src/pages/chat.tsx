@@ -57,6 +57,12 @@ const Chat = ({ userId }: ChatProps) => {
                 document.getElementById(read)?.scrollIntoView();
                 const mainElement = document.querySelector('main');
                 mainElement?.classList.remove('animate-pulse');
+                document
+                    .getElementById('send-button')
+                    ?.removeAttribute('disabled');
+                document
+                    .getElementById('input-field')
+                    ?.removeAttribute('disabled');
             } catch (error: any) {
                 console.error(
                     'An error occurred while fetching default messages:',
@@ -474,15 +480,6 @@ const Main: React.FC<MainProps> = ({
         };
     }, []);
 
-    useEffect(
-        () => {
-            scrollToBottom();
-        },
-        [
-            /* any dependencies that may affect the number of <p> in #messages */
-        ]
-    );
-
     const scrollToBottom = () => {
         if (messagesRef.current) {
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
@@ -505,7 +502,7 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden flex-grow pb-0 sm:pb-3 md:pb-30"
+                className="overflow-y-auto overflow-x-hidden flex-grow pb-20 sm:pb-30 md:pb-30"
             >
                 {/* Messages content */}
             </div>
@@ -535,7 +532,7 @@ const Main: React.FC<MainProps> = ({
                     <button
                         id="send-button"
                         aria-label="send button"
-                        onClick={sendMessage}
+                        onClick={!isLoadingState ? sendMessage : undefined}
                         disabled={isLoadingState}
                         className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                     >
@@ -577,12 +574,6 @@ const ChatPage = () => {
                 return;
             } else {
                 setUserId(user_id as string);
-                document
-                    .getElementById('send-button')
-                    ?.removeAttribute('disabled');
-                document
-                    .getElementById('input-field')
-                    ?.removeAttribute('disabled');
             }
         }
     }, [user, isLoading, error, router]);

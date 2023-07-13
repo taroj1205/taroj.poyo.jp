@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaCog } from 'react-icons/fa';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
@@ -64,6 +64,14 @@ const Profile = () => {
                         >
                             <FaUser className="mr-2 inline" />
                             {t('profile')}
+                        </button>
+                        <button
+                            aria-label="go to settings"
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={() => handleLink('/settings')}
+                        >
+                            <FaCog className="mr-2 inline" />
+                            {t('settings')}
                         </button>
                         <button
                             aria-label="logout"
