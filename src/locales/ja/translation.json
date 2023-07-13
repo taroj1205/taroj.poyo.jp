@@ -7,7 +7,17 @@
     "login": "ログイン",
     "logout": "ログアウト",
     "profile": "プロフィール",
+    "settings": "設定",
+    "change": {
+        "profile picture": "プロフィール画像を変更",
+        "image link": "画像リンク"
+    },
+    "gravatar": {
+        "message": "プロフィール画像を変更するには、お手数をおかけしますがGravatarにアクセスしてください。",
+        "signupMessage": "まだGravatarに登録していない場合は、以下のリンクから登録してください。"
+    },
     "copied": "コピーしました",
+    "submit": "送信",
     "index": {
         "welcome": "ようこそ",
         "title": "ホームページ",

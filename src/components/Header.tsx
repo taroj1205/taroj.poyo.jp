@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa';
 import LanguageSwitch from './LanguageSwitch';
 import Announcement from './Announcement';
+import Profile from './Profile';
 import { useRouter } from 'next/router';
 
 const Header = () => {
@@ -80,51 +81,11 @@ const Header = () => {
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                     <LanguageSwitch />
                     <div
-                        className="ml-4 flex items-center relative"
+                        className="flex items-center relative"
                         ref={dropdownRef}
                     >
                         {user ? (
-                            <>
-                                <button
-                                    aria-label="profile"
-                                    className="focus:outline-none"
-                                    onClick={toggleDropdown}
-                                >
-                                    <img
-                                        className="w-8 h-8 m-1 rounded-full"
-                                        src={user?.picture ?? ''}
-                                        alt="Profile picture"
-                                    />
-                                </button>
-                                {isDropdownOpen && (
-                                    <div className="absolute top-8 right-2 mt-2 w-48 bg-white rounded-md shadow-lg">
-                                        <div className="py-1">
-                                            <button
-                                                aria-label="go to profile"
-                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                onClick={() =>
-                                                    handleLink('/profile')
-                                                }
-                                            >
-                                                <FaUser className="mr-2 inline" />
-                                                Profile
-                                            </button>
-                                            <button
-                                                aria-label="logout"
-                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                onClick={() =>
-                                                    handleLink(
-                                                        '/api/auth/logout'
-                                                    )
-                                                }
-                                            >
-                                                <FaSignOutAlt className="mr-2 inline" />
-                                                Logout
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </>
+                            <Profile />
                         ) : (
                             <button
                                 aria-label="login"

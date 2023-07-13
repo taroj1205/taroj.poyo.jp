@@ -7,7 +7,17 @@
     "login": "Login",
     "logout": "Logout",
     "profile": "Profile",
+    "settings": "Settings",
+    "change": {
+        "profile picture": "Change profile picture",
+        "image link": "Image link"
+    },
+    "gravatar": {
+        "message": "Please go to Gravatar to change your profile picture. We apologize for any inconvenience.",
+        "signupMessage": "If you haven't signed up for Gravatar yet, please do so at:"
+    },
     "copied": "Copied!",
+    "submit": "Submit",
     "index": {
         "welcome": "Welcome",
         "title": "Homepage",
@@ -118,13 +128,13 @@
                     "location": "Ehime"
                 },
                 {
-                     "start": "08/2018",  
-                      "end": "05/2019",  
-                      "name": "Centre for International Education British School",  
-                      "grade": "Year 8",  
-                      "duration": "A year",  
-                      "location": "Cebu"  
-                  }, 
+                    "start": "08/2018",
+                    "end": "05/2019",
+                    "name": "Centre for International Education British School",
+                    "grade": "Year 8",
+                    "duration": "A year",
+                    "location": "Cebu"
+                },
                 {
                     "start": "08/2018",
                     "end": "...",

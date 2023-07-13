@@ -57,6 +57,12 @@ const Chat = ({ userId }: ChatProps) => {
                 document.getElementById(read)?.scrollIntoView();
                 const mainElement = document.querySelector('main');
                 mainElement?.classList.remove('animate-pulse');
+                document
+                    .getElementById('send-button')
+                    ?.removeAttribute('disabled');
+                document
+                    .getElementById('input-field')
+                    ?.removeAttribute('disabled');
             } catch (error: any) {
                 console.error(
                     'An error occurred while fetching default messages:',
@@ -505,7 +511,7 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden flex-grow pb-0 sm:pb-3 md:pb-30"
+                className="overflow-y-auto overflow-x-hidden flex-grow pb-20 sm:pb-30 md:pb-30"
             >
                 {/* Messages content */}
             </div>
@@ -577,12 +583,6 @@ const ChatPage = () => {
                 return;
             } else {
                 setUserId(user_id as string);
-                document
-                    .getElementById('send-button')
-                    ?.removeAttribute('disabled');
-                document
-                    .getElementById('input-field')
-                    ?.removeAttribute('disabled');
             }
         }
     }, [user, isLoading, error, router]);
