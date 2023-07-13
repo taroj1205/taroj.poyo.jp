@@ -16,8 +16,7 @@ const ChatHeader = () => {
     };
 
     return (
-        <header className="relative h-[4.5rem]">
-            <div className="fixed top-0 z-100 w-full bg-transparent shadow-xl transition-all duration-350 ease">
+        <header className="fixed top-0 z-100 w-full bg-transparent shadow-xl transition-all duration-350 ease h-[4.5rem]">
                 {/* Announcement section */}
                 <Announcement />
 
@@ -41,7 +40,6 @@ const ChatHeader = () => {
                         <Profile />
                     </div>
                 </nav>
-            </div>
         </header>
     );
 };
