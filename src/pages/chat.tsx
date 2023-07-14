@@ -546,7 +546,6 @@ const Main: React.FC<MainProps> = ({
             >
                 {/* Messages content */}
             </div>
-            <div className="relative bottom-0 h-[9.5rem]">
                 <div className="fixed bottom-0 w-full">
                     <button
                         aria-label="Scroll to bottom"
@@ -588,7 +587,6 @@ const Main: React.FC<MainProps> = ({
                         </button>
                     </div>
                 </div>
-            </div>
         </div>
     );
 };
