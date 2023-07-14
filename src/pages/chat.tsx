@@ -540,10 +540,11 @@ const Main: React.FC<MainProps> = ({
 
     return (
         <div className="relative flex flex-col flex-grow h-screen max-h-full">
+            <ChatHeader />
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden md:mt-0 mt-[4.5rem]"
+                className="overflow-y-auto overflow-x-hidden mt-[4.5rem]"
                 style={{
                     marginBottom: `${inputContainerHeight}px`,
                 }}
@@ -684,7 +685,6 @@ const ChatPage = () => {
             </Head>
             <div className="flex flex-col max-h-full w-full h-full max-w-full">
                 <main className="animate-pulse">
-                    <ChatHeader />
                     <Chat userId={userId} />
                 </main>
             </div>
