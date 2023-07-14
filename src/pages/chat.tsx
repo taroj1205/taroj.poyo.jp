@@ -32,6 +32,17 @@ const Chat = ({ userId }: ChatProps) => {
             'messages'
         ) as HTMLDivElement;
 
+        const setVisualViewport = () => {
+            const vv = window.visualViewport;
+            const root = document.documentElement;
+            root.style.setProperty('--vvw', `${vv?.width}px`);
+            root.style.setProperty('--vvh', `${vv?.height}px`);
+        };
+        setVisualViewport();
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVisualViewport);
+        }
+
         const fetchDefaultMessages = async () => {
             try {
                 console.log('Getting default messages');
@@ -337,6 +348,9 @@ const Chat = ({ userId }: ChatProps) => {
                 inputRef.current.removeEventListener('keydown', handleKeyDown);
             }
             messagesContainer.removeEventListener('scroll', handleScroll);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', setVisualViewport);
+            }
         };
     }, []);
 
