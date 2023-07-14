@@ -542,7 +542,7 @@ const Main: React.FC<MainProps> = ({
                 id="messages"
                 ref={messagesRef}
                 className="relative overflow-y-auto overflow-x-hidden h-full md:pt-0 pt-[4.5rem]"
-                style={{ maxHeight: `calc(100% - {$inputContainerHeight})` }}
+                style={{ maxHeight: `calc(100% - ${inputContainerHeight})` }}
             >
                 {/* Messages content */}
             </div>
