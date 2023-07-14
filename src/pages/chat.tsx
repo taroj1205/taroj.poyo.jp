@@ -537,12 +537,12 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col flex-grow h-screen max-h-full">
+        <div className="flex flex-col flex-grow h-screen" style={{ maxHeight: `calc(100%-4.5rem)`}}>
             <div
                 id="messages"
                 ref={messagesRef}
-                className="relative overflow-y-auto overflow-x-hidden h-full md:pt-0 pt-[4.5rem]"
-                style={{ maxHeight: `calc(100% - ${inputContainerHeight})` }}
+                className="relative overflow-y-auto overflow-x-hidden"
+                style={{ paddingBottom: `${inputContainerHeight}px` }}
             >
                 {/* Messages content */}
             </div>
