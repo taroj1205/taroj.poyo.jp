@@ -546,7 +546,6 @@ const Main: React.FC<MainProps> = ({
                 className="overflow-y-auto overflow-x-hidden md:mt-0 mt-[4.5rem]"
                 style={{
                     marginBottom: `${inputContainerHeight}px`,
-                    marginTop: '4.5rem',
                 }}
             >
                 {/* Messages content */}
