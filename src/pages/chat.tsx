@@ -544,7 +544,8 @@ const Main: React.FC<MainProps> = ({
                 ref={messagesRef}
                 className="overflow-y-auto overflow-x-hidden"
                 style={{
-                    height: `calc(100% - ${inputContainerHeight}px - 54px)`,
+                    marginBottom: `${inputContainerHeight}px`,
+                    marginTop: '4.5rem'
                 }}
             >
                 {/* Messages content */}
@@ -552,7 +553,7 @@ const Main: React.FC<MainProps> = ({
             <div className="fixed bottom-0 w-full">
                 <button
                     aria-label="Scroll to bottom"
-                    className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
+                    className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
                     onClick={scrollToBottom}
                 >
                     Scroll to Bottom{' '}
