@@ -541,11 +541,12 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="relative overflow-y-auto overflow-x-hidden h-full"
+                className="relative overflow-y-auto overflow-x-hidden"
+                style={{ height: `calc(100% - 1.5rem - ${inputContainerHeight}px)` }}
             >
                 {/* Messages content */}
             </div>
-            <div className="relative h-[9.5rem]">
+            <div className="relative bottom-0 h-[9.5rem]">
                 <div className="fixed bottom-0 w-full">
                     <button
                         aria-label="Scroll to bottom"
