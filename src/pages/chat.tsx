@@ -508,6 +508,7 @@ const Main: React.FC<MainProps> = ({
         }
     };
 
+
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let bottom = false;
         if (
@@ -545,7 +546,7 @@ const Main: React.FC<MainProps> = ({
                 className="overflow-y-auto overflow-x-hidden"
                 style={{
                     marginBottom: `${inputContainerHeight}px`,
-                    marginTop: '4.5rem'
+                    marginTop: '4.5rem',
                 }}
             >
                 {/* Messages content */}
@@ -568,6 +569,7 @@ const Main: React.FC<MainProps> = ({
                             placeholder="Type a message..."
                             autoFocus
                             disabled
+                            rows={1}
                             className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
                             onInput={handleInput} // Add onInput event handler
                         ></textarea>
