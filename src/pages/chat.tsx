@@ -477,6 +477,7 @@ const Main: React.FC<MainProps> = ({
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
     const [inputContainerHeight, setInputContainerHeight] = useState(0);
+    const [headerHeight, setHeaderHeight] = useState(0);
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -494,6 +495,8 @@ const Main: React.FC<MainProps> = ({
         setInputContainerHeight(
             inputContainerHeight ? inputContainerHeight + 20 : 0
         );
+        const headerHeight = document.querySelector('header')?.offsetHeight;
+        setHeaderHeight(headerHeight || 0);
 
         window.addEventListener('resize', checkIfMobile);
         return () => {
@@ -507,7 +510,6 @@ const Main: React.FC<MainProps> = ({
             console.log(inputContainerHeight);
         }
     };
-
 
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let bottom = false;
@@ -529,6 +531,8 @@ const Main: React.FC<MainProps> = ({
 
         const inputContainerHeight =
             inputRef.current?.parentElement?.offsetHeight;
+        const headerHeight = document.querySelector('header')?.offsetHeight;
+        setHeaderHeight(headerHeight || 0);
         setInputContainerHeight(
             inputContainerHeight ? inputContainerHeight + 20 : 0
         );
@@ -544,8 +548,9 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden mt-[4.5rem]"
+                className="overflow-y-auto overflow-x-hidden"
                 style={{
+                    marginTop: `${headerHeight}px`,
                     marginBottom: `${inputContainerHeight}px`,
                 }}
             >
