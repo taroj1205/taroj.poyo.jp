@@ -311,19 +311,19 @@ const Chat = ({ userId }: ChatProps) => {
             inputRef.current.rows = 1;
             if (input) {
                 inputRef.current.value = input;
-                        let rows = input.split('\n').length;
-            const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
-            const isMobileDevice =
-                mobileMediaQuery.matches ||
+                let rows = input.split('\n').length;
+                const mobileMediaQuery =
+                    window.matchMedia('(max-width: 767px)');
+                const isMobileDevice =
+                    mobileMediaQuery.matches ||
                     typeof window.orientation !== 'undefined';
-                
-                        if (rows > 5 && isMobileDevice) {
-                            rows = 5;
-                        } else if (rows > 10) {
-                            rows = 10;
-                        }
 
-                
+                if (rows > 5 && isMobileDevice) {
+                    rows = 5;
+                } else if (rows > 10) {
+                    rows = 10;
+                }
+
                 inputRef.current.rows = rows;
             }
         }
@@ -504,6 +504,7 @@ const Main: React.FC<MainProps> = ({
     const scrollToBottom = () => {
         if (messagesRef.current) {
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+            console.log(inputContainerHeight);
         }
     };
 
@@ -537,12 +538,14 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col pt-20 flex-grow h-screen max-h-full">
+        <div className="relative flex flex-col flex-grow h-screen max-h-full">
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden pb-30"
-                style={{ height: `calc(100% - ${inputContainerHeight}px)` }}
+                className="overflow-y-auto overflow-x-hidden"
+                style={{
+                    height: `calc(100% - ${inputContainerHeight}px - 54px)`,
+                }}
             >
                 {/* Messages content */}
             </div>
@@ -677,9 +680,9 @@ const ChatPage = () => {
                 <meta name="twitter:creator" content="@taroj1205" />
                 <title>Chat</title>
             </Head>
-            <ChatHeader />
-            <div className="flex flex-col max-h-full w-full max-w-full">
+            <div className="flex flex-col max-h-full w-full h-full max-w-full">
                 <main className="animate-pulse">
+                    <ChatHeader />
                     <Chat userId={userId} />
                 </main>
             </div>

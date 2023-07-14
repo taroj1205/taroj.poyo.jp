@@ -27,14 +27,14 @@ body.phone #messages {
     padding-top: 30px;
 }
 body.phone #messages p[data-server] {
-    padding-left: 15px;
+    padding-left: 0.5rem;
 }
 #messages p[data-server]:not(body.phone) {
     padding-left: 20px;
 }
 
 .messageText {
-    margin-left: 2ch;
+    margin-left: 1ch;
     margin-right: 1ch;
     display: block;
     white-space: pre-line;
