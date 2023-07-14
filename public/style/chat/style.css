@@ -23,9 +23,6 @@ body.light .sidebar {
     margin: 0;
 }
 
-body.phone #messages {
-    padding-top: 30px;
-}
 body.phone #messages p[data-server] {
     padding-left: 15px;
 }

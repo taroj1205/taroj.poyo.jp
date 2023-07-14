@@ -311,19 +311,19 @@ const Chat = ({ userId }: ChatProps) => {
             inputRef.current.rows = 1;
             if (input) {
                 inputRef.current.value = input;
-                        let rows = input.split('\n').length;
-            const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
-            const isMobileDevice =
-                mobileMediaQuery.matches ||
+                let rows = input.split('\n').length;
+                const mobileMediaQuery =
+                    window.matchMedia('(max-width: 767px)');
+                const isMobileDevice =
+                    mobileMediaQuery.matches ||
                     typeof window.orientation !== 'undefined';
-                
-                        if (rows > 5 && isMobileDevice) {
-                            rows = 5;
-                        } else if (rows > 10) {
-                            rows = 10;
-                        }
 
-                
+                if (rows > 5 && isMobileDevice) {
+                    rows = 5;
+                } else if (rows > 10) {
+                    rows = 10;
+                }
+
                 inputRef.current.rows = rows;
             }
         }
@@ -541,49 +541,54 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden md:pt-0 pt-[4.5rem]"
+                className="relative overflow-y-auto overflow-x-hidden pt-0"
                 style={{
                     height: `calc(100% - ${inputContainerHeight}px)`,
                 }}
             >
                 {/* Messages content */}
             </div>
-            <div className="fixed bottom-0 w-full">
-                <button
-                    aria-label="Scroll to bottom"
-                    className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
-                    onClick={scrollToBottom}
-                >
-                    Scroll to Bottom{' '}
-                    <span className="ml-1 animate-bounce">&#8595;</span>
-                </button>
-
-                <div id="input-container" className="flex relative bg-gray-900">
-                    <span className="grow-wrap flex-grow">
-                        <textarea
-                            id="input-field"
-                            ref={inputRef}
-                            placeholder="Type a message..."
-                            autoFocus
-                            disabled
-                            className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
-                            onInput={handleInput} // Add onInput event handler
-                        ></textarea>
-                    </span>
-                    <div className="w-12 h-11 min-w-[56px]"></div>
+            <div className="relative h-[9.5rem]">
+                <div className="fixed bottom-0 w-full">
                     <button
-                        id="send-button"
-                        aria-label="send button"
-                        onClick={!isLoadingState ? sendMessage : undefined}
-                        disabled={isLoadingState}
-                        className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
+                        aria-label="Scroll to bottom"
+                        className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
+                        onClick={scrollToBottom}
                     >
-                        {isLoadingState ? (
-                            <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
-                        ) : (
-                            <FaPaperPlane className="text-white" />
-                        )}
+                        Scroll to Bottom{' '}
+                        <span className="ml-1 animate-bounce">&#8595;</span>
                     </button>
+
+                    <div
+                        id="input-container"
+                        className="flex relative bg-gray-900"
+                    >
+                        <span className="grow-wrap flex-grow">
+                            <textarea
+                                id="input-field"
+                                ref={inputRef}
+                                placeholder="Type a message..."
+                                autoFocus
+                                disabled
+                                className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
+                                onInput={handleInput} // Add onInput event handler
+                            ></textarea>
+                        </span>
+                        <div className="w-12 h-11 min-w-[56px]"></div>
+                        <button
+                            id="send-button"
+                            aria-label="send button"
+                            onClick={!isLoadingState ? sendMessage : undefined}
+                            disabled={isLoadingState}
+                            className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
+                        >
+                            {isLoadingState ? (
+                                <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                            ) : (
+                                <FaPaperPlane className="text-white" />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
