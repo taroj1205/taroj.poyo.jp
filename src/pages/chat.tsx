@@ -485,6 +485,16 @@ const Main: React.FC<MainProps> = ({
             setIsMobile(isMobileDevice);
         };
 
+        const setVisualViewport = () => {
+            const vv = window.visualViewport;
+            if (vv) {
+                const root = document.documentElement;
+                root.style.setProperty('--vvw', `${vv.width}px`);
+                root.style.setProperty('--vvh', `${vv.height}px`);
+            }
+        };
+        setVisualViewport();
+
         checkIfMobile();
 
         const inputContainerHeight =
@@ -496,8 +506,16 @@ const Main: React.FC<MainProps> = ({
         setHeaderHeight(headerHeight || 0);
 
         window.addEventListener('resize', checkIfMobile);
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVisualViewport);
+        }
+
         return () => {
             window.removeEventListener('resize', checkIfMobile);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', setVisualViewport);
+            }
         };
     }, []);
 
@@ -540,7 +558,7 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col flex-grow min-h-0 h-screen w-full max-h-full">
+        <div className="flex flex-col flex-grow min-h-0 h-[var(--vvh)] w-full max-h-full">
             <ChatHeader />
             <div
                 id="messages"
