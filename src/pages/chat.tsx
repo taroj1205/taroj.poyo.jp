@@ -278,7 +278,7 @@ const Chat = ({ userId }: ChatProps) => {
       <span class="text-sm">${pCount} <span class="font-semibold">${username}</span></span>
       <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
     </div>
-    <div class="text-sm">
+    <div class="text-sm mr-[1ch]">
       <span class="messageText whitespace-pre-line text-left">${formattedMessageText}</span>
     </div>
   </div>
