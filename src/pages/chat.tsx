@@ -702,7 +702,7 @@ const ChatPage = () => {
                 <title>Chat</title>
             </Head>
             <div>
-                <main className="animate-pulse h-full w-full max-h-full">
+                <main className="animate-pulse h-[var(--vvh)] w-full max-h-full">
                     <Chat userId={userId} />
                 </main>
             </div>
