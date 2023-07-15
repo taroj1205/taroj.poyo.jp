@@ -91,7 +91,7 @@ const Chat = ({ userId }: ChatProps) => {
 
             const rect = messagesContainer.getBoundingClientRect();
             const containerBottomVisible =
-                rect.bottom >= 0 && rect.top <= window.innerHeight;
+                rect.bottom >= 0 && rect.top <= document.documentElement.clientHeight;
 
             if (containerBottomVisible) {
                 const visibleElements = Array.from(
@@ -100,9 +100,9 @@ const Chat = ({ userId }: ChatProps) => {
                     const rect = element.getBoundingClientRect();
                     return (
                         rect.bottom >= 0 &&
-                        rect.top <= window.innerHeight &&
+                        rect.top <= document.documentElement.clientHeight &&
                         rect.top >= 0 &&
-                        rect.bottom <= window.innerHeight
+                        rect.bottom <= document.documentElement.clientHeight
                     );
                 });
 
@@ -490,9 +490,15 @@ const Main: React.FC<MainProps> = ({
             const vv = window.visualViewport;
             if (vv) {
                 const root = document.documentElement;
-                root.style.setProperty('--vvw', `${window.innerWidth}px`);
-                root.style.setProperty('--vvh', `${window.innerHeight}px`);
-                setHeight(window.innerHeight);
+                root.style.setProperty(
+                    '--vvw',
+                    `${document.documentElement.clientWidth}px`
+                );
+                root.style.setProperty(
+                    '--vvh',
+                    `${document.documentElement.clientHeight}px`
+                );
+                setHeight(document.documentElement.clientHeight);
             }
         };
         setVisualViewport();
@@ -561,8 +567,8 @@ const Main: React.FC<MainProps> = ({
 
     return (
         <div
-            className="flex flex-col flex-grow min-h-0 w-full max-h-full"
-            style={{ height: 'var(--vvh)' }}
+            className="flex flex-col flex-grow min-h-0 w-full max-h-full fixed top-0"
+            style={{height: height}}
         >
             <ChatHeader />
             <div
@@ -707,7 +713,7 @@ const ChatPage = () => {
                 <title>Chat</title>
             </Head>
             <div>
-                <main className="animate-pulse w-full max-h-full" style={{height: "var(--vvh)"}}>
+                <main className="animate-pulse w-full max-h-full">
                     <Chat userId={userId} />
                 </main>
             </div>
