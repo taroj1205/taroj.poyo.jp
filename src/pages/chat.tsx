@@ -593,7 +593,6 @@ const Main: React.FC<MainProps> = ({
                             onInput={handleInput} // Add onInput event handler
                         ></textarea>
                     </span>
-                    <div className="w-12 h-11 min-w-[56px]"></div>
                     <button
                         id="send-button"
                         aria-label="send button"
