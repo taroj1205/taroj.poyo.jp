@@ -10,7 +10,7 @@ interface ChatProps {
     userId: string;
 }
 
-const Chat = ({ userId }: ChatProps) => {
+const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const [isLoadingState, setisLoadingState] = useState(false);
@@ -122,7 +122,7 @@ const Main: React.FC<MainProps> = ({
                     marginBottom: `${inputContainerHeight}px`,
                 }}
             >
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                <p id="1" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -132,26 +132,24 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    1{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    12 July 2023 at 21:51:29
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hi
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="2" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -161,26 +159,24 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    2{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 24:03:08
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hello
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="3" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -190,26 +186,24 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    3{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 24:04:42
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hi
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="4" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -219,26 +213,24 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    4{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 24:06:05
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hi
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="5" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -248,26 +240,29 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    5{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 24:22:10
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    <a
+                                        href="https://embed.rauf.wtf/Testing+Embed?&amp;author=JetBrains%20Embed&amp;color=18F900&amp;image=https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png"
+                                        target="_blank"
+                                    >
+                                        https://embed.rauf.wtf/Testing+Embed?&amp;author=JetBrains%20Embed&amp;color=18F900&amp;image=https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png
+                                    </a>
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="6" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -277,26 +272,35 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    6{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 24:23:08
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    <a
+                                        href="https://embed.rauf.wtf/Testing+Embed?&amp;author=JetBrains%20Embed&amp;color=18F900&amp;image=https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png"
+                                        target="_blank"
+                                    >
+                                        https://embed.rauf.wtf/Testing+Embed?&amp;author=JetBrains%20Embed&amp;color=18F900&amp;image=https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png
+                                    </a>{' '}
+                                    <a
+                                        href="https://embed.rauf.wtf/Testing+Embed?&amp;author=JetBrains%20Embed&amp;color=18F900&amp;image=https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png"
+                                        target="_blank"
+                                    >
+                                        https://embed.rauf.wtf/Testing+Embed?&amp;author=JetBrains%20Embed&amp;color=18F900&amp;image=https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png
+                                    </a>
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="7" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -306,26 +310,225 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    7{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 24:52:56
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hi
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="8" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/7832f98c10c1982ca4ea595c88a5034b?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png"
+                            alt="hi"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    8 <span className="font-semibold">hi</span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 01:07:55
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    hewwo
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="9" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/7832f98c10c1982ca4ea595c88a5034b?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png"
+                            alt="hi"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    9 <span className="font-semibold">hi</span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 01:09:13
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    hihihihihihihihi
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="10" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/7832f98c10c1982ca4ea595c88a5034b?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png"
+                            alt="hi"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    10 <span className="font-semibold">hi</span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 01:10:16
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    awdwaioda
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="11" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/7832f98c10c1982ca4ea595c88a5034b?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png"
+                            alt="hi"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    11 <span className="font-semibold">hi</span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 01:10:38
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    owo
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="12" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/7832f98c10c1982ca4ea595c88a5034b?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png"
+                            alt="hi"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    12 <span className="font-semibold">hi</span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 01:10:53
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    afddfwefqw
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="13" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/50b5b9bfde7b62bff9547ad5f6e301ab?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fst.png"
+                            alt="stmlex001"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    13{' '}
+                                    <span className="font-semibold">
+                                        stmlex001
+                                    </span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 10:06:12
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    hi
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="14" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/50b5b9bfde7b62bff9547ad5f6e301ab?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fst.png"
+                            alt="stmlex001"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    14{' '}
+                                    <span className="font-semibold">
+                                        stmlex001
+                                    </span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 10:10:07
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    testing
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="15" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/b0e2814a622845f1e0418853939e30ce?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png"
+                            alt="test123"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    15{' '}
+                                    <span className="font-semibold">
+                                        test123
+                                    </span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 10:11:03
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    testing
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="16" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -335,26 +538,78 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    16{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 10:25:08
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hi
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                </p>
+                <p id="17" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/50b5b9bfde7b62bff9547ad5f6e301ab?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fst.png"
+                            alt="stmlex001"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    17{' '}
+                                    <span className="font-semibold">
+                                        stmlex001
+                                    </span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 10:25:11
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    yo
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="18" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
+                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
+                        <img
+                            src="https://s.gravatar.com/avatar/50b5b9bfde7b62bff9547ad5f6e301ab?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fst.png"
+                            alt="stmlex001"
+                            className="w-8 h-8 rounded-full m-0 mr-2"
+                        />
+                        <div>
+                            <div className="flex items-center">
+                                <span className="text-sm">
+                                    18{' '}
+                                    <span className="font-semibold">
+                                        stmlex001
+                                    </span>
+                                </span>
+                                <span className="ml-1 text-xs text-gray-500">
+                                    13 July 2023 at 10:26:14
+                                </span>
+                            </div>
+                            <div className="text-sm">
+                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
+                                    hi
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+                <p id="19" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
                             src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
@@ -364,228 +619,23 @@ const Main: React.FC<MainProps> = ({
                         <div>
                             <div className="flex items-center">
                                 <span className="text-sm">
-                                    20{' '}
+                                    19{' '}
                                     <span className="font-semibold">
                                         taroj1205
                                     </span>
                                 </span>
                                 <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
+                                    13 July 2023 at 10:30:22
                                 </span>
                             </div>
                             <div className="text-sm">
                                 <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
+                                    hi
                                 </span>
                             </div>
                         </div>
                     </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
-                <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
-                    <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
-                        <img
-                            src="https://s.gravatar.com/avatar/230680dc8cd0bb55cc4c1e9bbabcb296?s=480&amp;r=pg&amp;d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fta.png"
-                            alt="taroj1205"
-                            className="w-8 h-8 rounded-full m-0 mr-2"
-                        />
-                        <div>
-                            <div className="flex items-center">
-                                <span className="text-sm">
-                                    20{' '}
-                                    <span className="font-semibold">
-                                        taroj1205
-                                    </span>
-                                </span>
-                                <span className="ml-1 text-xs text-gray-500">
-                                    13 July 2023 at 12:33:44
-                                </span>
-                            </div>
-                            <div className="text-sm">
-                                <span className="messageText whitespace-pre-line text-left max-w-[90%]">
-                                    note to myself: wrap input container with a
-                                    div and set a fixed height with position
-                                    relative
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </p>{' '}
+                </p>
                 <p id="20" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
                     <div className="flex items-start mb-2 whitespace-nowrap min-h-fit">
                         <img
@@ -665,7 +715,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
     return <div className="flex box-border m-0">{children}</div>;
 };
 
-const ChatPage = () => {
+const ChatDesign = () => {
     const [userId, setUserId] = useState('');
     const [userData, setUserData] = useState('');
 
@@ -724,11 +774,11 @@ const ChatPage = () => {
             </Head>
             <div className="flex flex-col max-h-full w-full h-full max-w-full">
                 <main>
-                    <Chat userId={userId} />
+                    <Chat />
                 </main>
             </div>
         </>
     );
 };
 
-export default ChatPage;
+export default ChatDesign;

@@ -271,21 +271,18 @@ const Chat = ({ userId }: ChatProps) => {
                     );
                 }
 
-                const formattedHtml = `
-<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
-  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2">
+                const formattedHtml = `<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
+  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2" />
   <div>
     <div class="flex items-center">
       <span class="text-sm">${pCount} <span class="font-semibold">${username}</span></span>
       <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
     </div>
-    <div text-sm">
+    <div class="text-sm">
       <span class="messageText whitespace-pre-line text-left max-w-[90%]">${formattedMessageText}</span>
     </div>
   </div>
-</div>
-
-`;
+</div>`;
 
                 const p = document.createElement('p') as HTMLParagraphElement;
 
