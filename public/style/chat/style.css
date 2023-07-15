@@ -22,7 +22,6 @@ body.phone #messages p[data-server] {
 }
 
 .messageText {
-    margin-left: 1ch;
     margin-right: 1ch;
     white-space: pre-line;
     overflow-wrap: anywhere;

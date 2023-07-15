@@ -540,7 +540,7 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col flex-grow min-h-0 h-screen">
+        <div className="flex flex-col flex-grow min-h-0 h-screen max-h-full">
             <ChatHeader />
                 <div
                     id="messages"
@@ -689,7 +689,7 @@ const ChatPage = () => {
                 <title>Chat</title>
             </Head>
             <div>
-                <main className="animate-pulse h-screen">
+                <main className="animate-pulse h-screen w-full max-h-full">
                     <Chat userId={userId} />
                 </main>
             </div>
