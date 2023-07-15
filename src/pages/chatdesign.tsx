@@ -116,7 +116,7 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden"
+                className="overflow-y-auto grow-[5] overflow-x-hidden"
                 style={{
                     marginTop: `${headerHeight}px`,
                     marginBottom: `${inputContainerHeight}px`,
