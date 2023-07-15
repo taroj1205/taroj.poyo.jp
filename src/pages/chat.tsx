@@ -600,7 +600,7 @@ const Main: React.FC<MainProps> = ({
                         <textarea
                             id="input-field"
                             ref={inputRef}
-                            placeholder={`Type a message... ${height}`}
+                            placeholder={`Type a message...`}
                             autoFocus
                             disabled
                             rows={1}
