@@ -492,7 +492,7 @@ const Main: React.FC<MainProps> = ({
                 const root = document.documentElement;
                 root.style.setProperty('--vvw', `${vv.width}px`);
                 root.style.setProperty('--vvh', `${vv.height}px`);
-                setHeight(vv.height);
+                setHeight(window.innerHeight);
             }
         };
         setVisualViewport();
