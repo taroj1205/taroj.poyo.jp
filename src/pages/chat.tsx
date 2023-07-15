@@ -548,7 +548,6 @@ const Main: React.FC<MainProps> = ({
                 className="overflow-y-auto overflow-x-hidden"
                 style={{
                     flex: '1',
-                    height: `calc(100% - ${inputContainerHeight})px`,
                 }}
             >
                 {/* Messages content */}
