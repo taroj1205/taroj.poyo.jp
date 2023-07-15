@@ -560,7 +560,10 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col flex-grow min-h-0 h-[var(--vvh)] w-full max-h-full">
+        <div
+            className="flex flex-col flex-grow min-h-0 w-full max-h-full"
+            style={{ height: 'var(--vvh)' }}
+        >
             <ChatHeader />
             <div
                 id="messages"
@@ -704,7 +707,7 @@ const ChatPage = () => {
                 <title>Chat</title>
             </Head>
             <div>
-                <main className="animate-pulse h-[var(--vvh)] w-full max-h-full">
+                <main className="animate-pulse w-full max-h-full" style={{height: "var(--vvh)"}}>
                     <Chat userId={userId} />
                 </main>
             </div>
