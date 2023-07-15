@@ -542,58 +542,56 @@ const Main: React.FC<MainProps> = ({
     return (
         <div className="flex flex-col flex-grow min-h-0 h-screen w-full max-h-full">
             <ChatHeader />
-                <div
-                    id="messages"
-                    ref={messagesRef}
-                    className="overflow-y-auto overflow-x-hidden"
-                    style={{
-                        flex: '1',
-                    }}
+            <div
+                id="messages"
+                ref={messagesRef}
+                className="overflow-y-auto overflow-x-hidden"
+                style={{
+                    flex: '1',
+                    height: `calc(100% - ${inputContainerHeight})px`,
+                }}
+            >
+                {/* Messages content */}
+            </div>
+            <div className="w-full" style={{ flex: '0' }}>
+                <button
+                    aria-label="Scroll to bottom"
+                    className="whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
+                    onClick={scrollToBottom}
                 >
-                    {/* Messages content */}
-                </div>
-                <div className="w-full" style={{flex: '0'}}>
-                    <button
-                        aria-label="Scroll to bottom"
-                        className="whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
-                        onClick={scrollToBottom}
-                    >
-                        Scroll to Bottom{' '}
-                        <span className="ml-1 animate-bounce">&#8595;</span>
-                    </button>
+                    Scroll to Bottom{' '}
+                    <span className="ml-1 animate-bounce">&#8595;</span>
+                </button>
 
-                    <div
-                        id="input-container"
-                        className="flex bg-gray-900"
+                <div id="input-container" className="flex bg-gray-900">
+                    <span className="grow-wrap flex-grow">
+                        <textarea
+                            id="input-field"
+                            ref={inputRef}
+                            placeholder="Type a message..."
+                            autoFocus
+                            disabled
+                            rows={1}
+                            className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
+                            onInput={handleInput} // Add onInput event handler
+                        ></textarea>
+                    </span>
+                    <div className="w-12 h-11 min-w-[56px]"></div>
+                    <button
+                        id="send-button"
+                        aria-label="send button"
+                        onClick={!isLoadingState ? sendMessage : undefined}
+                        disabled={isLoadingState}
+                        className="w-12 bottom-0 right-0 sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                     >
-                        <span className="grow-wrap flex-grow">
-                            <textarea
-                                id="input-field"
-                                ref={inputRef}
-                                placeholder="Type a message..."
-                                autoFocus
-                                disabled
-                                rows={1}
-                                className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
-                                onInput={handleInput} // Add onInput event handler
-                            ></textarea>
-                        </span>
-                        <div className="w-12 h-11 min-w-[56px]"></div>
-                        <button
-                            id="send-button"
-                            aria-label="send button"
-                            onClick={!isLoadingState ? sendMessage : undefined}
-                            disabled={isLoadingState}
-                            className="w-12 bottom-0 right-0 sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
-                        >
-                            {isLoadingState ? (
-                                <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
-                            ) : (
-                                <FaPaperPlane className="text-white" />
-                            )}
-                        </button>
-                    </div>
+                        {isLoadingState ? (
+                            <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                        ) : (
+                            <FaPaperPlane className="text-white" />
+                        )}
+                    </button>
                 </div>
+            </div>
         </div>
     );
 };
