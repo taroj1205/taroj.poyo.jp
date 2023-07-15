@@ -91,7 +91,8 @@ const Chat = ({ userId }: ChatProps) => {
 
             const rect = messagesContainer.getBoundingClientRect();
             const containerBottomVisible =
-                rect.bottom >= 0 && rect.top <= document.documentElement.clientHeight;
+                rect.bottom >= 0 &&
+                rect.top <= document.documentElement.clientHeight;
 
             if (containerBottomVisible) {
                 const visibleElements = Array.from(
@@ -522,7 +523,10 @@ const Main: React.FC<MainProps> = ({
         return () => {
             window.removeEventListener('resize', checkIfMobile);
             if (window.visualViewport) {
-                window.visualViewport.removeEventListener('resize', setVisualViewport);
+                window.visualViewport.removeEventListener(
+                    'resize',
+                    setVisualViewport
+                );
             }
         };
     }, []);
@@ -568,7 +572,7 @@ const Main: React.FC<MainProps> = ({
     return (
         <div
             className="flex flex-col flex-grow min-h-0 w-full max-h-full fixed top-0"
-            style={{height: height}}
+            style={{ height: height }}
         >
             <ChatHeader />
             <div
@@ -634,7 +638,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 const ChatPage = () => {
     const [userId, setUserId] = useState('');
     const [userData, setUserData] = useState('');
-
+    const [height, setHeight] = useState(0);
     const { user, error, isLoading } = useUser();
     const router = useRouter();
 
@@ -651,6 +655,36 @@ const ChatPage = () => {
                 setUserId(user_id as string);
             }
         }
+
+        const setVisualViewport = () => {
+            const vv = window.visualViewport;
+            if (vv) {
+                const root = document.documentElement;
+                root.style.setProperty(
+                    '--vvw',
+                    `${document.documentElement.clientWidth}px`
+                );
+                root.style.setProperty(
+                    '--vvh',
+                    `${document.documentElement.clientHeight}px`
+                );
+                setHeight(document.documentElement.clientHeight);
+            }
+        };
+        setVisualViewport();
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVisualViewport);
+        }
+
+        return () => {
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener(
+                    'resize',
+                    setVisualViewport
+                );
+            }
+        };
     }, [user, isLoading, error, router]);
 
     if (isLoading) {
