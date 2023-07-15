@@ -279,7 +279,7 @@ const Chat = ({ userId }: ChatProps) => {
       <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
     </div>
     <div class="text-sm">
-      <span class="messageText whitespace-pre-line text-left max-w-[90%]">${formattedMessageText}</span>
+      <span class="messageText whitespace-pre-line text-left">${formattedMessageText}</span>
     </div>
   </div>
 </div>`;
@@ -540,7 +540,7 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col flex-grow min-h-0 h-screen max-h-full">
+        <div className="flex flex-col flex-grow min-h-0 h-screen w-full max-h-full">
             <ChatHeader />
                 <div
                     id="messages"
@@ -548,7 +548,6 @@ const Main: React.FC<MainProps> = ({
                     className="overflow-y-auto overflow-x-hidden"
                     style={{
                         flex: '1',
-                        height: `calc(100% - ${inputContainerHeight})px`,
                     }}
                 >
                     {/* Messages content */}
@@ -689,7 +688,7 @@ const ChatPage = () => {
                 <title>Chat</title>
             </Head>
             <div>
-                <main className="animate-pulse h-screen w-full max-h-full">
+                <main className="animate-pulse h-full w-full max-h-full">
                     <Chat userId={userId} />
                 </main>
             </div>
