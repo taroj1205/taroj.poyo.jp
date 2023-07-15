@@ -475,6 +475,7 @@ const Main: React.FC<MainProps> = ({
     const messagesRef = useRef<HTMLDivElement>(null);
     const [inputContainerHeight, setInputContainerHeight] = useState(0);
     const [headerHeight, setHeaderHeight] = useState(0);
+    const [height, setHeight] = useState(0);
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -491,6 +492,7 @@ const Main: React.FC<MainProps> = ({
                 const root = document.documentElement;
                 root.style.setProperty('--vvw', `${vv.width}px`);
                 root.style.setProperty('--vvh', `${vv.height}px`);
+                setHeight(vv.height);
             }
         };
         setVisualViewport();
@@ -585,7 +587,7 @@ const Main: React.FC<MainProps> = ({
                         <textarea
                             id="input-field"
                             ref={inputRef}
-                            placeholder={`Type a message... ${window.visualViewport?.height}`}
+                            placeholder={`Type a message... ${height}`}
                             autoFocus
                             disabled
                             rows={1}
