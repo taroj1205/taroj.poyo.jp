@@ -747,7 +747,7 @@ const ChatPage = () => {
                 <title>Chat</title>
             </Head>
             <div>
-                <main className="animate-pulse w-full max-h-full">
+                <main className="animate-pulse w-full max-h-full" style={{ height: height }}>
                     <Chat userId={userId} />
                 </main>
             </div>
