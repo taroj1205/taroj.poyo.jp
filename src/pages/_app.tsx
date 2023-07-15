@@ -55,7 +55,8 @@ export default function App({ Component, pageProps }: AppProps) {
         addFontStyles('Textar', '../font/textar/textar.ttf', 'truetype');
     }, []);
 
-    const shouldRenderHeaderAndBanner = pathname !== '/chat';
+    const shouldRenderHeaderAndBanner =
+        pathname !== '/chat' && pathname !== '/chatdesign';
 
     return (
         <UserProvider>

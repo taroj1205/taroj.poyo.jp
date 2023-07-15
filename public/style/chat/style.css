@@ -1,5 +1,4 @@
 html {
-    overflow: hidden;
     margin: 0;
 }
 
@@ -7,8 +6,8 @@ body {
     touch-action: none;
     margin: 0;
     padding: 0;
-    width: var(--vvw);
-    height: var(--vvh);
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -16,31 +15,16 @@ body.light .sidebar {
     background-color: #282828;
 }
 
-.main {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    margin: 0;
-}
-
-body.phone #messages {
-    padding-top: 30px;
-}
 body.phone #messages p[data-server] {
-    padding-left: 15px;
+    padding-left: 0.5rem;
 }
 #messages p[data-server]:not(body.phone) {
     padding-left: 20px;
 }
 
 .messageText {
-    margin-left: 2ch;
-    margin-right: 1ch;
-    display: block;
     white-space: pre-line;
     overflow-wrap: anywhere;
-    width: 100%;
-    max-width: 100%;
 }
 
 @keyframes spin {

@@ -91,7 +91,8 @@ const Chat = ({ userId }: ChatProps) => {
 
             const rect = messagesContainer.getBoundingClientRect();
             const containerBottomVisible =
-                rect.bottom >= 0 && rect.top <= window.innerHeight;
+                rect.bottom >= 0 &&
+                rect.top <= document.documentElement.clientHeight;
 
             if (containerBottomVisible) {
                 const visibleElements = Array.from(
@@ -100,9 +101,9 @@ const Chat = ({ userId }: ChatProps) => {
                     const rect = element.getBoundingClientRect();
                     return (
                         rect.bottom >= 0 &&
-                        rect.top <= window.innerHeight &&
+                        rect.top <= document.documentElement.clientHeight &&
                         rect.top >= 0 &&
-                        rect.bottom <= window.innerHeight
+                        rect.bottom <= document.documentElement.clientHeight
                     );
                 });
 
@@ -271,21 +272,18 @@ const Chat = ({ userId }: ChatProps) => {
                     );
                 }
 
-                const formattedHtml = `
-<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
-  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2">
+                const formattedHtml = `<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
+  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2" />
   <div>
     <div class="flex items-center">
       <span class="text-sm">${pCount} <span class="font-semibold">${username}</span></span>
       <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
     </div>
-    <div text-sm">
-      <span class="messageText whitespace-pre-line text-left max-w-[90%]">${formattedMessageText}</span>
+    <div class="text-sm mr-[1ch]">
+      <span class="messageText whitespace-pre-line text-left">${formattedMessageText}</span>
     </div>
   </div>
-</div>
-
-`;
+</div>`;
 
                 const p = document.createElement('p') as HTMLParagraphElement;
 
@@ -311,19 +309,19 @@ const Chat = ({ userId }: ChatProps) => {
             inputRef.current.rows = 1;
             if (input) {
                 inputRef.current.value = input;
-                        let rows = input.split('\n').length;
-            const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
-            const isMobileDevice =
-                mobileMediaQuery.matches ||
+                let rows = input.split('\n').length;
+                const mobileMediaQuery =
+                    window.matchMedia('(max-width: 767px)');
+                const isMobileDevice =
+                    mobileMediaQuery.matches ||
                     typeof window.orientation !== 'undefined';
-                
-                        if (rows > 5 && isMobileDevice) {
-                            rows = 5;
-                        } else if (rows > 10) {
-                            rows = 10;
-                        }
 
-                
+                if (rows > 5 && isMobileDevice) {
+                    rows = 5;
+                } else if (rows > 10) {
+                    rows = 10;
+                }
+
                 inputRef.current.rows = rows;
             }
         }
@@ -477,6 +475,8 @@ const Main: React.FC<MainProps> = ({
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
     const [inputContainerHeight, setInputContainerHeight] = useState(0);
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const [height, setHeight] = useState(0);
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -487,6 +487,23 @@ const Main: React.FC<MainProps> = ({
             setIsMobile(isMobileDevice);
         };
 
+        const setVisualViewport = () => {
+            const vv = window.visualViewport;
+            if (vv) {
+                const root = document.documentElement;
+                root.style.setProperty(
+                    '--vvw',
+                    `${document.documentElement.clientWidth}px`
+                );
+                root.style.setProperty(
+                    '--vvh',
+                    `${document.documentElement.clientHeight}px`
+                );
+                setHeight(document.documentElement.clientHeight);
+            }
+        };
+        setVisualViewport();
+
         checkIfMobile();
 
         const inputContainerHeight =
@@ -494,16 +511,30 @@ const Main: React.FC<MainProps> = ({
         setInputContainerHeight(
             inputContainerHeight ? inputContainerHeight + 20 : 0
         );
+        const headerHeight = document.querySelector('header')?.offsetHeight;
+        setHeaderHeight(headerHeight || 0);
 
         window.addEventListener('resize', checkIfMobile);
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVisualViewport);
+        }
+
         return () => {
             window.removeEventListener('resize', checkIfMobile);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener(
+                    'resize',
+                    setVisualViewport
+                );
+            }
         };
     }, []);
 
     const scrollToBottom = () => {
         if (messagesRef.current) {
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+            console.log(inputContainerHeight);
         }
     };
 
@@ -527,6 +558,8 @@ const Main: React.FC<MainProps> = ({
 
         const inputContainerHeight =
             inputRef.current?.parentElement?.offsetHeight;
+        const headerHeight = document.querySelector('header')?.offsetHeight;
+        setHeaderHeight(headerHeight || 0);
         setInputContainerHeight(
             inputContainerHeight ? inputContainerHeight + 20 : 0
         );
@@ -537,44 +570,50 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="flex flex-col pt-20 flex-grow h-screen max-h-full">
+        <div
+            className="flex flex-col flex-grow min-h-0 w-full max-h-full fixed top-0"
+            style={{ height: height }}
+        >
+            <ChatHeader />
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden pb-30"
-                style={{ height: `calc(100% - ${inputContainerHeight}px)` }}
+                className="overflow-y-auto overflow-x-hidden"
+                style={{
+                    flex: '1',
+                }}
             >
                 {/* Messages content */}
             </div>
-            <div className="fixed bottom-0 w-full">
+            <div className="w-full" style={{ flex: '0' }}>
                 <button
                     aria-label="Scroll to bottom"
-                    className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full mt-1 text-xs" // Modify the classes for height, font size, and background color
+                    className="whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
                     onClick={scrollToBottom}
                 >
                     Scroll to Bottom{' '}
                     <span className="ml-1 animate-bounce">&#8595;</span>
                 </button>
 
-                <div id="input-container" className="flex relative bg-gray-900">
+                <div id="input-container" className="flex bg-gray-900">
                     <span className="grow-wrap flex-grow">
                         <textarea
                             id="input-field"
                             ref={inputRef}
-                            placeholder="Type a message..."
+                            placeholder={`Type a message...`}
                             autoFocus
                             disabled
+                            rows={1}
                             className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
                             onInput={handleInput} // Add onInput event handler
                         ></textarea>
                     </span>
-                    <div className="w-12 h-11 min-w-[56px]"></div>
                     <button
                         id="send-button"
                         aria-label="send button"
                         onClick={!isLoadingState ? sendMessage : undefined}
                         disabled={isLoadingState}
-                        className="w-12 bottom-0 right-0 absolute sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
+                        className="w-12 bottom-0 right-0 sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                     >
                         {isLoadingState ? (
                             <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
@@ -599,7 +638,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 const ChatPage = () => {
     const [userId, setUserId] = useState('');
     const [userData, setUserData] = useState('');
-
+    const [height, setHeight] = useState(0);
     const { user, error, isLoading } = useUser();
     const router = useRouter();
 
@@ -616,6 +655,36 @@ const ChatPage = () => {
                 setUserId(user_id as string);
             }
         }
+
+        const setVisualViewport = () => {
+            const vv = window.visualViewport;
+            if (vv) {
+                const root = document.documentElement;
+                root.style.setProperty(
+                    '--vvw',
+                    `${document.documentElement.clientWidth}px`
+                );
+                root.style.setProperty(
+                    '--vvh',
+                    `${document.documentElement.clientHeight}px`
+                );
+                setHeight(document.documentElement.clientHeight);
+            }
+        };
+        setVisualViewport();
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVisualViewport);
+        }
+
+        return () => {
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener(
+                    'resize',
+                    setVisualViewport
+                );
+            }
+        };
     }, [user, isLoading, error, router]);
 
     if (isLoading) {
@@ -677,9 +746,8 @@ const ChatPage = () => {
                 <meta name="twitter:creator" content="@taroj1205" />
                 <title>Chat</title>
             </Head>
-            <ChatHeader />
-            <div className="flex flex-col max-h-full w-full max-w-full">
-                <main className="animate-pulse">
+            <div>
+                <main className="animate-pulse w-full max-h-full" style={{ height: height }}>
                     <Chat userId={userId} />
                 </main>
             </div>
