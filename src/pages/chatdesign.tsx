@@ -111,15 +111,16 @@ const Main: React.FC<MainProps> = ({
     };
 
     return (
-        <div className="relative flex flex-col flex-grow h-screen max-h-full">
+        <div className="relative flex flex-col h-screen" style={{ minHeight: '0', flex: '1'}}>
             <ChatHeader />
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto grow-[5] overflow-x-hidden"
+                className="overflow-y-auto overflow-x-hidden"
                 style={{
-                    marginTop: `${headerHeight}px`,
-                    marginBottom: `${inputContainerHeight}px`,
+                    //marginTop: `${headerHeight}px`,
+                    //marginBottom: `${inputContainerHeight}px`,
+                    flex: '1',
                 }}
             >
                 <p id="1" data-server="WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2">
@@ -666,7 +667,7 @@ const Main: React.FC<MainProps> = ({
                     </div>
                 </p>
             </div>
-            <div className="fixed bottom-0 w-full">
+            <div className="fixed bottom-0 w-full" style={{ flex: '0 0 auto' }}>
                 <button
                     aria-label="Scroll to bottom"
                     className="relative whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
@@ -772,11 +773,9 @@ const ChatDesign = () => {
                 <meta name="twitter:creator" content="@taroj1205" />
                 <title>Chat</title>
             </Head>
-            <div className="flex flex-col max-h-full w-full h-full max-w-full">
-                <main>
-                    <Chat />
-                </main>
-            </div>
+            <main>
+                <Chat />
+            </main>
         </>
     );
 };
