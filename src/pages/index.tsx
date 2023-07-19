@@ -59,7 +59,7 @@ const HomePage = () => {
         picture: '',
         name: '',
     });
-    
+
     const handleCopy = (text: string) => {
         copy(text);
         setCopied(true);
@@ -99,38 +99,36 @@ const HomePage = () => {
     return (
         <div>
             <Head>
-                <Head>
-                    <meta property="og:title" content="taroj.poyo.jp" />
-                    <meta
-                        property="og:description"
-                        content="A website for Shintaro Jokagi"
-                    />
-                    <meta
-                        property="og:image"
-                        content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
-                    />
-                    <meta
-                        property="og:image:alt"
-                        content="Shintaro Jokagi Website Thumbnail"
-                    />
-                    <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:title" content="taroj.poyo.jp" />
-                    <meta
-                        name="twitter:description"
-                        content="A website for Shintaro Jokagi"
-                    />
-                    <meta
-                        name="twitter:image"
-                        content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
-                    />
-                    <meta
-                        name="twitter:image:alt"
-                        content="Shintaro Jokagi Website Thumbnail"
-                    />
-                    <meta name="twitter:site" content="@taroj1205" />
-                    <meta name="twitter:creator" content="@taroj1205" />
-                    <title>{t('index.title')}</title>
-                </Head>
+                <meta property="og:title" content="taroj.poyo.jp" />
+                <meta
+                    property="og:description"
+                    content="A website for Shintaro Jokagi"
+                />
+                <meta
+                    property="og:image"
+                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
+                />
+                <meta
+                    property="og:image:alt"
+                    content="Shintaro Jokagi Website Thumbnail"
+                />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="taroj.poyo.jp" />
+                <meta
+                    name="twitter:description"
+                    content="A website for Shintaro Jokagi"
+                />
+                <meta
+                    name="twitter:image"
+                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
+                />
+                <meta
+                    name="twitter:image:alt"
+                    content="Shintaro Jokagi Website Thumbnail"
+                />
+                <meta name="twitter:site" content="@taroj1205" />
+                <meta name="twitter:creator" content="@taroj1205" />
+                <title>{t('index.title')}</title>
             </Head>
 
             <main className="container mx-auto py-10 max-w-6xl">
@@ -187,7 +185,7 @@ const HomePage = () => {
                             hover="hover:bg-indigo-600 hover:text-white text-indigo-600"
                             icon={<FaLinkedin className="mr-1 text-xl" />}
                             label="LinkedIn"
-                            href="https://www.linkedin.com/in/your-linkedin-profile"
+                            href="https://www.linkedin.com/in/taroj1205/"
                         />
                     </div>
                 </section>

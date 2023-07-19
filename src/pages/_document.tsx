@@ -5,19 +5,7 @@ export default class MyDocument extends Document {
 
         return (
             <Html>
-                <Head>
-                    <meta
-                        name="viewport"
-                        content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
-                    />
-                    <link
-                        rel="shortcut icon"
-                        type="image/x-icon"
-                        href="/image/icon/global/favicon.ico"
-                    />
-                    <meta name="theme-color" content="#090808" />
-                    {/* Add other custom metadata and tags */}
-                </Head>
+                <Head />
                 <body className="max-h-full">
                     <Main />
                     <NextScript />
