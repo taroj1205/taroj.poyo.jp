@@ -7,14 +7,6 @@ body {
     margin: 0;
 }
 
-body {
-    @apply text-white bg-zinc-950 font-sans text-base;
-}
-
-main.light {
-    @apply bg-zinc-900;
-}
-
 a {
     @apply text-blue-500;
 }
