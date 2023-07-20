@@ -56,13 +56,13 @@ const Profile = () => {
     if (!user) return null;
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col pt-1 items-center">
             <img
                 className="w-32 h-32 rounded-full mb-4"
                 src={userData.picture ?? undefined}
                 alt={userData.name ?? undefined}
             />
-            <h2>Your username: {userData.username}</h2>
+            <h2 className='text-black dark:text-white'>Your username: {userData.username}</h2>
             <p className="text-gray-500">Your email: {userData.email}</p>
         </div>
     );

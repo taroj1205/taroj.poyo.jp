@@ -4,9 +4,9 @@ export default class MyDocument extends Document {
     render() {
 
         return (
-            <Html>
+            <Html className='dark'>
                 <Head />
-                <body className="text-white bg-zinc-950 font-sans text-base">
+                <body className="text-black dark:text-white dark:bg-zinc-950 bg-white font-sans text-base">
                     <Main />
                     <NextScript />
                 </body>

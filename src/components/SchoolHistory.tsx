@@ -8,7 +8,7 @@ export default function SchoolHistory() {
             <h2 className="text-2xl mt-4 leading-loose">
                 {t('about.education.schoolHistory')}
             </h2>
-            <div className="overflow-x-auto w-full">
+            <div className="overflow-x-auto w-full text-black dark:text-white">
                 <table className="w-full table-auto rounded-lg overflow-hidden border-collapse whitespace-nowrap transition-shadow duration-300 shadow-md hover:shadow-lg">
                     <thead>
                         <tr className="bg-teal-700 text-white">
@@ -32,14 +32,14 @@ export default function SchoolHistory() {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='text-black dark:text-white'>
                         {Array.from(Array(11).keys()).map((index) => (
                             <tr
                                 key={index}
                                 className={
                                     index % 2 === 0
-                                        ? 'bg-gray-800'
-                                        : 'bg-gray-900'
+                                        ? 'bg-gray-100 dark:bg-gray-800'
+                                        : 'bg-gray-200 dark:bg-gray-900'
                                 }
                                 style={{ transition: 'background-color 0.3s' }}
                             >
