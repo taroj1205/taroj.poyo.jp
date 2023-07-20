@@ -48,6 +48,7 @@
         "socket.io-client": "^4.7.1",
         "styled-components": "^5.3.11",
         "tailwindcss": "^3.3.2",
+        "vercel": "^31.0.4",
         "ws": "^8.13.0"
     },
     "keywords": [],
