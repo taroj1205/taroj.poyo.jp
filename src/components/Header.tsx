@@ -86,17 +86,7 @@ const Header = () => {
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                     <div className="flex items-center relative" ref={dropdownRef}>
-                        {user ? (
-                            <Profile />
-                        ) : (
-                            <button
-                                aria-label="login"
-                                className="text-white hover:shadow-md hover:bg-blue-600 transition duration-300 ease-in-out py-2 px-3 rounded-lg menu-block text-base"
-                                onClick={() => handleLink('/api/auth/login')}
-                            >
-                                Login
-                            </button>
-                        )}
+                        <Profile />
                     </div>
                 </div>
             </nav>
