@@ -6,9 +6,9 @@ import Head from 'next/head';
 import i18n from '../../i18n';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
+import { ThemeProvider } from "next-themes";
 
-import '../../styles/globals.css';
-import '../styles.css';
+import '../globals.css';
 
 import Header from '../components/Header';
 import FloatingBanner from '../components/FloatingBanner';
@@ -46,13 +46,6 @@ export default function App({ Component, pageProps }: AppProps) {
             'truetype'
         );
         addFontStyles('Textar', '../font/textar/textar.ttf', 'truetype');
-
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
     }, []);
 
     const shouldRenderHeaderAndBanner =
@@ -103,9 +96,11 @@ export default function App({ Component, pageProps }: AppProps) {
                     <meta name="twitter:creator" content="@taroj1205" />
                     {/* Add other custom metadata and tags */}
                 </Head>
-                {shouldRenderHeaderAndBanner && <Header />}
-                <Component {...pageProps} />
-                {shouldRenderHeaderAndBanner && <FloatingBanner />}
+                <ThemeProvider attribute="class">
+                    {shouldRenderHeaderAndBanner && <Header />}
+                    <Component {...pageProps} />
+                    {shouldRenderHeaderAndBanner && <FloatingBanner />}
+                </ThemeProvider>
                 <Analytics />
             </I18nextProvider>
         </UserProvider>
