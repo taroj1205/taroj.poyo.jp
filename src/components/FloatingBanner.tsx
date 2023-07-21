@@ -36,7 +36,7 @@ const FloatingBanner = () => {
         <>
             {!isExpanded && (
                 <button
-                    className="fixed bottom-5 right-5 z-10 bg-gray-700 dark:bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
+                    className="fixed bottom-5 right-5 z-10 bg-gray-700 dark:bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-500 dark:hover:bg-gray-700 transition-colors duration-300"
                     onClick={handleToggle}
                     aria-label='toggle banner'
                 >
@@ -147,7 +147,7 @@ const FloatingBanner = () => {
                     </div>
                     <button
                         aria-label="toggle the menu"
-                        className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-full p-3 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
+                        className="bg-transparent dark:bg-gray-800 text-black dark:text-white rounded-full p-3 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
                         onClick={handleToggle}
                     >
                         <FaChevronDown className="text-xl" />
