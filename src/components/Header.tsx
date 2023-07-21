@@ -52,6 +52,14 @@ const Header = () => {
         <header className="sticky top-0 left-0 z-100 w-full bg-white dark:bg-gray-950 shadow-xl transition-all duration-350 ease">
             <Announcement />
             <nav className="w-full flex items-center justify-between px-0 py-4">
+                <div className="flex xl:absolute left-1 xl:left-64 items-center justify-end font-medium w-full md:w-auto">
+                    <div
+                        className="flex items-center relative"
+                        ref={dropdownRef}
+                    >
+                        <LanguageSwitch />
+                    </div>
+                </div>
                 <div className="flex items-center font-medium text-black dark:text-white ml-2 md:ml-0 space-x-6 flex-grow justify-center">
                     <button
                         aria-label="home"
@@ -79,7 +87,6 @@ const Header = () => {
                     </button>
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
-                    <LanguageSwitch />
                     <div
                         className="flex items-center relative"
                         ref={dropdownRef}

@@ -8,13 +8,22 @@
     "logout": "Logout",
     "profile": "Profile",
     "settings": "Settings",
+    "search": "Search...",
     "change": {
         "profile picture": "Change profile picture",
         "image link": "Image link",
-        "theme": "Change theme"
+        "theme": "Change theme",
+        "language": "Change language"
     },
-    "dark": "Dark",
-    "light": "Light",
+    "language": "Language",
+    "current": {
+        "theme": "Current theme:"
+    },
+    "theme": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+    },
     "gravatar": {
         "message": "Please go to Gravatar to change your profile picture. We apologize for any inconvenience.",
         "signupMessage": "If you haven't signed up for Gravatar yet, please do so at:"

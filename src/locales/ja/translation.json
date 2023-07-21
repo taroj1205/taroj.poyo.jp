@@ -8,13 +8,22 @@
     "logout": "ログアウト",
     "profile": "プロフィール",
     "settings": "設定",
+    "search": "検索する",
     "change": {
         "profile picture": "プロフィール画像を変更",
         "image link": "画像リンク",
-        "theme": "テーマを変える"
+        "theme": "テーマを変える",
+        "language": "言語を変える"
     },
-    "dark": "ダーク",
-    "light": "ライト",
+    "language": "言語",
+    "current": {
+        "theme": "現在のテーマ:"
+    },
+    "theme": {
+        "dark": "闇",
+        "light": "光",
+        "system": "端末"
+    },
     "gravatar": {
         "message": "プロフィール画像を変更するには、お手数をおかけしますがGravatarにアクセスしてください。",
         "signupMessage": "まだGravatarに登録していない場合は、以下のリンクから登録してください。"
