@@ -5,7 +5,7 @@ import { FiExternalLink } from 'react-icons/fi';
 
 const Settings = () => {
     const { t } = useTranslation();
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(true);
 
     useEffect(() => {
         const savedTheme = localStorage.theme;

@@ -16,7 +16,7 @@ const ChatHeader = () => {
     };
 
     return (
-        <header className="z-100 w-full shadow-xl transition-all duration-350 ease" style={{flex: '0'}}>
+        <header className="z-100 w-full transition-all duration-350 ease" style={{flex: '0'}}>
             {/* Announcement section */}
             <Announcement />
 

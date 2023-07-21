@@ -87,7 +87,7 @@ const LanguageSwitch = () => {
                             aria-label="switch to english"
                             className={`w-full flex items-center justify-between px-4 py-2 ${hoveredLanguage === 'en'
                                 ? 'bg-blue-500 text-white hover:bg-blue-400'
-                                : 'text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
+                                : 'text-black dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                 }`}
                             onClick={() => handleLanguageChange('en')}
                         >
