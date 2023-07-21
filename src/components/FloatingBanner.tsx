@@ -36,8 +36,9 @@ const FloatingBanner = () => {
         <>
             {!isExpanded && (
                 <button
-                    className="fixed bottom-5 right-5 z-10 bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-700 transition-colors duration-300"
+                    className="fixed bottom-5 right-5 z-10 bg-gray-700 dark:bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
                     onClick={handleToggle}
+                    aria-label='toggle banner'
                 >
                     <FaChevronUp className="text-xl" />
                 </button>
@@ -45,8 +46,7 @@ const FloatingBanner = () => {
 
             {isExpanded && (
                 <div
-                    className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300 rounded-md"
-                    style={{ backgroundColor: 'rgba(9, 9, 11, 0.7)' }}
+                    className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300 rounded-md bg-gray-200 dark:bg-gray-800"
                 >
                     <div className="flex items-center font-medium mt-4">
                         <a
@@ -86,7 +86,7 @@ const FloatingBanner = () => {
                     </div>
                     <div className="flex items-center font-medium">
                         <a
-                            className="text-lg flex items-center text-white"
+                            className="text-lg flex items-center text-black dark:text-white"
                             data-tooltip-content="GitHub"
                             data-tooltip-place="top"
                             data-tooltip-id="GitHub"
@@ -147,7 +147,7 @@ const FloatingBanner = () => {
                     </div>
                     <button
                         aria-label="toggle the menu"
-                        className="bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-700 transition-colors duration-300"
+                        className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-full p-3 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
                         onClick={handleToggle}
                     >
                         <FaChevronDown className="text-xl" />

@@ -11,10 +11,6 @@ body {
     overflow: hidden;
 }
 
-body.light .sidebar {
-    background-color: #282828;
-}
-
 body.phone #messages p[data-server] {
     padding-left: 0.5rem;
 }

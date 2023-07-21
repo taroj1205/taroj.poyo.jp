@@ -5,4 +5,5 @@ module.exports = {
         localeDetection: true,
     },
     trailingSlash: true,
+    compress: true
 };
