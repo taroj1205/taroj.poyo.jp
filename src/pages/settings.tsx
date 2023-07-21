@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiExternalLink } from 'react-icons/fi';
 import CustomSelect from '../components/SelectTheme';
+import Language from '../components/LanguageSwitch';
 
 const Settings = () => {
     const { t } = useTranslation();
@@ -35,9 +36,11 @@ const Settings = () => {
                         </p>
                     </div>
                     <div className="flex items-center">
-                        <h2 className="text-xl font-semibold mr-4">{t('change.theme')}</h2>
-                        <CustomSelect />
+                        <h2>{t('change.theme')}: </h2><CustomSelect />
                     </div>
+                    {/* <div className='flex items-center'>
+                        <h2>{t('change.language')}: </h2><Language />
+                    </div> */}
                 </div>
             </div>
         </>

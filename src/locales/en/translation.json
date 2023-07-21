@@ -12,8 +12,10 @@
     "change": {
         "profile picture": "Change profile picture",
         "image link": "Image link",
-        "theme": "Change theme"
+        "theme": "Change theme",
+        "language": "Change language"
     },
+    "language": "Language",
     "current": {
         "theme": "Current theme:"
     },

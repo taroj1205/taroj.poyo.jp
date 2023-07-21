@@ -12,8 +12,10 @@
     "change": {
         "profile picture": "プロフィール画像を変更",
         "image link": "画像リンク",
-        "theme": "テーマを変える"
+        "theme": "テーマを変える",
+        "language": "言語を変える"
     },
+    "language": "言語",
     "current": {
         "theme": "現在のテーマ:"
     },

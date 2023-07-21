@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useState } from 'react';
 import Button from '@atlaskit/button';
 import { useTranslation } from 'react-i18next';
 import Select, { StylesConfig } from 'react-select';
-import { defaultTheme } from 'react-select';
 import { ThemeOption, getThemeOptions } from './docs/data';
 
 const selectStyles: StylesConfig<ThemeOption, false> = {
@@ -18,8 +17,8 @@ export default () => {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [value, setValue] = useState<ThemeOption | null>();
-    const DefaultThemeLabel = t('change.theme');
     const themeOptions: readonly ThemeOption[] = getThemeOptions(t);
+
 
     useEffect(() => {
         const currentClass = document.documentElement.className;
@@ -27,14 +26,8 @@ export default () => {
         if (defaultThemeOption) {
             setValue(defaultThemeOption);
         }
-    }, []);
 
-    const getCurrentThemeLabel = () => {
-        if (value) {
-            return `${value.label}`;
-        }
-        return DefaultThemeLabel;
-    };
+    }, []);
 
     return (
         <Dropdown
@@ -47,7 +40,7 @@ export default () => {
                     isSelected={isOpen}
                     className={value && value.value === 'dark' ? 'dark:text-white' : ''}
                 >
-                    {getCurrentThemeLabel()}
+                    <span className='dark:text-white'>{value?.label.toString()}</span>
                 </Button>
             }
         >
@@ -62,6 +55,7 @@ export default () => {
                 onChange={(newValue) => {
                     if (newValue) {
                         document.documentElement.className = newValue.value;
+                        localStorage.theme = newValue.value;
                     }
                     setValue(newValue);
                     setIsOpen(false);

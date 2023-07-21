@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaHome } from 'react-icons/fa';
-import LanguageSwitch from '../components/LanguageSwitch';
+import LanguageSwitch from './LanguageSwitch';
 import Announcement from './Announcement';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';

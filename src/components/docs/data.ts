@@ -15,6 +15,19 @@ export function getThemeOptions(t: ReturnType<typeof useTranslation>['t']): read
 
 // { value: 'system', label: t('theme.system'), color: '#007bff' },
 
+export interface LanguageOption {
+    readonly value: string;
+    readonly label: string;
+    readonly color: string;
+}
+
+export function getLanguageOptions(t: ReturnType<typeof useTranslation>['t']): readonly LanguageOption[] {
+    return [
+        { value: 'ja', label: t('japanese'), color: '#333' },
+        { value: 'en', label: t('english'), color: '#f4f4f4' },
+    ];
+}
+
 export interface ColourOption {
     readonly value: string;
     readonly label: string;
