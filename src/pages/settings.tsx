@@ -5,19 +5,30 @@ import { FiExternalLink } from 'react-icons/fi';
 
 const Settings = () => {
     const { t } = useTranslation();
-    const [darkMode, setDarkMode] = useState(true);
-
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-    };
+    const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
-        if (darkMode) {
+        const savedTheme = localStorage.theme;
+        if (savedTheme) {
+            setDarkMode(savedTheme === 'dark');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+    }, []);
+
+    const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const mode = e.target.value;
+        localStorage.theme = mode;
+        setDarkMode(mode === 'dark');
+        if (mode === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-    }, [darkMode]);
+    };
 
     return (
         <>
@@ -28,7 +39,6 @@ const Settings = () => {
                 <h1 className="text-2xl font-bold mb-4">{t('settings')}</h1>
                 <div className="mb-4">
                     <div className="mb-4">
-
                         <h2 className="text-xl font-semibold mb-2">
                             {t('change.profile picture')}
                         </h2>
@@ -52,7 +62,7 @@ const Settings = () => {
                     </h2>
                     <select
                         value={darkMode ? 'dark' : 'light'}
-                        onChange={(e) => setDarkMode(e.target.value === 'dark')}
+                        onChange={handleThemeChange}
                         className='dark:bg-black dark:text-white bg-white text-black'
                     >
                         <option value="dark">Dark Mode</option>

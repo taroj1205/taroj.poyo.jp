@@ -21,12 +21,12 @@ const ChatHeader = () => {
             <Announcement />
 
             {/* Navigation */}
-            <nav className="w-full flex items-center bg-gray-950 justify-between p-0">
-                <div className="flex ml-2 items-center font-medium space-x-2 flex-grow justify-center">
+            <nav className="w-full flex items-center bg-white dark:bg-gray-950 justify-between p-0">
+                <div className="flex ml-2 items-center font-medium text-black dark:text-white space-x-2 flex-grow justify-center">
                     <button
                         aria-label="go to home"
                         onClick={() => handleLink('/')}
-                        className="flex items-center text-white hover:text-blue-600"
+                        className="flex items-center hover:text-blue-600"
                     >
                         <FaHome className="text-xl mx-auto" />
                         <span className="ml-1 text-sm whitespace-nowrap">
