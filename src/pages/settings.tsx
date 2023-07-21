@@ -65,8 +65,8 @@ const Settings = () => {
                         onChange={handleThemeChange}
                         className='dark:bg-black dark:text-white bg-white text-black'
                     >
-                        <option value="dark">Dark Mode</option>
-                        <option value="light">Light Mode</option>
+                        <option value="dark">{t('dark')}</option>
+                        <option value="light">{t('light')}</option>
                     </select>
                 </div>
             </div>
