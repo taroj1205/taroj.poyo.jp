@@ -21,7 +21,6 @@
     },
     "homepage": "https://github.com/taroj1205/taroj.poyo.jp#readme",
     "dependencies": {
-        "@atlaskit/button": "^16.8.2",
         "@headlessui/react": "^1.7.15",
         "@heroicons/react": "^2.0.18",
         "@vercel/analytics": "^1.0.1",
