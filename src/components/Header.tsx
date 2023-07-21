@@ -51,12 +51,10 @@ const Header = () => {
     return (
         <header className="sticky top-0 left-0 z-100 w-full bg-white dark:bg-gray-950 shadow-xl transition-all duration-350 ease">
             <Announcement />
-            <nav className="w-full flex items-center justify-between px-0 py-4">
-                <div className="flex xl:absolute left-1 xl:left-64 items-center justify-end font-medium w-full md:w-auto">
-                    <div
-                        className="flex items-center relative"
-                        ref={dropdownRef}
-                    >
+            <nav className="w-full flex items-center justify-between px-0 py-2">
+                <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
+                    {/* Move the LanguageSwitch to the left side */}
+                    <div className="flex items-center ml-2 xl:ml-0 relative">
                         <LanguageSwitch />
                     </div>
                 </div>
@@ -87,10 +85,7 @@ const Header = () => {
                     </button>
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
-                    <div
-                        className="flex items-center relative"
-                        ref={dropdownRef}
-                    >
+                    <div className="flex items-center relative" ref={dropdownRef}>
                         {user ? (
                             <Profile />
                         ) : (
