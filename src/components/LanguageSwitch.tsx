@@ -174,9 +174,9 @@ const DropdownIndicator = () => (
 const ChevronDown = ({ color }: { color: string }) => (
     <>
         {color === 'white' ? (
-            <ImEarth className="text-black dark:text-white" size={20} style={{ marginRight: -5 }} />
+            <ImEarth className="text-black dark:text-white" size={20} style={{ marginRight: -2 }} />
         ) : (
-                <FiGlobe className="text-black dark:text-white" size={20} style={{ marginRight: -5 }} />
+                <FiGlobe className="text-black dark:text-white" size={20} style={{ marginRight: -2 }} />
         )}
         <Svg>
             <path
