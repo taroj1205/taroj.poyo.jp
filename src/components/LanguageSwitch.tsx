@@ -23,6 +23,32 @@ export default () => {
     const [currentLanguage, setCurrentLanguage] = useState('');
     const languageOptions: readonly LanguageOption[] = getLanguageOptions(t);
 
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    // Function to check if the documentElement has the class 'dark'
+    const isDocumentDark = () => document.documentElement.classList.contains('dark');
+
+    // Set the initial isDarkMode state based on the class on mount
+    useEffect(() => {
+        setIsDarkMode(isDocumentDark());
+    }, []);
+
+    // Listen for changes to the class attribute of the documentElement
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsDarkMode(isDocumentDark());
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -56,7 +82,7 @@ export default () => {
             >
                 <span className='dark:text-white flex items-center'>
                     {isOpen ? (
-                        <ChevronDown color="white" />
+                        <ChevronDown color={isDarkMode ? 'white' : 'black'} />
                     ) : (
                         <ChevronDown color="gray" />
                     )}
@@ -148,9 +174,9 @@ const DropdownIndicator = () => (
 const ChevronDown = ({ color }: { color: string }) => (
     <>
         {color === 'white' ? (
-            <ImEarth className="text-gray-300" size={20} />
+            <ImEarth className="text-black dark:text-white" size={20} />
         ) : (
-            <FiGlobe className="text-gray-300" size={20} />
+            <FiGlobe className="text-black dark:text-white" size={20} />
         )}
         <Svg style={{ marginRight: -6 }}>
             <path

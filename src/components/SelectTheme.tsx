@@ -19,6 +19,32 @@ export default () => {
     const [value, setValue] = useState<ThemeOption | null>();
     const themeOptions: readonly ThemeOption[] = getThemeOptions(t);
 
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    // Function to check if the documentElement has the class 'dark'
+    const isDocumentDark = () => document.documentElement.classList.contains('dark');
+
+    // Set the initial isDarkMode state based on the class on mount
+    useEffect(() => {
+        setIsDarkMode(isDocumentDark());
+    }, []);
+
+    // Listen for changes to the class attribute of the documentElement
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsDarkMode(isDocumentDark());
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
     useEffect(() => {
         const currentClass = document.documentElement.className;
         const defaultThemeOption = themeOptions.find((option) => option.value === currentClass);
@@ -39,7 +65,7 @@ export default () => {
                 >
                     <span className='dark:text-white flex items-center'>
                         {isOpen ? (
-                            <ChevronDown color="white" />
+                            <ChevronDown color={isDarkMode ? 'white' : 'black'} />
                         ) : (
                             <ChevronDown color="gray" />
                         )}
