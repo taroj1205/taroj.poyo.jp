@@ -19,7 +19,6 @@ export default () => {
     const [value, setValue] = useState<ThemeOption | null>();
     const themeOptions: readonly ThemeOption[] = getThemeOptions(t);
 
-
     useEffect(() => {
         const currentClass = document.documentElement.className;
         const defaultThemeOption = themeOptions.find((option) => option.value === currentClass);
@@ -40,7 +39,9 @@ export default () => {
                     isSelected={isOpen}
                     className={value && value.value === 'dark' ? 'dark:text-white' : ''}
                 >
-                    <span className='dark:text-white'>{value?.label.toString()}</span>
+                    <span id="dropdown-label-text" className='dark:text-white'>
+                        {t('change.theme')}
+                    </span>
                 </Button>
             }
         >

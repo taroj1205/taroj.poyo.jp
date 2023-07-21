@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useState } from 'react';
-import Button from '@atlaskit/button';
 import { useTranslation } from 'react-i18next';
 import Select, { StylesConfig } from 'react-select';
 import { LanguageOption, getLanguageOptions } from './docs/data';
@@ -37,10 +36,7 @@ export default () => {
     const handleLanguageChange = (language: string) => {
         console.log(language, currentLanguage);
         const currentPath = router.asPath;
-        const newPath = currentPath.replace(
-            `/${language}/`,
-            `/${currentLanguage}/`
-        );
+        const newPath = currentPath.replace(`/${language}/`, `/${currentLanguage}/`);
         router.push(newPath, newPath, { locale: language });
 
         if (language !== currentLanguage) {
@@ -52,47 +48,48 @@ export default () => {
     };
 
     return (
-        <Dropdown
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-            target={
-                <Button
-                    iconAfter={<ChevronDown />}
-                    onClick={() => setIsOpen((prev) => !prev)}
-                    isSelected={isOpen}
-                    className={value && value.value === 'dark' ? 'dark:text-white' : ''}
-                >
-                    <span className='dark:text-white'>                {isOpen ? (
-                        <ImEarth className="text-gray-300 mt-2" size={20} />
+        <div className="relative">
+            <button
+                onClick={() => setIsOpen((prev) => !prev)}
+                className={value && value.value === 'dark' ? 'dark:text-white' : ''}
+                style={{ display: 'flex', alignItems: 'center' }}
+            >
+                <span className='dark:text-white flex items-center'>
+                    {isOpen ? (
+                        <ChevronDown color="white" />
                     ) : (
-                        <FiGlobe className="text-gray-300 mt-2" size={20} />
-                    )} </span>
-                </Button>
-            }
-        >
-            <Select
-                autoFocus
-                backspaceRemovesValue={false}
-                components={{ DropdownIndicator, IndicatorSeparator: null }}
-                controlShouldRenderValue={false}
-                hideSelectedOptions={false}
-                isClearable={false}
-                menuIsOpen
-                onChange={(newValue) => {
-                    if (newValue) {
-                        localStorage.language = newValue.value;
-                        handleLanguageChange(newValue.value);
-                    }
-                    setValue(newValue);
-                    setIsOpen(false);
-                }}
-                options={languageOptions}
-                placeholder={t('search')}
-                styles={selectStyles}
-                tabSelectsValue={false}
-                value={value}
-            />
-        </Dropdown>
+                        <ChevronDown color="gray" />
+                    )}
+                </span>
+            </button>
+            {isOpen && (
+                <div className='bg-white text-black rounded-md shadow-sm mt-2 absolute z-10'>
+                    <Select
+                        autoFocus
+                        backspaceRemovesValue={false}
+                        components={{ DropdownIndicator, IndicatorSeparator: null }}
+                        controlShouldRenderValue={false}
+                        hideSelectedOptions={false}
+                        isClearable={false}
+                        menuIsOpen
+                        onChange={(newValue) => {
+                            if (newValue) {
+                                localStorage.language = newValue.value;
+                                handleLanguageChange(newValue.value);
+                            }
+                            setValue(newValue);
+                            setIsOpen(false);
+                        }}
+                        options={languageOptions}
+                        placeholder={t('search')}
+                        styles={selectStyles}
+                        tabSelectsValue={false}
+                        value={value}
+                    />
+                </div>
+            )}
+            {isOpen && <div className="fixed top-0 left-0 bottom-0 right-0 z-[1]" onClick={() => setIsOpen(false)} />}
+        </div>
     );
 };
 
@@ -148,12 +145,17 @@ const DropdownIndicator = () => (
         </Svg>
     </div>
 );
-const ChevronDown = () => (
-    <Svg style={{ marginRight: -6 }}>
-        <path
-            d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
-            fill="currentColor"
-            fillRule="evenodd"
-        />
-    </Svg>
+const ChevronDown = ({ color }: { color: string }) => (
+    <>
+        {color === 'white' ? (
+            <ImEarth className="text-gray-300" size={20} />
+        ) : (
+            <FiGlobe className="text-gray-300" size={20} />
+        )}
+        <Svg style={{ marginRight: -6 }}>
+            <path
+                d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
+                fill={color} // Use the color prop for the fill color
+                fillRule="evenodd" />
+        </Svg></>
 );
