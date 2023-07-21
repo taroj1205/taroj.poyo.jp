@@ -49,14 +49,14 @@ const Header = () => {
         setIsDropdownOpen(false);
     };
     return (
-        <header className="sticky top-0 left-0 z-100 w-full bg-gray-950 shadow-xl transition-all duration-350 ease">
+        <header className="sticky top-0 left-0 z-100 w-full bg-white dark:bg-gray-950 shadow-xl transition-all duration-350 ease">
             <Announcement />
             <nav className="w-full flex items-center justify-between px-0 py-4">
-                <div className="flex items-center font-medium ml-2 md:ml-0 space-x-6 flex-grow justify-center">
+                <div className="flex items-center font-medium text-black dark:text-white ml-2 md:ml-0 space-x-6 flex-grow justify-center">
                     <button
                         aria-label="home"
                         onClick={() => handleLink('/')}
-                        className="flex items-center text-white text-lg hover:text-blue-600"
+                        className="flex items-center text-lg hover:text-blue-600"
                     >
                         <FaHome className="mr-2 text-xl" />
                         <span className="text-base">Home</span>
@@ -64,7 +64,7 @@ const Header = () => {
                     <button
                         aria-label="about"
                         onClick={() => handleLink('/about')}
-                        className="flex items-center text-white text-lg hover:text-blue-600"
+                        className="flex items-center text-lg hover:text-blue-600"
                     >
                         <FaInfoCircle className="mr-2 text-xl" />
                         <span className="text-base">About</span>
@@ -72,7 +72,7 @@ const Header = () => {
                     <button
                         aria-label="chat"
                         onClick={() => handleLink('/chat')}
-                        className="flex items-center text-white text-lg hover:text-blue-600"
+                        className="flex items-center text-lg hover:text-blue-600"
                     >
                         <FaComments className="mr-2 text-xl" />
                         <span className="text-base">Chat</span>

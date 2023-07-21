@@ -10,8 +10,11 @@
     "settings": "Settings",
     "change": {
         "profile picture": "Change profile picture",
-        "image link": "Image link"
+        "image link": "Image link",
+        "theme": "Change theme"
     },
+    "dark": "Dark",
+    "light": "Light",
     "gravatar": {
         "message": "Please go to Gravatar to change your profile picture. We apologize for any inconvenience.",
         "signupMessage": "If you haven't signed up for Gravatar yet, please do so at:"

@@ -588,7 +588,7 @@ const Main: React.FC<MainProps> = ({
             <div className="w-full" style={{ flex: '0' }}>
                 <button
                     aria-label="Scroll to bottom"
-                    className="whitespace-nowrap text-right bg-gray-800 text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
+                    className="whitespace-nowrap text-right bg-gray-300 dark:bg-gray-800 text-black dark:text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
                     onClick={scrollToBottom}
                 >
                     Scroll to Bottom{' '}
@@ -604,7 +604,7 @@ const Main: React.FC<MainProps> = ({
                             autoFocus
                             disabled
                             rows={1}
-                            className="border-none overflow-y-auto text-white bg-gray-900 text-base outline-none flex-grow focus:outline-0"
+                            className="border-none overflow-y-auto text-black dark:text-white bg-white dark:bg-gray-900 text-base outline-none flex-grow focus:outline-0"
                             onInput={handleInput} // Add onInput event handler
                         ></textarea>
                     </span>

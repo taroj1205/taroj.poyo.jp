@@ -99,35 +99,6 @@ const HomePage = () => {
     return (
         <div>
             <Head>
-                <meta property="og:title" content="taroj.poyo.jp" />
-                <meta
-                    property="og:description"
-                    content="A website for Shintaro Jokagi"
-                />
-                <meta
-                    property="og:image"
-                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
-                />
-                <meta
-                    property="og:image:alt"
-                    content="Shintaro Jokagi Website Thumbnail"
-                />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="taroj.poyo.jp" />
-                <meta
-                    name="twitter:description"
-                    content="A website for Shintaro Jokagi"
-                />
-                <meta
-                    name="twitter:image"
-                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
-                />
-                <meta
-                    name="twitter:image:alt"
-                    content="Shintaro Jokagi Website Thumbnail"
-                />
-                <meta name="twitter:site" content="@taroj1205" />
-                <meta name="twitter:creator" content="@taroj1205" />
                 <title>{t('index.title')}</title>
             </Head>
 
