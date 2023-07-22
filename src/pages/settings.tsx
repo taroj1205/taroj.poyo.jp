@@ -3,6 +3,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiExternalLink } from 'react-icons/fi';
 import CustomSelect from '../components/SelectTheme';
+import Profile from './profile';
+import LanguageSwitch from '../components/LanguageSwitch';
 
 const Settings = () => {
     const { t } = useTranslation();
@@ -24,6 +26,7 @@ const Settings = () => {
             </Head>
             <div className="container mx-auto p-4 flex flex-col items-center">
                 <h1 className="text-2xl font-bold mb-4">{t('settings')}</h1>
+                <Profile />
                 <div className="mb-4">
                     <div className="mb-4">
                         <h2 className="text-xl font-semibold mb-2">
@@ -44,12 +47,16 @@ const Settings = () => {
                             </a>
                         </p>
                     </div>
-                    <div className="flex items-center justify-center">
-                        <CustomSelect />
+                    <div className="flex items-center justify-center mb-4">
+                        <div className="bg-gray-200 dark:bg-gray-800 p-2 rounded-md">
+                            <CustomSelect />
+                        </div>
                     </div>
-                    {/* <div className='flex items-center'>
-                        <h2>{t('change.language')}: </h2><Language />
-                    </div> */}
+                    <div className="flex items-center justify-center">
+                        <div className="bg-gray-200 dark:bg-gray-800 p-2 rounded-md">
+                            <LanguageSwitch isHeader={false} />
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
