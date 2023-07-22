@@ -19,7 +19,7 @@ const Header = () => {
     };
 
     return (
-        <header className="sticky top-0 left-0 z-100 w-full bg-white dark:bg-gray-950 shadow-xl transition-all duration-350 ease">
+        <header className="sticky top-0 left-0 z-100 whitespace-nowrap w-full bg-white dark:bg-gray-950 shadow-xl transition-all duration-350 ease">
             <Announcement />
             <nav className="w-full flex items-center justify-between px-0 py-2">
                 <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
@@ -28,15 +28,15 @@ const Header = () => {
                         <LanguageSwitch isHeader={true} />
                     </div>
                 </div>
-                <div className="flex items-center font-medium text-black dark:text-white ml-0 space-x-2.5 flex-grow justify-center">
+                <div className="flex items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
                     <button
                         aria-label="home"
                         onClick={() => handleLink('/')}
                         className={`flex items-center text-lg hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                             } transition-all duration-300`}
                     >
-                        <FaHome className="mr-2 text-xl" />
-                        <span className="text-base">{t('header.home')}</span>
+                        <FaHome className="mr-0 md:mr-2 text-xl mb-1 md:mb-0" />
+                        <span className="text-base hidden md:block">{t('header.home')}</span>
                     </button>
                     <button
                         aria-label="about"
@@ -44,8 +44,8 @@ const Header = () => {
                         className={`flex items-center text-lg hover:text-blue-600 px-2 ${isActive('/about') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                             } transition-all duration-300`}
                     >
-                        <FaInfoCircle className="mr-2 text-xl" />
-                        <span className="text-base">{t('header.about')}</span>
+                        <FaInfoCircle className="mr-0 md:mr-2 text-xl mb-1 md:mb-0" />
+                        <span className="text-base hidden md:block">{t('header.about')}</span>
                     </button>
                     <button
                         aria-label="chat"
@@ -53,8 +53,8 @@ const Header = () => {
                         className={`flex items-center text-lg hover:text-blue-600 px-2 ${isActive('/chat') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                             } transition-all duration-300`}
                     >
-                        <FaComments className="mr-2 text-xl" />
-                        <span className="text-base">{t('header.chat')}</span>
+                        <FaComments className="mr-0 md:mr-2 text-xl mb-1 md:mb-0" />
+                        <span className="text-base hidden md:block">{t('header.chat')}</span>
                     </button>
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">

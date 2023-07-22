@@ -59,6 +59,16 @@ export default ({ isHeader }: { isHeader: boolean }) => {
         setValue(defaultLanguageOption);
     }, []);
 
+    useEffect(() => {
+        const lang = router.locale as string;
+        const defaultThemeOption = languageOptions.find((option) => option.value === lang);
+        console.log(lang, defaultThemeOption);
+        if (defaultThemeOption) {
+            setValue(defaultThemeOption);
+        }
+
+    }, []);
+
     const handleLanguageChange = (language: string) => {
         console.log(language, currentLanguage);
         const currentPath = router.asPath;
@@ -74,48 +84,48 @@ export default ({ isHeader }: { isHeader: boolean }) => {
     };
 
     return (
-        <div className="relative">
-            <button
-                onClick={() => setIsOpen((prev) => !prev)}
-                className={value && value.value === 'dark' ? 'dark:text-white' : ''}
-                style={{ display: 'flex', alignItems: 'center' }}
-            >
-                <span className='dark:text-white flex items-center'>
-                    {isOpen ? (
-                        <ChevronDown isHeader={isHeader} color={isDarkMode ? 'white' : 'black'} />
-                    ) : (
-                        <ChevronDown isHeader={isHeader} color="gray" />
-                    )}
-                </span>
-            </button>
-            {isOpen && (
-                <div className='bg-white text-black rounded-md shadow-sm mt-2 absolute z-10'>
-                    <Select
-                        autoFocus
-                        backspaceRemovesValue={false}
-                        components={{ DropdownIndicator, IndicatorSeparator: null }}
-                        controlShouldRenderValue={false}
-                        hideSelectedOptions={false}
-                        isClearable={false}
-                        menuIsOpen
-                        onChange={(newValue) => {
-                            if (newValue) {
-                                localStorage.language = newValue.value;
-                                handleLanguageChange(newValue.value);
-                            }
-                            setValue(newValue);
-                            setIsOpen(false);
-                        }}
-                        options={languageOptions}
-                        placeholder={t('search')}
-                        styles={selectStyles}
-                        tabSelectsValue={false}
-                        value={value}
-                    />
-                </div>
-            )}
-            {isOpen && <div className="fixed top-0 left-0 bottom-0 right-0 z-[1]" onClick={() => setIsOpen(false)} />}
-        </div>
+        <Dropdown
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            target={
+                <button
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    className={value && value.value === 'dark' ? 'dark:text-white' : ''}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                >
+                    <span className='dark:text-white flex items-center'>
+                        {isOpen ? (
+                            <ChevronDown isHeader={isHeader} color={isDarkMode ? 'white' : 'black'} />
+                        ) : (
+                            <ChevronDown isHeader={isHeader} color="gray" />
+                        )}
+                    </span>
+                </button>
+            }
+        >
+            <Select
+                autoFocus
+                backspaceRemovesValue={false}
+                components={{ DropdownIndicator, IndicatorSeparator: null }}
+                controlShouldRenderValue={false}
+                hideSelectedOptions={false}
+                isClearable={false}
+                menuIsOpen
+                onChange={(newValue) => {
+                    if (newValue) {
+                        localStorage.language = newValue.value;
+                        handleLanguageChange(newValue.value);
+                    }
+                    setValue(newValue);
+                    setIsOpen(false);
+                }}
+                options={languageOptions}
+                placeholder={t('search')}
+                styles={selectStyles}
+                tabSelectsValue={false}
+                value={value}
+            />
+        </Dropdown>
     );
 };
 
