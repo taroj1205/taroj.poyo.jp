@@ -36,7 +36,7 @@ const Header = () => {
                             } transition-all duration-300`}
                     >
                         <FaHome className="mr-2 text-xl" />
-                        <span className="text-base">{t('title.index')}</span>
+                        <span className="text-base">{t('header.home')}</span>
                     </button>
                     <button
                         aria-label="about"
