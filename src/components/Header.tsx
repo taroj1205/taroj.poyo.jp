@@ -25,7 +25,7 @@ const Header = () => {
                 <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
                     {/* Move the LanguageSwitch to the left side */}
                     <div className="flex items-center ml-2 xl:ml-0 relative">
-                        <LanguageSwitch />
+                        <LanguageSwitch isHeader={true} />
                     </div>
                 </div>
                 <div className="flex items-center font-medium text-black dark:text-white ml-0 space-x-2.5 flex-grow justify-center">
