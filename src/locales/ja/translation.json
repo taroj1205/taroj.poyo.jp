@@ -9,11 +9,22 @@
     "profile": "プロフィール",
     "settings": "設定",
     "search": "検索する",
+    "title": {
+        "index": "インデックス",
+        "about": "自己紹介",
+        "chat": "チャット",
+        "profile": "プロフィール",
+        "settings": "設定"
+    },
     "change": {
         "profile picture": "プロフィール画像を変更",
         "image link": "画像リンク",
         "theme": "テーマを変える",
         "language": "言語を変える"
+    },
+    "your": {
+        "username": "あなたのユーザー名",
+        "email": "あなたのメールアドレス"
     },
     "language": "言語",
     "current": {

@@ -65,11 +65,6 @@ export default function App({ Component, pageProps }: AppProps) {
                         href="/image/icon/global/favicon.ico"
                     />
                     <meta name="theme-color" content="#090808" />
-                    <meta property="og:title" content="taroj.poyo.jp" />
-                    <meta
-                        property="og:description"
-                        content="A website for Shintaro Jokagi"
-                    />
                     <meta
                         property="og:image"
                         content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"

@@ -99,7 +99,17 @@ const HomePage = () => {
     return (
         <>
             <Head>
-                <title>{t('index.title')}</title>
+                <meta property="og:title" content="Home - taroj.poyo.jp" />
+                <meta
+                    property="og:description"
+                    content="Index page for taroj.poyo.jp"
+                />
+                <meta name="twitter:title" content="Home - taroj.poyo.jp" />
+                <meta
+                    name="twitter:description"
+                    content="Index page for taroj.poyo.jp"
+                />
+                <title>{t('title.index')}</title>
             </Head>
 
             <main className="container mx-auto py-10 max-w-6xl">
