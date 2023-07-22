@@ -42,11 +42,11 @@ const About = () => {
                         <h2 className="text-2xl mt-6 mb-4 font-bold">
                             {t('about.events')}
                         </h2>
-                        <p>{t('about.injury')}</p>
+                        <p className="text-lg">{t('about.injury')}</p>
                         <h2 className="text-2xl mt-6 mb-4 font-bold">
                             {t('about.countries')}
                         </h2>
-                        <ul className="list-disc list-inside">
+                        <ul className="list-disc list-inside text-lg">
                             <li>{t('about.country.japan')}</li>
                             <li>{t('about.country.philippines')}</li>
                             <li>{t('about.country.newzealand')}</li>
@@ -54,7 +54,7 @@ const About = () => {
                         <h2 className="text-2xl mt-6 mb-4 font-bold">
                             {t('about.hobbies')}
                         </h2>
-                        <ul className="list-disc list-inside">
+                        <ul className="list-disc list-inside text-lg">
                             <li>{t('about.hobby.kendama')}</li>
                             <li>{t('about.hobby.jumprope')}</li>
                             <li>{t('about.hobby.programming')}</li>
