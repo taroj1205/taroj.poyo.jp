@@ -16,12 +16,17 @@ const ChatHeader = () => {
     };
 
     return (
-        <header className="z-100 w-full transition-all duration-350 ease" style={{flex: '0'}}>
+        <header className="z-100 w-full transition-all duration-350 ease" style={{ flex: '0' }}>
             {/* Announcement section */}
             <Announcement />
-
             {/* Navigation */}
-            <nav className="w-full flex items-center bg-white dark:bg-gray-950 justify-between p-0">
+            <nav className="w-full flex items-center justify-between p-0 bg-white dark:bg-gray-950">
+                <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
+                    {/* Move the LanguageSwitch to the left side */}
+                    <div className="flex items-center ml-2 xl:ml-0 relative">
+                        <LanguageSwitch />
+                    </div>
+                </div>
                 <div className="flex ml-2 items-center font-medium text-black dark:text-white space-x-2 flex-grow justify-center">
                     <button
                         aria-label="go to home"
@@ -36,7 +41,6 @@ const ChatHeader = () => {
                 </div>
                 {/* User Profile and Logout */}
                 <div className="flex items-center justify-end font-medium w-full md:w-auto">
-                    <LanguageSwitch />
                     <Profile />
                 </div>
             </nav>
