@@ -55,6 +55,20 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserProvider>
             <I18nextProvider i18n={i18n}>
                 <Head>
+                    <script
+                        async
+                        src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB"
+                    ></script>
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-5K9MK5PVGB');
+                        `,
+                        }}
+                    />
                     <meta
                         name="viewport"
                         content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
