@@ -1,53 +1,23 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import {
-    FaHome,
-    FaInfoCircle,
-    FaComments,
-    FaSignOutAlt,
-    FaUser,
-} from 'react-icons/fa';
+import React from 'react';
+import { FaHome, FaInfoCircle, FaComments } from 'react-icons/fa';
 import LanguageSwitch from './LanguageSwitch';
 import Announcement from './Announcement';
 import Profile from './Profile';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
-    const { user, error, isLoading } = useUser();
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const router = useRouter();
-
-    const toggleDropdown = () => {
-        setIsDropdownOpen((prevState) => !prevState);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setIsDropdownOpen(false);
-            }
-        };
-
-        const timeout = setTimeout(() => {
-            setIsDropdownOpen(false);
-        }, 2000);
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            clearTimeout(timeout);
-        };
-    }, []);
+    const { t } = useTranslation();
 
     const handleLink = (url: string) => {
         router.push(url);
-        setIsDropdownOpen(false);
     };
+
+    const isActive = (path: string) => {
+        return router.pathname === path;
+    };
+
     return (
         <header className="sticky top-0 left-0 z-100 w-full bg-white dark:bg-gray-950 shadow-xl transition-all duration-350 ease">
             <Announcement />
@@ -58,34 +28,37 @@ const Header = () => {
                         <LanguageSwitch />
                     </div>
                 </div>
-                <div className="flex items-center font-medium text-black dark:text-white ml-2 md:ml-0 space-x-6 flex-grow justify-center">
+                <div className="flex items-center font-medium text-black dark:text-white ml-0 space-x-2.5 flex-grow justify-center">
                     <button
                         aria-label="home"
                         onClick={() => handleLink('/')}
-                        className="flex items-center text-lg hover:text-blue-600"
+                        className={`flex items-center text-lg hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
+                            } transition-all duration-300`}
                     >
                         <FaHome className="mr-2 text-xl" />
-                        <span className="text-base">Home</span>
+                        <span className="text-base">{t('title.index')}</span>
                     </button>
                     <button
                         aria-label="about"
                         onClick={() => handleLink('/about')}
-                        className="flex items-center text-lg hover:text-blue-600"
+                        className={`flex items-center text-lg hover:text-blue-600 px-2 ${isActive('/about') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
+                            } transition-all duration-300`}
                     >
                         <FaInfoCircle className="mr-2 text-xl" />
-                        <span className="text-base">About</span>
+                        <span className="text-base">{t('title.about')}</span>
                     </button>
                     <button
                         aria-label="chat"
                         onClick={() => handleLink('/chat')}
-                        className="flex items-center text-lg hover:text-blue-600"
+                        className={`flex items-center text-lg hover:text-blue-600 px-2 ${isActive('/chat') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
+                            } transition-all duration-300`}
                     >
                         <FaComments className="mr-2 text-xl" />
-                        <span className="text-base">Chat</span>
+                        <span className="text-base">{t('title.chat')}</span>
                     </button>
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
-                    <div className="flex items-center relative" ref={dropdownRef}>
+                    <div className="flex items-center relative">
                         <Profile />
                     </div>
                 </div>

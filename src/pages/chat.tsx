@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, ReactNode } from 'react';
 import Head from 'next/head';
 import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
-import ChatHeader from '../components/ChatHeader';
+import Header from '../components/Header';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
@@ -576,7 +576,7 @@ const Main: React.FC<MainProps> = ({
             className="flex flex-col flex-grow min-h-0 w-full max-h-full fixed top-0"
             style={{ height: height }}
         >
-            <ChatHeader />
+            <Header />
             <div
                 id="messages"
                 ref={messagesRef}

@@ -10,8 +10,8 @@
     "settings": "Settings",
     "search": "Search...",
     "title": {
-        "index": "Index",
-        "about": "About me",
+        "index": "Home",
+        "about": "About",
         "chat": "Chat",
         "profile": "Profile",
         "settings": "Settings"
