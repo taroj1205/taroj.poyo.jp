@@ -9,11 +9,22 @@
     "profile": "Profile",
     "settings": "Settings",
     "search": "Search...",
+    "title": {
+        "index": "Index",
+        "about": "About me",
+        "chat": "Chat",
+        "profile": "Profile",
+        "settings": "Settings"
+    },
     "change": {
         "profile picture": "Change profile picture",
         "image link": "Image link",
         "theme": "Change theme",
         "language": "Change language"
+    },
+    "your": {
+        "username": "Your username",
+        "email": "Your email"
     },
     "language": "Language",
     "current": {

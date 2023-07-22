@@ -5,7 +5,8 @@ import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
 import ChatHeader from '../components/ChatHeader';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 interface ChatProps {
     userId: string;
@@ -369,6 +370,7 @@ const Chat = ({ userId }: ChatProps) => {
             console.log('User id', userId);
             if (!userId) {
                 errorPopup('Could not indentify you... reloading...');
+                router.push('/login');
             }
             // Send a new message to the server
             fetch('/api/chat', {
@@ -641,6 +643,7 @@ const ChatPage = () => {
     const [height, setHeight] = useState(0);
     const { user, error, isLoading } = useUser();
     const router = useRouter();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (isLoading) return;
@@ -698,7 +701,6 @@ const ChatPage = () => {
     return (
         <>
             <Head>
-                <title>Chat</title>
                 <link
                     rel="icon"
                     type="image/png"
@@ -715,36 +717,17 @@ const ChatPage = () => {
                     src="/script/chat/script.js"
                 ></script>*/}
                 <script defer src="https://js.pusher.com/7.2/pusher.min.js" />
-                <meta property="og:title" content="taroj.poyo.jp" />
+                <meta property="og:title" content="Chat - taroj.poyo.jp" />
                 <meta
                     property="og:description"
-                    content="A website for Shintaro Jokagi"
+                    content="Chat page for taroj.poyo.jp"
                 />
-                <meta
-                    property="og:image"
-                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
-                />
-                <meta
-                    property="og:image:alt"
-                    content="Shintaro Jokagi Website Thumbnail"
-                />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="taroj.poyo.jp" />
+                <meta name="twitter:title" content="Chat - taroj.poyo.jp" />
                 <meta
                     name="twitter:description"
-                    content="A website for Shintaro Jokagi"
+                    content="Chat page for taroj.poyo.jp"
                 />
-                <meta
-                    name="twitter:image"
-                    content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
-                />
-                <meta
-                    name="twitter:image:alt"
-                    content="Shintaro Jokagi Website Thumbnail"
-                />
-                <meta name="twitter:site" content="@taroj1205" />
-                <meta name="twitter:creator" content="@taroj1205" />
-                <title>Chat</title>
+                <title>{t('title.chat')}</title>
             </Head>
             <div>
                 <main className="animate-pulse w-full max-h-full" style={{ height: height }}>

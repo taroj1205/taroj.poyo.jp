@@ -10,7 +10,17 @@ const Settings = () => {
     return (
         <>
             <Head>
-                <title>{t('settings')}</title>
+                <meta property="og:title" content="Settings - taroj.poyo.jp" />
+                <meta
+                    property="og:description"
+                    content="Settings page for taroj.poyo.jp"
+                />
+                <meta name="twitter:title" content="Settings - taroj.poyo.jp" />
+                <meta
+                    name="twitter:description"
+                    content="Settings page for taroj.poyo.jp"
+                />
+                <title>{t('title.settings')}</title>
             </Head>
             <div className="container mx-auto p-4 flex flex-col items-center">
                 <h1 className="text-2xl font-bold mb-4">{t('settings')}</h1>
