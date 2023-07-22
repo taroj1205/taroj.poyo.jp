@@ -47,7 +47,9 @@
         "contact": "連絡先"
     },
     "header": {
-        "home": "ホーム"
+        "home": "ホーム",
+        "about": "僕について",
+        "chat": "チャット"
     },
     "about": {
         "title": "僕について",

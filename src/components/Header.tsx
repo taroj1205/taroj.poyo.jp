@@ -45,7 +45,7 @@ const Header = () => {
                             } transition-all duration-300`}
                     >
                         <FaInfoCircle className="mr-2 text-xl" />
-                        <span className="text-base">{t('title.about')}</span>
+                        <span className="text-base">{t('header.about')}</span>
                     </button>
                     <button
                         aria-label="chat"
@@ -54,7 +54,7 @@ const Header = () => {
                             } transition-all duration-300`}
                     >
                         <FaComments className="mr-2 text-xl" />
-                        <span className="text-base">{t('title.chat')}</span>
+                        <span className="text-base">{t('header.chat')}</span>
                     </button>
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">

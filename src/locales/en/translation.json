@@ -47,7 +47,9 @@
         "contact": "Contact me"
     },
     "header": {
-        "home": "Home"
+        "home": "Home",
+        "about": "About",
+        "chat": "Chat"
     },
     "about": {
         "title": "About me",
