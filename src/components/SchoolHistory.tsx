@@ -5,7 +5,7 @@ export default function SchoolHistory() {
 
     return (
         <section className="education">
-            <h2 className="text-2xl mt-4 leading-loose">
+            <h2 className="text-2xl mt-6 mb-4 font-bold">
                 {t('about.education.schoolHistory')}
             </h2>
             <div className="overflow-x-auto w-full text-black dark:text-white">
