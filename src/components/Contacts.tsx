@@ -18,15 +18,11 @@ const ContactLink = ({ hover, icon, label, href }: ContactLinkProps) => {
         <div className="flex items-center">
             <a
                 className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 ${hover}`}
-                data-tooltip-content={label}
-                data-tooltip-place="top"
-                data-tooltip-id={label}
                 href={href}
             >
                 {icon}
                 <span className="ml-2">{label}</span>
             </a>
-            <Tooltip id={label} />
         </div>
     );
 };
@@ -77,10 +73,10 @@ function Contacts() {
                         <FaDiscord className="mr-1" />
                         <span className="ml-2">Discord</span>
                     </a>
-                    <Tooltip
-                        id="Discord"
-                        content={copied ? t('copied') : 'Discord'}
-                    />
+                        <Tooltip
+                            id="Discord"
+                            content={copied ? t('copied') : ''}
+                        />
                 </div>
                 <ContactLink
                     hover="hover:bg-blue-400 hover:text-white text-blue-400"
