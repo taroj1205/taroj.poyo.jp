@@ -17,6 +17,10 @@ a {
     @apply text-blue-500;
 }
 
+.ReactCollapse--collapse {
+    transition: height 500ms;
+}
+
 .grow-wrap {
     /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
     display: grid;

@@ -18,13 +18,14 @@ export function getThemeOptions(t: ReturnType<typeof useTranslation>['t']): read
 export interface LanguageOption {
     readonly value: string;
     readonly label: string;
+    readonly lang: string;
     readonly color: string;
 }
 
-export function getLanguageOptions(t: ReturnType<typeof useTranslation>['t']): readonly LanguageOption[] {
+export function getLanguageOptions(): readonly LanguageOption[] {
     return [
-        { value: 'ja', label: t('japanese'), color: '#333' },
-        { value: 'en', label: t('english'), color: '#f4f4f4' },
+        { value: 'japanese 日本語', label: '日本語', lang: 'ja', color: '#333' },
+        { value: 'english 英語', label: 'English', lang: 'en', color: '#f4f4f4' },
     ];
 }
 
