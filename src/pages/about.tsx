@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SchoolHistory from '../components/SchoolHistory';
 import Head from 'next/head';
+import Contacts from '../components/Contacts';
 
 const About = () => {
     const { t } = useTranslation('translation'); // Specify the translation key
@@ -28,29 +29,33 @@ const About = () => {
                         "url('https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png')",
                 }}
             >
-                <div className="about container mx-auto py-10 max-w-6xl text-black dark:text-white bg-white dark:bg-zinc-950 font-sans text-base">
+                <div className="container mx-auto py-10 max-w-7xl text-black dark:text-white bg-white dark:bg-zinc-950 font-sans text-base">
                     <img
                         className="pfp rounded-full w-40 mx-auto"
                         src="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/pfp.png"
                         alt="Profile Picture"
                     />
-                    <h1 className="text-4xl text-center mt-8">
+                    <h1 className="text-4xl text-center mt-8 font-bold">
                         {t('about.title')}
                     </h1>
                     <section className="mt-8 mx-4">
                         <p className="text-lg">{t('about.birthdate')}</p>
-                        <h2 className="text-2xl mt-4">{t('about.events')}</h2>
-                        <p>{t('about.injury')}</p>
-                        <h2 className="text-2xl mt-4">
+                        <h2 className="text-2xl mt-6 mb-4 font-bold">
+                            {t('about.events')}
+                        </h2>
+                        <p className="text-lg">{t('about.injury')}</p>
+                        <h2 className="text-2xl mt-6 mb-4 font-bold">
                             {t('about.countries')}
                         </h2>
-                        <ul>
+                        <ul className="list-disc list-inside text-lg">
                             <li>{t('about.country.japan')}</li>
                             <li>{t('about.country.philippines')}</li>
                             <li>{t('about.country.newzealand')}</li>
                         </ul>
-                        <h2 className="text-2xl mt-4">{t('about.hobbies')}</h2>
-                        <ul>
+                        <h2 className="text-2xl mt-6 mb-4 font-bold">
+                            {t('about.hobbies')}
+                        </h2>
+                        <ul className="list-disc list-inside text-lg">
                             <li>{t('about.hobby.kendama')}</li>
                             <li>{t('about.hobby.jumprope')}</li>
                             <li>{t('about.hobby.programming')}</li>
@@ -59,6 +64,9 @@ const About = () => {
                     </section>
                     <div className="mx-4">
                         <SchoolHistory />
+                    </div>
+                    <div className="mx-4">
+                        <Contacts />
                     </div>
                 </div>
             </main>

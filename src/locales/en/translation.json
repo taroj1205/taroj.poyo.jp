@@ -74,7 +74,7 @@
             "headings": {
                 "start": "Start",
                 "end": "End",
-                "name": "Name",
+                "schoolName": "Name",
                 "grade": "Year Level",
                 "duration": "Period",
                 "location": "Location"
