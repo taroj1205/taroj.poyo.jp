@@ -46,12 +46,12 @@ export default () => {
     }, []);
 
     useEffect(() => {
-        const currentClass = document.documentElement.className;
-        const defaultThemeOption = themeOptions.find((option) => option.value === currentClass);
+        const currentClasses = document.documentElement.className.split(' ');
+        const defaultThemeOption = themeOptions.find((option) => currentClasses.includes(option.value));
+        console.log(defaultThemeOption);
         if (defaultThemeOption) {
             setValue(defaultThemeOption);
         }
-
     }, []);
 
     return (
