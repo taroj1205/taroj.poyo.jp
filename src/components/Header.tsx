@@ -35,7 +35,7 @@ const Header = () => {
                         className={`flex items-center hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                             } transition-all duration-300`}
                     >
-                        <FaHome className="mr-0 md:mr-2 text-xl mb-1 md:mb-0" />
+                        <FaHome className="mx-1 md:mr-2 md:ml-0 text-xl mb-1 md:mb-0" />
                         <span className="text-base hidden md:block">{t('header.home')}</span>
                     </button>
                     <button
@@ -44,7 +44,7 @@ const Header = () => {
                         className={`flex items-center hover:text-blue-600 px-2 ${isActive('/about') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                             } transition-all duration-300`}
                     >
-                        <FaInfoCircle className="mr-0 md:mr-2 text-xl mb-1 md:mb-0" />
+                        <FaInfoCircle className="mx-1 md:mr-2 md:ml-0 text-xl mb-1 md:mb-0" />
                         <span className="text-base hidden md:block">{t('header.about')}</span>
                     </button>
                     <button
@@ -53,7 +53,7 @@ const Header = () => {
                         className={`flex items-center hover:text-blue-600 px-2 ${isActive('/chat') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                             } transition-all duration-300`}
                     >
-                        <FaComments className="mr-0 md:mr-2 text-xl mb-1 md:mb-0" />
+                        <FaComments className="mx-1 md:mr-2 md:ml-0 text-xl mb-1 md:mb-0" />
                         <span className="text-base hidden md:block">{t('header.chat')}</span>
                     </button>
                 </div>
