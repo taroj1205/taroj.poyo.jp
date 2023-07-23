@@ -68,10 +68,10 @@ const HomePage = () => {
                 <title>{t('title.index')}</title>
             </Head>
             <main className="container mx-auto py-10 w-[90%] max-w-6xl">
-                <h2 className="text-4xl">
+                <h1 className="text-4xl mt-8 font-bold">
                     {t('index.welcome')}
                     {userData.username && ` ${userData.username}`}!
-                </h2>
+                </h1>
                 <Contacts />
             </main>
 

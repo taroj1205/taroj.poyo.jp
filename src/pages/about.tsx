@@ -29,7 +29,7 @@ const About = () => {
                         "url('https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png')",
                 }}
             >
-                <div className="about container mx-auto py-10 max-w-6xl text-black dark:text-white bg-white dark:bg-zinc-950 font-sans text-base">
+                <div className="container mx-auto py-10 max-w-7xl text-black dark:text-white bg-white dark:bg-zinc-950 font-sans text-base">
                     <img
                         className="pfp rounded-full w-40 mx-auto"
                         src="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/pfp.png"

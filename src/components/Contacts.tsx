@@ -45,7 +45,7 @@ function Contacts() {
 
     return (
         <section className="mt-10">
-            <h3 className="text-2xl mb-5">{t('index.contact')}</h3>
+            <h2 className="text-2xl mt-6 mb-4 font-bold">{t('index.contact')}</h2>
             <div className="grid grid-cols-2 gap-2 max-w-full w-64 font-semibold">
                 <ContactLink
                     hover="hover:bg-blue-600 hover:text-white text-blue-600"
