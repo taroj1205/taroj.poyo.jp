@@ -69,7 +69,6 @@ const Chat = ({ userId }: ChatProps) => {
                     'An error occurred while fetching default messages:',
                     error
                 );
-                errorPopup(error.toString());
             }
         };
 

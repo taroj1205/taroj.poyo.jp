@@ -1,10 +1,8 @@
 import Head from 'next/head';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FiExternalLink } from 'react-icons/fi';
 import CustomSelect from '../components/SelectTheme';
 import ChangeProfile from '../components/ChangeProfile';
-import LanguageSwitch from '../components/LanguageSwitch';
 
 const Settings = () => {
     const { t } = useTranslation();
@@ -34,11 +32,6 @@ const Settings = () => {
                     <div className="flex items-center justify-center mb-4">
                         <div className="bg-gray-200 dark:bg-gray-800 p-2 rounded-md">
                             <CustomSelect />
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <div className="bg-gray-200 dark:bg-gray-800 p-2 rounded-md">
-                            <LanguageSwitch isHeader={false} />
                         </div>
                     </div>
                 </div>

@@ -20,8 +20,7 @@ export default ({ isHeader }: { isHeader: boolean }) => {
     const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [value, setValue] = useState<LanguageOption | null>();
-    const [currentLanguage, setCurrentLanguage] = useState('');
-    const languageOptions: readonly LanguageOption[] = getLanguageOptions(t);
+    const languageOptions: readonly LanguageOption[] = getLanguageOptions();
 
     const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -55,18 +54,15 @@ export default ({ isHeader }: { isHeader: boolean }) => {
         const lang = router.locale as string;
         console.log(lang);
         handleLanguageChange(lang);
-        const defaultLanguageOption = languageOptions.find((option) => option.value === lang);
-        setValue(defaultLanguageOption);
     }, []);
 
     useEffect(() => {
         const lang = router.locale as string;
-        const defaultThemeOption = languageOptions.find((option) => option.value === lang);
+        const defaultThemeOption = languageOptions.find((option) => option.lang === lang);
         console.log(lang, defaultThemeOption);
         if (defaultThemeOption) {
             setValue(defaultThemeOption);
         }
-
     }, []);
 
     const ChevronDown = ({ color, isHeader }: { color: string, isHeader: boolean }) => {
@@ -96,16 +92,15 @@ export default ({ isHeader }: { isHeader: boolean }) => {
     };
 
     const handleLanguageChange = (language: string) => {
-        console.log(language, currentLanguage);
+        const lang = router.locale as string;
+        console.log(language, lang);
         const currentPath = router.asPath;
-        const newPath = currentPath.replace(`/${language}/`, `/${currentLanguage}/`);
+        const newPath = currentPath.replace(`/${language}/`, `/${lang}/`);
+        i18n.changeLanguage(language);
+        const defaultLanguageOption = languageOptions.find((option) => option.lang === language);
+        setValue(defaultLanguageOption);
+        Cookies.set('defaultLanguage', language);
         router.push(newPath, newPath, { locale: language });
-
-        if (language !== currentLanguage) {
-            i18n.changeLanguage(language);
-            setCurrentLanguage(language);
-            Cookies.set('defaultLanguage', language); // Update the cookie with the new language
-        }
         setIsOpen(false);
     };
 
@@ -140,9 +135,8 @@ export default ({ isHeader }: { isHeader: boolean }) => {
                 onChange={(newValue) => {
                     if (newValue) {
                         localStorage.language = newValue.value;
-                        handleLanguageChange(newValue.value);
+                        handleLanguageChange(newValue.lang);
                     }
-                    setValue(newValue);
                     setIsOpen(false);
                 }}
                 options={languageOptions}
