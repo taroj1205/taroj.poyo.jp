@@ -34,16 +34,6 @@ const Header = () => {
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
-                    <div className={`md:hidden flex justify-center w-full flex-grow ${isExpanded ? 'pb-2' : 'pb-0'}`}>
-                        {/* Container for the arrow, hidden on laptop */}
-                        <button
-                            aria-label="dropdown"
-                            onClick={toggleDropdown}
-                            className={`flex items-center ${isExpanded ? 'transform rotate-180' : 'text-gray-500'} transition-all duration-300`}
-                        >
-                            <FaAngleDown className="text-xl" />
-                        </button>
-                    </div>
                     <div
                         className={`md:flex ${isExpanded ? 'flex' : 'hidden'
                             } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
@@ -74,6 +64,16 @@ const Header = () => {
                         >
                             <FaComments className="mr-1 text-xl mb-1 md:mb-0" />
                             <span className="text-base">{t('header.chat')}</span>
+                        </button>
+                    </div>
+                    <div className={`md:hidden flex justify-center w-full flex-grow ${isExpanded ? 'pt-2' : 'pt-0'}`}>
+                        {/* Container for the arrow, hidden on laptop */}
+                        <button
+                            aria-label="dropdown"
+                            onClick={toggleDropdown}
+                            className={`flex items-center ${isExpanded ? 'transform rotate-180' : 'text-gray-500'} transition-all duration-300`}
+                        >
+                            <FaAngleDown className="text-xl" />
                         </button>
                     </div>
                 </div>
