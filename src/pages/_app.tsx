@@ -106,7 +106,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     {/* Add other custom metadata and tags */}
                 </Head>
                 <ThemeProvider attribute="class">
-                    <Header />
+                    {shouldRenderHeaderAndBanner && <Header />}
                     <Component {...pageProps} />
                     {shouldRenderHeaderAndBanner && <FloatingBanner />}
                 </ThemeProvider>
