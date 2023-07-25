@@ -51,7 +51,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
     return (
         <div className="flex items-center justify-center">
             <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg">
-                <h2 className="text-2xl font-bold mb-6">Sign In</h2>
+                <h2 className="text-2xl font-bold mb-6">{t('title.login')}</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -63,6 +63,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
                             id="email"
                             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                             value={email}
+                            autoComplete='email'
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
@@ -75,6 +76,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
                             id="password"
                             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                             value={password}
+                            autoComplete='password'
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>

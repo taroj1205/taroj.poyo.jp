@@ -22,6 +22,7 @@
         "settings": "Settings",
         "auth": "Authenication",
         "signup": "Sign Up",
+        "login":"Login",
         "forgotPassword": "Forgot password"
     },
     "change": {
