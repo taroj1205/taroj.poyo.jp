@@ -46,7 +46,6 @@
         "react-refresh": "^0.14.0",
         "react-router-dom": "^6.14.1",
         "react-select": "^5.7.4",
-        "react-social-media-embed": "^2.3.5",
         "react-tooltip": "^5.18.0",
         "request": "^2.88.2",
         "socket.io": "^4.6.2",

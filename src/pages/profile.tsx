@@ -23,12 +23,7 @@ const Profile = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (isLoading) return;
-        if (error) return;
-        if (!user) {
-            router.push('/api/auth/login');
-            return;
-        }
+        if (!user) return;
 
         const fetchData = async () => {
             try {
@@ -52,11 +47,14 @@ const Profile = () => {
         };
 
         fetchData();
-    }, [isLoading, error, user, router]);
+    }, [user]);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error occurred: {error.message}</div>;
-    if (!user) return null;
+    if (!user) {
+        router.push('/api/auth/login');
+        return null;
+    }
 
     return (
         <>
@@ -73,16 +71,16 @@ const Profile = () => {
                 />
                 <title>{t('title.profile')}</title>
             </Head>
-        <div className="flex flex-col pt-1 items-center">
-            <img
-                className="w-32 h-32 rounded-full mb-4"
-                src={userData.picture ?? undefined}
-                alt={userData.name ?? undefined}
-            />
-            <h2 className='text-black dark:text-white'>{t('your.username')}: {userData.username}</h2>
-            <p className="text-gray-500">{t('your.email')}: {userData.email}</p>
+            <div className="flex flex-col pt-1 items-center">
+                <img
+                    className="w-32 h-32 rounded-full mb-4"
+                    src={userData.picture ?? undefined}
+                    alt={userData.name ?? undefined}
+                />
+                <h2 className='text-black dark:text-white'>{t('your.username')}: {userData.username}</h2>
+                <p className="text-gray-500">{t('your.email')}: {userData.email}</p>
             </div>
-            </>
+        </>
     );
 };
 

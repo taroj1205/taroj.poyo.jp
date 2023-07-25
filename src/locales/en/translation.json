@@ -9,12 +9,15 @@
     "profile": "Profile",
     "settings": "Settings",
     "search": "Search...",
+    "goBack": "Go back",
     "title": {
         "index": "Home",
         "about": "About",
         "chat": "Chat",
         "profile": "Profile",
-        "settings": "Settings"
+        "settings": "Settings",
+        "auth": "Authenication",
+        "forgotPassword": "Forgot password"
     },
     "change": {
         "profile picture": "Change profile picture",
