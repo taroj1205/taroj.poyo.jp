@@ -8,7 +8,7 @@ const GoBack: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick }) => {
     return (
         <button
             type="button"
-            className="text-indigo-500 hover:text-indigo-600"
+            className="text-indigo-500 hover:text-indigo-600 underline hover:no-underline text-sm"
             onClick={onGoBackClick}
         >
             {t('goBack')}
@@ -52,26 +52,24 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                     <div>
                         {isSuccess ? (
                             <div>
-                                <h2 className="text-2xl font-bold mb-6">Password Reset Request Sent</h2>
-                                <p className="text-green-600 dark:text-green-400">✔️ Success!</p>
-                                <p className="text-gray-700 dark:text-gray-300">
-                                    An email with instructions to reset your password has been sent to your registered email address.
-                                </p>
+                                <h2 className="text-2xl font-bold mb-6">{t('resetRequestSent')}</h2>
+                                <p className="text-green-600 dark:text-green-400">{t('success')}</p>
+                                <p className="text-gray-700 dark:text-gray-300">{t('resetRequestInstructions')}</p>
                             </div>
                         ) : (
                             <div>
-                                <h2 className="text-2xl font-bold mb-6">Submitting...</h2>
+                                <h2 className="text-2xl font-bold mb-6">{t('submitting')}</h2>
                             </div>
                         )}
                         <GoBack onGoBackClick={onGoBackClick} />
                     </div>
                 ) : (
                     <div>
-                        <h2 className="text-2xl font-bold mb-6">Forgot Password</h2>
+                        <h2 className="text-2xl font-bold mb-6">{t('auth.forgotPassword')}</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">
-                                    Email
+                                    {t('auth.email')}
                                 </label>
                                 <input
                                     type="email"
@@ -87,9 +85,9 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                                     className={`bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     disabled={isLoading}
                                 >
-                                    {isLoading ? 'Submitting...' : 'Submit'}
+                                        {isLoading ? t('submitting') : t('submit')}
                                 </button>
-                                    <GoBack onGoBackClick={onGoBackClick} />
+                                <GoBack onGoBackClick={onGoBackClick} />
                             </div>
                         </form>
                     </div>

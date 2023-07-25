@@ -9,7 +9,11 @@
     "profile": "Profile",
     "settings": "Settings",
     "search": "Search...",
-    "goBack": "Go back",
+    "goBack": "Go Back",
+    "success": "Success!",
+    "submitting": "Submitting...",
+    "resetRequestSent": "Password Reset Request Sent",
+    "resetRequestInstructions": "An email with instructions to reset your password has been sent to your registered email address.",
     "title": {
         "index": "Home",
         "about": "About",
@@ -17,6 +21,7 @@
         "profile": "Profile",
         "settings": "Settings",
         "auth": "Authenication",
+        "signup": "Sign Up",
         "forgotPassword": "Forgot password"
     },
     "change": {
@@ -53,6 +58,15 @@
         "home": "Home",
         "about": "About",
         "chat": "Chat"
+    },
+    "auth": {
+        "login": "Login",
+        "signup": "Sign Up",
+        "logout": "Logout",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "forgotPassword": "Forgot password"
     },
     "about": {
         "title": "About me",

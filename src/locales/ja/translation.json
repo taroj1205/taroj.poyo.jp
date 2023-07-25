@@ -10,6 +10,10 @@
     "settings": "設定",
     "search": "検索する",
     "goBack": "戻る",
+    "success": "成功しました！",
+    "submitting": "送信中...",
+    "resetRequestSent": "パスワードリセットの要求を送信しました",
+    "resetRequestInstructions": "パスワードをリセットするための手順が記載されたメールが、登録されたメールアドレスに送信されました。",
     "title": {
         "index": "ホームページ",
         "about": "自己紹介",
@@ -17,6 +21,7 @@
         "profile": "プロフィール",
         "settings": "設定",
         "auth": "認証",
+        "signup": "登録する",
         "forgotPassword": "パスワードを忘れた"
     },
     "change": {
@@ -53,6 +58,15 @@
         "home": "ホーム",
         "about": "僕について",
         "chat": "チャット"
+    },
+    "auth": {
+        "login": "ログイン",
+        "signup": "登録",
+        "logout": "ログアウト",
+        "email": "メールアドレス",
+        "password": "パスワード",
+        "confirmPassword": "パスワードの確認",
+        "forgotPassword": "パスワードを忘れた場合"
     },
     "about": {
         "title": "僕について",

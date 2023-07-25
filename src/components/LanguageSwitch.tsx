@@ -51,7 +51,10 @@ export default ({ isHeader }: { isHeader: boolean }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const lang = router.locale as string;
+        let lang = router.locale as string;
+        if (!lang || lang === 'default') {
+            lang = 'en';
+        }
         console.log(lang);
         handleLanguageChange(lang);
     }, []);

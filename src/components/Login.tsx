@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => void }> = ({ onSignupClick, onForgotPasswordClick }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [darkMode, setDarkMode] = useState(false);
     const [error, setError] = useState('');
+    const { t } = useTranslation();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,7 +56,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">
-                            Email
+                            {t('auth.email')}
                         </label>
                         <input
                             type="email"
@@ -67,7 +68,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
                     </div>
                     <div className="mb-6">
                         <label htmlFor="password" className="block text-gray-700 dark:text-gray-300 mb-2">
-                            Password
+                            {t('auth.password')}
                         </label>
                         <input
                             type="password"
@@ -82,22 +83,22 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
                             type="submit"
                             className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none"
                         >
-                            Sign In
+                            {t('auth.login')}
                         </button>
                         <div className="text-sm">
                             <button
                                 type="button"
-                                className="text-indigo-500 hover:text-indigo-600 mr-2"
+                                className="text-indigo-500 hover:text-indigo-600 underline hover:no-underline mr-4"
                                 onClick={onSignupClick}
                             >
-                                Sign Up
+                                {t('auth.signup')}
                             </button>
                             <button
                                 type="button"
-                                className="text-indigo-500 hover:text-indigo-600"
+                                className="text-indigo-500 hover:text-indigo-600 underline hover:no-underline"
                                 onClick={onForgotPasswordClick}
                             >
-                                Forgot Password
+                                {t('auth.forgotPassword')}
                             </button>
                         </div>
                     </div>

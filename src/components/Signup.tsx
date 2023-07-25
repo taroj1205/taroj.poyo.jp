@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [darkMode, setDarkMode] = useState(false);
+    const { t } = useTranslation();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,11 +23,11 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
 
     return (
         <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
+            <h2 className="text-2xl font-bold mb-6">{t('title.signup')}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">
-                        Email
+                        {t('auth.email')}
                     </label>
                     <input
                         type="email"
@@ -38,7 +39,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                 </div>
                 <div className="mb-4">
                     <label htmlFor="password" className="block text-gray-700 dark:text-gray-300 mb-2">
-                        Password
+                        {t('auth.password')}
                     </label>
                     <input
                         type="password"
@@ -50,7 +51,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                 </div>
                 <div className="mb-6">
                     <label htmlFor="confirmPassword" className="block text-gray-700 dark:text-gray-300 mb-2">
-                        Confirm Password
+                        {t('auth.confirmPassword')}
                     </label>
                     <input
                         type="password"
@@ -65,15 +66,15 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                         type="submit"
                         className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none"
                     >
-                        Sign Up
+                        {t('auth.signup')}
                     </button>
                     <div className="text-sm">
                         <button
                             type="button"
-                            className="text-indigo-500 hover:text-indigo-600 mr-2"
+                            className="text-indigo-500 hover:text-indigo-600 mr-2 underline hover:no-underline"
                             onClick={onLoginClick}
                         >
-                            Sign In
+                            {t('auth.login')}
                         </button>
                     </div>
                 </div>
