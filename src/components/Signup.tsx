@@ -6,14 +6,30 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [darkMode, setDarkMode] = useState(false);
+    const [signupSuccess, setSignupSuccess] = useState(false); // new state variable
     const { t } = useTranslation();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Add your signup logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
-        console.log('Confirm Password:', confirmPassword);
+        if (password === confirmPassword) {
+            fetch('/api/signup', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Signup successful:', data);
+                    setSignupSuccess(true); // set state variable to true on successful signup
+                })
+                .catch(error => {
+                    console.error('Signup failed:', error);
+                });
+        } else {
+            console.error('Password and confirm password do not match');
+        }
     };
 
     const handleToggleDarkMode = () => {
@@ -94,6 +110,22 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                     Dark Mode
                 </label>
             </div>
+            {signupSuccess && (
+                <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4">{t('auth.signupSuccess')}</h3>
+                        <button
+                            className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none"
+                            onClick={() => {
+                                setSignupSuccess(false);
+                                onLoginClick();
+                            }}
+                        >
+                            {t('auth.close')}
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

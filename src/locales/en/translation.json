@@ -67,7 +67,9 @@
         "email": "Email",
         "password": "Password",
         "confirmPassword": "Confirm Password",
-        "forgotPassword": "Forgot password"
+        "forgotPassword": "Forgot password",
+        "signupSuccess": "Successfully signed up!",
+        "close": "Close"
     },
     "about": {
         "title": "About me",

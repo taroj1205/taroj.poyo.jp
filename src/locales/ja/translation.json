@@ -67,7 +67,9 @@
         "email": "メールアドレス",
         "password": "パスワード",
         "confirmPassword": "パスワードの確認",
-        "forgotPassword": "パスワードを忘れた場合"
+        "forgotPassword": "パスワードを忘れた場合",
+        "signupSuccess": "サインアップに成功しました！",
+        "close": "閉じる"
     },
     "about": {
         "title": "僕について",
