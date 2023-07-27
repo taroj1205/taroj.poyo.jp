@@ -369,7 +369,7 @@ const Chat = ({ userId }: ChatProps) => {
             console.log('User id', userId);
             if (!userId) {
                 errorPopup('Could not indentify you... reloading...');
-                router.push('/login');
+                router.push('/auth/login');
             }
             // Send a new message to the server
             fetch('/api/chat', {

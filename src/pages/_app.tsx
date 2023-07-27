@@ -7,6 +7,7 @@ import i18n from '../../i18n';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { ThemeProvider } from "next-themes";
+import Script from 'next/script';
 
 import '../globals.css';
 
@@ -55,20 +56,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserProvider>
             <I18nextProvider i18n={i18n}>
                 <Head>
-                    <script
-                        async
-                        src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB"
-                    ></script>
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `
-                            window.dataLayer = window.dataLayer || [];
-                            function gtag(){dataLayer.push(arguments);}
-                            gtag('js', new Date());
-                            gtag('config', 'G-5K9MK5PVGB');
-                        `,
-                        }}
-                    />
                     <meta
                         name="viewport"
                         content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
@@ -111,6 +98,21 @@ export default function App({ Component, pageProps }: AppProps) {
                     {shouldRenderHeaderAndBanner && <FloatingBanner />}
                 </ThemeProvider>
                 <Analytics />
+                <Script
+                    src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB"
+                    strategy="afterInteractive"
+                />
+                <Script
+                    strategy="afterInteractive"
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-5K9MK5PVGB');
+                        `,
+                    }}
+                />
             </I18nextProvider>
         </UserProvider>
     );
