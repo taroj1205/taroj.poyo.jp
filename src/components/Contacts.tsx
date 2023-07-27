@@ -64,9 +64,9 @@ function Contacts() {
                 <div className="flex items-center">
                     <a
                         className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:text-white hover:bg-[#7289DA] text-[#7289DA]`}
-                        data-tooltip-content="Discord"
+                        data-tooltip-content="Copy"
                         data-tooltip-place="top"
-                        data-tooltip-id="Discord"
+                        data-tooltip-id="Copy"
                         style={{ cursor: 'pointer' }}
                         onClick={() => handleCopy('taroj1205')}
                     >
@@ -74,7 +74,7 @@ function Contacts() {
                         <span className="ml-2">Discord</span>
                     </a>
                         <Tooltip
-                            id="Discord"
+                        id="Copy"
                             content={copied ? t('copied') : ''}
                         />
                 </div>

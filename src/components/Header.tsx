@@ -6,6 +6,7 @@ import Profile from './Profile';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { UnmountClosed } from 'react-collapse';
+import Link from 'next/link';
 
 const Header = () => {
     const router = useRouter();
@@ -36,37 +37,35 @@ const Header = () => {
                 </div>
                 <div className="flex flex-col md:flex-row items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
                     <UnmountClosed isOpened={true || false}>
-                    <div
-                        className={`flex ${isExpanded ? 'flex' : 'hidden duration-3000 md:flex'
-                            } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
-                    >
-                            <button
-                                aria-label="home"
-                                onClick={() => handleLink('/')}
+                        <div
+                            className={`flex ${isExpanded ? 'flex' : 'hidden duration-3000 md:flex'
+                                } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
+                        >
+                            <Link href="/"
                                 className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
                             >
                                 <FaHome className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.home')}</span>
-                            </button>
-                            <button
-                                aria-label="about"
-                                onClick={() => handleLink('/about')}
-                                className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/about') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
+                            </Link>
+                            <Link href="/about"
+                                className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/about')
+                                    ? 'border-b-2 border-blue-600 text-blue-600'
+                                    : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
                             >
                                 <FaInfoCircle className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.about')}</span>
-                            </button>
-                            <button
-                                aria-label="chat"
-                                onClick={() => handleLink('/chat')}
-                                className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/chat') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
+                            </Link>
+                            <Link href="/chat"
+                                className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/chat')
+                                    ? 'border-b-2 border-blue-600 text-blue-600'
+                                    : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
                             >
                                 <FaComments className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.chat')}</span>
-                            </button>
+                            </Link>
                         </div>
                     </UnmountClosed>
                     <div className={`md:hidden flex justify-center w-full flex-grow ${isExpanded ? 'pt-2' : 'pt-0'}`}>
