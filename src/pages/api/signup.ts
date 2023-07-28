@@ -3,7 +3,9 @@ import mysql from 'mysql';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import gravatarUrl from 'gravatar-url';
+import Filter from 'bad-words';
 
+const filter = new Filter();
 const dbConfig = process.env.DATABASE_URL || '';
 
 const signupHandler: NextApiHandler = async (req, res) => {
@@ -15,6 +17,47 @@ const signupHandler: NextApiHandler = async (req, res) => {
 
     if (!email || !username || !password) {
         return res.status(400).json({ error: 'Email, username, and password are required' });
+    }
+
+    if (filter.isProfane(email) || filter.isProfane(username) || filter.isProfane(password)) {
+        return res.status(400).json({ error: 'Please avoid using inappropriate language' });
+    }
+
+    // Additional state variables for password validation
+    let isPasswordValid = true;
+    let passwordValidationMessage = '';
+
+    const validatePassword = (password: string) => {
+        // Check if the password contains the email or username
+        if (password.includes(email) || password.includes(username)) {
+            isPasswordValid = false;
+            passwordValidationMessage = 'Password cannot contain email or username';
+            return;
+        }
+
+        // Check if the password is at least 8 characters long
+        if (password.length < 8) {
+            isPasswordValid = false;
+            passwordValidationMessage = 'Password must be at least 8 characters long';
+            return;
+        }
+
+        // Check if the password contains at least one uppercase letter, one lowercase letter, and one digit
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+        if (!password.match(passwordRegex)) {
+            isPasswordValid = false;
+            passwordValidationMessage = 'Password must contain at least one uppercase letter, one lowercase letter, and one digit';
+            return;
+        }
+
+        isPasswordValid = true;
+        passwordValidationMessage = '';
+    };
+
+    validatePassword(password);
+
+    if (!isPasswordValid) {
+        return res.status(400).json({ error: passwordValidationMessage });
     }
 
     const connection = mysql.createConnection(dbConfig);

@@ -22,7 +22,7 @@
         "settings": "Settings",
         "auth": "Authenication",
         "signup": "Sign Up",
-        "login":"Login",
+        "login": "Login",
         "forgotPassword": "Forgot password"
     },
     "change": {
@@ -73,7 +73,10 @@
         "username": "Username",
         "close": "Close",
         "loginFailed": "Login failed! Please check your credentials and try again.",
-        "loginError": "An error occurred during login. Please try again later."
+        "loginError": "An error occurred during login. Please try again later.",
+        "passwordContainsEmailOrUsername": "Password must not contain your email or username.",
+        "passwordMinLength": "Password must be at least 8 characters long.",
+        "passwordRequirements": "Password must contain at least one uppercase letter, one lowercase letter, and one digit."
     },
     "about": {
         "title": "About me",
