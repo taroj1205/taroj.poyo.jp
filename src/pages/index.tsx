@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 import FloatingBanner from '../components/FloatingBanner';
 import copy from 'copy-to-clipboard';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import Contacts from '../components/Contacts';
 
 interface ProfileData {
@@ -15,42 +14,19 @@ interface ProfileData {
 
 const HomePage = () => {
     const { t } = useTranslation();
-    const { user, error, isLoading } = useUser();
-
-    const [userData, setUserData] = useState<ProfileData>({
+    const [user, setUser] = useState<ProfileData>({
         email: '',
         username: '',
         picture: '',
         name: '',
-    });
+    })
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const userId = user?.sub;
-                const url = `/api/getUser?user=${userId}`;
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        user: userId,
-                    }),
-                };
-                const response = await fetch(url, requestOptions);
-                const data = await response.json();
-                setUserData(data);
-                console.log(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        if (!isLoading) {
-            fetchData();
+        const userData = localStorage.getItem("userProfileData");
+        if (userData) {
+            setUser(JSON.parse(userData));
         }
-    }, [user, isLoading]);
+    }, []);
 
     return (
         <>
@@ -70,7 +46,7 @@ const HomePage = () => {
             <main className="container mx-auto py-10 w-[90%] max-w-6xl">
                 <h1 className="text-4xl mt-8 font-bold">
                     {t('index.welcome')}
-                    {userData.username && ` ${userData.username}`}!
+                    {user.username && ` ${user.username}`}!
                 </h1>
                 <Contacts />
             </main>

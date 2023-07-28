@@ -4,23 +4,78 @@ import Head from 'next/head';
 import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
 import Header from '../components/Header';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
 
-interface ChatProps {
-    userId: string;
-}
-
-const Chat = ({ userId }: ChatProps) => {
+const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
+    const [token, setToken] = useState('');
     const [isLoadingState, setisLoadingState] = useState(false);
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const scrollPosRef = useRef<number>(0);
 
     useEffect(() => {
+        const userToken = Cookies.get('token');
+        const fetchDefaultMessages = async () => {
+            try {
+                console.log(token);
+                if (userToken) {
+                    const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
+                        method: 'GET',
+                    });
+                    const data = await response.json();
+                    console.log(data);
+                    if (data.error === 401) {
+                        window.location.href = '/auth'; // Redirect to /auth
+                    } else {
+                        setToken(userToken);
+                        console.log('Getting default messages');
+                        const response = await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                method: 'defaultMessages',
+                                server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+                            }),
+                        });
+                        const data = await response.json();
+                        console.log(data);
+                        if (data.status === 400) {
+                            errorPopup(data.error.toString());
+                            return;
+                        }
+                        setMessages(data.messages);
+                        await addMessage(data.messages);
+                        const read = localStorage.getItem('read') || '0';
+                        document.getElementById(read)?.scrollIntoView();
+                        const mainElement = document.querySelector('main');
+                        mainElement?.classList.remove('animate-pulse');
+                        document
+                            .getElementById('send-button')
+                            ?.removeAttribute('disabled');
+                        document
+                            .getElementById('input-field')
+                            ?.removeAttribute('disabled');
+                    }
+                }
+                else {
+                    window.location.href = '/auth'; // Redirect to /auth
+                }
+            } catch (error: any) {
+                console.error(
+                    'An error occurred while fetching default messages:',
+                    error
+                );
+            }
+        };
+
+        fetchDefaultMessages();
+
         console.log('useEffect running');
 
         const pusher = new Pusher('cd4e43e93ec6d4f424db', {
@@ -32,47 +87,6 @@ const Chat = ({ userId }: ChatProps) => {
         const messagesContainer = document.getElementById(
             'messages'
         ) as HTMLDivElement;
-
-        const fetchDefaultMessages = async () => {
-            try {
-                console.log('Getting default messages');
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        method: 'defaultMessages',
-                        server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
-                    }),
-                });
-                const data = await response.json();
-                console.log(data);
-                if (data.status === 400) {
-                    errorPopup(data.error.toString());
-                    return;
-                }
-                setMessages(data.messages);
-                await addMessage(data.messages);
-                const read = localStorage.getItem('read') || '0';
-                document.getElementById(read)?.scrollIntoView();
-                const mainElement = document.querySelector('main');
-                mainElement?.classList.remove('animate-pulse');
-                document
-                    .getElementById('send-button')
-                    ?.removeAttribute('disabled');
-                document
-                    .getElementById('input-field')
-                    ?.removeAttribute('disabled');
-            } catch (error: any) {
-                console.error(
-                    'An error occurred while fetching default messages:',
-                    error
-                );
-            }
-        };
-
-        fetchDefaultMessages();
 
         const handleKeyDown = (event: any) => {
             console.log(event.key);
@@ -179,9 +193,8 @@ const Chat = ({ userId }: ChatProps) => {
             if (match) {
                 const lang = match[1];
                 const codeContent = match[2];
-                const wrappedCode = `<code${
-                    lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
-                }>${codeContent}</code>`;
+                const wrappedCode = `<code${lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
+                    }>${codeContent}</code>`;
                 return text.replace(codeRegex, wrappedCode);
             }
 
@@ -201,7 +214,7 @@ const Chat = ({ userId }: ChatProps) => {
                     await formatMessage(item);
                     const isAtBottom =
                         messagesContainer.scrollTop +
-                            messagesContainer.clientHeight ===
+                        messagesContainer.clientHeight ===
                         messagesContainer.scrollHeight;
                     if (isAtBottom) {
                         messagesContainer.scrollTop =
@@ -221,7 +234,7 @@ const Chat = ({ userId }: ChatProps) => {
                 const messageString = message.message;
                 const username = message.username;
                 const sent_on = message.sent_on;
-                const profilePicture = message.profilePicture;
+                const profilePicture = message.profile_picture;
 
                 const messageText = await wrapCodeInTags(messageString);
 
@@ -366,10 +379,10 @@ const Chat = ({ userId }: ChatProps) => {
 
         if (message && message.length < 500) {
             setisLoadingState(true); // set loading state to true
-            console.log('User id', userId);
-            if (!userId) {
+            console.log('User id', token);
+            if (!token) {
                 errorPopup('Could not indentify you... reloading...');
-                router.push('/auth/login');
+                router.push('/auth');
             }
             // Send a new message to the server
             fetch('/api/chat', {
@@ -379,7 +392,7 @@ const Chat = ({ userId }: ChatProps) => {
                 },
                 body: JSON.stringify({
                     method: 'newMessage',
-                    user: userId,
+                    user: token,
                     message,
                     server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
                 }),
@@ -436,7 +449,7 @@ const Chat = ({ userId }: ChatProps) => {
                     }
                 });
         } else {
-            if (userId) {
+            if (token) {
                 inputRef.current?.classList.add('shake-animation'); // add shake animation class if message is empty
                 setTimeout(() => {
                     inputRef.current?.classList.remove('shake-animation'); // remove shake animation class after 0.5s
@@ -444,6 +457,7 @@ const Chat = ({ userId }: ChatProps) => {
                 inputRef?.current?.focus();
             }
         }
+        inputRef?.current?.focus();
     };
 
     return (
@@ -637,27 +651,11 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 };
 
 const ChatPage = () => {
-    const [userId, setUserId] = useState('');
-    const [userData, setUserData] = useState('');
     const [height, setHeight] = useState(0);
-    const { user, error, isLoading } = useUser();
     const router = useRouter();
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (isLoading) return;
-        if (error) return;
-        if (!user) {
-            router.push('/api/auth/login');
-        } else {
-            const user_id = user.sub;
-            if (!user_id) {
-                return;
-            } else {
-                setUserId(user_id as string);
-            }
-        }
-
         const setVisualViewport = () => {
             const vv = window.visualViewport;
             if (vv) {
@@ -687,15 +685,7 @@ const ChatPage = () => {
                 );
             }
         };
-    }, [user, isLoading, error, router]);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    }, [router]);
 
     return (
         <>
@@ -730,7 +720,7 @@ const ChatPage = () => {
             </Head>
             <div>
                 <main className="animate-pulse w-full max-h-full" style={{ height: height }}>
-                    <Chat userId={userId} />
+                    <Chat />
                 </main>
             </div>
         </>

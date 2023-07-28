@@ -1,17 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaUser, FaSignOutAlt, FaSignInAlt, FaCog } from 'react-icons/fa';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 
 const Profile = () => {
-    const { user, error, isLoading } = useUser();
     const { t } = useTranslation();
     const router = useRouter();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    interface ProfileData {
+        email: string;
+        username: string;
+        picture: string;
+        name: string;
+    }
+
+    const [user, setUser] = useState<ProfileData>({
+        email: '',
+        username: '',
+        picture: '',
+        name: '',
+    })
+
+    useEffect(() => {
+        const userData = localStorage.getItem("userProfileData");
+        if (userData) {
+            setUser(JSON.parse(userData));
+        } else {
+            setUser({
+                email: '',
+                username: '',
+                picture: '',
+                name: '',
+            });
+        }
+    }, []);
 
 
     // Function to check if the documentElement has the class 'dark'
@@ -70,7 +96,7 @@ const Profile = () => {
 
     const ChevronDown = ({ color }: { color: string }) => (
         <span className='dark:text-white flex items-center'>
-            {user ? (
+            {user.picture ? (
                 <img
                     className="w-8 h-8 rounded-full"
                     src={user.picture ?? ''}
@@ -116,7 +142,7 @@ const Profile = () => {
                 isDropdownOpen && (
                     <div className="absolute top-8 right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
                         <div className="py-1">
-                            {!user && (
+                            {!user || !user.picture && (
                                 <>
                                     <button
                                         aria-label="login"
@@ -136,7 +162,7 @@ const Profile = () => {
                                     </button>
                                 </>
                             )}
-                            {user && (
+                            {user && user.picture && (
                                 <>
                                     <button
                                         aria-label="go to profile"

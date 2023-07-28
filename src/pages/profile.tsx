@@ -1,60 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
+import router from 'next/router';
 
 interface ProfileData {
     email: string;
     username: string;
     picture: string;
-    name: string;
 }
 
 const Profile = () => {
-    const router = useRouter();
-    const { user, error, isLoading } = useUser();
-    const [userData, setUserData] = useState<ProfileData>({
+    const [user, setUser] = useState<ProfileData>({
         email: '',
         username: '',
         picture: '',
-        name: '',
     });
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (!user) return;
-
-        const fetchData = async () => {
-            try {
-                const userId = user.sub;
-                const url = `/api/getUser?user=${userId}`;
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        user: userId,
-                    }),
-                };
-                const response = await fetch(url, requestOptions);
-                const data = await response.json();
-                setUserData(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchData();
-    }, [user]);
-
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error occurred: {error.message}</div>;
-    if (!user) {
-        router.push('/api/auth/login');
-        return null;
-    }
+        const userData = localStorage.getItem("userProfileData");
+        if (userData) {
+            setUser(JSON.parse(userData));
+        }
+    }, []);
 
     return (
         <>
@@ -74,11 +42,11 @@ const Profile = () => {
             <div className="flex flex-col pt-1 items-center">
                 <img
                     className="w-32 h-32 rounded-full mb-4"
-                    src={userData.picture ?? undefined}
-                    alt={userData.name ?? undefined}
+                    src={user.picture ?? undefined}
+                    alt={user.username ?? undefined}
                 />
-                <h2 className='text-black dark:text-white'>{t('your.username')}: {userData.username}</h2>
-                <p className="text-gray-500">{t('your.email')}: {userData.email}</p>
+                <h2 className='text-black dark:text-white'>{t('your.username')}: {user.username}</h2>
+                <p className="text-gray-500">{t('your.email')}: {user.email}</p>
             </div>
         </>
     );

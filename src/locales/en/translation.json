@@ -67,7 +67,13 @@
         "email": "Email",
         "password": "Password",
         "confirmPassword": "Confirm Password",
-        "forgotPassword": "Forgot password"
+        "forgotPassword": "Forgot password",
+        "signupSuccess": "Successfully signed up!",
+        "signupDupe": "Account already exists",
+        "username": "Username",
+        "close": "Close",
+        "loginFailed": "Login failed! Please check your credentials and try again.",
+        "loginError": "An error occurred during login. Please try again later."
     },
     "about": {
         "title": "About me",

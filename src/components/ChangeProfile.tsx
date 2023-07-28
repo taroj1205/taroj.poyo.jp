@@ -1,12 +1,32 @@
 import { useTranslation } from 'react-i18next';
 import { FiExternalLink } from 'react-icons/fi';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 function ChangeProfile() {
     const { t } = useTranslation();
-    const { user, error, isLoading } = useUser();
     const router = useRouter();
+
+    interface ProfileData {
+        email: string;
+        username: string;
+        picture: string;
+        name: string;
+    }
+
+    const [user, setUser] = useState<ProfileData>({
+        email: '',
+        username: '',
+        picture: '',
+        name: '',
+    })
+
+    useEffect(() => {
+        const userData = localStorage.getItem("userProfileData");
+        if (userData) {
+            setUser(JSON.parse(userData));
+        }
+    }, []);
 
     return (
         <div>

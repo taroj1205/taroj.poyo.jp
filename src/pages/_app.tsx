@@ -4,7 +4,6 @@ import { I18nextProvider } from 'react-i18next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import i18n from '../../i18n';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 import { ThemeProvider } from "next-themes";
 import Script from 'next/script';
@@ -13,10 +12,39 @@ import '../globals.css';
 
 import Header from '../components/Header';
 import FloatingBanner from '../components/FloatingBanner';
+import Cookies from 'js-cookie';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
     const { pathname } = router;
+
+    const fetchUserProfileData = async () => {
+        try {
+            const token = Cookies.get('token');
+            console.log(token);
+            if (token) {
+                const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user profile data.');
+                }
+
+                const data = await response.json();
+
+                // Store the data in localStorage
+                localStorage.setItem('userProfileData', JSON.stringify(data));
+            }
+        } catch (error) {
+            console.error('Error fetching user profile data:', error);
+        }
+    };
+
+    // Call the function when the component mounts
+    useEffect(() => {
+        fetchUserProfileData();
+    }, []);
 
     useEffect(() => {
         const addFontStyles = (
@@ -53,7 +81,6 @@ export default function App({ Component, pageProps }: AppProps) {
         pathname !== '/chat';
 
     return (
-        <UserProvider>
             <I18nextProvider i18n={i18n}>
                 <Head>
                     <meta
@@ -114,6 +141,5 @@ export default function App({ Component, pageProps }: AppProps) {
                     }}
                 />
             </I18nextProvider>
-        </UserProvider>
     );
 }
