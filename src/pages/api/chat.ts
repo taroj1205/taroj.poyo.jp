@@ -44,13 +44,13 @@ const chatHandler: NextApiHandler = async (req, res) => {
         await new Promise<void>((resolve, reject) => {
             connection.query(
                 `CREATE TABLE IF NOT EXISTS servers (
-                            id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                            server_name VARCHAR(255) NOT NULL,
-                            created_at TIMESTAMP DEFAULT NULL,
-                            last_login TIMESTAMP DEFAULT NULL,
-                            nanoid VARCHAR(30) UNIQUE,
-                            UNIQUE KEY idx_public_id (nanoid)
-                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+                id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                server_name VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                nanoid VARCHAR(30) UNIQUE,
+                UNIQUE KEY idx_public_id (nanoid)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
                             `,
                 (error) => {
                     if (error) {
@@ -111,7 +111,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
 
                 if (server_nanoid === 'default') {
                     const generatedNanoid = nanoid(30);
-                    console.log(generatedNanoid);
+                    console.log('nanoid', generatedNanoid);
 
                     connection.query(
                         `INSERT INTO servers (server_name, created_at, last_login, nanoid)
@@ -367,21 +367,41 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                                     serverResults.length > 0
                                                         ? serverResults[0].id
                                                         : null;
+                                                if (!serverId) {
+                                                    // Server ID not found, insert it
+                                                    connection.query(
+                                                        'INSERT INTO servers (nanoid, server_name) VALUES (?, ?)',
+                                                        [server_id, 'default'],
+                                                        (error, results) => {
+                                                            if (error) {
+                                                                console.error(
+                                                                    'Error inserting server id:',
+                                                                    error
+                                                                );
+                                                                res.status(500).send(error);
+                                                                return;
+                                                            }
 
-                                                // Proceed with message insertion
-                                                insertMessage(
-                                                    message,
-                                                    now,
-                                                    userId,
-                                                    serverId,
-                                                    username,
-                                                    picture
-                                                );
+                                                            console.log(
+                                                                `Inserted server id ${server_id} into servers table`
+                                                            );
+
+                                                            // Proceed with message insertion
+                                                            insertMessage(
+                                                                message,
+                                                                now,
+                                                                userId,
+                                                                results.insertId,
+                                                                username,
+                                                                picture
+                                                            );
+                                                        }
+                                                    );
+                                                }
                                             }
-                                        );
-                                    }
-                                }
-                            );
+                                        )
+                                    };
+                                });
                         } catch (error) {
                             console.error(error);
                             res.end(400).send(error);

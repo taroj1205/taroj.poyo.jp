@@ -69,7 +69,11 @@
         "confirmPassword": "パスワードの確認",
         "forgotPassword": "パスワードを忘れた場合",
         "signupSuccess": "サインアップに成功しました！",
-        "close": "閉じる"
+        "signupDupe": "アカウントが既に存在しています",
+        "username": "ユーザー名",
+        "close": "閉じる",
+        "loginFailed": "ログインに失敗しました。入力した情報を確認して、もう一度お試しください。",
+        "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。"
     },
     "about": {
         "title": "僕について",
