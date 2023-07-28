@@ -12,6 +12,50 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
+    // Additional state variables for password validation
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
+
+    const passwordRequirements = [
+        t('auth.passwordContainsEmailOrUsername'),
+        t('auth.passwordMinLength'),
+        t('auth.passwordRequirements')
+    ];
+
+    // Function to validate password in real-time
+    const validatePassword = (password: string) => {
+        // Check if the password contains the email or username
+        if (password.includes(email) || password.includes(username)) {
+            setIsPasswordValid(false);
+            setPasswordValidationMessage(t('auth.passwordContainsEmailOrUsername'));
+            return;
+        }
+
+        // Check if the password is at least 8 characters long
+        if (password.length < 8) {
+            setIsPasswordValid(false);
+            setPasswordValidationMessage(t('auth.passwordMinLength'));
+            return;
+        }
+
+        // Check if the password contains at least one uppercase letter, one lowercase letter, and one digit
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+        if (!password.match(passwordRegex)) {
+            setIsPasswordValid(false);
+            setPasswordValidationMessage(t('auth.passwordRequirements'));
+            return;
+        }
+
+        setIsPasswordValid(true);
+        setPasswordValidationMessage('');
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const password = e.target.value;
+        setPassword(password);
+        validatePassword(password);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
@@ -91,9 +135,22 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={password}
                         autoComplete='password'
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => handlePasswordChange(e)}
                     />
                 </div>
+                {passwordValidationMessage && (
+                    <p className="text-red-500 mb-2">{passwordValidationMessage}</p>
+                )}
+                {/* Show password requirements */}
+                <div className="text-gray-700 dark:text-gray-300 text-sm mb-4">
+                    {passwordRequirements.map((requirement, index) => (
+                        <p key={index} className={`${isPasswordValid ? 'text-green-600' : 'text-red-600'}`}>
+                            {isPasswordValid ? '✔' : '✖'} {requirement}
+                        </p>
+                    ))}
+                </div>
+                { isPasswordValid && (
+                    
                 <div className="mb-6">
                     <label htmlFor="confirmPassword" className="block text-gray-700 dark:text-gray-300 mb-2">
                         {t('auth.confirmPassword')}
@@ -108,6 +165,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
+                )}
                 <div className="flex items-center justify-between mb-4">
                     <button
                         type="submit"
