@@ -1,6 +1,7 @@
 import { NextApiHandler } from 'next';
 import mysql from 'mysql';
 import bcrypt from 'bcrypt';
+import gravatarUrl from 'gravatar-url';
 
 const dbConfig = process.env.DATABASE_URL || '';
 
@@ -12,7 +13,11 @@ const loginHandler: NextApiHandler = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ error: 'Username or email and password are required' });
+        // Wait for 5 seconds before sending back the error response
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        return res
+            .status(400)
+            .json({ error: 'Username or email and password are required' });
     }
 
     const connection = mysql.createConnection(dbConfig);
@@ -28,6 +33,8 @@ const loginHandler: NextApiHandler = async (req, res) => {
 
             if (rows.length === 0) {
                 console.log('User not found');
+                // Wait for 5 seconds before sending back the error response
+                await new Promise(resolve => setTimeout(resolve, 5000));
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
@@ -39,6 +46,8 @@ const loginHandler: NextApiHandler = async (req, res) => {
                 const isPasswordMatched = await bcrypt.compare(password, hashedPassword);
                 if (!isPasswordMatched) {
                     console.log('Invalid password');
+                    // Wait for 5 seconds before sending back the error response
+                    await new Promise(resolve => setTimeout(resolve, 5000));
                     return res.status(401).json({ error: 'Invalid credentials' });
                 }
 
@@ -64,7 +73,13 @@ const loginHandler: NextApiHandler = async (req, res) => {
                         }
 
                         const { token } = tokenRows[0];
-                        res.status(200).json({ token });
+                        const picture = gravatarUrl(email, { size: 200, default: 'identicon' });
+                        const user = {
+                            email,
+                            username,
+                            picture,
+                        };
+                        res.status(200).json({ token, user });
                     });
                 });
             } catch (error) {
@@ -74,6 +89,8 @@ const loginHandler: NextApiHandler = async (req, res) => {
         });
     } catch (error) {
         console.error('Error during login:', error);
+        // Wait for 5 seconds before sending back the error response
+        await new Promise(resolve => setTimeout(resolve, 5000));
         res.status(500).json({ error: 'Internal server error' });
     }
 };

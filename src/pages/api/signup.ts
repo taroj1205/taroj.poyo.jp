@@ -2,6 +2,7 @@ import { NextApiHandler } from 'next';
 import mysql from 'mysql';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
+import gravatarUrl from 'gravatar-url';
 
 const dbConfig = process.env.DATABASE_URL || '';
 
@@ -57,14 +58,16 @@ const signupHandler: NextApiHandler = async (req, res) => {
                     // Hash the email, username, and password using bcrypt
                     const hashedPassword = await bcrypt.hash(password, 10);
 
+                    const profile_picture = gravatarUrl(email, { size: 200, default: 'identicon' });
+
                     // Insert the user into the database
                     const insertUserQuery = `
-                        INSERT INTO users (username, password, email)
-                        VALUES (?, ?, ?)
-                        ON DUPLICATE KEY UPDATE username=username
+                    INSERT INTO users (username, password, email, profile_picture)
+                    VALUES (?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE username=username
                     `;
 
-                    const params = [username, hashedPassword, email];
+                    const params = [username, hashedPassword, email, profile_picture];
 
                     connection.query(insertUserQuery, params, (error: mysql.MysqlError | null, result: mysql.OkPacket) => {
                         if (error) {

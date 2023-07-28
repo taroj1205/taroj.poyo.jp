@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
-import Cookies from 'js-cookie';
+import router from 'next/router';
 
 interface ProfileData {
     email: string;
@@ -10,7 +10,7 @@ interface ProfileData {
 }
 
 const Profile = () => {
-    const [userData, setUserData] = useState<ProfileData>({
+    const [user, setUser] = useState<ProfileData>({
         email: '',
         username: '',
         picture: '',
@@ -18,24 +18,9 @@ const Profile = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        const token = Cookies.get('token');
-
-        if (token) {
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
-                        method: 'GET'
-                    });
-                    console.log(response);
-                    const data = await response.json();
-                    console.log(data);
-                    setUserData(data);
-                } catch (error) {
-                    console.error(error);
-                }
-            };
-
-            fetchData();
+        const userData = localStorage.getItem("userProfileData");
+        if (userData) {
+            setUser(JSON.parse(userData));
         }
     }, []);
 
@@ -57,11 +42,11 @@ const Profile = () => {
             <div className="flex flex-col pt-1 items-center">
                 <img
                     className="w-32 h-32 rounded-full mb-4"
-                    src={userData.picture ?? undefined}
-                    alt={userData.username ?? undefined}
+                    src={user.picture ?? undefined}
+                    alt={user.username ?? undefined}
                 />
-                <h2 className='text-black dark:text-white'>{t('your.username')}: {userData.username}</h2>
-                <p className="text-gray-500">{t('your.email')}: {userData.email}</p>
+                <h2 className='text-black dark:text-white'>{t('your.username')}: {user.username}</h2>
+                <p className="text-gray-500">{t('your.email')}: {user.email}</p>
             </div>
         </>
     );

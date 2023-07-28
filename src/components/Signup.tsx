@@ -10,9 +10,11 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [error, setError] = useState('');
     const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
         if (password === confirmPassword) {
             fetch('/api/signup', {
                 method: 'POST',
@@ -24,6 +26,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
+                    setIsLoading(false);
                     if (!data.error) {
                         setSignupSuccess(true); // set state variable to true on successful signup
                     } else if (data.error === 'User with this email already exists') {
@@ -32,6 +35,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                 })
                 .catch(error => {
                     console.error('Signup failed:', error);
+                    setIsLoading(false);
                 });
         } else {
             console.error('Password and confirm password do not match');
@@ -107,9 +111,19 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                 <div className="flex items-center justify-between mb-4">
                     <button
                         type="submit"
-                        className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none"
+                        className={`${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-indigo-500 hover:bg-indigo-600'
+                            } text-white px-4 py-2 rounded-md focus:outline-none`}
+                        disabled={isLoading}
                     >
-                        {t('auth.signup')}
+                        {/* Show loading icon if isLoading is true, else show "Signup" text */}
+                        {isLoading ? (
+                            <svg
+                                className="animate-spin h-5 w-5 mr-3 border-t-2 border-white rounded-full"
+                                viewBox="0 0 24 24"
+                            ></svg>
+                        ) : (
+                            t('auth.signup')
+                        )}
                     </button>
                     <div className="text-sm">
                         <button

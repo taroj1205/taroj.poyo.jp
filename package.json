@@ -58,7 +58,6 @@
     },
     "keywords": [],
     "devDependencies": {
-        "@auth0/nextjs-auth0": "^2.6.3",
         "@types/bad-words": "^3.0.1",
         "@types/bcrypt": "^5.0.0",
         "@types/chroma-js": "^2.4.0",
