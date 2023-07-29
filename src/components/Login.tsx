@@ -58,11 +58,6 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
         }
     };
 
-    const handleToggleDarkMode = () => {
-        setDarkMode(!darkMode);
-        document.documentElement.classList.toggle('dark');
-    };
-
     return (
         <div className="flex items-center justify-center">
             <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg">
@@ -132,18 +127,6 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
                         </div>
                     </div>
                 </form>
-                <div className="flex items-center">
-                    <input
-                        type="checkbox"
-                        id="darkMode"
-                        className="mr-2"
-                        checked={darkMode}
-                        onChange={handleToggleDarkMode}
-                    />
-                    <label htmlFor="darkMode" className="text-gray-700 dark:text-gray-300">
-                        Dark Mode
-                    </label>
-                </div>
             </div>
         </div>
     );

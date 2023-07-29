@@ -52,3 +52,19 @@ a {
     /* Place on top of each other */
     grid-area: 1 / 1 / 2 / 2;
 }
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-checkmark {
+    animation: checkmark 1s ease-out;
+}

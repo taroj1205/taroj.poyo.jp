@@ -12,40 +12,11 @@ import '../globals.css';
 
 import Header from '../components/Header';
 import FloatingBanner from '../components/FloatingBanner';
-import Cookies from 'js-cookie';
 import { AuthProvider } from '../components/AuthContext';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
     const { pathname } = router;
-
-    const fetchUserProfileData = async () => {
-        try {
-            const token = Cookies.get('token');
-            console.log(token);
-            if (token) {
-                const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
-                    method: 'GET'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user profile data.');
-                }
-
-                const data = await response.json();
-
-                // Store the data in localStorage
-                localStorage.setItem('userProfileData', JSON.stringify(data));
-            }
-        } catch (error) {
-            console.error('Error fetching user profile data:', error);
-        }
-    };
-
-    // Call the function when the component mounts
-    useEffect(() => {
-        fetchUserProfileData();
-    }, []);
 
     useEffect(() => {
         const addFontStyles = (
