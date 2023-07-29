@@ -80,7 +80,8 @@
         "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。",
         "verificationCode": "確認コード",
         "verify": "確認する",
-        "resend": "再送信"
+        "resend": "再送信",
+        "verificationCodeResendError": "認証コードの再送信に失敗しました。後でもう一度お試しください。"
     },
     "about": {
         "title": "僕について",

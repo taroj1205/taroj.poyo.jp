@@ -80,7 +80,8 @@
         "passwordRequirements": "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
         "verificationCode": "Verification Code",
         "verify": "Verify",
-        "resend": "Resend"
+        "resend": "Resend",
+        "verificationCodeResendError": "Verification code resend failed. Please try again later."
     },
     "about": {
         "title": "About me",

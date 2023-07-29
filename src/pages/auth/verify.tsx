@@ -4,29 +4,6 @@ import { useAuth } from '../../components/AuthContext';
 import router from 'next/router';
 import Cookies from 'js-cookie';
 
-const LoadingSpinner = () => (
-    <svg
-        className="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-    >
-        <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-        ></circle>
-        <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM17.938 3c1.863 2.114 3 4.896 3 7.938h4c0-6.627-5.373-12-12-12v4l5.938-.062L17.938 3z"
-        ></path>
-    </svg>
-);
-
 const EmailVerification: React.FC<{
     onVerificationSubmit: (code: string) => void;
 }> = () => {
@@ -41,6 +18,8 @@ const EmailVerification: React.FC<{
     const [cooldownSeconds, setCooldownSeconds] = useState(0); // State for cooldown countdown in seconds
     const [isLoading, setIsLoading] = useState(false);
     const [isVerified, setIsVerified] = useState(false);
+    const [isPopupShown, setIsPopupShown] = useState(false);
+    const [verificationError, setVerificationError] = useState(false);
 
     const circleRadius = 18; // Radius of the circle
     const circleCircumference = 2 * Math.PI * circleRadius; // Circumference of the circle
@@ -74,16 +53,19 @@ const EmailVerification: React.FC<{
             .then((response) => {
                 // Handle the response, if needed
                 if (response.ok) {
-                    setVerifySuccess(true); // Set the success message state to true
+                        setVerifySuccess(true); // Set the success message state to true
                     setIsVerified(true); // Set the success state to true
-                    // Reset the success state after 1 second
-                    setTimeout(() => {
-                        setIsVerified(false);
-                    }, 1000);
+                    setIsPopupShown(true); // Show the popup
+                        // Reset the success state after 1 second
+                        setTimeout(() => {
+                            setIsVerified(false);
+                        }, 1000);
+                } else if (response.status === 401) {
+                    setVerificationError(true);
                 }
             })
             .catch((error) => {
-                // Handle errors, if needed
+                console.error('An error occurred:', error);
             })
             .finally(() => {
                 setIsLoading(false); // Set loading state to false after the request is completed (success or error)
@@ -145,8 +127,15 @@ const EmailVerification: React.FC<{
 
     useEffect(() => {
         console.log(user);
-        if (user) {
+        if (user?.email) {
             setEmail(user.email);
+        const storedUserProfileData = localStorage.getItem('userProfileData');
+        if (storedUserProfileData) {
+            const userProfileData = JSON.parse(storedUserProfileData);
+            if (userProfileData.email) {
+                setEmail(userProfileData.email);
+            }
+        }
         }
 
         const storedExpiration = localStorage.getItem('emailVerificationCooldownExpiration');
@@ -183,21 +172,25 @@ const EmailVerification: React.FC<{
     }, [user]);
 
     return (
-        <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto">
+        <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 mt-20 shadow-lg mx-auto">
             {verifySuccess && (
-                // Verified Successfully Popup
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-                    <div className="bg-indigo-500 text-white rounded-lg p-8 shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4">{t('auth.signupSuccess')}</h3>
-                        <button
-                            className="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-md focus:outline-none"
-                            onClick={() => {
-                                setVerifySuccess(false);
-                                router.push('/auth');
-                            }}
-                        >
-                            {t('auth.login')}
-                        </button>
+                <div>
+                    {/* Overlay div with dark background */}
+                    {isPopupShown && <div className={`fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50`}></div>}
+                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div className="bg-indigo-500 dark:bg-slate-900 text-white rounded-lg p-8 shadow-lg">
+                            <h3 className="text-2xl font-bold mb-4">{t('auth.signupSuccess')}</h3>
+                            <button
+                                className="bg-indigo-700 dark:bg-indigo-800 hover:bg-indigo-800 dark:hover:bg-indigo-900 text-white px-4 py-2 rounded-md focus:outline-none"
+                                onClick={() => {
+                                    setIsPopupShown(false); // Hide the popup when the button is clicked
+                                    setVerifySuccess(false);
+                                    router.push('/auth');
+                                }}
+                            >
+                                {t('auth.verify')}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -230,6 +223,7 @@ const EmailVerification: React.FC<{
                         onChange={(e) => setVerificationCode(e.target.value)}
                     />
                 </div>
+                {verificationError && <p className="text-red-500 mb-2">{t('auth.verificationCodeResendError')}</p>}
                 <div className="flex items-center justify-between mb-4">
                     <button
                         type="submit"
@@ -237,7 +231,7 @@ const EmailVerification: React.FC<{
                             }`}
                         disabled={isLoading || isVerified} // Disable the button when loading is true or when already verified
                     >
-                        {isLoading ? <LoadingSpinner /> : isVerified ? '✓' : t('auth.verify')}
+                        {isLoading ? <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div> : isVerified ? '✓' : t('auth.verify')}
                     </button>
                     <button
                         type="button"

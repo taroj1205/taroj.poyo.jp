@@ -33,7 +33,7 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
                 console.log(userId);
 
                 // Fetch the user data from the database using the retrieved user ID
-                const selectUserQuery = 'SELECT username, email, profile_picture FROM users WHERE id = ?';
+                const selectUserQuery = 'SELECT username, email, profile_picture, verified FROM users WHERE id = ?';
                 connection.query(selectUserQuery, [userId], (error: mysql.MysqlError | null, rows: any[]) => {
                     if (error) {
                         console.error('Error fetching user:', error);
@@ -54,13 +54,14 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
                             });
                         }
 
-                        const profile_pictureData = {
+                        const profileData = {
                             email: email,
                             username: userData.username,
                             picture: picture,
+                            verified: userData.verified
                         };
 
-                        res.status(200).json(profile_pictureData);
+                        res.status(200).json(profileData);
                     }
                 });
             }

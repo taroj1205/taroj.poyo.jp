@@ -34,7 +34,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     useEffect(() => {
         setToken(Cookies.get('token') || '');
-        fetchUserProfileData();
     }, []);
 
 
@@ -62,6 +61,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.error('Error fetching user profile data:', error);
         }
     };
+
+    useEffect(() => {
+        fetchUserProfileData();
+    }, []);
 
     return (
         <AuthContext.Provider value={{ token, setToken, user, setUser }}>
