@@ -110,12 +110,12 @@ const chatHandler: NextApiHandler = async (req, res) => {
 
                     connection.query(
                         `INSERT INTO servers (server_name, created_at, last_login, nanoid)
-      SELECT 'default', ?, NULL, ?
-      FROM DUAL 
-      WHERE NOT EXISTS (
-        SELECT * FROM servers LIMIT 1
-      )
-      ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
+                        SELECT 'default', ?, NULL, ?
+                        FROM DUAL 
+                        WHERE NOT EXISTS (
+                            SELECT * FROM servers LIMIT 1
+                        )
+                        ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
                         [now, generatedNanoid],
                         (error, result) => {
                             if (error) {

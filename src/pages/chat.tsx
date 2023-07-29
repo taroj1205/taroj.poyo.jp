@@ -29,6 +29,8 @@ const Chat = () => {
                     console.log(data);
                     if (data.error === 401) {
                         window.location.href = '/auth'; // Redirect to /auth
+                    } else if (data.verified === 0) {
+                        router.push('/verify');
                     } else {
                         console.log('Getting default messages');
                         const response = await fetch('/api/chat', {

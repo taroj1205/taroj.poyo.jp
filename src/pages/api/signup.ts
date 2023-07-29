@@ -118,7 +118,24 @@ const signupHandler: NextApiHandler = async (req, res) => {
                         throw new Error('Failed to create email table');
                     }
 
-                    try {
+                    const checkExistingUserQuery = `
+        SELECT id FROM users WHERE email = ? OR username = ?
+    `;
+
+                    const checkExistingUserParams = [email, username];
+
+                    connection.query(checkExistingUserQuery, checkExistingUserParams, async (error: mysql.MysqlError | null, results: any[]) => {
+                        if (error) {
+                            console.error('Error checking existing user:', error);
+                            res.status(500).json({ error: 'Internal server error' });
+                            return;
+                        }
+
+                        if (results.length > 0) {
+                            // User with the same email or username already exists
+                            res.status(409).json({ error: 'User with this email or username already exists' });
+                            return;
+                        }
                         // Hash the email, username, and password using bcrypt
                         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -128,7 +145,6 @@ const signupHandler: NextApiHandler = async (req, res) => {
                         const insertUserQuery = `
                             INSERT INTO users (username, password, email, profile_picture)
                             VALUES (?, ?, ?, ?)
-                            ON DUPLICATE KEY UPDATE username=username
                         `;
 
                         const params = [username, hashedPassword, email, profile_picture];
@@ -169,10 +185,7 @@ const signupHandler: NextApiHandler = async (req, res) => {
                                 res.status(201).json({ message: 'User created successfully', token });
                             });
                         });
-                    } catch (error) {
-                        console.error('Error during signup:', error);
-                        res.status(500).json({ error: 'Internal server error' });
-                    }
+                    });
                 });
             });
         });
