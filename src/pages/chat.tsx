@@ -6,23 +6,22 @@ import { FaPaperPlane } from 'react-icons/fa';
 import Header from '../components/Header';
 import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import Cookies from 'js-cookie';
+import { useAuth } from '../components/AuthContext';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
-    const [token, setToken] = useState('');
+    const { token } = useAuth() || {};
     const [isLoadingState, setisLoadingState] = useState(false);
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const scrollPosRef = useRef<number>(0);
 
     useEffect(() => {
-        const userToken = Cookies.get('token');
         const fetchDefaultMessages = async () => {
             try {
                 console.log(token);
-                if (userToken) {
+                if (token) {
                     const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
                         method: 'GET',
                     });
@@ -31,7 +30,6 @@ const Chat = () => {
                     if (data.error === 401) {
                         window.location.href = '/auth'; // Redirect to /auth
                     } else {
-                        setToken(userToken);
                         console.log('Getting default messages');
                         const response = await fetch('/api/chat', {
                             method: 'POST',
@@ -40,7 +38,7 @@ const Chat = () => {
                             },
                             body: JSON.stringify({
                                 method: 'defaultMessages',
-                                server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+                                server_id: 'O-3FrG-8havWO0bVQSZYpzRKHQ9pmg',
                             }),
                         });
                         const data = await response.json();
@@ -394,7 +392,7 @@ const Chat = () => {
                     method: 'newMessage',
                     user: token,
                     message,
-                    server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+                    server_id: 'O-3FrG-8havWO0bVQSZYpzRKHQ9pmg',
                 }),
             })
                 .then(async (response) => {

@@ -13,6 +13,7 @@ import '../globals.css';
 import Header from '../components/Header';
 import FloatingBanner from '../components/FloatingBanner';
 import Cookies from 'js-cookie';
+import { AuthProvider } from '../components/AuthContext';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -81,6 +82,7 @@ export default function App({ Component, pageProps }: AppProps) {
         pathname !== '/chat';
 
     return (
+        <AuthProvider>
             <I18nextProvider i18n={i18n}>
                 <Head>
                     <meta
@@ -141,5 +143,6 @@ export default function App({ Component, pageProps }: AppProps) {
                     }}
                 />
             </I18nextProvider>
+        </AuthProvider>
     );
 }
