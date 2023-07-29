@@ -203,6 +203,19 @@
             ]
         }
     },
+    "skill": {
+        "title": "スキル",
+        "react": "React",
+        "nextjs": "Next.js",
+        "typescript": "TypeScript",
+        "javascript": "JavaScript",
+        "css": "CSS",
+        "html": "HTML",
+        "nodejs": "Node.js",
+        "mysql": "MySQL",
+        "postgres": "PostgreSQL",
+        "sqlite3": "SQLite3"
+    },
     "announcement": {
         "title": "お知らせ",
         "content": "チャットでプロフィール画像を表示するようになりました！"

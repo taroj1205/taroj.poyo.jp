@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../components/AuthContext';
 import router from 'next/router';
 import Cookies from 'js-cookie';
+import Head from 'next/head';
 
 const EmailVerification: React.FC<{
     onVerificationSubmit: (code: string) => void;
@@ -53,13 +54,13 @@ const EmailVerification: React.FC<{
             .then((response) => {
                 // Handle the response, if needed
                 if (response.ok) {
-                        setVerifySuccess(true); // Set the success message state to true
+                    setVerifySuccess(true); // Set the success message state to true
                     setIsVerified(true); // Set the success state to true
                     setIsPopupShown(true); // Show the popup
-                        // Reset the success state after 1 second
-                        setTimeout(() => {
-                            setIsVerified(false);
-                        }, 1000);
+                    // Reset the success state after 1 second
+                    setTimeout(() => {
+                        setIsVerified(false);
+                    }, 1000);
                 } else if (response.status === 401) {
                     setVerificationError(true);
                 }
@@ -129,13 +130,13 @@ const EmailVerification: React.FC<{
         console.log(user);
         if (user?.email) {
             setEmail(user.email);
-        const storedUserProfileData = localStorage.getItem('userProfileData');
-        if (storedUserProfileData) {
-            const userProfileData = JSON.parse(storedUserProfileData);
-            if (userProfileData.email) {
-                setEmail(userProfileData.email);
+            const storedUserProfileData = localStorage.getItem('userProfileData');
+            if (storedUserProfileData) {
+                const userProfileData = JSON.parse(storedUserProfileData);
+                if (userProfileData.email) {
+                    setEmail(userProfileData.email);
+                }
             }
-        }
         }
 
         const storedExpiration = localStorage.getItem('emailVerificationCooldownExpiration');
@@ -172,109 +173,124 @@ const EmailVerification: React.FC<{
     }, [user]);
 
     return (
-        <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 mt-20 shadow-lg mx-auto">
-            {verifySuccess && (
-                <div>
-                    {/* Overlay div with dark background */}
-                    {isPopupShown && <div className={`fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50`}></div>}
-                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-                        <div className="bg-indigo-500 dark:bg-slate-900 text-white rounded-lg p-8 shadow-lg">
-                            <h3 className="text-2xl font-bold mb-4">{t('auth.signupSuccess')}</h3>
-                            <button
-                                className="bg-indigo-700 dark:bg-indigo-800 hover:bg-indigo-800 dark:hover:bg-indigo-900 text-white px-4 py-2 rounded-md focus:outline-none"
-                                onClick={() => {
-                                    setIsPopupShown(false); // Hide the popup when the button is clicked
-                                    setVerifySuccess(false);
-                                    router.push('/auth');
-                                }}
-                            >
-                                {t('auth.verify')}
-                            </button>
+        <>
+            <Head>
+                <meta property="og:title" content="Email verification - taroj.poyo.jp" />
+                <meta
+                    property="og:description"
+                    content="Email verification page for taroj.poyo.jp"
+                />
+                <meta name="twitter:title" content="Email verification - taroj.poyo.jp" />
+                <meta
+                    name="twitter:description"
+                    content="Email verification page for taroj.poyo.jp"
+                />
+                <title>{t('title.emailVerification')}</title>
+            </Head>
+            <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 mt-20 shadow-lg mx-auto">
+                {verifySuccess && (
+                    <div>
+                        {/* Overlay div with dark background */}
+                        {isPopupShown && <div className={`fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50`}></div>}
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="bg-indigo-500 dark:bg-slate-900 text-white rounded-lg p-8 shadow-lg">
+                                <h3 className="text-2xl font-bold mb-4">{t('auth.signupSuccess')}</h3>
+                                <button
+                                    className="bg-indigo-700 dark:bg-indigo-800 hover:bg-indigo-800 dark:hover:bg-indigo-900 text-white px-4 py-2 rounded-md focus:outline-none"
+                                    onClick={() => {
+                                        setIsPopupShown(false); // Hide the popup when the button is clicked
+                                        setVerifySuccess(false);
+                                        router.push('/auth');
+                                    }}
+                                >
+                                    {t('auth.verify')}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-            <h2 className="text-2xl font-bold mb-6">{t('title.emailVerification')}</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">
-                        {t('auth.email')}
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="verificationCode" className="block text-gray-700 dark:text-gray-300 mb-2">
-                        {t('auth.verificationCode')}
-                    </label>
-                    <input
-                        type="number"
-                        id="verificationCode"
-                        required
-                        max={999999}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                        value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value)}
-                    />
-                </div>
-                {verificationError && <p className="text-red-500 mb-2">{t('auth.verificationCodeResendError')}</p>}
-                <div className="flex items-center justify-between mb-4">
-                    <button
-                        type="submit"
-                        className={`bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none ${isVerified ? 'animate-checkmark' : ''
-                            }`}
-                        disabled={isLoading || isVerified} // Disable the button when loading is true or when already verified
-                    >
-                        {isLoading ? <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div> : isVerified ? '✓' : t('auth.verify')}
-                    </button>
-                    <button
-                        type="button"
-                        className="text-indigo-500 hover:text-indigo-600 focus:outline-none"
-                        disabled={resendDisabled}
-                        onClick={handleResendCode}
-                    >
-                        {resendCooldown ? (
-                            <div className="flex items-center">
-                                <svg
-                                    className="w-6 h-6 mr-2"
-                                    viewBox={`0 0 ${circleRadius * 2} ${circleRadius * 2}`}
-                                    fill="none"
-                                >
-                                    <circle
-                                        cx={circleRadius}
-                                        cy={circleRadius}
-                                        r={circleRadius - circleStrokeWidth / 2}
-                                        fill="transparent"
-                                        stroke="rgba(79, 70, 229, 0.2)"
-                                        strokeWidth={circleStrokeWidth}
-                                    />
-                                    <circle
-                                        cx={circleRadius}
-                                        cy={circleRadius}
-                                        r={circleRadius - circleStrokeWidth / 2}
-                                        fill="transparent"
-                                        stroke="rgba(79, 70, 229, 1)"
-                                        strokeWidth={circleStrokeWidth}
-                                        strokeLinecap="round"
-                                        strokeDasharray={circleDasharray}
-                                        strokeDashoffset={circleDashoffset}
-                                    />
-                                </svg>
-                                <span>{cooldownSeconds} s</span>
-                            </div>
-                        ) : (
-                            t('auth.resend')
-                        )}
-                    </button>
-                </div>
-            </form>
-        </div>
+                )}
+                <h2 className="text-2xl font-bold mb-6">{t('title.emailVerification')}</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">
+                            {t('auth.email')}
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="verificationCode" className="block text-gray-700 dark:text-gray-300 mb-2">
+                            {t('auth.verificationCode')}
+                        </label>
+                        <input
+                            type="number"
+                            id="verificationCode"
+                            required
+                            max={999999}
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            value={verificationCode}
+                            onChange={(e) => setVerificationCode(e.target.value)}
+                        />
+                    </div>
+                    {verificationError && <p className="text-red-500 mb-2">{t('auth.verificationCodeResendError')}</p>}
+                    <div className="flex items-center justify-between mb-4">
+                        <button
+                            type="submit"
+                            className={`bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none ${isVerified ? 'animate-checkmark' : ''
+                                }`}
+                            disabled={isLoading || isVerified} // Disable the button when loading is true or when already verified
+                        >
+                            {isLoading ? <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div> : isVerified ? '✓' : t('auth.verify')}
+                        </button>
+                        <button
+                            type="button"
+                            className="text-indigo-500 hover:text-indigo-600 focus:outline-none"
+                            disabled={resendDisabled}
+                            onClick={handleResendCode}
+                        >
+                            {resendCooldown ? (
+                                <div className="flex items-center">
+                                    <svg
+                                        className="w-6 h-6 mr-2"
+                                        viewBox={`0 0 ${circleRadius * 2} ${circleRadius * 2}`}
+                                        fill="none"
+                                    >
+                                        <circle
+                                            cx={circleRadius}
+                                            cy={circleRadius}
+                                            r={circleRadius - circleStrokeWidth / 2}
+                                            fill="transparent"
+                                            stroke="rgba(79, 70, 229, 0.2)"
+                                            strokeWidth={circleStrokeWidth}
+                                        />
+                                        <circle
+                                            cx={circleRadius}
+                                            cy={circleRadius}
+                                            r={circleRadius - circleStrokeWidth / 2}
+                                            fill="transparent"
+                                            stroke="rgba(79, 70, 229, 1)"
+                                            strokeWidth={circleStrokeWidth}
+                                            strokeLinecap="round"
+                                            strokeDasharray={circleDasharray}
+                                            strokeDashoffset={circleDashoffset}
+                                        />
+                                    </svg>
+                                    <span>{cooldownSeconds} s</span>
+                                </div>
+                            ) : (
+                                t('auth.resend')
+                            )}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </>
     );
 };
 

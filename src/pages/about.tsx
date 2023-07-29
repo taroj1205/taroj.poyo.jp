@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import SchoolHistory from '../components/SchoolHistory';
 import Head from 'next/head';
 import Contacts from '../components/Contacts';
+import MySkills from '../components/MySkills';
 
 const About = () => {
     const { t } = useTranslation('translation'); // Specify the translation key
@@ -61,6 +62,9 @@ const About = () => {
                             <li>{t('about.hobby.programming')}</li>
                             <li>{t('about.hobby.reading')}</li>
                         </ul>
+                    </section>
+                    <section>
+                        <MySkills />
                     </section>
                     <div className="mx-4">
                         <SchoolHistory />
