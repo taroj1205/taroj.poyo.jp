@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
-import router from 'next/router';
 
 interface ProfileData {
     email: string;

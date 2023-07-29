@@ -23,7 +23,8 @@
         "auth": "Authenication",
         "signup": "Sign Up",
         "login": "Login",
-        "forgotPassword": "Forgot password"
+        "forgotPassword": "Forgot password",
+        "emailVerification": "Email Verification"
     },
     "change": {
         "profile picture": "Change profile picture",
@@ -76,7 +77,10 @@
         "loginError": "An error occurred during login. Please try again later.",
         "passwordContainsEmailOrUsername": "Password must not contain your email or username.",
         "passwordMinLength": "Password must be at least 8 characters long.",
-        "passwordRequirements": "Password must contain at least one uppercase letter, one lowercase letter, and one digit."
+        "passwordRequirements": "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
+        "verificationCode": "Verification Code",
+        "verify": "Verify",
+        "resend": "Resend"
     },
     "about": {
         "title": "About me",

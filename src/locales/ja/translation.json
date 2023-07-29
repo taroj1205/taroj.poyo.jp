@@ -23,7 +23,8 @@
         "auth": "認証",
         "signup": "登録する",
         "login": "ログインする",
-        "forgotPassword": "パスワードを忘れた"
+        "forgotPassword": "パスワードを忘れた",
+        "emailVerification": "メール確認"
     },
     "change": {
         "profile picture": "プロフィール画像を変更",
@@ -76,7 +77,10 @@
         "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。",
         "passwordContainsEmailOrUsername": "パスワードにはメールアドレスやユーザー名を含めることはできません。",
         "passwordMinLength": "パスワードは少なくとも8文字である必要があります。",
-        "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。"
+        "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。",
+        "verificationCode": "確認コード",
+        "verify": "確認する",
+        "resend": "再送信"
     },
     "about": {
         "title": "僕について",

@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+import router from 'next/router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -73,8 +75,12 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                     setIsLoading(false);
                     if (!data.error) {
                         setSignupSuccess(true); // set state variable to true on successful signup
+                        const expirationDate = new Date(Date.now() + 60000); // Set expiration to 60 seconds from now
+                        localStorage.setItem('emailVerificationCooldownExpiration', expirationDate.toISOString());
+                        Cookies.set('token', data.token, { expires: 7 });
                     } else if (data.error === 'User with this email already exists') {
                         setError(t('auth.signupDupe'));
+                        setSignupSuccess(false);
                     }
                 })
                 .catch(error => {
@@ -84,11 +90,6 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
         } else {
             console.error('Password and confirm password do not match');
         }
-    };
-
-    const handleToggleDarkMode = () => {
-        setDarkMode(!darkMode);
-        document.documentElement.classList.toggle('dark');
     };
 
     return (
@@ -194,18 +195,6 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                     </div>
                 </div>
             </form>
-            <div className="flex items-center">
-                <input
-                    type="checkbox"
-                    id="darkMode"
-                    className="mr-2"
-                    checked={darkMode}
-                    onChange={handleToggleDarkMode}
-                />
-                <label htmlFor="darkMode" className="text-gray-700 dark:text-gray-300">
-                    Dark Mode
-                </label>
-            </div>
             {signupSuccess && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
                     <div className="bg-indigo-500 text-white rounded-lg p-8 shadow-lg">
@@ -214,10 +203,10 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                             className="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-md focus:outline-none"
                             onClick={() => {
                                 setSignupSuccess(false);
-                                onLoginClick();
+                                router.push('/auth/verify');
                             }}
                         >
-                            {t('auth.login')}
+                            {t('auth.verify')}
                         </button>
                     </div>
                 </div>
