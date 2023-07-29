@@ -40,7 +40,7 @@ const Chat = () => {
                             },
                             body: JSON.stringify({
                                 method: 'defaultMessages',
-                                server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+                                server_id: 'default',
                             }),
                         });
                         const data = await response.json();
