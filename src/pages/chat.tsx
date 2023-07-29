@@ -40,7 +40,7 @@ const Chat = () => {
                             },
                             body: JSON.stringify({
                                 method: 'defaultMessages',
-                                server_id: 'default',
+                                server_id: 'O-3FrG-8havWO0bVQSZYpzRKHQ9pmg',
                             }),
                         });
                         const data = await response.json();
@@ -394,7 +394,7 @@ const Chat = () => {
                     method: 'newMessage',
                     user: token,
                     message,
-                    server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
+                    server_id: 'O-3FrG-8havWO0bVQSZYpzRKHQ9pmg',
                 }),
             })
                 .then(async (response) => {
