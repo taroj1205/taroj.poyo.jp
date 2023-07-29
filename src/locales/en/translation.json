@@ -203,6 +203,19 @@
             ]
         }
     },
+    "skill": {
+        "title": "Skills",
+        "react": "React",
+        "nextjs": "Next.js",
+        "typescript": "TypeScript",
+        "javascript": "JavaScript",
+        "css": "CSS",
+        "html": "HTML",
+        "nodejs": "Node.js",
+        "mysql": "MySQL",
+        "postgres": "PostgreSQL",
+        "sqlite3": "SQLite3"
+    },
     "announcement": {
         "title": "Announcement",
         "content": "Now showing profile picture in chat!"
