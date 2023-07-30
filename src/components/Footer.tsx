@@ -36,7 +36,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div>
-                        <h4 className="text-gray-800 dark:text-white font-bold mb-2">{t('footer.sitemap')}</h4>
+                        <p className="text-gray-800 dark:text-white font-bold mb-2">{t('footer.sitemap')}</p>
                         <ul className="space-y-1 flex flex-col">
                             <li>
                                 <Link href="/" className="text-blue-500 hover:underline">
