@@ -54,7 +54,14 @@
     "index": {
         "welcome": "ようこそ",
         "title": "ホームページ",
-        "contact": "連絡先"
+        "contact": "連絡先",
+        "home": "ホーム",
+        "about": "自己紹介",
+        "chat": "チャット",
+        "settings": "設定",
+        "blog": "ブログ",
+        "email": "メール",
+        "routes": "リンク"
     },
     "header": {
         "home": "ホーム",

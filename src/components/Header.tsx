@@ -13,10 +13,6 @@ const Header = () => {
     const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const handleLink = (url: string) => {
-        router.push(url);
-    };
-
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
     };

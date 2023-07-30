@@ -54,7 +54,14 @@
     "index": {
         "welcome": "Welcome",
         "title": "Homepage",
-        "contact": "Contact me"
+        "contact": "Contact me",
+        "home": "Home",
+        "about": "About",
+        "chat": "Chat",
+        "settings": "Settings",
+        "blog": "Blog",
+        "email": "Email",
+        "routes": "Links"
     },
     "header": {
         "home": "Home",
