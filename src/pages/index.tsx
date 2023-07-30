@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 import FloatingBanner from '../components/FloatingBanner';
-import copy from 'copy-to-clipboard';
 import Contacts from '../components/Contacts';
+import PhotoAlbum from 'react-photo-album';
+import photos from '../components/Gallery';
+import Gallery from '../components/Gallery';
 
 interface ProfileData {
     email: string;
@@ -19,13 +21,21 @@ const HomePage = () => {
         username: '',
         picture: '',
         name: '',
-    })
+    });
+
+    const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
     useEffect(() => {
-        const userData = localStorage.getItem("userProfileData");
+        const userData = localStorage.getItem('userProfileData');
         if (userData) {
             setUser(JSON.parse(userData));
         }
+
+        const interval = setInterval(() => {
+            setCurrentPhotoIndex((prevIndex) => (prevIndex + 1) % photos.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
     }, []);
 
     return (
@@ -49,6 +59,9 @@ const HomePage = () => {
                     {user.username && ` ${user.username}`}!
                 </h1>
                 <Contacts />
+                <div className="mt-2">
+                    <Gallery />
+                </div>
             </main>
 
             <FloatingBanner />

@@ -4,6 +4,7 @@ import SchoolHistory from '../components/SchoolHistory';
 import Head from 'next/head';
 import Contacts from '../components/Contacts';
 import MySkills from '../components/MySkills';
+import Image from 'next/image';
 
 const About = () => {
     const { t } = useTranslation('translation'); // Specify the translation key
@@ -27,14 +28,16 @@ const About = () => {
                 className="bg-cover bg-no-repeat bg-fixed bg-center"
                 style={{
                     backgroundImage:
-                        "url('https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png')",
+                        "url('/image/thumbnail/thumbnail.png')",
                 }}
             >
                 <div className="container mx-auto py-10 max-w-7xl text-black dark:text-white bg-white dark:bg-zinc-950 font-sans text-base">
-                    <img
+                    <Image
                         className="pfp rounded-full w-40 mx-auto"
-                        src="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/pfp.png"
+                        src="/image/profile/pfp.png"
                         alt="Profile Picture"
+                        width={300}
+                        height={300}
                     />
                     <h1 className="text-4xl text-center mt-8 font-bold">
                         {t('about.title')}
