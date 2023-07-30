@@ -20,18 +20,18 @@ const MadeWith = () => {
         { icon: SiReact, label: t('skill.react'), color: '#61dafb' }, // Blue for React
         { icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000' }, // Black for Next.js
         { icon: SiMysql, label: t('skill.mysql'), color: '#00758f' }, // Blue for MySQL
-        {icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF'} // Blue for Tailwind CSS
+        { icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF' } // Blue for Tailwind CSS
     ];
 
     return (
-        <div className="p-4 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">{t('skill.madeWith')}</h2>
+        <>
+            <h2 className="text-2xl font-bold text-black dark:text-white">{t('skill.madeWith')}</h2>
             <div className="max-w-4xl grid grid-cols-2 md:grid-cols-8 gap-4">
                 {skills.map((skill, index) => (
                     <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}
             </div>
-        </div>
+        </>
     );
 };
 

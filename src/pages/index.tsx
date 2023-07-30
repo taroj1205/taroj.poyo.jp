@@ -67,18 +67,18 @@ const HomePage = () => {
                 }}
             >
                 <div
-                    className={`container mx-auto max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base flex flex-col justify-between`}
+                    className={`container min-h-screen mx-auto max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base flex flex-col justify-between`}
                 >
                     <div className="mx-4 flex flex-col justify-center flex-grow">
-                        <h1 className="text-4xl pt-12 font-bold">
+                        <h1 className="text-4xl mb-6 font-bold">
                             {t('index.welcome')}
                             {user.username && ` ${user.username}`}!
                         </h1>
                         <Contacts />
-                        <h2 className="text-2xl mt-8 font-bold">
+                        <h2 className="text-2xl mt-6 font-bold">
                             {t('index.routes')}
                         </h2>
-                        <div className="mt-4 dark:text-white rounded-lg bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-950 bg-white w-fit grid grid-cols-2 gap-2 p-4">
+                        <div className="mb-6 mt-2 dark:text-white rounded-lg bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-950 bg-white w-fit grid grid-cols-2 gap-2 p-4">
                             {routes.map((route, index) => (
                                 <Link
                                     key={index}
@@ -92,8 +92,13 @@ const HomePage = () => {
                                 </Link>
                             ))}
                         </div>
+                        <MadeWith />
+                        <h2 className="text-2xl mt-4 font-bold">{t('supported language')}</h2>
+                        <ul className="mt-2 list-disc list-inside text-lg">
+                            <li>{t('english')}</li>
+                            <li>{t('japanese')}</li>
+                        </ul>
                     </div>
-                    <MadeWith />
                 </div>
             </main>
         </>

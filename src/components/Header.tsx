@@ -23,7 +23,7 @@ const Header = () => {
     };
 
     return (
-        <header className="sticky top-0 left-0 z-[100] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease">
+        <header className="fixed top-0 left-0 z-[100] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease">
             {/* <Announcement /> */}
             <nav className="w-full flex items-center justify-between px-0 py-1 md:py-2">
                 <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
