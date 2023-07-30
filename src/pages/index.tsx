@@ -68,7 +68,7 @@ const HomePage = () => {
                 }}
             >
                 <div
-                    className={`container mx-auto py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
+                    className={`container mx-auto min-h-screen py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
                 >
                     <div className="mx-4">
                         <h1 className="text-4xl mt-8 font-bold">

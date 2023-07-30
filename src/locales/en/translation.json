@@ -213,7 +213,7 @@
     },
     "skill": {
         "title": "Skills",
-        "react": "React",
+        "react": "React.js",
         "nextjs": "Next.js",
         "typescript": "TypeScript",
         "javascript": "JavaScript",
@@ -222,7 +222,9 @@
         "nodejs": "Node.js",
         "mysql": "MySQL",
         "postgres": "PostgreSQL",
-        "sqlite3": "SQLite3"
+        "sqlite3": "SQLite3",
+        "flask": "Flask",
+        "python": "Python"
     },
     "announcement": {
         "title": "Announcement",
