@@ -9,7 +9,7 @@ const Footer = () => {
     const router = useRouter();
 
     return (
-        <footer className="fixed bottom-0 w-full bg-white dark:bg-slate-900 p-4 mt-auto">
+        <footer className="w-full bg-white dark:bg-slate-900 p-4 mt-auto">
             <div className="mx-auto md:max-w-7xl">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col flex-1"> {/* Same height as the sitemap */}
