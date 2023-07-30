@@ -64,7 +64,8 @@
         "settings": "Settings",
         "blog": "Blog",
         "email": "Email",
-        "routes": "Links"
+        "routes": "Links",
+        "github": "GitHub"
     },
     "header": {
         "home": "Home",
@@ -78,7 +79,9 @@
         "home": "Home",
         "about": "About",
         "chat": "Chat",
-        "settings": "Settings"
+        "settings": "Settings",
+        "suggest": "Suggest change",
+        "edit_on_github": "Edit on GitHub"
     },
     "auth": {
         "login": "Login",

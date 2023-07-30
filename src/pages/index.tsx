@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Contacts from '../components/Contacts';
 import { AiFillHome } from 'react-icons/ai';
-import { FaUser, FaComments, FaCog, FaBlog, FaEnvelope } from 'react-icons/fa';
+import { FaUser, FaComments, FaCog, FaBlog, FaEnvelope, FaGithub } from 'react-icons/fa';
 import MadeWith from '../components/MadeWith';
 
 interface ProfileData {
@@ -42,7 +42,7 @@ const HomePage = () => {
         { path: '/chat', label: 'Chat', icon: <FaComments /> },
         { path: '/settings', label: 'Settings', icon: <FaCog /> },
         { path: 'https://taroj1205.hatenablog.com', label: 'Blog', icon: <FaBlog /> },
-        { path: 'mailto:taroj1205@gmail.com', label: 'Email', icon: <FaEnvelope /> },
+        { path: 'https://github.com/taroj1205', label: 'GitHub', icon: <FaGithub /> },
     ];
 
     return (
