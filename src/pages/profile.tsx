@@ -38,7 +38,7 @@ const Profile = () => {
                 />
                 <title>{t('title.profile')}</title>
             </Head>
-            <div className="flex flex-col pt-1 items-center">
+            <div className="flex flex-col pt-1 items-center pt-20">
                 <img
                     className="w-32 h-32 rounded-full mb-4"
                     src={user.picture ?? undefined}

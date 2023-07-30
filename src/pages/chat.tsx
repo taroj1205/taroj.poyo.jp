@@ -597,7 +597,7 @@ const Main: React.FC<MainProps> = ({
             <div
                 id="messages"
                 ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden"
+                className="overflow-y-auto overflow-x-hidden pt-16"
                 style={{
                     flex: '1',
                 }}
