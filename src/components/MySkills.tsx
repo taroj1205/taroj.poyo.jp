@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { SiReact, SiNextdotjs, SiNodedotjs, SiTypescript, SiMysql, SiSqlite } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiNodedotjs, SiTypescript, SiMysql, SiSqlite, SiPython, SiFlask } from 'react-icons/si';
 import { IconType } from 'react-icons';
 
 const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string; color: string }) => (
@@ -23,12 +23,14 @@ const MySkills = () => {
         { icon: SiTypescript, label: t('skill.typescript'), color: '#3178c6' }, // Blue for TypeScript
         { icon: SiMysql, label: t('skill.mysql'), color: '#00758f' }, // Blue for MySQL
         { icon: SiSqlite, label: t('skill.sqlite3'), color: '#003b57' }, // Blue for SQLite
+        { icon: SiPython, label: t('skill.python'), color: '#3776ab' }, // Blue for Python
+        { icon: SiFlask, label: t('skill.flask'), color: '#0074D9' } // Blue for Flask
     ];
 
     return (
         <div className="p-4 rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">{t('skill.title')}</h2>
-            <div className="max-w-6xl mx-auto grid grid-cols-3 md:grid-cols-6 gap-4"> {/* Adjust gap value to control spacing */}
+            <div className="max-w-4xl grid grid-cols-2 md:grid-cols-8 gap-4"> {/* Adjust gap value to control spacing */}
                 {skills.map((skill, index) => (
                     <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}

@@ -32,7 +32,7 @@ const About = () => {
                 }}
             >
                 <div
-                    className={`container mx-auto py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
+                    className={`container mx-auto py-10 max-w-7xl min-h-screen text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
                 >
                     <Image
                         className="pfp rounded-full w-40 mx-auto"
