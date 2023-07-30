@@ -67,10 +67,10 @@ const HomePage = () => {
                 }}
             >
                 <div
-                    className={`container mx-auto pb-6 pt-1 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
+                    className={`container mx-auto max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base flex flex-col justify-between`}
                 >
-                    <div className="mx-4">
-                        <h1 className="text-4xl mt-8 font-bold">
+                    <div className="mx-4 flex flex-col justify-center flex-grow">
+                        <h1 className="text-4xl pt-12 font-bold">
                             {t('index.welcome')}
                             {user.username && ` ${user.username}`}!
                         </h1>
