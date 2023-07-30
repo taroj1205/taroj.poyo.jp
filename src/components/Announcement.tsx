@@ -5,8 +5,8 @@ const Announcement = () => {
     const { t } = useTranslation();
 
     return (
-        <div className="bg-blue-600 text-white py-4 px-4 text-sm flex items-center justify-center max-w-screen">
-            <p className="fixed animate-announcement w-fit max-w-screen whitespace-nowrap">
+        <div className="bg-blue-600 text-white py-2 px-4 text-sm flex items-center justify-center max-w-screen">
+            <p className="w-fit max-w-screen text-center whitespace-nowrap">
                 {t('announcement.content')}
             </p>
         </div>
