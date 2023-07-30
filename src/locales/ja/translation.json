@@ -71,6 +71,15 @@
         "about": "僕について",
         "chat": "チャット"
     },
+    "footer": {
+        "all_rights_reserved": "All rights reserved",
+        "contact_info": "お問い合わせ先",
+        "sitemap": "サイトマップ",
+        "home": "ホーム",
+        "about": "自己紹介",
+        "chat": "チャット",
+        "settings": "設定"
+    },
     "auth": {
         "login": "ログイン",
         "signup": "登録",
@@ -215,6 +224,7 @@
     },
     "skill": {
         "title": "スキル",
+        "madeWith": "このサイトはこれらを使用しています。",
         "react": "React.js",
         "nextjs": "Next.js",
         "typescript": "TypeScript",
@@ -226,7 +236,8 @@
         "postgres": "PostgreSQL",
         "sqlite3": "SQLite3",
         "flask": "Flask",
-        "python": "Python"
+        "python": "Python",
+        "tailwind": "Tailwind"
     },
     "announcement": {
         "title": "お知らせ",

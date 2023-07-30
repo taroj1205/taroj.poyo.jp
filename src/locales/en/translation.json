@@ -71,6 +71,15 @@
         "about": "About",
         "chat": "Chat"
     },
+    "footer": {
+        "all_rights_reserved": "All rights reserved",
+        "contact_info": "Contact information",
+        "sitemap": "Sitemap",
+        "home": "Home",
+        "about": "About",
+        "chat": "Chat",
+        "settings": "Settings"
+    },
     "auth": {
         "login": "Login",
         "signup": "Sign Up",
@@ -215,6 +224,7 @@
     },
     "skill": {
         "title": "Skills",
+        "madeWith": "This website uses these languages:",
         "react": "React.js",
         "nextjs": "Next.js",
         "typescript": "TypeScript",
@@ -226,7 +236,8 @@
         "postgres": "PostgreSQL",
         "sqlite3": "SQLite3",
         "flask": "Flask",
-        "python": "Python"
+        "python": "Python",
+        "tailwind": "Tailwind"
     },
     "announcement": {
         "title": "Announcement",
