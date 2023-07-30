@@ -76,7 +76,8 @@ const ChangeProfile = () => {
                         />
                     </div>
                     <button
-                        className="text-blue-500 underline"
+                        className="text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 dark:bg-gray-900 dark:hover:bg-gray-700"
+                        aria-label='change profile picture button'
                         onClick={togglePopup}
                     >
                         {t('change.profile picture')}
@@ -87,6 +88,7 @@ const ChangeProfile = () => {
                                 <div className="flex justify-end">
                                     <button
                                         className="text-gray-600 dark:text-white"
+                                        aria-label='close'
                                         onClick={togglePopup}
                                     >
                                         X
@@ -104,11 +106,12 @@ const ChangeProfile = () => {
                                             setURL(e.target.value);
                                             setError('');
                                         }}
-                                        className="flex-grow mt-1 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 h-9 dark:bg-gray-800 dark:border-gray-600"
+                                        className="flex-grow border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 h-9 dark:bg-gray-900 dark:border-gray-600"
                                     />
                                     <button
                                         type="submit"
-                                        className="ml-2 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 dark:bg-gray-800 dark:hover:bg-gray-700 h-9"
+                                        aria-label='change'
+                                        className="ml-2 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 dark:bg-gray-900 dark:hover:bg-gray-700 h-9"
                                     >
                                         {t('change.set picture')}
                                     </button>
