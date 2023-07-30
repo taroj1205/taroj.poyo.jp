@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { UnmountClosed } from 'react-collapse';
 import Link from 'next/link';
+import ThemeSwitch from './ThemeSwitch';
 
 const Header = () => {
     const router = useRouter();
@@ -65,7 +66,6 @@ const Header = () => {
                         </div>
                     </UnmountClosed>
                     <div className={`md:hidden flex justify-center w-full flex-grow ${isExpanded ? 'pt-2' : 'pt-0'}`}>
-                        {/* Container for the arrow, hidden on laptop */}
                         <button
                             aria-label="dropdown"
                             onClick={toggleDropdown}
@@ -77,6 +77,7 @@ const Header = () => {
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                     <div className="flex items-center relative">
+                        <ThemeSwitch />
                         <Profile />
                     </div>
                 </div>

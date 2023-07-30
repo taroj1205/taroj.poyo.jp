@@ -1,32 +1,26 @@
 import { useTranslation } from 'react-i18next';
-import { FiExternalLink } from 'react-icons/fi';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { useState } from 'react';
 import { useAuth } from './AuthContext';
-import { validateImage } from "image-validator";
-
-interface ProfileData {
-    email: string;
-    username: string;
-    picture: string;
-    name: string;
-}
+import { validateImage } from 'image-validator';
 
 const ChangeProfile = () => {
     const { t } = useTranslation();
-    const { token, user, setUser } = useAuth() || {}; // Get the user data directly from useAuth
+    const { token, user, setUser } = useAuth() || {};
     const [url, setURL] = useState('');
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [error, setError] = useState('');
 
-    useEffect(() => {
-        const userData = localStorage.getItem('userProfileData');
-        if (userData && setUser) { // check if setUser exists
-            setUser(JSON.parse(userData));
-        }
-    }, [setUser]); // add setUser to the dependency array
+    const togglePopup = () => {
+        setPopupOpen(!popupOpen);
+        setError('');
+    };
 
     const urlValidation = async (url: string) => {
-        const isValidImage = await validateImage(url);
+        let isValidImage = await validateImage(url);
         console.log(isValidImage);
+        if (url.trim() === user?.picture) {
+            isValidImage = false;
+        }
         return isValidImage;
     };
 
@@ -34,7 +28,7 @@ const ChangeProfile = () => {
         event.preventDefault();
         if (url && url.trim()) {
             const newPictureUrl = url.trim();
-            const validUrl =urlValidation(newPictureUrl);
+            const validUrl = urlValidation(newPictureUrl);
             if (await validUrl) {
                 try {
                     const response = await fetch('/api/change', {
@@ -50,13 +44,14 @@ const ChangeProfile = () => {
                     });
 
                     if (response.ok) {
-                        if (setUser) { // check if setUser exists
+                        if (setUser) {
                             setUser((prevUser) => ({
                                 ...prevUser,
                                 picture: newPictureUrl,
                             }));
                         }
                         localStorage.setItem('userProfileData', JSON.stringify(user));
+                        window.location.reload();
                     } else {
                         throw new Error('Failed to upload image');
                     }
@@ -64,58 +59,69 @@ const ChangeProfile = () => {
                     console.error(error);
                 }
             } else {
-                console.error('Invalid URL');
+                setError('Invalid URL');
             }
         }
     };
 
     return (
-        <div>
+        <>
             {user && user.picture && (
-                <div className="relative">
-                    <img
-                        src={user.picture.toString()}
-                        alt="Profile picture"
-                        className="w-32 h-32 rounded-full mb-4 mx-auto cursor-pointer"
-                        width={128}
-                        height={128}
-                    />
+                <div className="flex flex-col items-center">
+                    <div className="relative w-32 h-32 mb-4">
+                        <img
+                            src={user.picture.toString()}
+                            alt="Profile picture"
+                            className="rounded-full object-cover w-full h-full cursor-pointer"
+                        />
+                    </div>
+                    <button
+                        className="text-blue-500 underline"
+                        onClick={togglePopup}
+                    >
+                        {t('change.profile picture')}
+                    </button>
+                    {popupOpen && (
+                        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="w-96 bg-white p-4 rounded-lg shadow-lg dark:bg-gray-800">
+                                <div className="flex justify-end">
+                                    <button
+                                        className="text-gray-600 dark:text-white"
+                                        onClick={togglePopup}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                                <h2 className="text-xl font-semibold mb-2">
+                                    {t('change.profile picture URL')}
+                                </h2>
+                                <form className="flex items-center" onSubmit={handleUrlSubmit}>
+                                    <input
+                                        type="text"
+                                        id="profile-picture-url"
+                                        defaultValue={user?.picture}
+                                        onChange={(e) => {
+                                            setURL(e.target.value);
+                                            setError('');
+                                        }}
+                                        className="flex-grow mt-1 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 h-9 dark:bg-gray-800 dark:border-gray-600"
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="ml-2 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 dark:bg-gray-800 dark:hover:bg-gray-700 h-9"
+                                    >
+                                        {t('change.set picture')}
+                                    </button>
+                                </form>
+                                {error && (
+                                    <p className="text-red-500 mt-2">{error}</p>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
-            <form onSubmit={handleUrlSubmit}>
-                <h2 className="text-xl font-semibold mb-2">{t('change.profile picture')}</h2>
-                <label htmlFor="profile-picture-url">{t('profile picture URL')}</label>
-                <input
-                    type="text"
-                    id="profile-picture-url"
-                    defaultValue={user?.picture}
-                    onChange={(e) => {
-                        setURL(e.target.value);
-                    }}
-                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
-                />
-                <button
-                    type="submit"
-                    className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                >
-                    {t('change.set picture')}
-                </button>
-            </form>
-            <p>
-                {t('gravatar.message')}
-                <br />
-                {t('gravatar.signupMessage')}
-                <a
-                    href="https://gravatar.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline ml-2"
-                >
-                    Gravatar
-                    <FiExternalLink className="inline-block ml-1" />
-                </a>
-            </p>
-        </div>
+        </>
     );
 };
 
