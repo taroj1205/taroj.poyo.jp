@@ -28,7 +28,7 @@ const MySkills = () => {
     return (
         <div className="p-4 rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">{t('skill.title')}</h2>
-            <div className="max-w-6xl mx-auto grid grid-cols-3 sm:grid-cols-6 gap-4"> {/* Adjust gap value to control spacing */}
+            <div className="max-w-6xl mx-auto grid grid-cols-3 md:grid-cols-6 gap-4"> {/* Adjust gap value to control spacing */}
                 {skills.map((skill, index) => (
                     <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}
