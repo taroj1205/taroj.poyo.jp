@@ -106,7 +106,7 @@ const ChangeProfile = () => {
                                             setURL(e.target.value);
                                             setError('');
                                         }}
-                                        className="flex-grow border-gray-300 rounded-lg shadow-sm focus:ring bg0gray-200 focus:ring-blue-200 h-9 dark:bg-gray-900 dark:border-gray-600"
+                                        className="flex-grow border-gray-300 rounded-lg shadow-sm text-white dark:text-black focus:ring bg0gray-200 focus:ring-blue-200 h-9 dark:bg-gray-900 dark:border-gray-600"
                                     />
                                     <button
                                         type="submit"
