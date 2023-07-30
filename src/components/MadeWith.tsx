@@ -24,7 +24,7 @@ const MadeWith = () => {
     ];
 
     return (
-        <div className="p-4 rounded-lg">
+        <div className="p-4 rounded-lg mb-8">
             <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">{t('skill.madeWith')}</h2>
             <div className="max-w-4xl grid grid-cols-2 md:grid-cols-8 gap-4">
                 {skills.map((skill, index) => (
