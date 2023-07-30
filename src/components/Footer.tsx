@@ -9,13 +9,13 @@ const Footer = () => {
     const router = useRouter();
 
     return (
-        <footer className="w-full bg-white dark:bg-slate-900 p-4 mt-auto">
+        <footer className="fixed bottom-0 w-full bg-white dark:bg-slate-900 p-4 mt-auto">
             <div className="mx-auto md:max-w-7xl">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col flex-1"> {/* Same height as the sitemap */}
                         <div>
                         <p className="text-gray-600 dark:text-gray-300">
-                            &copy; {new Date().getFullYear()} taroj1205 | {t('footer.all_rights_reserved')}
+                            &copy; {new Date().getFullYear()} {t('name')} | {t('footer.all_rights_reserved')}
                         </p>
                         <Link href="mailto:taroj1205@gmail.com" className="text-gray-600 dark:text-gray-300">
                             taroj1205@gmail.com
