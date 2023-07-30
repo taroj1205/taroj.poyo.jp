@@ -10,9 +10,9 @@ const Footer = () => {
 
     return (
         <footer className="w-full bg-white dark:bg-slate-900 p-4 mt-auto">
-            <div className="mx-auto">
+            <div className="mx-auto md:max-w-7xl">
                 <div className="flex justify-between items-center">
-                    <div className="mt-[-2rem]">
+                    <div className="mt-0">
                         <p className="text-gray-600 dark:text-gray-300">
                             &copy; {new Date().getFullYear()} Shintaro Jokagi | {t('footer.all_rights_reserved')}
                         </p>
@@ -33,7 +33,7 @@ const Footer = () => {
                     </div>
                     <div>
                         <h4 className="text-gray-800 dark:text-white font-bold mb-2">{t('footer.sitemap')}</h4>
-                        <ul className="space-y-1">
+                        <ul className="space-y-1 flex flex-col">
                             <li>
                                 <Link href="/" className="text-blue-500 hover:underline">
                                     {t('footer.home')}
