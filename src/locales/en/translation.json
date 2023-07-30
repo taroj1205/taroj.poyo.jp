@@ -30,7 +30,8 @@
         "profile picture": "Change profile picture",
         "image link": "Image link",
         "theme": "Change theme",
-        "language": "Change language"
+        "language": "Change language",
+        "set picture": "Set Picture"
     },
     "your": {
         "username": "Your username",
@@ -54,7 +55,14 @@
     "index": {
         "welcome": "Welcome",
         "title": "Homepage",
-        "contact": "Contact me"
+        "contact": "Contact me",
+        "home": "Home",
+        "about": "About",
+        "chat": "Chat",
+        "settings": "Settings",
+        "blog": "Blog",
+        "email": "Email",
+        "routes": "Links"
     },
     "header": {
         "home": "Home",

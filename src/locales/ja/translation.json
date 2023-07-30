@@ -30,7 +30,8 @@
         "profile picture": "プロフィール画像を変更",
         "image link": "画像リンク",
         "theme": "テーマを変える",
-        "language": "言語を変える"
+        "language": "言語を変える",
+        "set picture": "画像を設定する"
     },
     "your": {
         "username": "あなたのユーザー名",
@@ -54,7 +55,14 @@
     "index": {
         "welcome": "ようこそ",
         "title": "ホームページ",
-        "contact": "連絡先"
+        "contact": "連絡先",
+        "home": "ホーム",
+        "about": "自己紹介",
+        "chat": "チャット",
+        "settings": "設定",
+        "blog": "ブログ",
+        "email": "メール",
+        "routes": "リンク"
     },
     "header": {
         "home": "ホーム",

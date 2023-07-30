@@ -7,7 +7,7 @@ import MySkills from '../components/MySkills';
 import Image from 'next/image';
 
 const About = () => {
-    const { t } = useTranslation('translation'); // Specify the translation key
+    const { t } = useTranslation('translation');
 
     return (
         <div>
@@ -31,7 +31,9 @@ const About = () => {
                         "url('/image/thumbnail/thumbnail.png')",
                 }}
             >
-                <div className="container mx-auto py-10 max-w-7xl text-black dark:text-white bg-white dark:bg-zinc-950 font-sans text-base">
+                <div
+                    className={`container mx-auto py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
+                >
                     <Image
                         className="pfp rounded-full w-40 mx-auto"
                         src="/image/profile/pfp.png"

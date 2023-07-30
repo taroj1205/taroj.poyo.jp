@@ -1,6 +1,5 @@
 import { NextApiHandler } from 'next';
 import mysql from 'mysql';
-import gravatar from 'gravatar-url';
 
 const dbConfig = process.env.DATABASE_URL || '';
 
@@ -45,19 +44,10 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
 
                         const userData = rows[0];
 
-                        const email = userData.email;
-                        let picture = userData.profile_picture;
-                        if (!picture) {
-                            // Use Gravatar to generate a profile_picture picture URL based on the user's email
-                            picture = gravatar(email, {
-                                size: 200,
-                            });
-                        }
-
                         const profileData = {
-                            email: email,
+                            email: userData.email,
                             username: userData.username,
-                            picture: picture,
+                            picture: userData.profile_picture,
                             verified: userData.verified
                         };
 
