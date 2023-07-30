@@ -62,7 +62,7 @@ function Contacts() {
                     href="https://www.youtube.com/@user-le6xc5nx5k"
                 />
                 <div className="flex items-center">
-                    <a
+                    <button
                         className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:text-white hover:bg-[#7289DA] text-[#7289DA]`}
                         data-tooltip-content="Copy"
                         data-tooltip-place="top"
@@ -72,7 +72,7 @@ function Contacts() {
                     >
                         <FaDiscord className="mr-1" />
                         <span className="ml-2">Discord</span>
-                    </a>
+                    </button>
                         <Tooltip
                         id="Copy"
                             content={copied ? t('copied') : ''}

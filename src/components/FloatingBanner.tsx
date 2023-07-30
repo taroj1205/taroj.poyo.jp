@@ -36,7 +36,7 @@ const FloatingBanner = () => {
         <>
             {!isExpanded && (
                 <button
-                    className="fixed bottom-5 right-5 z-10 bg-gray-700 dark:bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-500 dark:hover:bg-gray-700 transition-colors duration-300"
+                    className="fixed bottom-5 left-5 z-10 bg-gray-700 dark:bg-gray-800 text-white rounded-full p-3 shadow-md hover:bg-gray-500 dark:hover:bg-gray-700 transition-colors duration-300"
                     onClick={handleToggle}
                     aria-label='toggle banner'
                 >
@@ -46,7 +46,7 @@ const FloatingBanner = () => {
 
             {isExpanded && (
                 <div
-                    className="flex flex-col items-center justify-end fixed bottom-5 right-5 space-y-3 z-10 transition-colors duration-300 rounded-md bg-gray-200 dark:bg-gray-800"
+                    className="flex flex-col items-center justify-end fixed bottom-5 left-5 space-y-3 z-10 transition-colors duration-300 rounded-md bg-gray-200 dark:bg-gray-800"
                 >
                     <div className="flex items-center font-medium mt-4">
                         <a

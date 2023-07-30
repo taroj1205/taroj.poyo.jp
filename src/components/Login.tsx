@@ -59,7 +59,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
     };
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center max-w-full">
             <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg">
                 <h2 className="text-2xl font-bold mb-6">{t('title.login')}</h2>
                 {error && <p className="text-red-500 mb-4">{t(error)}</p>}

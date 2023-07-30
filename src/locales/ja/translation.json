@@ -77,7 +77,8 @@
         "sitemap": "サイトマップ",
         "home": "ホーム",
         "about": "自己紹介",
-        "chat": "チャット"
+        "chat": "チャット",
+        "settings": "設定"
     },
     "auth": {
         "login": "ログイン",

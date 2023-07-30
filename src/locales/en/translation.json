@@ -77,7 +77,8 @@
         "sitemap": "Sitemap",
         "home": "Home",
         "about": "About",
-        "chat": "Chat"
+        "chat": "Chat",
+        "settings": "Settings"
     },
     "auth": {
         "login": "Login",

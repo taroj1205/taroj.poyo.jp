@@ -52,6 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
     const shouldRenderHeaderAndBanner =
         pathname !== '/chat';
+    const shouldRenderFooter = pathname === '/' || pathname === '/about'
 
     return (
         <AuthProvider>
@@ -97,7 +98,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     {shouldRenderHeaderAndBanner && <Header />}
                     <Component {...pageProps} />
                     {shouldRenderHeaderAndBanner && <FloatingBanner />}
-                    {shouldRenderHeaderAndBanner && <Footer />}
+                    {shouldRenderFooter && <Footer />}
                 </ThemeProvider>
                 <Analytics />
                 <Script

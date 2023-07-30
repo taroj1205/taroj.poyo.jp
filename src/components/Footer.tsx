@@ -6,14 +6,14 @@ const Footer = () => {
     const { t } = useTranslation('translation'); // Assuming you have translation keys for footer content
 
     return (
-        <footer className="fixed bottom-0 w-full bg-gray-100 dark:bg-gray-800 p-4 mt-auto">
-            <div className="max-w-4xl mx-auto">
+        <footer className="w-full bg-gray-100 dark:bg-gray-800 p-4 mt-auto">
+            <div className="mx-auto">
                 <div className="flex justify-between items-center">
-                    <div>
+                    <div className='mt-[-2rem]'>
                         <p className="text-gray-600 dark:text-gray-300">
                             &copy; {new Date().getFullYear()} Shintaro Jokagi | {t('footer.all_rights_reserved')}
                         </p>
-                        <p className="text-gray-600 dark:text-gray-300">{t('footer.contact_info')}</p>
+                        <Link href='mailto:taroj1205@gmail.com' className="text-gray-600 dark:text-gray-300">taroj1205@gmail.com</Link>
                     </div>
                     <div>
                         <h4 className="text-gray-800 dark:text-white font-bold mb-2">{t('footer.sitemap')}</h4>
@@ -33,7 +33,11 @@ const Footer = () => {
                                     {t('footer.chat')}
                                 </Link>
                             </li>
-                            {/* Add more links to other pages as needed */}
+                            <li>
+                                <Link href="/settings" className="text-blue-500 hover:underline">
+                                    {t('footer.settings')}
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
