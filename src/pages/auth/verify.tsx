@@ -10,7 +10,7 @@ const EmailVerification: React.FC<{
 }> = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [email, setEmail] = useState('');
-    const { user, token } = useAuth() || {};
+    const { user } = useAuth() || {};
     const { t } = useTranslation();
 
     const [verifySuccess, setVerifySuccess] = useState(false); // State for displaying the success message

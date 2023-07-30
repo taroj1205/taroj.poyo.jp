@@ -74,7 +74,6 @@ export default () => {
             }
         >
             <Select
-                autoFocus
                 backspaceRemovesValue={false}
                 components={{ DropdownIndicator, IndicatorSeparator: null }}
                 controlShouldRenderValue={false}

@@ -5,5 +5,8 @@ module.exports = {
         localeDetection: true,
     },
     trailingSlash: true,
-    compress: true
+    compress: true,
+    images: {
+        domains: ['gravatar.com'],
+    }
 };

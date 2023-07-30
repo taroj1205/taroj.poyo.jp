@@ -10,6 +10,17 @@ const Profile = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prevState) => !prevState);
+        setIsOverlayVisible(true);
+    };
+
+    const handleOverlayClick = () => {
+        setIsDropdownOpen(false);
+        setIsOverlayVisible(false);
+    };
 
     interface ProfileData {
         email: string;
@@ -64,35 +75,10 @@ const Profile = () => {
         };
     }, []);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen((prevState) => !prevState);
-    };
     const handleLink = (url: string) => {
         router.push(url);
-        setIsDropdownOpen(false);
+        handleOverlayClick();
     };
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setIsDropdownOpen(false);
-            }
-        };
-
-        const timeout = setTimeout(() => {
-            setIsDropdownOpen(false);
-        }, 2000);
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            clearTimeout(timeout);
-        };
-    }, []);
 
     const ChevronDown = ({ color }: { color: string }) => (
         <span className='dark:text-white flex items-center'>
@@ -138,9 +124,15 @@ const Profile = () => {
                         <ChevronDown color="gray" />
                     )}
             </button>
+            {isOverlayVisible && (
+                <div
+                    className="fixed inset-0 z-10"
+                    onClick={handleOverlayClick}
+                />
+            )}
             {
                 isDropdownOpen && (
-                    <div className="absolute top-8 right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
+                    <div className="absolute top-8 z-[11] right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
                         <div className="py-1">
                             {!user || !user.picture && (
                                 <>

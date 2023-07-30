@@ -35,6 +35,8 @@
         "gravatar-url": "^4.0.1",
         "http": "^0.0.1-security",
         "i18next": "^23.2.6",
+        "image-url-validator": "^1.0.4",
+        "image-validator": "^1.2.1",
         "js-cookie": "^3.0.5",
         "mailgun-js": "^0.22.0",
         "mailgun.js": "^9.2.0",
