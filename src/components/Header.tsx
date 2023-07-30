@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaHome, FaInfoCircle, FaComments, FaAngleDown } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaComments, FaAngleDown, FaUser } from 'react-icons/fa';
 import LanguageSwitch from './LanguageSwitch';
 import Announcement from './Announcement';
 import Profile from './Profile';
@@ -50,7 +50,7 @@ const Header = () => {
                                     : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
                             >
-                                <FaInfoCircle className="mr-1 text-xl mb-1 md:mb-0" />
+                                <FaUser className="mr-1 text-lg mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.about')}</span>
                             </Link>
                             <Link href="/chat"

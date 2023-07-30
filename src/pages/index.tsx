@@ -5,13 +5,20 @@ import Head from 'next/head';
 import FloatingBanner from '../components/FloatingBanner';
 import Contacts from '../components/Contacts';
 import Gallery from '../components/Gallery';
-import { FiExternalLink } from 'react-icons/fi';
+import { AiFillHome } from 'react-icons/ai';
+import { FaUser, FaComments, FaCog, FaBlog, FaEnvelope } from 'react-icons/fa';
 
 interface ProfileData {
     email: string;
     username: string;
     picture: string;
     name: string;
+}
+
+interface RouteData {
+    path: string;
+    label: string;
+    icon?: React.ReactNode;
 }
 
 const HomePage = () => {
@@ -23,7 +30,6 @@ const HomePage = () => {
         name: '',
     });
 
-
     useEffect(() => {
         const userData = localStorage.getItem('userProfileData');
         if (userData) {
@@ -31,13 +37,13 @@ const HomePage = () => {
         }
     }, []);
 
-    const routes = [
-        { path: '/', label: 'Home' },
-        { path: '/about', label: 'About' },
-        { path: '/chat', label: 'Chat' },
-        { path: '/settings', label: 'Settings' },
-        { path: 'https://taroj1205.hatenablog.com', label: 'Blog' },
-        { path: 'mailto:taroj1205@gmail.com', label: 'Email' },
+    const routes: RouteData[] = [
+        { path: '/', label: 'Home', icon: <AiFillHome /> },
+        { path: '/about', label: 'About', icon: <FaUser /> },
+        { path: '/chat', label: 'Chat', icon: <FaComments /> },
+        { path: '/settings', label: 'Settings', icon: <FaCog /> },
+        { path: 'https://taroj1205.hatenablog.com', label: 'Blog', icon: <FaBlog /> },
+        { path: 'mailto:taroj1205@gmail.com', label: 'Email', icon: <FaEnvelope /> },
     ];
 
     return (
@@ -58,12 +64,11 @@ const HomePage = () => {
             <main
                 className="bg-cover bg-no-repeat bg-fixed bg-center"
                 style={{
-                    backgroundImage:
-                        "url('/image/thumbnail/thumbnail.png')",
+                    backgroundImage: "url('/image/thumbnail/thumbnail.png')",
                 }}
             >
                 <div
-                    className={`container mx-auto py-10 max-w-7xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-80 dark:bg-opacity-40 font-sans text-base`}
+                    className={`container mx-auto py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
                 >
                     <div className="mx-4">
                         <h1 className="text-4xl mt-8 font-bold">
@@ -77,16 +82,18 @@ const HomePage = () => {
                         <h2 className="text-2xl mt-8 mb-4 font-bold">
                             {t('index.routes')}
                         </h2>
-                        <div className="flex mt-6 mb-12 space-x-4 dark:text-white">
+                        <div className="mt-6 dark:text-white rounded-lg bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-950 bg-white w-fit grid grid-cols-2 gap-2 p-4">
                             {routes.map((route, index) => (
                                 <Link
                                     key={index}
                                     href={route.path}
                                     className="flex items-center text-indigo-600 dark:text-indigo-400 hover:underline"
                                 >
+                                    {route.icon && (
+                                        <span className="mr-1">{route.icon}</span>
+                                    )}
                                     {t(`index.${route.label.toLowerCase()}`)}
-                                    <FiExternalLink className="ml-1 w-4 h-4" />
-                                    </Link>
+                                </Link>
                             ))}
                         </div>
                     </div>
