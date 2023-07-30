@@ -31,7 +31,9 @@
         "image link": "Image link",
         "theme": "Change theme",
         "language": "Change language",
-        "set picture": "Set Picture"
+        "set picture": "Set Picture",
+        "profile picture URL": "Profile picture URL",
+        "already set": "Already set"
     },
     "your": {
         "username": "Your username",

@@ -31,7 +31,9 @@
         "image link": "画像リンク",
         "theme": "テーマを変える",
         "language": "言語を変える",
-        "set picture": "画像を設定する"
+        "set picture": "画像を設定する",
+        "profile picture URL": "プロフィール画像のURL",
+        "already set": "すでに設定されています"
     },
     "your": {
         "username": "あなたのユーザー名",

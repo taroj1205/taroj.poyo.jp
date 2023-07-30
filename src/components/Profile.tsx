@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaUser, FaSignOutAlt, FaSignInAlt, FaCog } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import SelectTheme from './SelectTheme';
 
 const Profile = () => {
     const { t } = useTranslation();
@@ -162,7 +163,7 @@ const Profile = () => {
                                         onClick={() => handleLink('/profile')}
                                     >
                                         <FaUser className="mr-2 inline" />
-                                        {t('profile')}
+                                        {t('profile')} - {user.username}
                                     </button>
                                     <button
                                         aria-label="go to settings"
@@ -186,7 +187,7 @@ const Profile = () => {
                     </div>
                 )
             }
-        </div >
+        </div>
     );
 };
 
