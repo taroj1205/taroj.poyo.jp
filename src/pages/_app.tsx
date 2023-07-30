@@ -13,6 +13,7 @@ import '../globals.css';
 import Header from '../components/Header';
 import FloatingBanner from '../components/FloatingBanner';
 import { AuthProvider } from '../components/AuthContext';
+import Footer from '../components/Footer';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -96,6 +97,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     {shouldRenderHeaderAndBanner && <Header />}
                     <Component {...pageProps} />
                     {shouldRenderHeaderAndBanner && <FloatingBanner />}
+                    {shouldRenderHeaderAndBanner && <Footer />}
                 </ThemeProvider>
                 <Analytics />
                 <Script

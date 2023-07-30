@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../components/AuthContext';
+import Cookies from 'js-cookie';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
@@ -20,9 +21,10 @@ const Chat = () => {
     useEffect(() => {
         const fetchDefaultMessages = async () => {
             try {
-                console.log(token);
-                if (token) {
-                    const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
+                console.log(token || Cookies.get('token'));
+                const userToken = token || Cookies.get('token');
+                if (userToken) {
+                    const response = await fetch(`/api/profile?token=${encodeURIComponent(userToken)}`, {
                         method: 'GET',
                     });
                     const data = await response.json();
@@ -62,9 +64,8 @@ const Chat = () => {
                             .getElementById('input-field')
                             ?.removeAttribute('disabled');
                     }
-                }
-                else {
-                    window.location.href = '/auth'; // Redirect to /auth
+                } else {
+                    router.push('/auth');
                 }
             } catch (error: any) {
                 console.error(
@@ -286,7 +287,7 @@ const Chat = () => {
                 }
 
                 const formattedHtml = `<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
-  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full m-0 mr-2" />
+  <Image src="${profilePicture}" alt="${username}" w="50" h="50" class="w-10 h-10 rounded-full m-0 mr-2" />
   <div>
     <div class="flex items-center">
       <span class="text-sm">${pCount} <span class="font-semibold">${username}</span></span>
@@ -381,8 +382,11 @@ const Chat = () => {
             setisLoadingState(true); // set loading state to true
             console.log('User id', token);
             if (!token) {
-                errorPopup('Could not indentify you... reloading...');
-                router.push('/auth');
+                const userToken = Cookies.get('token');
+                if (!userToken) {
+                    errorPopup('Could not indentify you... reloading...');
+                    router.push('/auth');
+                }
             }
             // Send a new message to the server
             fetch('/api/chat', {

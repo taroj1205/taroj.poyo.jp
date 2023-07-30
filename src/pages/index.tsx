@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
-import FloatingBanner from '../components/FloatingBanner';
 import Contacts from '../components/Contacts';
-import Gallery from '../components/Gallery';
 import { AiFillHome } from 'react-icons/ai';
 import { FaUser, FaComments, FaCog, FaBlog, FaEnvelope } from 'react-icons/fa';
+import MadeWith from '../components/MadeWith';
 
 interface ProfileData {
     email: string;
@@ -68,7 +67,7 @@ const HomePage = () => {
                 }}
             >
                 <div
-                    className={`container mx-auto min-h-screen py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
+                    className={`container mx-auto py-10 max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base`}
                 >
                     <div className="mx-4">
                         <h1 className="text-4xl mt-8 font-bold">
@@ -76,13 +75,10 @@ const HomePage = () => {
                             {user.username && ` ${user.username}`}!
                         </h1>
                         <Contacts />
-                        <div className="mt-4">
-                            <Gallery />
-                        </div>
-                        <h2 className="text-2xl mt-8 mb-4 font-bold">
+                        <h2 className="text-2xl mt-8 font-bold">
                             {t('index.routes')}
                         </h2>
-                        <div className="mt-6 dark:text-white rounded-lg bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-950 bg-white w-fit grid grid-cols-2 gap-2 p-4">
+                        <div className="mt-4 dark:text-white rounded-lg bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-950 bg-white w-fit grid grid-cols-2 gap-2 p-4">
                             {routes.map((route, index) => (
                                 <Link
                                     key={index}
@@ -97,10 +93,9 @@ const HomePage = () => {
                             ))}
                         </div>
                     </div>
+                    <MadeWith />
                 </div>
             </main>
-
-            <FloatingBanner />
         </>
     );
 };
