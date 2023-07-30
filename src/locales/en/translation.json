@@ -1,5 +1,6 @@
 {
     "welcome": "Welcome!",
+    "name": "Shintaro Jokagi",
     "signInWithGoogle": "Sign In with Google",
     "english": "English",
     "japanese": "Japanese",
@@ -227,7 +228,7 @@
     },
     "skill": {
         "title": "Skills",
-        "madeWith": "This website uses these languages:",
+        "madeWith": "This website uses these:",
         "react": "React.js",
         "nextjs": "Next.js",
         "typescript": "TypeScript",

@@ -15,7 +15,7 @@ const Footer = () => {
                     <div className="flex flex-col flex-1"> {/* Same height as the sitemap */}
                         <div>
                         <p className="text-gray-600 dark:text-gray-300">
-                            &copy; {new Date().getFullYear()} taroj1205 | {t('footer.all_rights_reserved')}
+                            &copy; {new Date().getFullYear()} {t('name')} | {t('footer.all_rights_reserved')}
                         </p>
                         <Link href="mailto:taroj1205@gmail.com" className="text-gray-600 dark:text-gray-300">
                             taroj1205@gmail.com
