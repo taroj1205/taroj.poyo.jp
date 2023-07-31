@@ -46,8 +46,12 @@ export default () => {
     }, []);
 
     useEffect(() => {
-        const currentClasses = document.documentElement.className.split(' ');
-        const defaultThemeOption = themeOptions.find((option) => currentClasses.includes(option.value));
+        let currentTheme = localStorage.getItem("theme") as string;
+        let defaultThemeOption = themeOptions.find((option) => currentTheme.includes(option.value));
+        if (!defaultThemeOption) {
+            const currentClass = document.documentElement.className.split(' ');
+            defaultThemeOption = themeOptions.find((option) => currentClass.includes(option.value));
+        }
         console.log(defaultThemeOption);
         if (defaultThemeOption) {
             setValue(defaultThemeOption);
