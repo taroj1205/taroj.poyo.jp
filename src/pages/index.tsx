@@ -47,7 +47,7 @@ const MadeWith = () => {
     return (
         <div className="my-8">
             <h2 className="text-2xl md:text-4xl font-bold">{t('skill.madeWith')}</h2>
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 gap-4 max-w-sm">
                 {skills.map((skill, index) => (
                     <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}
