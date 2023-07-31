@@ -115,6 +115,7 @@ export default ({ isHeader }: { isHeader: boolean }) => {
                 <button
                     onClick={() => setIsOpen((prev) => !prev)}
                     className={value && value.value === 'dark' ? 'dark:text-white' : ''}
+                    aria-label='change language'
                     style={{ display: 'flex', alignItems: 'center' }}
                 >
                     <span className='dark:text-white flex items-center'>
