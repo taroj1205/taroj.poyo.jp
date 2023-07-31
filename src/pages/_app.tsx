@@ -7,17 +7,12 @@ import i18n from '../../i18n';
 import { useRouter } from 'next/router';
 import { ThemeProvider } from "next-themes";
 import Script from 'next/script';
-
 import '../globals.css';
-
-import Header from '../components/Header';
-// import FloatingBanner from '../components/FloatingBanner';
 import { AuthProvider } from '../components/AuthContext';
-import Footer from '../components/Footer';
+import Layout from '../components/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
-    const { pathname } = router;
 
     useEffect(() => {
         const addFontStyles = (
@@ -49,10 +44,6 @@ export default function App({ Component, pageProps }: AppProps) {
         );
         addFontStyles('Textar', '../font/textar/textar.ttf', 'truetype');
     }, []);
-
-    const shouldRenderHeaderAndBanner =
-        pathname !== '/chat';
-    const shouldRenderFooter = pathname === '/' || pathname === '/about'
 
     return (
         <AuthProvider>
@@ -95,10 +86,9 @@ export default function App({ Component, pageProps }: AppProps) {
                     {/* Add other custom metadata and tags */}
                 </Head>
                 <ThemeProvider attribute="class">
-                    {shouldRenderHeaderAndBanner && <Header />}
-                    <Component {...pageProps} />
-                    {/* {shouldRenderHeaderAndBanner && <FloatingBanner />} */}
-                    {shouldRenderFooter && <Footer />}
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
                 </ThemeProvider>
                 <Analytics />
                 <Script

@@ -60,14 +60,14 @@ const HomePage = () => {
                 />
                 <title>{t('title.index')}</title>
             </Head>
-            <main
+            <div
                 className="bg-cover bg-no-repeat bg-fixed bg-center"
                 style={{
                     backgroundImage: "url('/image/thumbnail/thumbnail.webp')",
                 }}
             >
                 <div
-                    className={`container min-h-screen mx-auto max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base flex flex-col justify-between`}
+                    className={`container mx-auto max-w-5xl text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 font-sans text-base flex flex-col justify-between`}
                 >
                     <div className="mx-4 flex flex-col justify-center flex-grow">
                         <h1 className="text-4xl mb-6 font-bold">
@@ -100,7 +100,7 @@ const HomePage = () => {
                         </ul>
                     </div>
                 </div>
-            </main>
+            </div>
         </>
     );
 };
