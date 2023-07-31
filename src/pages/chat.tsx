@@ -30,7 +30,8 @@ const Chat = () => {
                     const data = await response.json();
                     console.log(data);
                     if (data.error === 401) {
-                        window.location.href = '/auth'; // Redirect to /auth
+                        window.location.href = '/auth';
+                        return;
                     } else if (data.verified === 0) {
                         router.push('/verify');
                     } else {
@@ -55,8 +56,8 @@ const Chat = () => {
                         await addMessage(data.messages);
                         const read = localStorage.getItem('read') || '0';
                         document.getElementById(read)?.scrollIntoView();
-                        const mainElement = document.querySelector('main');
-                        mainElement?.classList.remove('animate-pulse');
+                        const documentElement = document.querySelector('body');
+                        documentElement?.classList.remove('animate-pulse');
                         document
                             .getElementById('send-button')
                             ?.removeAttribute('disabled');
@@ -65,7 +66,8 @@ const Chat = () => {
                             ?.removeAttribute('disabled');
                     }
                 } else {
-                    router.push('/auth');
+                    window.location.href = '/auth';
+                    return;
                 }
             } catch (error: any) {
                 console.error(
@@ -385,7 +387,8 @@ const Chat = () => {
                 const userToken = Cookies.get('token');
                 if (!userToken) {
                     errorPopup('Could not indentify you... reloading...');
-                    router.push('/auth');
+                    window.location.href = '/auth';
+                    return;
                 }
             }
             // Send a new message to the server
@@ -593,7 +596,6 @@ const Main: React.FC<MainProps> = ({
             className="flex flex-col flex-grow min-h-0 w-full max-h-full fixed top-0"
             style={{ height: height }}
         >
-            <Header />
             <div
                 id="messages"
                 ref={messagesRef}
@@ -681,6 +683,11 @@ const ChatPage = () => {
             window.visualViewport.addEventListener('resize', setVisualViewport);
         }
 
+        const mainElement = document.querySelector('body');
+        if (mainElement) {
+            mainElement.classList.add('animate-pulse');
+        }
+
         return () => {
             if (window.visualViewport) {
                 window.visualViewport.removeEventListener(
@@ -723,9 +730,9 @@ const ChatPage = () => {
                 <title>{t('title.chat')}</title>
             </Head>
             <div>
-                <main className="animate-pulse w-full max-h-full" style={{ height: height }}>
+                <div className="w-full max-h-full" style={{ height: height }}>
                     <Chat />
-                </main>
+                </div>
             </div>
         </>
     );
