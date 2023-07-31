@@ -76,7 +76,7 @@ const ChangeProfile = () => {
                         />
                     </div>
                     <button
-                        className="text-white px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-500 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700"
+                        className="text-black dark:text-white px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-500 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700"
                         aria-label='change profile picture button'
                         onClick={togglePopup}
                     >
