@@ -114,8 +114,8 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "pages/chat.js", "pages/index.js"  ],
+    "**/*.tsx",
+    "src" ],
   "exclude": [
     "node_modules",
     "out"
