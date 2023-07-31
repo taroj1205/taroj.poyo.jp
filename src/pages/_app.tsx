@@ -4,7 +4,6 @@ import { I18nextProvider } from 'react-i18next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import i18n from '../../i18n';
-import { useRouter } from 'next/router';
 import { ThemeProvider } from "next-themes";
 import Script from 'next/script';
 import '../globals.css';
@@ -12,7 +11,6 @@ import { AuthProvider } from '../components/AuthContext';
 import Layout from '../components/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {
-    const router = useRouter();
 
     useEffect(() => {
         const addFontStyles = (

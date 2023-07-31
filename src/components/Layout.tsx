@@ -11,8 +11,6 @@ const Layout = ({ children }: LayoutProps) => {
     const router = useRouter();
     const { pathname } = router;
 
-    // const shouldRenderHeaderAndBanner =
-    //     pathname !== '/chat';
     const shouldRenderFooter = pathname === '/' || pathname === '/about'
     
     return (
