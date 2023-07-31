@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { validateImage } from 'image-validator';
 
@@ -111,7 +111,7 @@ const ChangeProfile = () => {
                                     <button
                                         type="submit"
                                         aria-label='change'
-                                        className="ml-2 px-4 py-2 text-white bg-gray-200 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-gray-700 dark:hover:bg-gray-700 dark:bg-gray-900 h-9"
+                                        className="ml-2 px-4 py-2 text-black dark:text-white bg-gray-200 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-gray-700 dark:hover:bg-gray-700 dark:bg-gray-900 h-9"
                                     >
                                         {t('change.set picture')}
                                     </button>
