@@ -3,7 +3,6 @@ import { FaFacebook, FaInstagram, FaYoutube, FaDiscord, FaTwitter, FaLinkedin } 
 import { Tooltip } from 'react-tooltip';
 import copy from 'copy-to-clipboard';
 import { IconType } from 'react-icons';
-import { BsInstagram } from 'react-icons/bs';
 import { useState } from 'react';
 
 interface ContactLinkProps {
@@ -41,7 +40,7 @@ function Contacts() {
 
     return (
         <section>
-            <div className="mt-6 grid grid-cols-2 gap-2 max-w-full w-64 font-semibold rounded-lg bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-950 bg-white">
+            <div className="mt-6 grid grid-cols-2 gap-2 max-w-full w-64 font-semibold rounded-lg">
                 <ContactLink
                     hover="hover:bg-blue-600 hover:text-white text-blue-600"
                     icon={<FaFacebook className="mr-1" />}
@@ -62,20 +61,21 @@ function Contacts() {
                 />
                 <div className="flex items-center">
                     <button
-                        className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:text-white hover:bg-[#7289DA] text-[#6f85d4]`}
+                        className={`text-lg flex items-center rounded-lg p-1 w-full transition-colors duration-300 hover:text-white hover:bg-[#7289DA] text-[#4c5c96] dark:text-[#7289DA] dark:hover:text-white`} // changed text color to #4c5c96
                         data-tooltip-content="Copy"
                         data-tooltip-place="top"
                         data-tooltip-id="Copy"
                         style={{ cursor: 'pointer' }}
+                        aria-label='Copy discord id'
                         onClick={() => handleCopy('taroj1205')}
                     >
                         <FaDiscord className="mr-1" />
                         <span className="ml-2">Discord</span>
                     </button>
-                        <Tooltip
+                    <Tooltip
                         id="Copy"
-                            content={copied ? t('copied') : ''}
-                        />
+                        content={copied ? t('copied') : ''}
+                    />
                 </div>
                 <ContactLink
                     hover="hover:bg-blue-400 hover:text-white text-blue-400"
