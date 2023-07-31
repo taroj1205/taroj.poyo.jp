@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { FaHome, FaInfoCircle, FaComments, FaAngleDown, FaUser } from 'react-icons/fa';
+import { FaHome, FaComments, FaAngleDown, FaUser } from 'react-icons/fa';
 import LanguageSwitch from './LanguageSwitch';
-import Announcement from './Announcement';
 import Profile from './Profile';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';

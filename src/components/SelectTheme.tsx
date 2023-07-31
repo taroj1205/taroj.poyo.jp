@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Select, { StylesConfig } from 'react-select';
 import { ThemeOption, getThemeOptions } from './docs/data';
 import { t } from 'i18next';
+import { useTheme } from 'next-themes'
 
 const selectStyles: StylesConfig<ThemeOption, false> = {
     control: (provided) => ({
@@ -16,6 +17,7 @@ const selectStyles: StylesConfig<ThemeOption, false> = {
 export default () => {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
+    const { theme, setTheme } = useTheme();
     const [value, setValue] = useState<ThemeOption | null>();
     const themeOptions: readonly ThemeOption[] = getThemeOptions(t);
 
@@ -46,11 +48,11 @@ export default () => {
     }, []);
 
     useEffect(() => {
-        const currentClasses = document.documentElement.className.split(' ');
-        const defaultThemeOption = themeOptions.find((option) => currentClasses.includes(option.value));
-        console.log(defaultThemeOption);
+        const defaultThemeOption = themeOptions.find((option) => theme && theme.includes(option.value));
         if (defaultThemeOption) {
             setValue(defaultThemeOption);
+        } else {
+            setValue(themeOptions[1]);
         }
     }, []);
 
@@ -84,6 +86,7 @@ export default () => {
                     if (newValue) {
                         document.documentElement.className = newValue.value;
                         localStorage.theme = newValue.value;
+                        setTheme(newValue.value.toString());
                     }
                     setValue(newValue);
                     setIsOpen(false);
