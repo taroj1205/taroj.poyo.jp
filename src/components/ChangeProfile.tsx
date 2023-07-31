@@ -76,7 +76,7 @@ const ChangeProfile = () => {
                         />
                     </div>
                     <button
-                        className="text-black dark:text-white px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-500 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700"
+                        className="text-black dark:text-white px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700"
                         aria-label='change profile picture button'
                         onClick={togglePopup}
                     >
@@ -106,12 +106,12 @@ const ChangeProfile = () => {
                                             setURL(e.target.value);
                                             setError('');
                                         }}
-                                        className="flex-grow border-none rounded-lg shadow-sm text-black dark:text-white bg-gray-200 focus:ring-blue-200 h-9 dark:bg-gray-900 dark:border-gray-600"
+                                        className="flex-grow border-none rounded-lg shadow-sm text-black dark:text-white bg-gray-200  h-9 dark:bg-gray-900"
                                     />
                                     <button
                                         type="submit"
                                         aria-label='change'
-                                        className="ml-2 px-4 py-2 text-black dark:text-white bg-gray-200 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-gray-700 dark:hover:bg-gray-700 dark:bg-gray-900 h-9"
+                                        className="ml-2 px-4 py-2 text-black dark:text-white bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:bg-gray-700 dark:hover:bg-gray-700 dark:bg-gray-900 h-9"
                                     >
                                         {t('change.set picture')}
                                     </button>
