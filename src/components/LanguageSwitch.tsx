@@ -99,11 +99,12 @@ export default ({ isHeader }: { isHeader: boolean }) => {
         console.log(language, lang);
         const currentPath = router.asPath;
         const newPath = currentPath.replace(`/${language}/`, `/${lang}/`);
+        console.log(router, currentPath, newPath);
         i18n.changeLanguage(language);
         const defaultLanguageOption = languageOptions.find((option) => option.lang === language);
         setValue(defaultLanguageOption);
         Cookies.set('defaultLanguage', language);
-        router.push(newPath, newPath, { locale: language });
+        router.push(currentPath, newPath, { locale: language });
         setIsOpen(false);
     };
 

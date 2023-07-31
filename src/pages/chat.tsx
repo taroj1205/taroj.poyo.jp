@@ -8,6 +8,7 @@ import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../components/AuthContext';
 import Cookies from 'js-cookie';
+import Script from 'next/script';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
@@ -711,7 +712,7 @@ const ChatPage = () => {
                     rel="stylesheet"
                     type="text/css"
                 />
-                <script defer src="https://js.pusher.com/7.2/pusher.min.js" />
+                <Script defer src="https://js.pusher.com/7.2/pusher.min.js" />
                 <meta property="og:title" content="Chat - taroj.poyo.jp" />
                 <meta
                     property="og:description"
