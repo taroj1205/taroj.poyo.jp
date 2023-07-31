@@ -63,7 +63,7 @@ const HomePage = () => {
             <main
                 className="bg-cover bg-no-repeat bg-fixed bg-center"
                 style={{
-                    backgroundImage: "url('/image/thumbnail/thumbnail.png')",
+                    backgroundImage: "url('/image/thumbnail/thumbnail.webp')",
                 }}
             >
                 <div

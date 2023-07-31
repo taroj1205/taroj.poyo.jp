@@ -28,7 +28,7 @@ const About = () => {
                 className="bg-cover bg-no-repeat bg-fixed bg-center"
                 style={{
                     backgroundImage:
-                        "url('/image/thumbnail/thumbnail.png')",
+                        "url('/image/thumbnail/thumbnail.webp')",
                 }}
             >
                 <div
@@ -36,7 +36,7 @@ const About = () => {
                 >
                     <Image
                         className="pfp rounded-full w-40 mx-auto"
-                        src="/image/profile/pfp.png"
+                        src="/image/profile/pfp.webp"
                         alt="Profile Picture"
                         width={300}
                         height={300}

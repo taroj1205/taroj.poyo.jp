@@ -84,7 +84,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     />
                     <meta
                         name="twitter:image"
-                        content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
+                        content="/image/thumbnail/thumbnail.webp"
                     />
                     <meta
                         name="twitter:image:alt"
