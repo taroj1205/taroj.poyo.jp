@@ -106,12 +106,12 @@ const ChangeProfile = () => {
                                             setURL(e.target.value);
                                             setError('');
                                         }}
-                                        className="flex-grow border-gray-300 rounded-lg shadow-sm text-white dark:text-black focus:ring bg0gray-200 focus:ring-blue-200 h-9 dark:bg-gray-900 dark:border-gray-600"
+                                        className="flex-grow border-gray-300 rounded-lg shadow-sm text-black dark:text-white focus:ring bg-gray-200 focus:ring-blue-200 h-9 dark:bg-gray-900 dark:border-gray-600"
                                     />
                                     <button
                                         type="submit"
                                         aria-label='change'
-                                        className="ml-2 px-4 py-2 text-white bg-gray-200 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-blue-600 dark:bg-gray-900 h-9"
+                                        className="ml-2 px-4 py-2 text-white bg-gray-200 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-gray-700 dark:hover:bg-gray-700 dark:bg-gray-900 h-9"
                                     >
                                         {t('change.set picture')}
                                     </button>
