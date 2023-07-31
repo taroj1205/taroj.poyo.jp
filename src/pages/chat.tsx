@@ -711,11 +711,6 @@ const ChatPage = () => {
                     rel="stylesheet"
                     type="text/css"
                 />
-                {/*<script
-                    type="text/javascript"
-                    defer
-                    src="/script/chat/script.js"
-                ></script>*/}
                 <script defer src="https://js.pusher.com/7.2/pusher.min.js" />
                 <meta property="og:title" content="Chat - taroj.poyo.jp" />
                 <meta

@@ -2,17 +2,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AiOutlineEdit } from 'react-icons/ai'; // Import the AiOutlineEdit icon
+import { AiOutlineEdit } from 'react-icons/ai';
 
 const Footer = () => {
     const { t } = useTranslation('translation');
     const router = useRouter();
 
     return (
-        <footer className="w-full bg-white dark:bg-slate-900 p-4 mt-auto">
-            <div className="mx-auto md:max-w-7xl">
-                <div className="flex justify-between items-center">
-                    <div className="flex flex-col flex-1"> {/* Same height as the sitemap */}
+        <footer className="w-full bg-white dark:bg-gray-900 p-4 mt-auto">
+            <div className="mx-auto">
+                <div className="flex justify-between items-center mx-auto md:max-w-2xl">
+                    <div className="flex flex-col flex-1">
                         <div>
                         <p className="text-gray-600 dark:text-gray-300">
                             &copy; {new Date().getFullYear()} {t('name')} | {t('footer.all_rights_reserved')}
@@ -23,7 +23,7 @@ const Footer = () => {
                         </div>
                         <div>
                             <Link
-                                href={`https://github.com/taroj1205/taroj.poyo.jp/edit/dev/src/pages/${router.pathname === '/'
+                                href={`https://github.com/taroj1205/taroj.poyo.jp/edit/dev/src/pages${router.pathname === '/'
                                     ? 'index'
                                     : `${router.pathname}`}.tsx`}
                                 className="flex mt-2"
@@ -37,7 +37,7 @@ const Footer = () => {
                     </div>
                     <div>
                         <p className="text-gray-800 dark:text-white font-bold mb-2">{t('footer.sitemap')}</p>
-                        <ul className="space-y-1 flex flex-col">
+                        <ul className="text-right md:text-left flex flex-col">
                             <li>
                                 <Link href="/" className="text-blue-500 hover:underline">
                                     {t('footer.home')}

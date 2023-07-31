@@ -242,7 +242,8 @@
         "sqlite3": "SQLite3",
         "flask": "Flask",
         "python": "Python",
-        "tailwind": "Tailwind"
+        "tailwind": "Tailwind",
+        "express": "Express"
     },
     "announcement": {
         "title": "Announcement",
