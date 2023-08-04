@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 const ThemeSwitch: React.FC = () => {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [themeLoaded, setThemeLoaded] = useState(false);
 
     useEffect(() => {
         if (document.documentElement.classList.contains('dark')) {
@@ -13,13 +14,25 @@ const ThemeSwitch: React.FC = () => {
         setMounted(true);
     }, []);
 
+    useEffect(() => {
+        if (theme) {
+            setThemeLoaded(true);
+        }
+    }, [theme]);
+
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
     };
 
-    if (!mounted) return null;
-    
+    if (!mounted || !themeLoaded) {
+        return (
+            <div className="rounded-full cursor-pointer md:mr-0 mr-2">
+                <svg className="animate-spin h-6 w-6 text-gray-500" viewBox="0 0 24 24"></svg>
+            </div>
+        );
+    }
+
     return (
         <div
             className='rounded-full cursor-pointer md:mr-0 mr-2'
