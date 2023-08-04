@@ -90,22 +90,16 @@ export default function App({ Component, pageProps }: AppProps) {
                     </Layout>
                 </ThemeProvider>
                 <Analytics />
-                <Script
-                    src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB"
-                    strategy="afterInteractive"
-                />
-                <Script
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            window.dataLayer = window.dataLayer || [];
-                            function gtag(){dataLayer.push(arguments);}
-                            gtag('js', new Date());
-                            gtag('config', 'G-5K9MK5PVGB');
-                        `,
-                    }}
-                />
+                <Script src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB" />
+                <Script id="google-analytics">
+                    {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-5K9MK5PVGB');
+                    `}
+                </Script>
             </I18nextProvider>
-        </AuthProvider>
+        </AuthProvider >
     );
 }
