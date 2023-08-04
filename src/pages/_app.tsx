@@ -90,8 +90,8 @@ export default function App({ Component, pageProps }: AppProps) {
                     </Layout>
                 </ThemeProvider>
                 <Analytics />
-                <Script src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB" />
-                <Script id="google-analytics">
+                <Script src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB" strategy="lazyOnload" />
+                <Script id="google-analytics" strategy="lazyOnload">
                     {`
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
