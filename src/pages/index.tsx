@@ -101,7 +101,7 @@ const HomePage = () => {
                 }}
             >
                 <div className="flex flex-col justify-center items-center h-full text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white">
+                    <h1 className="text-4xl md:text-6xl font-bold">
                         {t('index.welcome')}
                         {user?.username && ` ${user.username}`}!
                     </h1>
