@@ -17,7 +17,7 @@ const MySkills = () => {
     const { t } = useTranslation('translation');
 
     const skills = [
-        { icon: SiReact, label: t('skill.react'), color: '#149eca' },
+        { icon: SiReact, label: t('skill.react'), color: '#0e7696' },
         { icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000' },
         { icon: SiNodedotjs, label: t('skill.nodejs'), color: '#336633' },
         { icon: SiExpress, label: t('skill.express'), color: '#000000' },
