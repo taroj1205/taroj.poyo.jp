@@ -19,7 +19,7 @@ const MySkills = () => {
     const skills = [
         { icon: SiReact, label: t('skill.react'), color: '#149eca' },
         { icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000' },
-        { icon: SiNodedotjs, label: t('skill.nodejs'), color: '#6cc24a' },
+        { icon: SiNodedotjs, label: t('skill.nodejs'), color: '#336633' },
         { icon: SiExpress, label: t('skill.express'), color: '#000000' },
         { icon: SiTypescript, label: t('skill.typescript'), color: '#3178c6' },
         { icon: SiMysql, label: t('skill.mysql'), color: '#00758f' },
