@@ -5,7 +5,6 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import i18n from '../../i18n';
 import { ThemeProvider } from "next-themes";
-import Script from 'next/script';
 import '../globals.css';
 import { AuthProvider } from '../components/AuthContext';
 import Layout from '../components/Layout';
@@ -90,15 +89,6 @@ export default function App({ Component, pageProps }: AppProps) {
                     </Layout>
                 </ThemeProvider>
                 <Analytics />
-                <Script src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB" strategy="lazyOnload" />
-                <Script id="google-analytics" strategy="lazyOnload">
-                    {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'G-5K9MK5PVGB');
-                    `}
-                </Script>
             </I18nextProvider>
         </AuthProvider >
     );
