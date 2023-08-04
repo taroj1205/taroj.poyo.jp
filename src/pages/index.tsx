@@ -80,8 +80,8 @@ const HomePage = () => {
     return (
         <>
             <Head>
-                <meta property='title' content='Home - taroj.poyo.jp' />
-                <meta property='description' content='Index page for taroj.poyo.jp' />
+                <meta name='title' content='Home - taroj.poyo.jp' />
+                <meta name='description' content='Index page for taroj.poyo.jp' />
                 <meta property="og:title" content="Home - taroj.poyo.jp" />
                 <meta
                     property="og:description"

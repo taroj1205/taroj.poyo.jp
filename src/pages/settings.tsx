@@ -10,6 +10,8 @@ const Settings = () => {
     return (
         <>
             <Head>
+                <meta name='title' content='Settings - taroj.poyo.jp' />
+                <meta name='description' content='Settings page for taroj.poyo.jp' />
                 <meta property="og:title" content="Settings - taroj.poyo.jp" />
                 <meta
                     property="og:description"

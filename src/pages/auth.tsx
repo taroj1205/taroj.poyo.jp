@@ -28,6 +28,8 @@ const Auth: React.FC = () => {
     return (
         <>
             <Head>
+                <meta name='title' content='Authenication - taroj.poyo.jp' />
+                <meta name='description' content='Authenication page for taroj.poyo.jp' />
                 <meta property="og:title" content="Authenication - taroj.poyo.jp" />
                 <meta property="og:description" content="Authenication page for taroj.poyo.jp" />
                 <meta name="twitter:title" content="Authenication - taroj.poyo.jp" />
