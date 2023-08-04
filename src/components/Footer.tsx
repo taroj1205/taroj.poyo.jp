@@ -23,7 +23,7 @@ const Footer = () => {
                         </div>
                         <div>
                             <Link
-                                href={`https://github.com/taroj1205/taroj.poyo.jp/edit/dev/src/pages${router.pathname === '/'
+                                href={`https://github.com/taroj1205/taroj.poyo.jp/edit/dev/src/pages/${router.pathname === '/'
                                     ? 'index'
                                     : `${router.pathname}`}.tsx`}
                                 className="flex mt-2"
