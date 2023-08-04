@@ -10,7 +10,7 @@ import { useAuth } from '../components/AuthContext';
 import Cookies from 'js-cookie';
 import Script from 'next/script';
 
-const Chat = () => {
+const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const { token } = useAuth() || {};
@@ -31,7 +31,8 @@ const Chat = () => {
                     const data = await response.json();
                     console.log(data);
                     if (data.error === 401) {
-                        window.location.href = '/auth';
+                        chatRef.current?.classList.remove('animate-pulse');
+                        router.push('/auth');
                         return;
                     } else if (data.verified === 0) {
                         router.push('/verify');
@@ -57,8 +58,7 @@ const Chat = () => {
                         await addMessage(data.messages);
                         const read = localStorage.getItem('read') || '0';
                         document.getElementById(read)?.scrollIntoView();
-                        const documentElement = document.querySelector('body');
-                        documentElement?.classList.remove('animate-pulse');
+                        chatRef.current?.classList.remove('animate-pulse');
                         document
                             .getElementById('send-button')
                             ?.removeAttribute('disabled');
@@ -67,7 +67,8 @@ const Chat = () => {
                             ?.removeAttribute('disabled');
                     }
                 } else {
-                    window.location.href = '/auth';
+                    chatRef.current?.classList.remove('animate-pulse');
+                    router.push('/auth');
                     return;
                 }
             } catch (error: any) {
@@ -388,7 +389,8 @@ const Chat = () => {
                 const userToken = Cookies.get('token');
                 if (!userToken) {
                     errorPopup('Could not indentify you... reloading...');
-                    window.location.href = '/auth';
+                    chatRef.current?.classList.remove('animate-pulse');
+                    router.push('/auth');
                     return;
                 }
             }
@@ -658,6 +660,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 };
 
 const ChatPage = () => {
+    const chatRef = useRef<HTMLDivElement | null>(null);
     const [height, setHeight] = useState(0);
     const router = useRouter();
     const { t } = useTranslation();
@@ -684,9 +687,8 @@ const ChatPage = () => {
             window.visualViewport.addEventListener('resize', setVisualViewport);
         }
 
-        const mainElement = document.querySelector('body');
-        if (mainElement) {
-            mainElement.classList.add('animate-pulse');
+        if (chatRef.current) {
+            chatRef.current.classList.add('animate-pulse');
         }
 
         return () => {
@@ -726,8 +728,8 @@ const ChatPage = () => {
                 <title>{t('title.chat')}</title>
             </Head>
             <div>
-                <div className="w-full max-h-full" style={{ height: height }}>
-                    <Chat />
+                <div ref={chatRef} className="w-full max-h-full" style={{ height: height }}>
+                    <Chat chatRef={chatRef} />
                 </div>
             </div>
         </>
