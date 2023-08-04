@@ -57,6 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         href="/image/icon/global/favicon.ico"
                     />
                     <meta name="theme-color" content="#090808" />
+                    <meta property='og:type' content='website' />
                     <meta
                         property="og:image"
                         content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"

@@ -12,6 +12,8 @@ const About = () => {
     return (
         <div>
             <Head>
+                <meta property='title' content='About - taroj.poyo.jp' />
+                <meta property='description' content='About page for taroj.poyo.jp' />
                 <meta property="og:title" content="About - taroj.poyo.jp" />
                 <meta
                     property="og:description"
