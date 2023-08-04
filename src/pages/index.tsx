@@ -92,6 +92,7 @@ const HomePage = () => {
                     name="twitter:description"
                     content="Index page for taroj.poyo.jp"
                 />
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.index')}</title>
             </Head>
             <div

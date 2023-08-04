@@ -24,6 +24,7 @@ const About = () => {
                     name="twitter:description"
                     content="About page for taroj.poyo.jp"
                 />
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.about')}</title>
             </Head>
             <div
