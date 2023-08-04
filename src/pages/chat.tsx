@@ -715,6 +715,8 @@ const ChatPage = () => {
                     type="text/css"
                 />
                 <Script defer src="https://js.pusher.com/7.2/pusher.min.js" />
+                <meta name='title' content='Chat - taroj.poyo.jp' />
+                <meta name='description' content='Chat page for taroj.poyo.jp' />
                 <meta property="og:title" content="Chat - taroj.poyo.jp" />
                 <meta
                     property="og:description"

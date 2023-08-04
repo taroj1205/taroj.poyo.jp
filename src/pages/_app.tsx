@@ -57,6 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         href="/image/icon/global/favicon.ico"
                     />
                     <meta name="theme-color" content="#090808" />
+                    <meta property='og:type' content='website' />
                     <meta
                         property="og:image"
                         content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
@@ -89,22 +90,16 @@ export default function App({ Component, pageProps }: AppProps) {
                     </Layout>
                 </ThemeProvider>
                 <Analytics />
-                <Script
-                    src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB"
-                    strategy="afterInteractive"
-                />
-                <Script
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            window.dataLayer = window.dataLayer || [];
-                            function gtag(){dataLayer.push(arguments);}
-                            gtag('js', new Date());
-                            gtag('config', 'G-5K9MK5PVGB');
-                        `,
-                    }}
-                />
+                <Script src="https://www.googletagmanager.com/gtag/js?id=G-5K9MK5PVGB" />
+                <Script id="google-analytics">
+                    {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-5K9MK5PVGB');
+                    `}
+                </Script>
             </I18nextProvider>
-        </AuthProvider>
+        </AuthProvider >
     );
 }

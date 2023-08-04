@@ -26,6 +26,8 @@ const Profile = () => {
     return (
         <>
             <Head>
+                <meta name='title' content='Profile - taroj.poyo.jp' />
+                <meta name='description' content='Profile page for taroj.poyo.jp' />
                 <meta property="og:title" content="Profile - taroj.poyo.jp" />
                 <meta
                     property="og:description"
@@ -38,7 +40,7 @@ const Profile = () => {
                 />
                 <title>{t('title.profile')}</title>
             </Head>
-            <div className="flex flex-col pt-1 items-center pt-20">
+            <div className="flex flex-col items-center pt-20">
                 <img
                     className="w-32 h-32 rounded-full mb-4"
                     src={user.picture ?? undefined}

@@ -39,7 +39,7 @@ const MadeWith = () => {
     const { t } = useTranslation('translation'); // Assuming you have translation keys for skill labels
 
     const skills = [
-        { icon: SiReact, label: t('skill.react'), color: '#149eca' }, // Blue for React
+        { icon: SiReact, label: t('skill.react'), color: '#0e7696' }, // Blue for React
         { icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000' }, // Black for Next.js
         { icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF' } // Blue for Tailwind CSS
     ];
@@ -80,6 +80,8 @@ const HomePage = () => {
     return (
         <>
             <Head>
+                <meta name='title' content='Home - taroj.poyo.jp' />
+                <meta name='description' content='Index page for taroj.poyo.jp' />
                 <meta property="og:title" content="Home - taroj.poyo.jp" />
                 <meta
                     property="og:description"
@@ -90,6 +92,7 @@ const HomePage = () => {
                     name="twitter:description"
                     content="Index page for taroj.poyo.jp"
                 />
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.index')}</title>
             </Head>
             <div
@@ -99,7 +102,7 @@ const HomePage = () => {
                 }}
             >
                 <div className="flex flex-col justify-center items-center h-full text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white">
+                    <h1 className="text-4xl md:text-6xl font-bold">
                         {t('index.welcome')}
                         {user?.username && ` ${user.username}`}!
                     </h1>
@@ -121,7 +124,7 @@ const HomePage = () => {
                     <Contacts />
                     <MadeWith />
                     <h2 className="text-2xl md:text-4xl mt-8 mb-4 font-bold">{t('supported language')}</h2>
-                    <ul className="list-disc list-inside text-lg">
+                    <ul className="list-disc list-inside text-lg font-bold">
                         <li>{t('english')}</li>
                         <li>{t('japanese')}</li>
                     </ul>

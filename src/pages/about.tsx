@@ -12,6 +12,8 @@ const About = () => {
     return (
         <div>
             <Head>
+                <meta name='title' content='About - taroj.poyo.jp' />
+                <meta name='description' content='About page for taroj.poyo.jp' />
                 <meta property="og:title" content="About - taroj.poyo.jp" />
                 <meta
                     property="og:description"
@@ -22,6 +24,7 @@ const About = () => {
                     name="twitter:description"
                     content="About page for taroj.poyo.jp"
                 />
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.about')}</title>
             </Head>
             <div
