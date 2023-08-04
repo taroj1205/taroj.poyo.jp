@@ -39,7 +39,7 @@ const MadeWith = () => {
     const { t } = useTranslation('translation'); // Assuming you have translation keys for skill labels
 
     const skills = [
-        { icon: SiReact, label: t('skill.react'), color: '#149eca' }, // Blue for React
+        { icon: SiReact, label: t('skill.react'), color: '#0e7696' }, // Blue for React
         { icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000' }, // Black for Next.js
         { icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF' } // Blue for Tailwind CSS
     ];
