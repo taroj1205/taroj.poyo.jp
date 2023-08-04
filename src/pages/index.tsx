@@ -123,7 +123,7 @@ const HomePage = () => {
                     <Contacts />
                     <MadeWith />
                     <h2 className="text-2xl md:text-4xl mt-8 mb-4 font-bold">{t('supported language')}</h2>
-                    <ul className="list-disc list-inside text-lg">
+                    <ul className="list-disc list-inside text-lg font-bold">
                         <li>{t('english')}</li>
                         <li>{t('japanese')}</li>
                     </ul>

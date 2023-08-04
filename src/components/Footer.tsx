@@ -14,10 +14,10 @@ const Footer = () => {
                 <div className="flex justify-between items-center mx-auto md:max-w-2xl">
                     <div className="flex flex-col flex-1">
                         <div>
-                        <p className="text-gray-600 dark:text-gray-300">
+                        <p className="text-black dark:text-gray-300">
                             &copy; {new Date().getFullYear()} {t('name')} | {t('footer.all_rights_reserved')}
                         </p>
-                        <Link href="mailto:taroj1205@gmail.com" className="text-gray-600 dark:text-gray-300">
+                        <Link href="mailto:taroj1205@gmail.com" className="text-black dark:text-gray-300">
                             taroj1205@gmail.com
                             </Link>
                         </div>
@@ -36,25 +36,25 @@ const Footer = () => {
                         </div>
                     </div>
                     <div>
-                        <p className="text-gray-800 dark:text-white font-bold mb-2">{t('footer.sitemap')}</p>
+                        <p className="text-black dark:text-white font-bold mb-2">{t('footer.sitemap')}</p>
                         <ul className="text-right md:text-left flex flex-col">
                             <li>
-                                <Link href="/" className="text-blue-500 hover:underline">
+                                <Link href="/" className="text-blue-700 dark:text-blue-500 hover:underline">
                                     {t('footer.home')}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/about" className="text-blue-500 hover:underline">
+                                <Link href="/about" className="text-blue-700 dark:text-blue-500 hover:underline">
                                     {t('footer.about')}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/chat" className="text-blue-500 hover:underline">
+                                <Link href="/chat" className="text-blue-700 dark:text-blue-500 hover:underline">
                                     {t('footer.chat')}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/settings" className="text-blue-500 hover:underline">
+                                <Link href="/settings" className="text-blue-700 dark:text-blue-500 hover:underline">
                                     {t('footer.settings')}
                                 </Link>
                             </li>

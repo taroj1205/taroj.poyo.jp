@@ -78,7 +78,7 @@ function Contacts() {
                     />
                 </div>
                 <ContactLink
-                    hover="hover:bg-blue-400 hover:text-white text-blue-400"
+                    hover="hover:bg-blue-500 hover:text-white text-blue-450"
                     icon={<FaTwitter className="mr-1" />}
                     label="Twitter"
                     href="https://twitter.com/taroj1205"
