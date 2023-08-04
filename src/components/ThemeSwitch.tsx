@@ -7,6 +7,9 @@ const ThemeSwitch: React.FC = () => {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        if (document.documentElement.classList.contains('dark')) {
+            setTheme('dark');
+        }
         setMounted(true);
     }, []);
 
@@ -15,8 +18,8 @@ const ThemeSwitch: React.FC = () => {
         setTheme(newTheme);
     };
 
-    if (!mounted) return null; // Prevent rendering on the server-side
-
+    if (!mounted) return null;
+    
     return (
         <div
             className='rounded-full cursor-pointer md:mr-0 mr-2'
