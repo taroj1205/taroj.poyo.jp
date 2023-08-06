@@ -5,13 +5,13 @@ const dbConfig = process.env.DATABASE_URL || '';
 
 const profile_pictureHandler: NextApiHandler = async (req, res) => {
     if (req.method !== 'GET') {
-        res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
     const token = req.query.token;
 
     if (!token) {
-        res.status(401).json({ error: 'Unauthorized' });
+        return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const connection = mysql.createConnection(dbConfig);
@@ -22,10 +22,10 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
         connection.query(selectUserIdQuery, [token], (error: mysql.MysqlError | null, rows: any[]) => {
             if (error) {
                 console.error('Error fetching user ID:', error);
-                res.status(500).json({ error: 'Internal server error' });
+                return res.status(500).json({ error: 'Internal server error' });
             } else {
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'User not found' });
+                    return res.status(404).json({ error: 'User not found' });
                 }
 
                 const userId = rows[0].user_id;
@@ -36,10 +36,10 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
                 connection.query(selectUserQuery, [userId], (error: mysql.MysqlError | null, rows: any[]) => {
                     if (error) {
                         console.error('Error fetching user:', error);
-                        res.status(500).json({ error: 'Internal server error' });
+                        return res.status(500).json({ error: 'Internal server error' });
                     } else {
                         if (rows.length === 0) {
-                            res.status(404).json({ error: 'User not found' });
+                            return res.status(404).json({ error: 'User not found' });
                         }
 
                         const userData = rows[0];
@@ -51,14 +51,14 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
                             verified: userData.verified
                         };
 
-                        res.status(200).json(profileData);
+                        return res.status(200).json(profileData);
                     }
                 });
             }
         });
     } catch (error) {
         console.error('Error fetching user ID:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 

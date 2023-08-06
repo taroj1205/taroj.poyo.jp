@@ -127,14 +127,12 @@ const signupHandler: NextApiHandler = async (req, res) => {
                     connection.query(checkExistingUserQuery, checkExistingUserParams, async (error: mysql.MysqlError | null, results: any[]) => {
                         if (error) {
                             console.error('Error checking existing user:', error);
-                            res.status(500).json({ error: 'Internal server error' });
-                            return;
+                            return res.status(500).json({ error: 'Internal server error' });
                         }
 
                         if (results.length > 0) {
                             // User with the same email or username already exists
-                            res.status(409).json({ error: 'User with this email or username already exists' });
-                            return;
+                            return res.status(409).json({ error: 'User with this email or username already exists' });
                         }
                         // Hash the email, username, and password using bcrypt
                         const hashedPassword = await bcrypt.hash(password, 10);
@@ -182,7 +180,7 @@ const signupHandler: NextApiHandler = async (req, res) => {
                                 sendVerificationEmail(email);
 
                                 // User and token insertion successful
-                                res.status(201).json({ message: 'User created successfully', token });
+                                return res.status(201).json({ message: 'User created successfully', token });
                             });
                         });
                     });
@@ -191,7 +189,7 @@ const signupHandler: NextApiHandler = async (req, res) => {
         });
     } catch (error) {
         console.error('Error during signup:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 

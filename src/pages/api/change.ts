@@ -22,7 +22,7 @@ const changeHandler: NextApiHandler = async (req, res) => {
         connection.query(selectUserIdQuery, [token], async (error: mysql.MysqlError | null, rows: any[]) => {
             if (error) {
                 console.error('Error fetching user ID:', error);
-                res.status(500).json({ error: 'Internal server error' });
+                return res.status(500).json({ error: 'Internal server error' });
             } else {
                 if (rows.length === 0) {
                     return res.status(404).json({ error: 'User not found' });
@@ -39,23 +39,20 @@ const changeHandler: NextApiHandler = async (req, res) => {
                     connection.query(updateUserQuery, [newPictureURL, userId], (error: mysql.MysqlError | null) => {
                         if (error) {
                             console.error('Error updating user profile picture:', error);
-                            res.status(500).json({ error: 'Internal server error' });
+                            return res.status(500).json({ error: 'Internal server error' });
                         } else {
-                            res.status(200).json({ message: 'Profile picture updated successfully' });
+                            return res.status(200).json({ message: 'Profile picture updated successfully' });
                         }
-
-                        // Close the database connection
-                        connection.end();
                     });
                 } catch (error) {
                     console.error('Error validating image URL:', error);
-                    res.status(400).json({ error: 'Invalid image URL' });
+                    return res.status(400).json({ error: 'Invalid image URL' });
                 }
             }
         });
     } catch (error) {
         console.error('Error fetching user ID:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 
