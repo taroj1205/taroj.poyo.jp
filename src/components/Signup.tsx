@@ -90,7 +90,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
         e.preventDefault();
         setIsLoading(true);
         if (password === confirmPassword) {
-            fetch('/api/signup', {
+            fetch('/api/auth/signup', {
                 method: 'POST',
                 body: JSON.stringify({ email, username, password }),
                 headers: {

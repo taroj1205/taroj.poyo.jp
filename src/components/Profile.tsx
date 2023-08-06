@@ -130,61 +130,60 @@ const Profile = () => {
                     onClick={handleOverlayClick}
                 />
             )}
-            {
-                isDropdownOpen && (
-                    <div className="absolute top-8 z-[11] right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
-                        <div className="py-1">
-                            {!user || !user.picture && (
-                                <>
-                                    <button
-                                        aria-label="login"
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        onClick={() => handleLink('/auth')}
-                                    >
-                                        <FaSignInAlt className="mr-2 inline" />
-                                        {t('login')}
-                                    </button>
-                                    <button
-                                        aria-label="go to settings"
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        onClick={() => handleLink('/settings')}
-                                    >
-                                        <FaCog className="mr-2 inline" />
-                                        {t('settings')}
-                                    </button>
-                                </>
-                            )}
-                            {user && user.picture && (
-                                <>
-                                    <button
-                                        aria-label="go to profile"
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        onClick={() => handleLink('/profile')}
-                                    >
-                                        <FaUser className="mr-2 inline" />
-                                        {t('profile')} - {user.username}
-                                    </button>
-                                    <button
-                                        aria-label="go to settings"
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        onClick={() => handleLink('/settings')}
-                                    >
-                                        <FaCog className="mr-2 inline" />
-                                        {t('settings')}
-                                    </button>
-                                    <button
-                                        aria-label="logout"
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        onClick={() => handleLink('/auth/logout')}
-                                    >
-                                        <FaSignOutAlt className="mr-2 inline" />
-                                        {t('logout')}
-                                    </button>
-                                </>
-                            )}
-                        </div>
+            {isDropdownOpen && (
+                <div className="absolute top-8 z-[11] right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
+                    <div className="py-1">
+                        {!user || !user.picture && (
+                            <>
+                                <button
+                                    aria-label="login"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/auth')}
+                                >
+                                    <FaSignInAlt className="mr-2 inline" />
+                                    {t('login')}
+                                </button>
+                                <button
+                                    aria-label="go to settings"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/settings')}
+                                >
+                                    <FaCog className="mr-2 inline" />
+                                    {t('settings')}
+                                </button>
+                            </>
+                        )}
+                        {user && user.picture && (
+                            <>
+                                <button
+                                    aria-label="go to profile"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/profile')}
+                                >
+                                    <FaUser className="mr-2 inline" />
+                                    {t('profile')} - {user.username}
+                                </button>
+                                <button
+                                    aria-label="go to settings"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/settings')}
+                                >
+                                    <FaCog className="mr-2 inline" />
+                                    {t('settings')}
+                                </button>
+                                <button
+                                    aria-label="logout"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/auth/logout')}
+                                >
+                                    <FaSignOutAlt className="mr-2 inline" />
+                                    {t('logout')}
+                                </button>
+                            </>
+                        )}
                     </div>
-                )
+                </div>
+            )
             }
         </div>
     );

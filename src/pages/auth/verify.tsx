@@ -44,7 +44,7 @@ const EmailVerification: React.FC<{
         };
 
         // Perform the POST request to the endpoint
-        fetch('/api/verify-email', {
+        fetch('/api/auth/verify-email', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

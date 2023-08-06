@@ -25,19 +25,23 @@ const Header = () => {
     const headerPosition = isChatPage ? 'relative' : 'fixed  top-0 left-0';
 
     return (
-        <header className={`${headerPosition} z-[100] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
-            {/* <Announcement /> */}
-            <nav className="w-full flex items-center justify-between px-0 py-1 md:py-2">
+        <header className={`${headerPosition} whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
+            {isExpanded && (
+                <div
+                    className="fixed inset-0 z-10"
+                    onClick={toggleDropdown}
+                />
+            )}
+            <div className="relative w-full flex items-center z-[100] justify-between px-0 py-1 md:py-2">
                 <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
-                    {/* Move the LanguageSwitch to the left side */}
                     <div className="flex items-center ml-2 xl:ml-0 relative">
                         <LanguageSwitch isHeader={true} />
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
-                    <UnmountClosed isOpened={true || false}>
-                        <div
-                            className={`flex ${isExpanded ? 'flex' : 'hidden duration-3000 md:flex'
+                    <UnmountClosed isOpened={isExpanded}>
+                        <nav
+                            className={`flex ${isExpanded ? 'flex' : 'hidden duration-300 md:flex'
                                 } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
                         >
                             <Link href="/"
@@ -65,7 +69,7 @@ const Header = () => {
                                 <FaComments className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.chat')}</span>
                             </Link>
-                        </div>
+                        </nav>
                     </UnmountClosed>
                     <div className={`md:hidden flex justify-center w-full flex-grow ${isExpanded ? 'pt-2' : 'pt-0'}`}>
                         <button
@@ -83,7 +87,7 @@ const Header = () => {
                         <Profile />
                     </div>
                 </div>
-            </nav>
+            </div>
         </header >
     );
 };

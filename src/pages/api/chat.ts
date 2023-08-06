@@ -97,8 +97,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 const server_nanoid = req.body.server_id;
 
                 if (!server_nanoid) {
-                    res.status(400).json({ error: 'Missing server_id' });
-                    return;
+                    return res.status(400).json({ error: 'Missing server_id' });
                 }
 
                 const now = new Date().toISOString().replace('Z', '');
@@ -144,8 +143,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                     ) => {
                         if (error) {
                             console.error('Error retrieving default messages:', error);
-                            res.status(500).json({ error: 'Failed to retrieve default messages' });
-                            return;
+                            return res.status(500).json({ error: 'Failed to retrieve default messages' });
                         }
 
                         console.log('Default messages:', results);
@@ -203,13 +201,12 @@ const chatHandler: NextApiHandler = async (req, res) => {
                             (error) => {
                                 if (error) {
                                     console.error('Error updating last_login:', error);
-                                    res.status(500).json({ error: 'Failed to update last_login' });
-                                    return;
+                                    return res.status(500).json({ error: 'Failed to update last_login' });
                                 }
 
                                 console.log('Default messages:', defaultMessages);
 
-                                res.status(200).json({
+                                return res.status(200).json({
                                     messages: defaultMessages.map(({ userId, ...rest }) => rest),
                                 });
                             }
@@ -239,7 +236,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 );
             } catch (error) {
                 console.error('Error retrieving default messages:', error);
-                res.status(500).json({ error: 'Failed to retrieve default messages from the server' });
+                return res.status(500).json({ error: 'Failed to retrieve default messages from the server' });
             }
         } else if (req.body.method === 'newMessage') {
             try {
@@ -251,7 +248,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                 const now = new Date().toISOString().replace('Z', '');
                 if (!user) {
                     setTimeout(() => {
-                        res.status(400).end({ error: 'Missing username' });
+                        return res.status(400).end({ error: 'Missing username' });
                     }, 5000);
                     return;
                 } else {
@@ -264,13 +261,11 @@ const chatHandler: NextApiHandler = async (req, res) => {
                         (error, results) => {
                             if (error) {
                                 console.error('Error retrieving server ID:', error);
-                                res.status(500).send({ error: 'Failed to retrieve server ID' });
-                                return;
+                                return res.status(500).send({ error: 'Failed to retrieve server ID' });
                             }
 
                             if (results.length === 0) {
-                                res.status(400).send({ error: 'Server not found with the provided server_id' });
-                                return;
+                                return res.status(400).send({ error: 'Server not found with the provided server_id' });
                             }
 
                             const serverId = results[0].id;
@@ -282,7 +277,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                 .then((userData) => {
                                     console.log(userData);
                                     if (!userData || !userData.userId) {
-                                        res.status(400).send({
+                                        return res.status(400).send({
                                             error: 'Missing username, please go to your profile and add username',
                                         });
                                     } else {
@@ -299,14 +294,14 @@ const chatHandler: NextApiHandler = async (req, res) => {
                                 })
                                 .catch((error) => {
                                     console.error(error);
-                                    res.status(500).send(error);
+                                    return res.status(500).send(error);
                                 });
                         }
                     );
                 }
             } catch (error) {
                 console.error('Error inserting message:', error);
-                res.status(500).send(error);
+                return res.status(500).send(error);
             }
         }
 
@@ -375,7 +370,7 @@ const chatHandler: NextApiHandler = async (req, res) => {
         };
     } catch (error) {
         console.error(error);
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 }
 

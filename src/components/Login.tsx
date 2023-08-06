@@ -24,7 +24,7 @@ const Login: React.FC<{ onSignupClick: () => void; onForgotPasswordClick: () => 
 
         try {
             // Make the login request to your server
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

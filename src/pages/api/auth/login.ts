@@ -79,19 +79,19 @@ const loginHandler: NextApiHandler = async (req, res) => {
                             username,
                             picture,
                         };
-                        res.status(200).json({ token, user });
+                        return res.status(200).json({ token, user });
                     });
                 });
             } catch (error) {
                 console.error('Error during login:', error);
-                res.status(500).json({ error: 'Internal server error' });
+                return res.status(500).json({ error: 'Internal server error' });
             }
         });
     } catch (error) {
         console.error('Error during login:', error);
         // Wait for 5 seconds before sending back the error response
         await new Promise(resolve => setTimeout(resolve, 5000));
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 
