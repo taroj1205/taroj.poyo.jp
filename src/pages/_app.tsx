@@ -8,8 +8,11 @@ import { ThemeProvider } from "next-themes";
 import '../globals.css';
 import { AuthProvider } from '../components/AuthContext';
 import Layout from '../components/Layout';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+    const currentPath = router.pathname === '/' ? 'index' : router.pathname;
 
     useEffect(() => {
         const addFontStyles = (
@@ -53,7 +56,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <link
                         rel="shortcut icon"
                         type="image/x-icon"
-                        href="/image/icon/global/favicon.ico"
+                        href={`/image/icon/${currentPath}/favicon.ico`}
                     />
                     <meta name="theme-color" content="#090808" />
                     <meta property='og:type' content='website' />

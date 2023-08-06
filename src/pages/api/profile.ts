@@ -5,13 +5,13 @@ const dbConfig = process.env.DATABASE_URL || '';
 
 const profile_pictureHandler: NextApiHandler = async (req, res) => {
     if (req.method !== 'GET') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        res.status(405).json({ error: 'Method not allowed' });
     }
 
     const token = req.query.token;
 
     if (!token) {
-        return res.status(401).json({ error: 'Unauthorized' });
+        res.status(401).json({ error: 'Unauthorized' });
     }
 
     const connection = mysql.createConnection(dbConfig);
@@ -25,7 +25,7 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
                 res.status(500).json({ error: 'Internal server error' });
             } else {
                 if (rows.length === 0) {
-                    return res.status(404).json({ error: 'User not found' });
+                    res.status(404).json({ error: 'User not found' });
                 }
 
                 const userId = rows[0].user_id;
@@ -39,7 +39,7 @@ const profile_pictureHandler: NextApiHandler = async (req, res) => {
                         res.status(500).json({ error: 'Internal server error' });
                     } else {
                         if (rows.length === 0) {
-                            return res.status(404).json({ error: 'User not found' });
+                            res.status(404).json({ error: 'User not found' });
                         }
 
                         const userData = rows[0];
