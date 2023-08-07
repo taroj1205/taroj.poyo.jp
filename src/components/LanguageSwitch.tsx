@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { StylesConfig } from 'react-select';
-import { LanguageOption, getLanguageOptions } from './docs/data';
+import { LanguageOption, getLanguageOptions } from './doc/data';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { ImEarth } from 'react-icons/im';

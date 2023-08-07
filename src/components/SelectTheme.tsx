@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { StylesConfig } from 'react-select';
-import { ThemeOption, getThemeOptions } from './docs/data';
+import { ThemeOption, getThemeOptions } from './doc/data';
 import { t } from 'i18next';
 import { useTheme } from 'next-themes'
 
