@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaHome, FaComments, FaAngleDown, FaUser } from 'react-icons/fa';
 import LanguageSwitch from './LanguageSwitch';
 import Profile from './Profile';
@@ -12,6 +12,7 @@ const Header = () => {
     const router = useRouter();
     const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
@@ -23,6 +24,21 @@ const Header = () => {
 
     const isChatPage = router.pathname === '/chat';
     const headerPosition = isChatPage ? 'relative' : 'fixed  top-0 left-0';
+
+    useEffect(() => {
+        const handleStart = () => setIsLoading(true);
+        const handleComplete = () => setIsLoading(false);
+
+        router.events.on('routeChangeStart', handleStart);
+        router.events.on('routeChangeComplete', handleComplete);
+        router.events.on('routeChangeError', handleComplete);
+
+        return () => {
+            router.events.off('routeChangeStart', handleStart);
+            router.events.off('routeChangeComplete', handleComplete);
+            router.events.off('routeChangeError', handleComplete);
+        };
+    }, [router]);
 
     return (
         <header className={`${headerPosition} whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
@@ -87,6 +103,9 @@ const Header = () => {
                         <Profile />
                     </div>
                 </div>
+                {isLoading && (
+                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
+                )}
             </div>
         </header >
     );
