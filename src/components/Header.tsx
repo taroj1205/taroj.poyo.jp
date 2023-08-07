@@ -41,7 +41,7 @@ const Header = () => {
     }, [router]);
 
     return (
-        <header className={`${headerPosition} whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
+        <header className={`${headerPosition} z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
             {isExpanded && (
                 <div
                     className="fixed inset-0 z-10"

@@ -9,7 +9,7 @@ const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string
         style={{ backgroundColor: color, color: 'white', borderRadius: '10px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
     >
         <Icon className="w-16 h-24 mb-1" />
-        <span className="text-xl font-semibold">{label}</span>
+        <span className="text-xl font-semibold s">{label}</span>
     </div>
 );
 

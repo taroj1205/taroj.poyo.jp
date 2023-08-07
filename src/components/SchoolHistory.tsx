@@ -4,10 +4,7 @@ export default function SchoolHistory() {
     const { t } = useTranslation();
 
     return (
-        <section className="education">
-            <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
-                {t('about.education.schoolHistory')}
-            </h2>
+        <div className="education">
             <div className="overflow-x-auto w-full">
                     <table className="w-full max-w-4xl table-auto rounded-lg overflow-hidden border-collapse whitespace-nowrap transition-shadow duration-300 shadow-md hover:shadow-lg text-base md:text-lg">
                         <thead>
@@ -66,6 +63,6 @@ export default function SchoolHistory() {
                         </tbody>
                     </table>
             </div>
-        </section>
+        </div>
     );
 }
