@@ -74,18 +74,20 @@ const About = () => {
                     </section>
                 </div>
             </div>
-            <section>
-                <MySkills />
+            <section className='mx-auto flex justify-center'>
+                <div>
+                    <MySkills />
+                    <div className="ml-4">
+                        <SchoolHistory />
+                    </div>
+                    <div className="mx-4 mb-8">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
+                            {t('index.contact')}
+                        </h2>
+                        <Contacts />
+                    </div>
+                </div>
             </section>
-            <div className="ml-4">
-                <SchoolHistory />
-            </div>
-            <div className="mx-4 mb-8">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
-                    {t('index.contact')}
-                </h2>
-                <Contacts />
-            </div>
         </div>
     );
 };
