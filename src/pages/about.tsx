@@ -53,33 +53,35 @@ const About = () => {
                     <AboutMe />
                 </div>
             </div>
-            <div>
-                <MySkills />
-                <div className="ml-4">
-                    <h2 className="text-2xl md:text-4xl mt-6 font-bold">
-                        {t('ncea.title')}
-                    </h2>
-                    {i18n.language === 'ja' && (
-                        <Link href="https://www.edukiwi.com/highschool/ncea-ue/" target="_blank" rel="noopener noreferrer" className='flex items-center'>
-                            https://www.edukiwi.com/highschool/ncea-ue/
-                        </Link>
-                    )}
-                    <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}<RankScore /></p>
-                    <Graph />
-                    <NCEA />
-                    <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
-                        {t('about.education.schoolHistory')}
-                    </h2>
-                    <SchoolHistory />
-                </div>
-                <div className="mx-4 mb-8">
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
-                        {t('index.contact')}
-                    </h2>
-                    <Contacts />
+            <div className='flex justify-center'>
+                <div>
+                    <MySkills />
+                    <div className="ml-4">
+                        <h2 className="text-2xl md:text-4xl mt-6 font-bold">
+                            {t('ncea.title')}
+                        </h2>
+                        {i18n.language === 'ja' && (
+                            <Link href="https://www.edukiwi.com/highschool/ncea-ue/" target="_blank" rel="noopener noreferrer" className='flex items-center'>
+                                https://www.edukiwi.com/highschool/ncea-ue/
+                            </Link>
+                        )}
+                        <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}<RankScore /></p>
+                        <Graph />
+                        <NCEA />
+                        <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
+                            {t('about.education.schoolHistory')}
+                        </h2>
+                        <SchoolHistory />
+                    </div>
+                    <div className="mx-4 mb-8">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
+                            {t('index.contact')}
+                        </h2>
+                        <Contacts />
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
