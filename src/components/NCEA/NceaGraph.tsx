@@ -83,7 +83,7 @@ const Graph: React.FC = () => {
                         position: 'bottom',
                         labels: {
                             font: {
-                                family: 'Inter',
+                                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                                 size: 13,
                             },
                             color: theme === 'dark' ? '#fff' : '#000',
@@ -93,7 +93,7 @@ const Graph: React.FC = () => {
                         display: true,
                         text: i18n.language === 'ja' ? 'ランクスコア' : 'Rank Score',
                         font: {
-                            family: 'Inter',
+                            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                             size: 16,
                             weight: 'bold',
                         },
@@ -129,7 +129,7 @@ const Graph: React.FC = () => {
                         position: 'bottom',
                         labels: {
                             font: {
-                                family: 'Inter',
+                                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                                 size: 13,
                             },
                             color: theme === 'dark' ? '#fff' : '#000',
@@ -139,7 +139,7 @@ const Graph: React.FC = () => {
                         display: true,
                         text: i18n.language === 'ja' ? 'クレジット' : 'Credits',
                         font: {
-                            family: 'Inter',
+                            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                             size: 16,
                             weight: 'bold',
                         },
@@ -179,7 +179,7 @@ const Graph: React.FC = () => {
                         display: true,
                         text: i18n.language === 'ja' ? 'クレジット' : 'Credits',
                         font: {
-                            family: 'Inter',
+                            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                             size: 16,
                             weight: 'bold',
                         },
@@ -191,7 +191,7 @@ const Graph: React.FC = () => {
                     y: {
                         ticks: {
                             font: {
-                                family: 'Inter',
+                                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                                 size: 13,
                             },
                             color: theme === 'dark' ? '#fff' : '#000',
@@ -203,7 +203,7 @@ const Graph: React.FC = () => {
                     x: {
                         ticks: {
                             font: {
-                                family: 'Inter',
+                                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                                 size: 13,
                             },
                         },
