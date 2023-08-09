@@ -1,38 +1,56 @@
 import React from 'react';
 import ncea from '../doc/ncea';
 
-const RankScore: React.FC = () => {
-    // Extract all assessments as a flat array
-    const allAssessments = Object.values(ncea).flatMap((assessments) => Object.values(assessments));
+interface SubjectData {
+    [key: string]: {
+        credits: string;
+        achievement: string;
+    };
+}
 
-    // Filter and sort assessments based on level and achievement
-    const level3Assessments = allAssessments.filter((assessment) => parseInt(assessment.credits, 10) >= 3);
-    const sortedAssessments = level3Assessments.sort((a, b) => {
-        const achievementValue: { [key: string]: number } = { "Achieved": 2, "Merit": 3, "Excellence": 4 };
-        return achievementValue[b.achievement] - achievementValue[a.achievement];
-    }).slice(0, 5);
+const calculateRankScore = (subjectData: SubjectData) => {
+    let achievedCredits = 0;
+    let meritCredits = 0;
+    let excellenceCredits = 0;
 
-    // Calculate total rank score from best 80 credits (weighted by achievement)
-    const maxCredits = 80;
-    let totalRankScore = 0;
-    let creditsCount = 0;
+    for (const assessment in subjectData) {
+        const credits = parseInt(subjectData[assessment].credits);
+        const achievement = subjectData[assessment].achievement;
 
-    for (const assessment of sortedAssessments) {
-        const credits = parseInt(assessment.credits, 10);
-        const points = { "Achieved": 2, "Merit": 3, "Excellence": 4 }[assessment.achievement];
-
-        if (creditsCount + credits <= maxCredits) {
-            totalRankScore += credits * (points ?? 0);
-            creditsCount += credits;
-        } else {
-            const remainingCredits = maxCredits - creditsCount;
-            totalRankScore += remainingCredits * (points ?? 0);
-            break;
+        if (achievement === "Achieved") {
+            achievedCredits += credits;
+        } else if (achievement === "Merit") {
+            meritCredits += credits;
+        } else if (achievement === "Excellence") {
+            excellenceCredits += credits;
         }
     }
 
+    const rankScore = 2 * achievedCredits + 3 * meritCredits + 4 * excellenceCredits;
+    return rankScore;
+};
+
+const RankScore = () => {
+    const rankScores: { [key: string]: number } = {};
+
+    for (const subject in ncea) {
+        const subjectData = ncea[subject];
+        const rankScore = calculateRankScore(subjectData);
+        rankScores[subject] = rankScore;
+    }
+
+    // Find the top 5 subjects with the highest rank scores
+    const topSubjects = Object.keys(rankScores)
+        .sort((a, b) => rankScores[b] - rankScores[a])
+        .slice(0, 5);
+
+    // Calculate the total rank score for the top subjects
+    const totalTopRankScore = topSubjects.reduce((total, subject) => total + rankScores[subject], 0);
+
+    console.log(topSubjects, rankScores, totalTopRankScore);
+
     return (
-        totalRankScore
+        totalTopRankScore
     );
 };
 
