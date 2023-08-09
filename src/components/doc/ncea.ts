@@ -33,6 +33,11 @@ const ncea: NceaData = {
             "assessment": "Apply systems of simultaneous equations in solving problems",
             "credits": "3",
             "achievement": "Excellence"
+        },
+        "3.3": {
+            "assessment": "Apply trigonometric methods in solving problems",
+            "credits": "4",
+            "achievement": "Excellence"
         }
     },
     "Statistics": {
