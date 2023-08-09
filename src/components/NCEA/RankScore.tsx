@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ncea from '../doc/ncea';
 
 interface SubjectData {
@@ -47,10 +47,41 @@ const RankScore = () => {
     // Calculate the total rank score for the top subjects
     const totalTopRankScore = topSubjects.reduce((total, subject) => total + rankScores[subject], 0);
 
-    console.log(topSubjects, rankScores, totalTopRankScore);
+    const [score, setScore] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            setIsVisible(entry.isIntersecting);
+        });
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isVisible) {
+            const interval = setInterval(() => {
+                setScore((prevScore) => {
+                    const newScore = prevScore + 1;
+                    return newScore > totalTopRankScore ? totalTopRankScore : newScore;
+                });
+            }, 10);
+
+            return () => clearInterval(interval);
+        }
+    }, [isVisible, totalTopRankScore]);
 
     return (
-        totalTopRankScore
+        <span ref={ref}>{score}</span>
     );
 };
 
