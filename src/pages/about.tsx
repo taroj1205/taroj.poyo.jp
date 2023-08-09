@@ -53,7 +53,7 @@ const About = () => {
                     <AboutMe />
                 </div>
             </div>
-            <div className='flex justify-center'>
+            <div className='md:flex md:justify-center'>
                 <div>
                     <MySkills />
                     <div className="ml-4">
