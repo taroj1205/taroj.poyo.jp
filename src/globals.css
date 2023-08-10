@@ -25,6 +25,7 @@ a {
     /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
     display: grid;
 }
+
 .grow-wrap::after {
     /* Note the weird space! Needed to preventy jumpy behavior */
     content: attr(data-replicated-value) ' ';
@@ -35,14 +36,16 @@ a {
     /* Hidden from view, clicks, and screen readers */
     visibility: hidden;
 }
-.grow-wrap > textarea {
+
+.grow-wrap>textarea {
     /* You could leave this, but after a user resizes, then it ruins the auto sizing */
     resize: none;
 
     /* Firefox shows scrollbar on growth, you can hide like this. */
     overflow-x: hidden;
 }
-.grow-wrap > textarea,
+
+.grow-wrap>textarea,
 .grow-wrap::after {
     /* Identical styling required!! */
     border: 1px solid transparent;
@@ -84,6 +87,7 @@ a {
 }
 
 @keyframes shake {
+
     0%,
     100% {
         transform: translateX(0);
@@ -121,7 +125,8 @@ a {
 
 .progress {
     height: 0.2rem;
-    background: blue;
+    --tw-bg-opacity: 1;
+    background: rgb(37 99 235 / var(--tw-bg-opacity));
     position: fixed;
     left: 0;
     width: 100%;
