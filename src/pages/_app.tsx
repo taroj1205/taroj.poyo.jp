@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
-    const currentPath = router.pathname === '/' ? 'index' : router.pathname;
+    const currentPath = router.pathname.startsWith('/auth/') ? 'auth' : router.pathname === '/' ? 'index' : router.pathname;
 
     useEffect(() => {
         const addFontStyles = (
@@ -84,7 +84,6 @@ export default function App({ Component, pageProps }: AppProps) {
                     />
                     <meta name="twitter:site" content="@taroj1205" />
                     <meta name="twitter:creator" content="@taroj1205" />
-                    {/* Add other custom metadata and tags */}
                 </Head>
                 <ThemeProvider attribute="class">
                     <Layout>
