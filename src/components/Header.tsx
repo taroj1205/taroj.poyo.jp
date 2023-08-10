@@ -112,10 +112,11 @@ const Header = () => {
                         <Profile />
                     </div>
                 </div>
-                {isLoading && (
-                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
-                )}
             </div>
+            {isLoading && (
+                <div className="absolute bottom-0 left-0 w-full h-full opacity-25 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
+            )}
+            <div className='progress'></div>
         </header >
     );
 };

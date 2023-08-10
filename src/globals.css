@@ -118,3 +118,24 @@ a {
         width: 100%;
     }
 }
+
+.progress {
+    height: 0.2rem;
+    background: blue;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    transform-origin: 0 50%;
+    animation: scaleProgress auto linear;
+    animation-timeline: scroll(root);
+}
+
+@keyframes scaleProgress {
+    0% {
+        transform: scaleX(0);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
