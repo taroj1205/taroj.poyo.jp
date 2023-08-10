@@ -40,8 +40,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fetchUserProfileData = async () => {
         try {
             const token = Cookies.get('token');
+            const userProfileData = localStorage.getItem('userProfileData');
             console.log(token);
-            if (token) {
+            if (token && !userProfileData) {
                 const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
                     method: 'GET'
                 });

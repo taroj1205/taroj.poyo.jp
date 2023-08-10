@@ -21,7 +21,7 @@ module.exports = {
                     '100%': {
                         transform: 'translateX(-150%)',
                     },
-                },
+                }
             },
             animation: {
                 announcement:

@@ -242,15 +242,16 @@
     },
     "title": {
         "about": "自己紹介",
-        "auth": "認証",
+        "auth": {
+            "emailVerification": "メール確認",
+            "forgotPassword": "パスワードを忘れた",
+            "login": "ログイン",
+            "signup": "登録する"
+        },
         "chat": "チャット",
-        "emailVerification": "メール確認",
-        "forgotPassword": "パスワードを忘れた",
         "index": "ホームページ",
-        "login": "ログインする",
         "profile": "プロフィール",
-        "settings": "設定",
-        "signup": "登録する"
+        "settings": "設定"
     },
     "welcome": "ようこそ！",
     "your": {

@@ -10,7 +10,7 @@ const Graph: React.FC = () => {
     const pieBarChartRef = useRef<Chart | null>(null);
     const barChartRef = useRef<Chart | null>(null);
     const { t, i18n } = useTranslation();
-    
+
     // Prepare data for pie chart
     const rankScores = Object.entries(ncea).map(([subject, assessments]) => {
         let totalRankScore = 0;
@@ -221,14 +221,14 @@ const Graph: React.FC = () => {
     }, [theme, i18n.language]);
 
     return (
-        <div className="w-full max-w-6xl py-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className='max-w-7xl'>
+        <div className="w-full max-w-3xl py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-0 lg:gap-4">
+            <div className='max-w-7xl w-fit'>
                 <canvas id="rankScorePieChart"></canvas>
             </div>
-            <div className='max-w-6xl'>
+            <div className='max-w-6xl w-fit'>
                 <canvas id="rankCreditsPieBarChart"></canvas>
             </div>
-            <div className='max-w-6xl ml-0 mr-2 md:mr-0 md:ml-2'>
+            <div className='max-w-5xl w-fit ml-0 mr-2'>
                 <canvas id="rankCreditsBarChart"></canvas>
             </div>
         </div>

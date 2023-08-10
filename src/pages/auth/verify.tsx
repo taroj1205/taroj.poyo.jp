@@ -185,12 +185,11 @@ const EmailVerification: React.FC<{
                     name="twitter:description"
                     content="Email verification page for taroj.poyo.jp"
                 />
-                <title>{t('title.emailVerification')}</title>
+                <title>{t('title.auth.emailVerification')}</title>
             </Head>
             <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 mt-20 shadow-lg mx-auto">
                 {verifySuccess && (
                     <div>
-                        {/* Overlay div with dark background */}
                         {isPopupShown && <div className={`fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50`}></div>}
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
                             <div className="bg-indigo-500 dark:bg-slate-900 text-white rounded-lg p-8 shadow-lg">
@@ -200,7 +199,7 @@ const EmailVerification: React.FC<{
                                     onClick={() => {
                                         setIsPopupShown(false); // Hide the popup when the button is clicked
                                         setVerifySuccess(false);
-                                        router.push('/auth');
+                                        router.push('/auth/login');
                                     }}
                                 >
                                     {t('auth.verify')}

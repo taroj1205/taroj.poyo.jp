@@ -39,7 +39,7 @@ const About = () => {
                     backgroundImage: "url('/image/thumbnail/thumbnail.webp')",
                 }}
             >
-                <div className="flex flex-col min-h-screen h-fit pt-20 justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70 font-sans">
+                <div className="flex flex-col min-h-screen h-fit justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70 font-sans">
                     <Image
                         className="pfp rounded-full w-40 mx-auto"
                         src="/image/profile/pfp.webp"
@@ -53,10 +53,8 @@ const About = () => {
                     <AboutMe />
                 </div>
             </div>
-            <div className='md:flex md:justify-center'>
-                <div>
+            <div className='lg:flex lg:flex-col lg:justify-center lg:items-center mb-8 px-4'>
                     <MySkills />
-                    <div className="ml-4">
                         <h2 className="text-2xl md:text-4xl mt-6 font-bold">
                             {t('ncea.title')}
                         </h2>
@@ -66,22 +64,18 @@ const About = () => {
                             </Link>
                         )}
                         <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}<RankScore /></p>
-                        <Graph />
-                        <NCEA />
+                <Graph />
+                    <NCEA />
                         <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
                             {t('about.education.schoolHistory')}
-                        </h2>
-                        <SchoolHistory />
-                    </div>
-                    <div className="mx-4 mb-8">
+                </h2>
+                    <SchoolHistory />
                         <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
                             {t('index.contact')}
                         </h2>
                         <Contacts />
-                    </div>
                 </div>
-            </div>
-        </div >
+        </div>
     );
 };
 

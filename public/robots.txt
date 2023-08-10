@@ -1,6 +1,9 @@
 # Block all crawlers for /accounts
 User-agent: *
-Disallow: /accounts
+Disallow: /profile
+
+User-agent: ChatGPT-User
+Disallow: /
 
 # Allow all crawlers
 User-agent: *

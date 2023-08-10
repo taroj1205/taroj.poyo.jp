@@ -13,13 +13,19 @@ const Header = () => {
     const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [activeLink, setActiveLink] = useState(router.pathname);
 
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
     };
 
+    const handleLinkClick = (path: string) => {
+        setActiveLink(path);
+        toggleDropdown();
+    };
+
     const isActive = (path: string) => {
-        return router.pathname === path;
+        return activeLink === path;
     };
 
     const isChatPage = router.pathname === '/chat';
@@ -63,6 +69,7 @@ const Header = () => {
                             <Link href="/"
                                 className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
+                                onClick={() => handleLinkClick('/')}
                             >
                                 <FaHome className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.home')}</span>
@@ -72,6 +79,7 @@ const Header = () => {
                                     ? 'border-b-2 border-blue-600 text-blue-600'
                                     : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
+                                onClick={() => handleLinkClick('/about')}
                             >
                                 <FaUser className="mr-1 text-lg mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.about')}</span>
@@ -81,6 +89,7 @@ const Header = () => {
                                     ? 'border-b-2 border-blue-600 text-blue-600'
                                     : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
+                                onClick={() => handleLinkClick('/chat')}
                             >
                                 <FaComments className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.chat')}</span>
@@ -103,10 +112,11 @@ const Header = () => {
                         <Profile />
                     </div>
                 </div>
-                {isLoading && (
-                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
-                )}
             </div>
+            {isLoading && (
+                <div className="absolute bottom-0 left-0 w-full h-full opacity-25 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
+            )}
+            <div className='progress'></div>
         </header >
     );
 };
