@@ -1,20 +1,7 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const GoBack: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick }) => {
-    const { t } = useTranslation();
-
-    return (
-        <button
-            type="button"
-            className="text-indigo-500 hover:text-indigo-600 underline hover:no-underline text-sm"
-            onClick={onGoBackClick}
-        >
-            {t('goBack')}
-        </button>
-    );
-};
+import GoBackLogin from '../../components/GoBackLogin';
 
 const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick }) => {
     const [email, setEmail] = useState('');
@@ -45,7 +32,7 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                 <meta property="og:description" content="Resetting password for taroj.poyo.jp" />
                 <meta name="twitter:title" content="Forgot password - taroj.poyo.jp" />
                 <meta name="twitter:description" content="Resetting password for taroj.poyo.jp" />
-                <title>{t('title.forgotPassword')}</title>
+                <title>{t('title.auth.forgotPassword')}</title>
             </Head>
             <div className="w-96 bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto mt-20">
                 {isSubmitted ? (
@@ -61,7 +48,7 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                                 <h2 className="text-2xl font-bold mb-6">{t('submitting')}</h2>
                             </div>
                         )}
-                        <GoBack onGoBackClick={onGoBackClick} />
+                        <GoBackLogin />
                     </div>
                 ) : (
                     <div>
@@ -88,7 +75,7 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                                 >
                                         {isLoading ? t('submitting') : t('submit')}
                                 </button>
-                                <GoBack onGoBackClick={onGoBackClick} />
+                                <GoBackLogin />
                             </div>
                         </form>
                     </div>

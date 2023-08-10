@@ -242,15 +242,16 @@
     },
     "title": {
         "about": "About",
-        "auth": "Authenication",
+        "auth": {
+            "emailVerification": "Email Verification",
+            "forgotPassword": "Forgot password",
+            "login": "Login",
+            "signup": "Sign Up"
+        },
         "chat": "Chat",
-        "emailVerification": "Email Verification",
-        "forgotPassword": "Forgot password",
         "index": "Home",
-        "login": "Login",
         "profile": "Profile",
-        "settings": "Settings",
-        "signup": "Sign Up"
+        "settings": "Settings"
     },
     "welcome": "Welcome!",
     "your": {
