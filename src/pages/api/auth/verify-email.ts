@@ -10,13 +10,13 @@ const verifyEmailHandler = (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         // Extract the email, verificationCode, and token from the request body
-        const { email, verificationCode, token } = req.body;
+        const { email, verificationCode } = req.body;
 
-        console.log(email, verificationCode, token);
+        console.log(email, verificationCode);
 
         // Create a MySQL connection
         const connection = mysql.createConnection(dbConfig);
-        
+
         // Check if verification code and email match in the verification table
         const checkVerificationQuery = `SELECT users.id FROM verification JOIN users ON verification.email = users.email WHERE verification.email = ? AND verification.code = ?`;
         connection.query(checkVerificationQuery, [email, verificationCode], (verificationErr, verificationResult) => {
@@ -37,39 +37,24 @@ const verifyEmailHandler = (req: NextApiRequest, res: NextApiResponse) => {
 
             console.log(user_id);
 
-            // Check if the token matches with the user's table email
-            const checkUserTokenQuery = `SELECT * FROM user_tokens WHERE user_id = ? AND token = ?`;
-            connection.query(checkUserTokenQuery, [user_id, token], (userErr, userResult) => {
-                if (userErr) {
-                    console.log(userErr);
+            // If verification and user token are valid, update the user's verified column to true
+            const updateUserQuery = `UPDATE users SET verified = true WHERE email = ?`;
+            connection.query(updateUserQuery, [email], (updateErr) => {
+                if (updateErr) {
                     connection.end();
                     return res.status(500).json({ error: 'Internal Server Error' });
                 }
 
-                // If verification and user token are valid, update the user's verified column to true
-                if (verificationResult.length > 0 && userResult.length > 0) {
-                    const updateUserQuery = `UPDATE users SET verified = true WHERE email = ?`;
-                    connection.query(updateUserQuery, [email], (updateErr) => {
-                        if (updateErr) {
-                            connection.end();
-                            return res.status(500).json({ error: 'Internal Server Error' });
-                        }
-
-                        // Delete the verification row for the user
-                        const deleteVerificationQuery = `DELETE FROM verification WHERE email = ?`;
-                        connection.query(deleteVerificationQuery, [email], (deleteErr) => {
-                            connection.end();
-                            if (deleteErr) {
-                                return res.status(500).json({ error: 'Internal Server Error' });
-                            }
-
-                            return res.status(200).json({ message: 'Email verified successfully' });
-                        });
-                    });
-                } else {
+                // Delete the verification row for the user
+                const deleteVerificationQuery = `DELETE FROM verification WHERE email = ?`;
+                connection.query(deleteVerificationQuery, [email], (deleteErr) => {
                     connection.end();
-                    return res.status(401).json({ error: 'Invalid verification code or token' });
-                }
+                    if (deleteErr) {
+                        return res.status(500).json({ error: 'Internal Server Error' });
+                    }
+
+                    return res.status(200).json({ message: 'Email verified successfully' });
+                });
             });
         });
     } catch (error) {

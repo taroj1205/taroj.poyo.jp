@@ -45,7 +45,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             },
                             body: JSON.stringify({
                                 method: 'defaultMessages',
-                                server_id: 'default', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
+                                server_id: 'VYCGUaMDtkVEA3m5yUHtMYxY200Hsk', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
                             }),
                         });
                         const data = await response.json();
@@ -359,6 +359,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     const errorPopup = (message: string) => {
         const popup = document.createElement('div') as HTMLDivElement;
         popup.innerText = message;
+        popup.style.zIndex = '200';
         popup.classList.add(
             'popup',
             'fixed',
@@ -404,7 +405,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                     method: 'newMessage',
                     user: token,
                     message,
-                    server_id: 'default', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
+                    server_id: 'VYCGUaMDtkVEA3m5yUHtMYxY200Hsk', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
                 }),
             })
                 .then(async (response) => {

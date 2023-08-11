@@ -12,6 +12,7 @@ const EmailVerification: React.FC<{
     const [email, setEmail] = useState('');
     const { user } = useAuth() || {};
     const { t } = useTranslation();
+    const formRef = React.useRef<HTMLFormElement>(null);
 
     const [verifySuccess, setVerifySuccess] = useState(false); // State for displaying the success message
     const [resendCooldown, setResendCooldown] = useState(false); // State for cooldown of resending verification code
@@ -74,38 +75,17 @@ const EmailVerification: React.FC<{
     };
 
     const handleResendCode = () => {
-        if (!resendCooldown) {
-            setCooldownSeconds(60); // Set the initial cooldown seconds
-            setResendCooldown(true);
-            setResendDisabled(true);
+        if (!resendCooldown && email.length > 0) {
+            console.log(email);
 
-            const expirationDate = new Date(Date.now() + 60000); // Set expiration to 60 seconds from now
-
-            // Start cooldown countdown
-            const interval = setInterval(() => {
-                const currentTime = new Date();
-                const timeDifference = expirationDate.getTime() - currentTime.getTime();
-
-                if (timeDifference > 0) {
-                    setCooldownSeconds(Math.ceil(timeDifference / 1000));
-                } else {
-                    setResendCooldown(false);
-                    setResendDisabled(false);
-                    clearInterval(interval);
-                }
-            }, 1000);
-
-            // Save the expiration date to local storage during the countdown
-            localStorage.setItem('emailVerificationCooldownExpiration', expirationDate.toISOString());
-
-            // Send the token and email to the '/api/code' endpoint for generating a new verification code
-            fetch('/api/code', {
+            // Send the token and email to the '/api/auth/code' endpoint for generating a new verification code
+            fetch('/api/auth/code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: user?.email,
+                    email: localStorage.getItem('email'),
                 }),
             })
                 .then(async (response) => {
@@ -114,15 +94,47 @@ const EmailVerification: React.FC<{
                         if (data.token) {
                             Cookies.set('token', data.token, { expires: 7 });
                             localStorage.setItem('userProfileData', JSON.stringify(data.user));
+                            setCooldownSeconds(60); // Set the initial cooldown seconds
+                            setResendCooldown(true);
+                            setResendDisabled(true);
+
+                            const expirationDate = new Date(Date.now() + 60000); // Set expiration to 60 seconds from now
+
+                            // Start cooldown countdown
+                            const interval = setInterval(() => {
+                                const currentTime = new Date();
+                                const timeDifference = expirationDate.getTime() - currentTime.getTime();
+
+                                if (timeDifference > 0) {
+                                    setCooldownSeconds(Math.ceil(timeDifference / 1000));
+                                } else {
+                                    setResendCooldown(false);
+                                    setResendDisabled(false);
+                                    clearInterval(interval);
+                                }
+                            }, 1000);
+
+                            // Save the expiration date to local storage during the countdown
+                            localStorage.setItem('emailVerificationCooldownExpiration', expirationDate.toISOString());
                         }
                     } else {
-                        // Failed to regenerate verification code
-                        // Handle the error if needed
+                        formRef.current?.classList.add('shake-animation');
+                        setTimeout(() => {
+                            formRef.current?.classList.remove('shake-animation');
+                        }, 500);
                     }
                 })
                 .catch((error) => {
-                    // Handle errors, if needed
+                    formRef.current?.classList.add('shake-animation');
+                    setTimeout(() => {
+                        formRef.current?.classList.remove('shake-animation');
+                    }, 500);
                 });
+        } else {
+            formRef.current?.classList.add('shake-animation');
+            setTimeout(() => {
+                formRef.current?.classList.remove('shake-animation');
+            }, 500);
         }
     };
 
@@ -130,12 +142,9 @@ const EmailVerification: React.FC<{
         console.log(user);
         if (user?.email) {
             setEmail(user.email);
-            const storedUserProfileData = localStorage.getItem('userProfileData');
-            if (storedUserProfileData) {
-                const userProfileData = JSON.parse(storedUserProfileData);
-                if (userProfileData.email) {
-                    setEmail(userProfileData.email);
-                }
+            const storedEmail = localStorage.getItem(email);
+            if (storedEmail) {
+                setEmail(storedEmail);
             }
         }
 
@@ -208,8 +217,8 @@ const EmailVerification: React.FC<{
                         </div>
                     </div>
                 )}
-                <h2 className="text-2xl font-bold mb-6">{t('title.emailVerification')}</h2>
-                <form onSubmit={handleSubmit}>
+                <h2 className="text-2xl font-bold mb-6">{t('title.auth.emailVerification')}</h2>
+                <form onSubmit={handleSubmit} ref={formRef}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">
                             {t('auth.email')}

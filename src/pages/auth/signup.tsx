@@ -118,6 +118,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                         const expirationDate = new Date(Date.now() + 60000); // Set expiration to 60 seconds from now
                         localStorage.setItem('emailVerificationCooldownExpiration', expirationDate.toISOString());
                         Cookies.set('token', data.token, { expires: 7 });
+                        localStorage.setItem('email', email);
                     }
                 })
                 .catch(error => {
