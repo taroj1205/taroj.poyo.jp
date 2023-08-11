@@ -1,9 +1,10 @@
 .env
 data
-.idea
+.idea/
 node_modules
 .vscode
-/app/logs
 .vercel
 .next
 .env.development.local
+.fleet
+!.idea/rcb-settings.xml
