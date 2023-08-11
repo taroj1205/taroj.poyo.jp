@@ -36,58 +36,6 @@ const chatHandler: NextApiHandler = async (req, res) => {
     });
 
     try {
-        await new Promise<void>((resolve, reject) => {
-            connection.query(
-                `CREATE TABLE IF NOT EXISTS servers (
-                id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                server_name VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                nanoid VARCHAR(30) UNIQUE,
-                UNIQUE KEY idx_public_id (nanoid)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-                            `,
-                (error) => {
-                    if (error) {
-                        console.error('Error creating servers table:', error);
-                        reject(
-                            new Error(
-                                'Failed to create servers table'
-                            ) as Error & {
-                                status: number;
-                            }
-                        );
-                    } else {
-                        connection.query(
-                            `CREATE TABLE IF NOT EXISTS messages (
-                            id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                            user_id INT NOT NULL,
-                            message TEXT NOT NULL,
-                            sent_on TIMESTAMP NOT NULL,
-                            server_id INT
-                            )`,
-                            (error) => {
-                                if (error) {
-                                    console.error(
-                                        'Error creating messages table:',
-                                        error
-                                    );
-                                    reject(
-                                        new Error(
-                                            'Failed to create messages table'
-                                        ) as Error & {
-                                            status: number;
-                                        }
-                                    );
-                                } else {
-                                    resolve();
-                                }
-                            }
-                        );
-                    }
-                }
-            );
-        });
         const cachedUserdata: {
             [key: string]: { username: string; profile_picture: string };
         } = {};
