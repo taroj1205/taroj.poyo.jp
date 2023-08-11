@@ -7,21 +7,17 @@ import { useTranslation } from 'react-i18next';
 import { UnmountClosed } from 'react-collapse';
 import Link from 'next/link';
 import ThemeSwitch from './ThemeSwitch';
+import { useActiveLink } from './ActiveContext';
 
 const Header = () => {
     const router = useRouter();
     const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [activeLink, setActiveLink] = useState(router.pathname);
+    const { activeLink, setActiveLink } = useActiveLink();
 
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
-    };
-
-    const handleLinkClick = (path: string) => {
-        setActiveLink(path);
-        toggleDropdown();
     };
 
     const isActive = (path: string) => {
@@ -47,7 +43,7 @@ const Header = () => {
     }, [router]);
 
     return (
-        <header className={`${headerPosition} z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
+        <header className={`${headerPosition} z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 py-1 md:py-0 shadow-xl transition-all duration-350 ease`}>
             {isExpanded && (
                 <div
                     className="fixed inset-0 z-10"
@@ -69,7 +65,6 @@ const Header = () => {
                             <Link href="/"
                                 className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
-                                onClick={() => handleLinkClick('/')}
                             >
                                 <FaHome className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.home')}</span>
@@ -79,7 +74,6 @@ const Header = () => {
                                     ? 'border-b-2 border-blue-600 text-blue-600'
                                     : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
-                                onClick={() => handleLinkClick('/about')}
                             >
                                 <FaUser className="mr-1 text-lg mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.about')}</span>
@@ -89,7 +83,6 @@ const Header = () => {
                                     ? 'border-b-2 border-blue-600 text-blue-600'
                                     : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
-                                onClick={() => handleLinkClick('/chat')}
                             >
                                 <FaComments className="mr-1 text-xl mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.chat')}</span>
@@ -116,7 +109,7 @@ const Header = () => {
             {isLoading && (
                 <div className="absolute bottom-0 left-0 w-full h-full opacity-25 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
             )}
-            <div className='progress'></div>
+            <div className='progress mt-[0.1rem] md:mt-0'></div>
         </header >
     );
 };

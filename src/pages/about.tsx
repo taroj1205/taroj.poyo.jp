@@ -33,26 +33,7 @@ const About = () => {
                 <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.about')}</title>
             </Head>
-            <div
-                className="bg-cover bg-no-repeat bg-fixed bg-center min-h-screen h-fit"
-                style={{
-                    backgroundImage: "url('/image/thumbnail/thumbnail.webp')",
-                }}
-            >
-                <div className="flex flex-col min-h-screen h-fit justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70 font-sans">
-                    <Image
-                        className="pfp rounded-full w-40 mx-auto"
-                        src="/image/profile/pfp.webp"
-                        alt="Profile Picture"
-                        width={300}
-                        height={300}
-                    />
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl text-center mt-8 font-bold">
-                        {t('about.title')}
-                    </h1>
-                    <AboutMe />
-                </div>
-            </div>
+            <AboutMe />
             <div className='lg:flex lg:flex-col lg:justify-center lg:items-center mb-8 px-4'>
                     <MySkills />
                         <h2 className="text-2xl md:text-4xl mt-6 font-bold">
