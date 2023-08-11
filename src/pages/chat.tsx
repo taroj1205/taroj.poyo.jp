@@ -45,7 +45,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             },
                             body: JSON.stringify({
                                 method: 'defaultMessages',
-                                server_id: 'O-3FrG-8havWO0bVQSZYpzRKHQ9pmg',
+                                server_id: 'default', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
                             }),
                         });
                         const data = await response.json();
@@ -404,7 +404,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                     method: 'newMessage',
                     user: token,
                     message,
-                    server_id: 'O-3FrG-8havWO0bVQSZYpzRKHQ9pmg',
+                    server_id: 'default', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
                 }),
             })
                 .then(async (response) => {
