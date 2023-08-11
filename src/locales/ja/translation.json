@@ -1,261 +1,261 @@
 {
-    "about": {
-        "birthdate": "2005年12月05日生まれ。東京出身。2011年の震災の後愛媛に引っ越した。",
-        "countries": "住んだことがある国",
-        "country": {
-            "japan": "日本",
-            "newzealand": "ニュージーランド",
-            "philippines": "フィリピン"
+  "about": {
+    "birthdate": "2005年12月05日生まれ。東京出身。2011年の震災の後愛媛に引っ越した。",
+    "countries": "住んだことがある国",
+    "country": {
+      "japan": "日本",
+      "newzealand": "ニュージーランド",
+      "philippines": "フィリピン"
+    },
+    "education": {
+      "headings": {
+        "duration": "期間",
+        "end": "終",
+        "grade": "学年",
+        "location": "場所",
+        "schoolName": "学校名",
+        "start": "始"
+      },
+      "schoolHistory": "学校歴",
+      "schools": [
+        {
+          "duration": "1年ちょい",
+          "end": "2010年5月",
+          "grade": "年少～年中",
+          "location": "東京",
+          "name": "世田谷幼児生活団",
+          "start": "2009年4月"
         },
-        "education": {
-            "headings": {
-                "duration": "期間",
-                "end": "終",
-                "grade": "学年",
-                "location": "場所",
-                "schoolName": "学校名",
-                "start": "始"
-            },
-            "schoolHistory": "学校歴",
-            "schools": [
-                {
-                    "duration": "1年ちょい",
-                    "end": "2010年5月",
-                    "grade": "年少～年中",
-                    "location": "東京",
-                    "name": "世田谷幼児生活団",
-                    "start": "2009年4月"
-                },
-                {
-                    "duration": "1年",
-                    "end": "2011年4月",
-                    "grade": "年中",
-                    "location": "東京",
-                    "name": "砧幼稚園",
-                    "start": "2010年5月"
-                },
-                {
-                    "duration": "1年",
-                    "end": "2012年3月",
-                    "grade": "年長",
-                    "location": "愛媛県",
-                    "name": "若草幼稚園",
-                    "start": "2011年5月"
-                },
-                {
-                    "duration": "2か月",
-                    "end": "2012年6月",
-                    "grade": "1年生",
-                    "location": "愛媛県",
-                    "name": "垣生小学校",
-                    "start": "2012年4月"
-                },
-                {
-                    "duration": "4年半",
-                    "end": "2016年12月",
-                    "grade": "1年生～5年生",
-                    "location": "愛媛県",
-                    "name": "日浦小学校",
-                    "start": "2012年6月"
-                },
-                {
-                    "duration": "1年",
-                    "end": "2017年12月",
-                    "grade": "Year 7",
-                    "location": "オークランド",
-                    "name": "Balmoral Intermediate",
-                    "start": "2017年2月"
-                },
-                {
-                    "duration": "3か月",
-                    "end": "2018年3月",
-                    "grade": "6年生",
-                    "location": "愛媛県",
-                    "name": "日浦小学校",
-                    "start": "2018年1月"
-                },
-                {
-                    "duration": "3か月",
-                    "end": "2018年7月",
-                    "grade": "-",
-                    "location": "セブ",
-                    "name": "Takahari English School",
-                    "start": "2018年4月"
-                },
-                {
-                    "duration": "2~3週間",
-                    "end": "2018年7月",
-                    "grade": "1年生",
-                    "location": "愛媛県",
-                    "name": "桑原中学校",
-                    "start": "2018年7月"
-                },
-                {
-                    "duration": "1年",
-                    "end": "2019年5月",
-                    "grade": "Year 8",
-                    "location": "セブ",
-                    "name": "Centre for International Education British School",
-                    "start": "2018年8月"
-                },
-                {
-                    "duration": "5年",
-                    "end": "2023年12月",
-                    "grade": "Year 9～Year 13",
-                    "location": "オークランド",
-                    "name": "Westlake Boys High School （卒業予定）",
-                    "start": "2019年8月"
-                }
-            ]
+        {
+          "duration": "1年",
+          "end": "2011年4月",
+          "grade": "年中",
+          "location": "東京",
+          "name": "砧幼稚園",
+          "start": "2010年5月"
         },
-        "events": "重要な出来事など",
-        "hobbies": "趣味",
-        "hobby": {
-            "jumprope": "縄跳び",
-            "kendama": "けん玉",
-            "programming": "プログラミング",
-            "reading": "ニュース読むこと"
+        {
+          "duration": "1年",
+          "end": "2012年3月",
+          "grade": "年長",
+          "location": "愛媛県",
+          "name": "若草幼稚園",
+          "start": "2011年5月"
         },
-        "injury": "2020年7月に膝の怪我（ACL）の手術。",
-        "title": "僕について"
+        {
+          "duration": "2か月",
+          "end": "2012年6月",
+          "grade": "1年生",
+          "location": "愛媛県",
+          "name": "垣生小学校",
+          "start": "2012年4月"
+        },
+        {
+          "duration": "4年半",
+          "end": "2016年12月",
+          "grade": "1年生～5年生",
+          "location": "愛媛県",
+          "name": "日浦小学校",
+          "start": "2012年6月"
+        },
+        {
+          "duration": "1年",
+          "end": "2017年12月",
+          "grade": "Year 7",
+          "location": "オークランド",
+          "name": "Balmoral Intermediate",
+          "start": "2017年2月"
+        },
+        {
+          "duration": "3か月",
+          "end": "2018年3月",
+          "grade": "6年生",
+          "location": "愛媛県",
+          "name": "日浦小学校",
+          "start": "2018年1月"
+        },
+        {
+          "duration": "3か月",
+          "end": "2018年7月",
+          "grade": "-",
+          "location": "セブ",
+          "name": "Takahari English School",
+          "start": "2018年4月"
+        },
+        {
+          "duration": "2~3週間",
+          "end": "2018年7月",
+          "grade": "1年生",
+          "location": "愛媛県",
+          "name": "桑原中学校",
+          "start": "2018年7月"
+        },
+        {
+          "duration": "1年",
+          "end": "2019年5月",
+          "grade": "Year 8",
+          "location": "セブ",
+          "name": "Centre for International Education British School",
+          "start": "2018年8月"
+        },
+        {
+          "duration": "5年",
+          "end": "2023年12月",
+          "grade": "Year 9～Year 13",
+          "location": "オークランド",
+          "name": "Westlake Boys High School （卒業予定）",
+          "start": "2019年8月"
+        }
+      ]
     },
-    "announcement": {
-        "content": "チャットでプロフィール画像を表示するようになりました！",
-        "title": "お知らせ"
+    "events": "重要な出来事など",
+    "hobbies": "趣味",
+    "hobby": {
+      "jumprope": "縄跳び",
+      "kendama": "けん玉",
+      "programming": "プログラミング",
+      "reading": "ニュースを読む"
     },
-    "auth": {
-        "close": "閉じる",
-        "confirmPassword": "パスワードの確認",
-        "email": "メールアドレス",
-        "forgotPassword": "パスワードを忘れた場合",
-        "login": "ログイン",
-        "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。",
-        "loginFailed": "ログインに失敗しました。入力した情報を確認して、もう一度お試しください。",
-        "logout": "ログアウト",
-        "password": "パスワード",
-        "passwordContainsEmailOrUsername": "パスワードにはメールアドレスやユーザー名を含めることはできません。",
-        "passwordMinLength": "パスワードは少なくとも8文字である必要があります。",
-        "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。",
-        "resend": "再送信",
-        "signup": "登録",
-        "signupDupe": "アカウントが既に存在しています",
-        "signupSuccess": "サインアップに成功しました！",
-        "username": "ユーザー名",
-        "verificationCode": "確認コード",
-        "verificationCodeResendError": "認証コードの再送信に失敗しました。後でもう一度お試しください。",
-        "verify": "確認する"
-    },
-    "change": {
-        "already set": "すでに設定されています",
-        "image link": "画像リンク",
-        "language": "言語を変える",
-        "profile picture": "プロフィール画像を変更",
-        "profile picture URL": "プロフィール画像のURL",
-        "set picture": "画像を設定する",
-        "theme": "テーマを変える"
-    },
-    "copied": "コピーしました",
-    "current": {
-        "theme": "現在のテーマ:"
-    },
-    "english": "英語",
-    "footer": {
-        "about": "自己紹介",
-        "all_rights_reserved": "All rights reserved",
-        "chat": "チャット",
-        "contact_info": "お問い合わせ先",
-        "edit_on_github": "GitHubで編集する",
-        "home": "ホーム",
-        "settings": "設定",
-        "sitemap": "サイトマップ",
-        "suggest": "変更を提案する"
-    },
-    "goBack": "戻る",
-    "gravatar": {
-        "message": "プロフィール画像を変更するには、お手数をおかけしますがGravatarにアクセスしてください。",
-        "signupMessage": "まだGravatarに登録していない場合は、以下のリンクから登録してください。"
-    },
-    "header": {
-        "about": "僕について",
-        "chat": "チャット",
-        "home": "ホーム"
-    },
-    "index": {
-        "about": "自己紹介",
-        "blog": "ブログ",
-        "chat": "チャット",
-        "contact": "連絡先",
-        "email": "メール",
-        "github": "GitHub",
-        "home": "ホーム",
-        "routes": "リンク",
-        "settings": "設定",
-        "title": "ホームページ",
-        "welcome": "ようこそ"
-    },
-    "japanese": "日本語",
-    "language": "言語",
-    "login": "ログイン",
-    "logout": "ログアウト",
-    "moreWaysToLogin": "他のログイン方法追加予定",
-    "name": "上鍵 心太朗",
-    "ncea": {
-        "achievement": "成績",
-        "credits": "クレジット",
-        "currentRankScore": "現在のランクスコア：",
-        "rankScore": "ランクスコア",
-        "subjects": "科目",
-        "title": "National Certificate of Education レベル 3"
-    },
-    "profile": "プロフィール",
-    "resetRequestInstructions": "パスワードをリセットするための手順が記載されたメールが、登録されたメールアドレスに送信されました。",
-    "resetRequestSent": "パスワードリセットの要求を送信しました",
-    "search": "検索する",
+    "injury": "2020年7月に膝の怪我（ACL）の手術。",
+    "title": "僕について"
+  },
+  "announcement": {
+    "content": "チャットでプロフィール画像を表示するようになりました！",
+    "title": "お知らせ"
+  },
+  "auth": {
+    "close": "閉じる",
+    "confirmPassword": "パスワードの確認",
+    "email": "メールアドレス",
+    "forgotPassword": "パスワードを忘れた場合",
+    "login": "ログイン",
+    "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。",
+    "loginFailed": "ログインに失敗しました。入力した情報を確認して、もう一度お試しください。",
+    "logout": "ログアウト",
+    "password": "パスワード",
+    "passwordContainsEmailOrUsername": "パスワードにはメールアドレスやユーザー名を含めることはできません。",
+    "passwordMinLength": "パスワードは少なくとも8文字である必要があります。",
+    "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。",
+    "resend": "再送信",
+    "signup": "登録",
+    "signupDupe": "アカウントが既に存在しています",
+    "signupSuccess": "サインアップに成功しました！",
+    "username": "ユーザー名",
+    "verificationCode": "確認コード",
+    "verificationCodeResendError": "認証コードの再送信に失敗しました。後でもう一度お試しください。",
+    "verify": "確認する"
+  },
+  "change": {
+    "already set": "すでに設定されています",
+    "image link": "画像リンク",
+    "language": "言語を変える",
+    "profile picture": "プロフィール画像を変更",
+    "profile picture URL": "プロフィール画像のURL",
+    "set picture": "画像を設定する",
+    "theme": "テーマを変える"
+  },
+  "copied": "コピーしました",
+  "current": {
+    "theme": "現在のテーマ:"
+  },
+  "english": "英語",
+  "footer": {
+    "about": "自己紹介",
+    "all_rights_reserved": "All rights reserved",
+    "chat": "チャット",
+    "contact_info": "お問い合わせ先",
+    "edit_on_github": "GitHubで編集する",
+    "home": "ホーム",
     "settings": "設定",
-    "signInWithGoogle": "Googleでログイン",
-    "skill": {
-        "css": "CSS",
-        "express": "Express",
-        "flask": "Flask",
-        "html": "HTML",
-        "javascript": "JavaScript",
-        "madeWith": "このサイトはこれらを使用しています。",
-        "mysql": "MySQL",
-        "nextjs": "Next.js",
-        "nodejs": "Node.js",
-        "postgres": "PostgreSQL",
-        "python": "Python",
-        "react": "React.js",
-        "sqlite3": "SQLite3",
-        "tailwind": "Tailwind",
-        "title": "スキル",
-        "typescript": "TypeScript"
+    "sitemap": "サイトマップ",
+    "suggest": "変更を提案する"
+  },
+  "goBack": "戻る",
+  "gravatar": {
+    "message": "プロフィール画像を変更するには、お手数をおかけしますがGravatarにアクセスしてください。",
+    "signupMessage": "まだGravatarに登録していない場合は、以下のリンクから登録してください。"
+  },
+  "header": {
+    "about": "僕について",
+    "chat": "チャット",
+    "home": "ホーム"
+  },
+  "index": {
+    "about": "自己紹介",
+    "blog": "ブログ",
+    "chat": "チャット",
+    "contact": "連絡先",
+    "email": "メール",
+    "github": "GitHub",
+    "home": "ホーム",
+    "routes": "リンク",
+    "settings": "設定",
+    "title": "ホームページ",
+    "welcome": "ようこそ"
+  },
+  "japanese": "日本語",
+  "language": "言語",
+  "login": "ログイン",
+  "logout": "ログアウト",
+  "moreWaysToLogin": "他のログイン方法追加予定",
+  "name": "上鍵 心太朗",
+  "ncea": {
+    "achievement": "成績",
+    "credits": "クレジット",
+    "currentRankScore": "現在のランクスコア：",
+    "rankScore": "ランクスコア",
+    "subjects": "科目",
+    "title": "National Certificate of Education レベル 3"
+  },
+  "profile": "プロフィール",
+  "resetRequestInstructions": "パスワードをリセットするための手順が記載されたメールが、登録されたメールアドレスに送信されました。",
+  "resetRequestSent": "パスワードリセットの要求を送信しました",
+  "search": "検索する",
+  "settings": "設定",
+  "signInWithGoogle": "Googleでログイン",
+  "skill": {
+    "css": "CSS",
+    "express": "Express",
+    "flask": "Flask",
+    "html": "HTML",
+    "javascript": "JavaScript",
+    "madeWith": "このサイトはこれらを使用しています。",
+    "mysql": "MySQL",
+    "nextjs": "Next.js",
+    "nodejs": "Node.js",
+    "postgres": "PostgreSQL",
+    "python": "Python",
+    "react": "React.js",
+    "sqlite3": "SQLite3",
+    "tailwind": "Tailwind",
+    "title": "スキル",
+    "typescript": "TypeScript"
+  },
+  "submit": "送信",
+  "submitting": "送信中...",
+  "success": "成功しました！",
+  "supported language": "対応している言語",
+  "theme": {
+    "dark": "闇",
+    "light": "光",
+    "system": "端末"
+  },
+  "title": {
+    "about": "自己紹介",
+    "auth": {
+      "emailVerification": "メール確認",
+      "forgotPassword": "パスワードを忘れた",
+      "login": "ログイン",
+      "signup": "登録する"
     },
-    "submit": "送信",
-    "submitting": "送信中...",
-    "success": "成功しました！",
-    "supported language": "対応している言語",
-    "theme": {
-        "dark": "闇",
-        "light": "光",
-        "system": "端末"
-    },
-    "title": {
-        "about": "自己紹介",
-        "auth": {
-            "emailVerification": "メール確認",
-            "forgotPassword": "パスワードを忘れた",
-            "login": "ログイン",
-            "signup": "登録する"
-        },
-        "chat": "チャット",
-        "index": "ホームページ",
-        "profile": "プロフィール",
-        "settings": "設定"
-    },
-    "welcome": "ようこそ！",
-    "your": {
-        "email": "あなたのメールアドレス",
-        "username": "あなたのユーザー名"
-    }
+    "chat": "チャット",
+    "index": "ホームページ",
+    "profile": "プロフィール",
+    "settings": "設定"
+  },
+  "welcome": "ようこそ！",
+  "your": {
+    "email": "あなたのメールアドレス",
+    "username": "あなたのユーザー名"
+  }
 }
