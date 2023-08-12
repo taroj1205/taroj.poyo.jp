@@ -13,7 +13,7 @@ const AboutMe = () => {
             }}
         >
             <div
-                className="flex flex-col min-h-screen h-fit justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70 font-sans">
+                className="flex flex-col min-h-screen h-full justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70 font-sans">
                 <Image
                     className="pfp rounded-full w-40 mx-auto"
                     src="/image/profile/pfp.webp"
@@ -28,9 +28,9 @@ const AboutMe = () => {
                     <p className="text-lg md:text-lg">
                         {t('about.birthdate')}
                     </p>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl mt-2 md:mt-6 mb-4 font-bold">
+                    {/* <h2 className="text-2xl md:text-3xl lg:text-4xl mt-2 md:mt-6 mb-4 font-bold">
                         {t('about.events')}
-                    </h2>
+                    </h2> */}
                     <p className="text-lg md:text-lg">
                         {t('about.injury')}
                     </p>
