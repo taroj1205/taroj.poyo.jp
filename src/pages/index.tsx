@@ -14,7 +14,7 @@ const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string
         className="flex flex-col items-center justify-center my-2 cursor-pointer transition duration-300 transform hover:scale-105 p-4 rounded-lg"
         style={{ backgroundColor: color, color: 'white', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
     >
-        <Icon className="w-16 h-16 mb-2" /> {/* Adjust the icon size to your preference */}
+        <Icon className="w-16 h-16 mb-2" />
         <span className="text-lg text-center font-semibold">{label}</span>
     </div>
 );

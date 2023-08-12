@@ -68,56 +68,6 @@ const signupHandler: NextApiHandler = async (req, res) => {
     const connection = mysql.createConnection(dbConfig);
 
     try {
-        // Create the tables if they do not exist
-        const createUsersTableQuery = `
-            CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255) NOT NULL UNIQUE,
-                password VARCHAR(255) NOT NULL,
-                profile_picture VARCHAR(255) DEFAULT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                verified BOOLEAN DEFAULT FALSE
-            )
-        `;
-
-        const createUserTokenTableQuery = `
-            CREATE TABLE IF NOT EXISTS user_tokens (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL UNIQUE,
-                token VARCHAR(32) NOT NULL,
-                expiration_date TIMESTAMP NOT NULL
-            )
-        `;
-
-        const createEmailTableQuery = `
-            CREATE TABLE IF NOT EXISTS verification (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                code VARCHAR(32) NOT NULL,
-                expiration_date TIMESTAMP NOT NULL
-            )
-        `;
-
-        connection.query(createUsersTableQuery, async (error: mysql.MysqlError | null) => {
-            if (error) {
-                console.error('Error creating users table:', error);
-                throw new Error('Failed to create users table');
-            }
-
-            connection.query(createUserTokenTableQuery, async (error: mysql.MysqlError | null) => {
-                if (error) {
-                    console.error('Error creating user_tokens table:', error);
-                    throw new Error('Failed to create user_tokens table');
-                }
-
-                connection.query(createEmailTableQuery, async (error: mysql.MysqlError | null) => {
-                    if (error) {
-                        console.error('Error creating email table:', error);
-                        throw new Error('Failed to create email table');
-                    }
-
                     const checkExistingUserQuery = `
         SELECT id FROM users WHERE email = ? OR username = ?
     `;
@@ -184,9 +134,6 @@ const signupHandler: NextApiHandler = async (req, res) => {
                             });
                         });
                     });
-                });
-            });
-        });
     } catch (error) {
         console.error('Error during signup:', error);
         return res.status(500).json({ error: 'Internal server error' });
