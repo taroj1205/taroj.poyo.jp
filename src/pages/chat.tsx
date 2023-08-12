@@ -12,7 +12,8 @@ import Script from 'next/script';
 
 const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     const [messages, setMessages] = useState([]);
-    const [serverId, setServerId] = useState('');
+    const [serverId, setServerId] = useState('fCw8bsQX3YnvHyCLJJUqXL95NT0U7j');
+    const [roomId, setRoomId] = useState('Di9cKtg4sOgbN4mpmU9NdSm45FtrsN');
     const { token } = useAuth() || {};
     const [isLoadingState, setisLoadingState] = useState(false);
 
@@ -38,15 +39,11 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                         router.push('/verify');
                     } else {
                         console.log('Getting default messages');
-                        const response = await fetch('/api/chat', {
-                            method: 'POST',
+                        const response = await fetch(`/api/chat/default?server_id=${encodeURIComponent(serverId)}&room_id=${encodeURIComponent(roomId)}`, {
+                            method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({
-                                method: 'defaultMessages',
-                                server_id: 'VYCGUaMDtkVEA3m5yUHtMYxY200Hsk', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
-                            }),
                         });
                         const data = await response.json();
                         console.log(data);
@@ -54,8 +51,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             errorPopup(data.error.toString());
                             return;
                         }
-                        setMessages(data.messages);
-                        await addMessage(data.messages);
+                        await addMessage(data);
                         const read = localStorage.getItem('read') || '0';
                         document.getElementById(read)?.scrollIntoView();
                         chatRef.current?.classList.remove('animate-pulse');
@@ -158,32 +154,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
         messagesContainer.addEventListener('scroll', handleScroll);
 
-        const deleteMessage = (messageId: number) => {
-            fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    method: 'deleteMessage',
-                    message_id: messageId,
-                    server_id: 'WzB5nAz5Q_LTzv7YOZmyZrka6sCyS2',
-                }),
-            })
-                .then((response) => {
-                    console.log(response); // log the response
-                    const messageElement = document.getElementById(
-                        messageId.toString()
-                    );
-                    if (messageElement) {
-                        messageElement.remove();
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error deleting message:', error);
-                });
-        };
-
         // Receive new messages from the server
         channel.bind('newMessage', (data: any) => {
             console.log('Received new message: ', data);
@@ -206,44 +176,70 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
             return text;
         }
 
-        const addMessage = async (message: any) => {
-            console.log('Running addMessage() ', message);
+        const addMessage = async (data: Array<any>) => {
+            console.log('Running addMessage() ', data);
             const messagesContainer = document.getElementById(
                 'messages'
             ) as HTMLDivElement;
             console.log(messagesContainer);
 
-            if (Array.isArray(message)) {
-                for (const item of message) {
-                    console.log('Item: ', item);
-                    await formatMessage(item);
-                    const isAtBottom =
-                        messagesContainer.scrollTop +
-                        messagesContainer.clientHeight ===
+            for (let i = 0; i < data.length; i++) {
+                console.log('Item: ', data[i]);
+                await formatMessage(data[i]);
+                const isAtBottom =
+                    messagesContainer.scrollTop +
+                    messagesContainer.clientHeight ===
+                    messagesContainer.scrollHeight;
+                if (isAtBottom) {
+                    messagesContainer.scrollTop =
                         messagesContainer.scrollHeight;
-                    if (isAtBottom) {
-                        messagesContainer.scrollTop =
-                            messagesContainer.scrollHeight;
-                    }
                 }
-            } else {
-                console.log('Item: ', message);
-                await formatMessage(message);
             }
         };
 
-        const formatMessage = async (message: any) => {
-            try {
-                console.log('Formatting: ', message);
+        interface ChatMessage {
+            content: {
+                body: string;
+            };
+            sender: {
+                username: string;
+                profile_picture: string;
+            };
+            sent_on: string;
+            message_id: string;
+        }
 
-                const messageString = message.message;
-                const username = message.username;
-                const sent_on = message.sent_on;
-                const profilePicture = message.profile_picture;
+        const formatMessage = async (data: ChatMessage) => {
+            try {
+                const messageString = data.content.body;
+                const username = data.sender.username;
+                const sent_on = data.sent_on;
+                const profilePicture = data.sender.profile_picture;
 
                 const messageText = await wrapCodeInTags(messageString);
 
-                console.log(messageText);
+                let formattedMessageText = messageText.replace(
+                    /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
+                    (match: any) => {
+                        if (match.startsWith('>>')) {
+                            return `<a href="#${match.slice(
+                                2
+                            )}" class="jump">${match}</a>`;
+                        } else {
+                            return `<a href="${match}" target="_blank">${match}</a>`;
+                        }
+                    }
+                );
+
+                if (
+                    formattedMessageText &&
+                    formattedMessageText.includes('\\')
+                ) {
+                    formattedMessageText = formattedMessageText.replace(
+                        /\\/g,
+                        ''
+                    );
+                }
 
                 const format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
                 const options: Intl.DateTimeFormatOptions = {
@@ -261,62 +257,70 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                     .format(new Date(sent_on))
                     .replace(',', '.');
 
-                let formattedMessageText = messageText.replace(
-                    /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
-                    (match: any) => {
-                        if (match.startsWith('>>')) {
-                            return `<a href="#${match.slice(
-                                2
-                            )}" class="jump">${match}</a>`;
-                        } else {
-                            return `<a href="${match}" target="_blank">${match}</a>`;
-                        }
-                    }
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add(
+                    'flex',
+                    'items-start',
+                    'mb-2',
+                    'whitespace-nowrap',
+                    'min-h-fit'
                 );
 
-                const messagesContainer = document.getElementById(
+                const imageElement = document.createElement('img') as HTMLImageElement;
+                imageElement.setAttribute('src', profilePicture);
+                imageElement.setAttribute('alt', username);
+                imageElement.setAttribute('width', '50');
+                imageElement.setAttribute('height', '50');
+                imageElement.classList.add('w-10', 'h-10', 'rounded-full', 'ml-2', 'mr-2');
+
+                const contentContainer = document.createElement('div');
+
+                const usernameContainer = document.createElement('div');
+                usernameContainer.classList.add('flex', 'items-center');
+
+                const usernameSpan = document.createElement('span');
+                usernameSpan.classList.add('text-sm', 'font-semibold');
+                usernameSpan.textContent = `${username}`;
+
+                const sentOnSpan = document.createElement('span');
+                sentOnSpan.classList.add('ml-1', 'text-xs', 'text-gray-500');
+                sentOnSpan.textContent = `${formattedSentOn}`;
+
+                const messageTextContainer = document.createElement('div');
+                messageTextContainer.classList.add('text-sm', 'mr-[1ch]');
+
+                const messageTextSpan = document.createElement('span');
+                messageTextSpan.classList.add('messageText', 'whitespace-pre-line', 'text-left');
+                messageTextSpan.innerHTML = formattedMessageText;
+
+
+                const messagesDiv = document.getElementById(
                     'messages'
                 ) as HTMLDivElement;
-                const pCount =
-                    messagesContainer.getElementsByTagName('p').length + 1;
 
-                if (
-                    formattedMessageText &&
-                    formattedMessageText.includes('\\')
-                ) {
-                    formattedMessageText = formattedMessageText.replace(
-                        /\\/g,
-                        ''
-                    );
-                }
+                const pCountSpan = document.createElement('span');
+                pCountSpan.classList.add('mr-1', 'text-xs', 'text-gray-500');
+                pCountSpan.textContent = `${data.message_id}`;
 
-                const formattedHtml = `<div class="flex items-start mb-2 whitespace-nowrap min-h-fit">
-  <Image src="${profilePicture}" alt="${username}" w="50" h="50" class="w-10 h-10 rounded-full m-0 mr-2" />
-  <div>
-    <div class="flex items-center">
-      <span class="text-sm">${pCount} <span class="font-semibold">${username}</span></span>
-      <span class="ml-1 text-xs text-gray-500">${formattedSentOn}</span>
-    </div>
-    <div class="text-sm mr-[1ch]">
-      <span class="messageText whitespace-pre-line text-left">${formattedMessageText}</span>
-    </div>
-  </div>
-</div>`;
+                // Append elements in the correct order
+                usernameContainer.appendChild(pCountSpan);
+                usernameContainer.appendChild(usernameSpan);
+                usernameContainer.appendChild(sentOnSpan);
 
-                const p = document.createElement('p') as HTMLParagraphElement;
+                messageTextContainer.appendChild(messageTextSpan);
 
-                p.innerHTML = formattedHtml;
+                contentContainer.appendChild(usernameContainer);
+                contentContainer.appendChild(messageTextContainer);
 
-                p.id = pCount.toString();
-                p.dataset.server = message.id;
+                messageContainer.appendChild(imageElement);
+                messageContainer.appendChild(contentContainer);
 
-                console.log(p);
-
-                messagesContainer.appendChild(p);
+                messagesContainer.appendChild(messageContainer);
             } catch (error) {
                 console.error('Error formatting message:', error);
             }
         };
+
 
         inputRef.current?.addEventListener('input', () => {
             localStorage.setItem('input', inputRef.current?.value || '');
@@ -396,16 +400,16 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                 }
             }
             // Send a new message to the server
-            fetch('/api/chat', {
+            fetch('/api/chat/new-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    method: 'newMessage',
-                    user: token,
-                    message,
-                    server_id: 'VYCGUaMDtkVEA3m5yUHtMYxY200Hsk', //O-3FrG-8havWO0bVQSZYpzRKHQ9pmg
+                    token: token,
+                    server_id: serverId,
+                    room_id: roomId,
+                    content: message,
                 }),
             })
                 .then(async (response) => {
