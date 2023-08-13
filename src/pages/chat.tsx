@@ -83,7 +83,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
             cluster: 'ap1',
         });
 
-        const channel = pusher.subscribe('chat');
+        const channel = pusher.subscribe(`${serverId}${roomId}`);
 
         const messagesContainer = document.getElementById(
             'messages'
@@ -154,10 +154,8 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
         messagesContainer.addEventListener('scroll', handleScroll);
 
-        console.log(serverId, roomId);
-        
         // Receive new messages from the server
-        channel.bind(`${serverId}${roomId}`, (data: any) => {
+        channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
             addMessage(data);
         });
@@ -353,7 +351,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
         // Clean up Pusher subscription on component unmount
         return () => {
-            pusher.unsubscribe('chat');
+            pusher.unsubscribe(`${serverId}${roomId}`);
             if (inputRef.current) {
                 inputRef.current.removeEventListener('keydown', handleKeyDown);
             }
