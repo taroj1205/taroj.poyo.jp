@@ -155,9 +155,8 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         messagesContainer.addEventListener('scroll', handleScroll);
 
         // Receive new messages from the server
-        channel.bind('newMessage', (data: any) => {
+        channel.bind(`${serverId}${roomId}`, (data: any) => {
             console.log('Received new message: ', data);
-
             addMessage(data);
         });
 
