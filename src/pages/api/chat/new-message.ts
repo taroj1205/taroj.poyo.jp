@@ -44,6 +44,7 @@ async function authenticateUser(token: string): Promise<string | null> {
         }
 
         const userId = rows[0].user_id;
+        console.log("user id:", userId);
         return userId;
     } finally {
         connection.release();
@@ -149,7 +150,7 @@ async function insertMessage(token: string, sent_on: Date, server_name: string, 
             content: message.content,
         }));
         console.log(server_id, room_id);
-        
+
         pusher.trigger('chat', `${server_id}${room_id}`, newMessage);
     } finally {
         connection.release();
