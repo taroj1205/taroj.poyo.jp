@@ -22,6 +22,7 @@ const pusher = new Pusher({
 
 // Authenticate the user using the provided token
 async function authenticateUser(token: string): Promise<string | null> {
+    console.log("token:", token);
     const connection = await new Promise<mysql.PoolConnection>((resolve, reject) => {
         pool.getConnection((error: mysql.MysqlError | null, connection) => {
             if (error) reject(error);
