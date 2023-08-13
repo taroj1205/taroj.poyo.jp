@@ -148,7 +148,8 @@ async function insertMessage(token: string, sent_on: Date, server_name: string, 
             sent_on: message.sent_on,
             content: message.content,
         }));
-
+        console.log(server_id, room_id);
+        
         pusher.trigger('chat', `${server_id}${room_id}`, newMessage);
     } finally {
         connection.release();
