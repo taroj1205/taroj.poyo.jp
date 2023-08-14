@@ -56,6 +56,9 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             .getElementById('input-field')
                             ?.removeAttribute('disabled');
                     }
+                } else {
+                    router.push('/auth');
+                    return;
                 }
             } catch (error: any) {
                 console.error(
