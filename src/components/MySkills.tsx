@@ -29,14 +29,14 @@ const MySkills = () => {
     ];
 
     return (
-        <div className="py-4 rounded-lg">
-            <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">{t('skill.title')}</h2>
-            <div className="max-w-sm lg:max-w-5xl max-auto grid grid-cols-3 lg:grid-cols-9 gap-4"> {/* Adjust gap value to control spacing */}
-                {skills.map((skill, index) => (
-                    <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
-                ))}
+            <div className="py-4 rounded-lg">
+                <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">{t('skill.title')}</h2>
+                <div className="max-w-sm lg:max-w-5xl max-auto grid grid-cols-3 lg:grid-cols-9 gap-4">
+                    {skills.map((skill, index) => (
+                        <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
+                    ))}
+                </div>
             </div>
-        </div>
     );
 };
 

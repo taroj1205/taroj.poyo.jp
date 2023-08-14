@@ -60,7 +60,7 @@ export default function App({Component, pageProps}: AppProps) {
                         <link
                             rel="shortcut icon"
                             type="image/x-icon"
-                            href={`/image/icon/${currentPath}/favicon.ico`}
+                            href={`/image/icon${currentPath}/favicon.ico`}
                         />
                         <meta name="theme-color" content="#090808"/>
                         <meta property='og:type' content='website'/>
