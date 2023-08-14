@@ -15,13 +15,14 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     const { token } = useAuth() || {};
     const [isLoadingState, setisLoadingState] = useState(false);
 
+    const { t } = useTranslation();
+
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const scrollPosRef = useRef<number>(0);
 
     useEffect(() => {
         const fetchDefaultMessages = async () => {
             try {
-                if (token) {
                     console.log('Getting default messages');
                     const response = await fetch(`/api/chat/default`, {
                         method: 'GET',
@@ -49,6 +50,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                         const read = localStorage.getItem('read') || '0';
                         document.getElementById(read)?.scrollIntoView();
                         chatRef.current?.classList.remove('animate-pulse');
+                        
                         document
                             .getElementById('send-button')
                             ?.removeAttribute('disabled');
@@ -56,8 +58,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             .getElementById('input-field')
                             ?.removeAttribute('disabled');
                     }
-                } else {
-                }
             } catch (error: any) {
                 console.error(
                     'An error occurred while fetching default messages:',
@@ -69,7 +69,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         fetchDefaultMessages();
 
         console.log('useEffect running');
-    }, [token]);
+    }, []);
 
     useEffect(() => {
         const pusher = new Pusher('cd4e43e93ec6d4f424db', {
@@ -83,9 +83,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
             console.log('Received new message: ', data);
             if (token) {
                 addMessage(data);
-            } else {
-                console.log('Not logged in');
-                router.push('/auth');
             }
         });
 
@@ -384,7 +381,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
             setisLoadingState(true); // set loading state to true
             console.log('User id:', token);
             if (!token) {
-                errorPopup('Could not indentify you... reloading...');
+                errorPopup(t('apps.chat.login'));
                 chatRef.current?.classList.remove('animate-pulse');
                 router.push('/auth');
                 return;

@@ -147,7 +147,11 @@
     },
     "apps": {
         "title": "Apps",
-        "list": "List of apps"
+        "list": "List of apps",
+        "chat": {
+            "title": "Chat",
+            "login": "You must be logged in to send messages"
+        }
     },
     "change": {
         "already set": "Already set",
