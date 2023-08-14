@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaComments, FaAngleDown, FaUser } from 'react-icons/fa';
+import { FaHome, FaComments, FaAngleDown, FaUser, FaCubes } from 'react-icons/fa';
 import LanguageSwitch from './LanguageSwitch';
 import Profile from './Profile';
 import { useRouter } from 'next/router';
@@ -91,14 +91,14 @@ const Header = () => {
                                 <FaUser className="mr-1 text-lg mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.about')}</span>
                             </Link>
-                            <Link href="/apps/chat"
-                                className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/chat')
+                            <Link href="/apps"
+                                className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/apps')
                                     ? 'border-b-2 border-blue-600 text-blue-600'
                                     : 'border-b-2 border-transparent text-black dark:text-white'
                                     } transition-all duration-300`}
                             >
-                                <FaComments className="mr-1 text-xl mb-1 md:mb-0" />
-                                <span className="text-base">{t('header.chat')}</span>
+                                <FaCubes className="mr-1 text-xl mb-1 md:mb-0" />
+                                <span className="text-base">{t('header.apps')}</span>
                             </Link>
                         </nav>
                     </UnmountClosed>

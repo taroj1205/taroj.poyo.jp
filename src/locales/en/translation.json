@@ -145,6 +145,10 @@
         "verificationCodeResendError": "Verification code resend failed. Please try again later.",
         "verify": "Verify"
     },
+    "apps": {
+        "title": "Apps",
+        "list": "List of apps"
+    },
     "change": {
         "already set": "Already set",
         "image link": "Image link",
@@ -177,6 +181,7 @@
     },
     "header": {
         "about": "About",
+        "apps": "Apps",
         "chat": "Chat",
         "home": "Home"
     },
@@ -242,6 +247,7 @@
     },
     "title": {
         "about": "About",
+        "apps": "Apps",
         "auth": {
             "emailVerification": "Email Verification",
             "forgotPassword": "Forgot password",

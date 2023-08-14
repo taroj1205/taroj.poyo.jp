@@ -154,6 +154,10 @@
     "set picture": "画像を設定する",
     "theme": "テーマを変える"
   },
+  "apps": {
+    "title": "アプリ",
+    "list": "アプリ一覧"
+  },
   "copied": "コピーしました",
   "current": {
     "theme": "現在のテーマ:"
@@ -177,6 +181,7 @@
   },
   "header": {
     "about": "僕について",
+    "apps": "アプリ",
     "chat": "チャット",
     "home": "ホーム"
   },
@@ -242,6 +247,7 @@
   },
   "title": {
     "about": "自己紹介",
+    "apps": "アプリ",
     "auth": {
       "emailVerification": "メール確認",
       "forgotPassword": "パスワードを忘れた",
