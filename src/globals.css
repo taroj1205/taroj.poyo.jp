@@ -129,18 +129,6 @@ a {
     background: rgb(37 99 235 / var(--tw-bg-opacity));
     position: fixed;
     left: 0;
-    width: 100%;
+    width: 0%;
     transform-origin: 0 50%;
-    animation: scaleProgress auto linear;
-    animation-timeline: scroll(root);
-}
-
-@keyframes scaleProgress {
-    0% {
-        transform: scaleX(0);
-    }
-
-    100% {
-        transform: scaleX(1);
-    }
 }
