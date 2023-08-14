@@ -57,8 +57,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             ?.removeAttribute('disabled');
                     }
                 } else {
-                    router.push('/auth');
-                    return;
                 }
             } catch (error: any) {
                 console.error(
@@ -83,7 +81,12 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         // Receive new messages from the server
         channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
-            addMessage(data);
+            if (token) {
+                addMessage(data);
+            } else {
+                console.log('Not logged in');
+                router.push('/auth');
+            }
         });
 
         const messagesContainer = document.getElementById(
