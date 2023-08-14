@@ -24,7 +24,7 @@ const Header = () => {
         return activeLink === path;
     };
 
-    const isChatPage = router.pathname === '/chat';
+    const isChatPage = router.pathname === '/apps/chat';
     const headerPosition = isChatPage ? 'relative' : 'fixed  top-0 left-0';
 
     useEffect(() => {
@@ -41,6 +41,19 @@ const Header = () => {
             router.events.off('routeChangeError', handleComplete);
         };
     }, [router]);
+
+    useEffect(() => {
+        const progressElement = document.querySelector('.progress') as HTMLDivElement;
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.body.clientHeight;
+            const scrollTop = window.pageYOffset;
+            const progress = (scrollTop / (fullHeight - windowHeight)) * 100;
+            console.log(progress);
+            progressElement.style.width = `${progress}%`;
+        });
+    });
 
     return (
         <header className={`${headerPosition} z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 py-1 md:py-0 shadow-xl transition-all duration-350 ease`}>
@@ -78,7 +91,7 @@ const Header = () => {
                                 <FaUser className="mr-1 text-lg mb-1 md:mb-0" />
                                 <span className="text-base">{t('header.about')}</span>
                             </Link>
-                            <Link href="/chat"
+                            <Link href="/apps/chat"
                                 className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/chat')
                                     ? 'border-b-2 border-blue-600 text-blue-600'
                                     : 'border-b-2 border-transparent text-black dark:text-white'

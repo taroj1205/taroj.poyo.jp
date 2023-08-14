@@ -1,15 +1,28 @@
 // Import necessary libraries
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql';
+import Pusher from 'pusher';
 
 // MySQL database configuration
 const dbConfig = process.env.DATABASE_URL || '';
 
 // Create a connection pool
 const pool = mysql.createPool(dbConfig);
+const appId = process.env.PUSHER_APP_ID || '';
+const key = process.env.PUSHER_KEY || '';
+const secret = process.env.PUSHER_SECRET || '';
+const cluster = process.env.PUSHER_CLUSTER || '';
+const pusher = new Pusher({
+    appId,
+    key,
+    secret,
+    cluster,
+    useTLS: true,
+});
 
 // Authenticate the user using the provided token
 async function authenticateUser(token: string): Promise<string | null> {
+    console.log("token:", token);
     const connection = await new Promise<mysql.PoolConnection>((resolve, reject) => {
         pool.getConnection((error: mysql.MysqlError | null, connection) => {
             if (error) reject(error);
@@ -32,6 +45,7 @@ async function authenticateUser(token: string): Promise<string | null> {
         }
 
         const userId = rows[0].user_id;
+        console.log("user id:", userId);
         return userId;
     } finally {
         connection.release();
@@ -65,17 +79,27 @@ async function insertMessage(token: string, sent_on: Date, server_name: string, 
         });
         const server_id = serverResult[0].id;
 
+        console.log(server_id, room_name);
+
         // Get the room_id from the chat_rooms table
         const roomQuery = `SELECT id FROM chat_rooms WHERE server_id = ? AND nanoid = ?`;
         const roomValues = [server_id, room_name];
         const roomResult = await new Promise<any>((resolve, reject) => {
             connection.query(roomQuery, roomValues, (error: mysql.MysqlError | null, results) => {
-                if (error) reject(error);
-                resolve(results);
+                if (error) {
+                    console.error('Error retrieving room_id:', error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
             });
         });
-        const room_id = roomResult[0].id;
 
+        if (roomResult.length === 0) {
+            throw new Error('Room not found');
+        }
+
+        const room_id = roomResult[0].id;
         // Check if the message has msgType as "m.text" and if it's an emoji
         const isEmojiBody = content.msgtype === 'm.text' && /\p{Emoji}/u.test(content.body);
         content._isEmojiBody = isEmojiBody;
@@ -90,6 +114,55 @@ async function insertMessage(token: string, sent_on: Date, server_name: string, 
                 resolve();
             });
         });
+
+        // Fetch the inserted message from the messages table
+        const selectMessageQuery = `SELECT * FROM messages WHERE id = LAST_INSERT_ID()`;
+        const messageRows: any[] = await new Promise((resolve, reject) => {
+            connection.query(selectMessageQuery, (error: mysql.MysqlError | null, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+
+        // Construct the newMessage array
+        const messages = messageRows.map((message) => ({
+            id: message.id,
+            user_id: message.user_id,
+            server_id: message.server_id,
+            room_id: message.room_id,
+            sent_on: message.sent_on,
+            content: JSON.parse(message.content),
+        }));
+
+        const userIds = messages.map((message) => message.user_id);
+        const selectUsersQuery = `SELECT id, username, profile_picture FROM users WHERE id IN (?)`;
+        const selectUsersValues = [userIds];
+        const userRows: any[] = await new Promise((resolve, reject) => {
+            connection.query(selectUsersQuery, selectUsersValues, (error: mysql.MysqlError | null, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+
+        const senderInfo: { [key: number]: any } = {};
+        userRows.forEach((user) => {
+            senderInfo[user.id] = {
+                username: user.username,
+                profile_picture: user.profile_picture,
+            };
+        });
+
+        const newMessage = messages.map((message) => ({
+            message_id: message.id,
+            sender: senderInfo[message.user_id],
+            server_id: message.server_id,
+            room_id: message.room_id,
+            sent_on: message.sent_on,
+            content: message.content,
+        }));
+        console.log(server_id, server_name, room_id, room_name);
+
+        pusher.trigger(`${server_name},${room_name}`, 'newMessage', newMessage);
     } finally {
         connection.release();
     }

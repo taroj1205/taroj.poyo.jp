@@ -63,7 +63,7 @@ const HomePage = () => {
     const routes = [
         { path: '/', label: 'Home', icon: AiFillHome },
         { path: '/about', label: 'About', icon: FaUser },
-        { path: '/chat', label: 'Chat', icon: FaComments },
+        { path: '/apps/chat', label: 'Chat', icon: FaComments },
         { path: '/settings', label: 'Settings', icon: FaCog },
         {
             path: 'https://taroj1205.hatenablog.com',
