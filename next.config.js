@@ -9,13 +9,18 @@ module.exports = {
     images: {
         domains: ['gravatar.com'],
     },
-    async redirects() {
-        return [
-            {
-                source: '/auth',
-                destination: '/auth/login',
-                permanent: true,
-            },
-        ]
-    },
+async redirects() {
+    return [
+        {
+            source: '/auth',
+            destination: '/auth/login',
+            permanent: true,
+        },
+        {
+            source: '/chat',
+            destination: '/apps/chat',
+            permanent: true,
+        },
+    ];
+}
 };
