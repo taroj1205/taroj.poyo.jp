@@ -42,6 +42,19 @@ const Header = () => {
         };
     }, [router]);
 
+    useEffect(() => {
+        const progressElement = document.querySelector('.progress') as HTMLDivElement;
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.body.clientHeight;
+            const scrollTop = window.pageYOffset;
+            const progress = (scrollTop / (fullHeight - windowHeight)) * 100;
+            console.log(progress);
+            progressElement.style.width = `${progress}%`;
+        });
+    });
+
     return (
         <header className={`${headerPosition} z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 py-1 md:py-0 shadow-xl transition-all duration-350 ease`}>
             {isExpanded && (
