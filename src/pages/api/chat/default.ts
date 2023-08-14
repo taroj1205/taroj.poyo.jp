@@ -28,6 +28,44 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             const { server_nanoid, room_nanoid } = chatRoomsResult;
 
+            if (!server_nanoid || !room_nanoid) {
+                const now = new Date().toISOString().replace('Z', '');
+                const generatedServerNanoid = nanoid(30);
+                const generatedRoomNanoid = nanoid(30);
+
+                connection.query(
+                    `INSERT INTO chat_servers (server_name, created_at, last_login, nanoid)
+                    VALUES (?, ?, NULL, ?)
+                    ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
+                    ['default', now, generatedServerNanoid],
+                    (error, serverResult) => {
+                        if (error) {
+                            console.error('Error creating default server:', error);
+                            res.status(500).json({ success: false, message: 'Failed to create default server' });
+                            return;
+                        }
+
+                        connection.query(
+                            `INSERT INTO chat_rooms (room_name, server_id, nanoid)
+                            VALUES (?, ?, ?)`,
+                            ['default', serverResult.insertId, generatedRoomNanoid],
+                            (error, roomResult) => {
+                                if (error) {
+                                    console.error('Error creating default room:', error);
+                                    res.status(500).json({ success: false, message: 'Failed to create default room' });
+                                    return;
+                                }
+
+                                // Retry the GET request now that the default server and room are created
+                                handler(req, res);
+                            }
+                        );
+                    }
+                );
+
+                return;
+            }
+
             const senderInfo: Array<any> = [];
 
             // Retrieve messages from the messages table
