@@ -26,9 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
             });
 
-            const { server_nanoid, room_nanoid } = chatRoomsResult;
-
-            if (!server_nanoid || !room_nanoid) {
+            if (!chatRoomsResult) {
                 const now = new Date().toISOString().replace('Z', '');
                 const generatedServerNanoid = nanoid(30);
                 const generatedRoomNanoid = nanoid(30);
@@ -65,6 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                 return;
             }
+
+            const { server_nanoid, room_nanoid } = chatRoomsResult;
 
             const senderInfo: Array<any> = [];
 
