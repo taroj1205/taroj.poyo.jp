@@ -3,17 +3,15 @@ import React, { useEffect, useState, useRef, ReactNode } from 'react';
 import Head from 'next/head';
 import Pusher from 'pusher-js';
 import { FaPaperPlane } from 'react-icons/fa';
-import Header from '../components/Header';
 import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../components/AuthContext';
-import Cookies from 'js-cookie';
+import { useAuth } from '../../components/AuthContext';
 import Script from 'next/script';
 
 const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     const [messages, setMessages] = useState([]);
-    const [serverId, setServerId] = useState('fCw8bsQX3YnvHyCLJJUqXL95NT0U7j');
-    const [roomId, setRoomId] = useState('Di9cKtg4sOgbN4mpmU9NdSm45FtrsN');
+    const [serverId, setServerId] = useState('');
+    const [roomId, setRoomId] = useState('');
     const { token } = useAuth() || {};
     const [isLoadingState, setisLoadingState] = useState(false);
 
@@ -23,35 +21,31 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     useEffect(() => {
         const fetchDefaultMessages = async () => {
             try {
-                console.log(token || Cookies.get('token'));
-                const userToken = token || Cookies.get('token');
-                if (userToken) {
-                    const response = await fetch(`/api/profile?token=${encodeURIComponent(userToken)}`, {
+                if (token) {
+                    console.log('Getting default messages');
+                    const response = await fetch(`/api/chat/default`, {
                         method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                     });
                     const data = await response.json();
                     console.log(data);
                     if (data.error === 401) {
-                        chatRef.current?.classList.remove('animate-pulse');
                         router.push('/auth');
                         return;
                     } else if (data.verified === 0) {
                         router.push('/verify');
+                        return;
                     } else {
-                        console.log('Getting default messages');
-                        const response = await fetch(`/api/chat/default?server_id=${encodeURIComponent(serverId)}&room_id=${encodeURIComponent(roomId)}`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        });
-                        const data = await response.json();
-                        console.log(data);
+                        setRoomId(data.channelDetail.room_id);
+                        setServerId(data.channelDetail.server_id);
+                        console.log("Data:", data, data.channelDetail, roomId, serverId);
                         if (data.status === 400) {
                             errorPopup(data.error.toString());
                             return;
                         }
-                        await addMessage(data);
+                        setMessages(data.formattedMessages);
                         const read = localStorage.getItem('read') || '0';
                         document.getElementById(read)?.scrollIntoView();
                         chatRef.current?.classList.remove('animate-pulse');
@@ -62,10 +56,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                             .getElementById('input-field')
                             ?.removeAttribute('disabled');
                     }
-                } else {
-                    chatRef.current?.classList.remove('animate-pulse');
-                    router.push('/auth');
-                    return;
                 }
             } catch (error: any) {
                 console.error(
@@ -78,12 +68,20 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         fetchDefaultMessages();
 
         console.log('useEffect running');
+    }, [token]);
 
+    useEffect(() => {
         const pusher = new Pusher('cd4e43e93ec6d4f424db', {
             cluster: 'ap1',
         });
 
-        const channel = pusher.subscribe(`${serverId}${roomId}`);
+        const channel = pusher.subscribe(`${serverId},${roomId}`);
+
+        // Receive new messages from the server
+        channel.bind(`newMessage`, (data: any) => {
+            console.log('Received new message: ', data);
+            addMessage(data);
+        });
 
         const messagesContainer = document.getElementById(
             'messages'
@@ -154,12 +152,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
         messagesContainer.addEventListener('scroll', handleScroll);
 
-        // Receive new messages from the server
-        channel.bind(`newMessage`, (data: any) => {
-            console.log('Received new message: ', data);
-            addMessage(data);
-        });
-
         async function wrapCodeInTags(text: string): Promise<string> {
             const codeRegex = /```(\w*)([\s\S]*?)```/;
             const match = text.match(codeRegex);
@@ -174,27 +166,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
             return text;
         }
-
-        const addMessage = async (data: Array<any>) => {
-            console.log('Running addMessage() ', data);
-            const messagesContainer = document.getElementById(
-                'messages'
-            ) as HTMLDivElement;
-            console.log(messagesContainer);
-
-            for (let i = 0; i < data.length; i++) {
-                console.log('Item: ', data[i]);
-                await formatMessage(data[i]);
-                const isAtBottom =
-                    messagesContainer.scrollTop +
-                    messagesContainer.clientHeight ===
-                    messagesContainer.scrollHeight;
-                if (isAtBottom) {
-                    messagesContainer.scrollTop =
-                        messagesContainer.scrollHeight;
-                }
-            }
-        };
 
         interface ChatMessage {
             content: {
@@ -292,11 +263,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                 messageTextSpan.classList.add('messageText', 'whitespace-pre-line', 'text-left');
                 messageTextSpan.innerHTML = formattedMessageText;
 
-
-                const messagesDiv = document.getElementById(
-                    'messages'
-                ) as HTMLDivElement;
-
                 const pCountSpan = document.createElement('span');
                 pCountSpan.classList.add('mr-1', 'text-xs', 'text-gray-500');
                 pCountSpan.textContent = `${data.message_id}`;
@@ -319,6 +285,29 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                 console.error('Error formatting message:', error);
             }
         };
+
+        const addMessage = async (data: Array<any>) => {
+            console.log('Running addMessage() ', data);
+            const messagesContainer = document.getElementById(
+                'messages'
+            ) as HTMLDivElement;
+            console.log(messagesContainer);
+
+            for (let i = 0; i < data.length; i++) {
+                console.log('Item: ', data[i]);
+                await formatMessage(data[i]);
+                const isAtBottom =
+                    messagesContainer.scrollTop +
+                    messagesContainer.clientHeight ===
+                    messagesContainer.scrollHeight;
+                if (isAtBottom) {
+                    messagesContainer.scrollTop =
+                        messagesContainer.scrollHeight;
+                }
+            }
+        };
+
+        addMessage(messages as ChatMessage[]);
 
 
         inputRef.current?.addEventListener('input', () => {
@@ -349,7 +338,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
         console.log('script loaded!');
 
-        // Clean up Pusher subscription on component unmount
         return () => {
             pusher.unsubscribe(`${serverId}${roomId}`);
             if (inputRef.current) {
@@ -357,7 +345,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
             }
             messagesContainer.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [messages]);
 
     const errorPopup = (message: string) => {
         const popup = document.createElement('div') as HTMLDivElement;
@@ -388,15 +376,12 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
 
         if (message && message.length < 500) {
             setisLoadingState(true); // set loading state to true
-            console.log('User id', token);
+            console.log('User id:', token);
             if (!token) {
-                const userToken = Cookies.get('token');
-                if (!userToken) {
-                    errorPopup('Could not indentify you... reloading...');
-                    chatRef.current?.classList.remove('animate-pulse');
-                    router.push('/auth');
-                    return;
-                }
+                errorPopup('Could not indentify you... reloading...');
+                chatRef.current?.classList.remove('animate-pulse');
+                router.push('/auth');
+                return;
             }
             // Send a new message to the server
             fetch('/api/chat/new-message', {
@@ -405,7 +390,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    token: token,
+                    token,
                     server_id: serverId,
                     room_id: roomId,
                     content: message,
@@ -633,7 +618,7 @@ const Main: React.FC<MainProps> = ({
                             disabled
                             rows={1}
                             className="border-none overflow-y-auto text-black dark:text-white bg-white dark:bg-gray-900 text-base outline-none flex-grow focus:outline-0"
-                            onInput={handleInput} // Add onInput event handler
+                            onInput={handleInput}
                         ></textarea>
                     </span>
                     <button

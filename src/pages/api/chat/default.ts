@@ -1,4 +1,5 @@
 // Import necessary libraries
+// Import necessary libraries
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql';
 import { nanoid } from 'nanoid';
@@ -9,67 +10,23 @@ const dbConfig = process.env.DATABASE_URL || '';
 // API endpoint for retrieving messages on load
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
-        const { server_id, room_id } = req.query;
-
         // Connect to the MySQL database
         const connection = mysql.createConnection(dbConfig);
         connection.connect();
 
         try {
-            if (server_id === 'default') {
-                // Check if the server_nanoid is 'default', and if so, insert a new default server
-                const generatedNanoid = nanoid(30);
-                const now = new Date().toISOString().replace('Z', '');
-                console.log('nanoid', generatedNanoid);
+            const chatRoomsQuery = `SELECT chat_rooms.nanoid AS room_nanoid, chat_servers.nanoid AS server_nanoid
+                                    FROM chat_rooms
+                                    INNER JOIN chat_servers ON chat_rooms.server_id = chat_servers.id
+                                    ORDER BY chat_rooms.id LIMIT 1`;
+            const chatRoomsResult = await new Promise<any>((resolve, reject) => {
+                connection.query(chatRoomsQuery, (error, results) => {
+                    if (error) reject(error);
+                    resolve(results[0]);
+                });
+            });
 
-                connection.query(
-                    `INSERT INTO chat_servers (server_name, created_at, last_login, nanoid)
-                SELECT 'default', ?, NULL, ?
-                FROM DUAL 
-                WHERE NOT EXISTS (
-                    SELECT * FROM chat_servers LIMIT 1
-                )
-                ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
-                    [now, generatedNanoid],
-                    (error, result) => {
-                        if (error) {
-                            console.error('Error creating default server:', error);
-                            throw new Error('Failed to create default server');
-                        }
-                        const room_id = nanoid(30);
-                        const now = new Date().toISOString().replace('Z', '');
-                        // Check if the room_id already exists for the server
-                        connection.query(
-                            `SELECT * FROM chat_rooms WHERE server_id = ? AND nanoid = ?`,
-                            [1, room_id],
-                            (error, results) => {
-                                if (error) {
-                                    console.error('Error checking for existing room_id:', error);
-                                    throw new Error('Failed to check for existing room_id');
-                                }
-
-                                if (results.length > 0) {
-                                    console.log('Room already exists for server:', results.server_id);
-                                    return;
-                                }
-
-                                console.log(server_id);
-                                connection.query(
-                                    `INSERT INTO chat_rooms (room_name, created_at, server_id, nanoid) VALUES (?, ?, ?, ?)`,
-                                    ['default', now, '1', room_id],
-                                    (error, chatRoomsResult) => {
-                                        if (error) {
-                                            console.error('Error inserting into chat_rooms:', error);
-                                            throw new Error('Failed to insert into chat_rooms');
-                                        }
-                                        console.log('Data inserted into chat_rooms successfully:', chatRoomsResult);
-                                    }
-                                );
-                            }
-                        );
-                    }
-                );
-            }
+            const { server_nanoid, room_nanoid } = chatRoomsResult;
 
             const senderInfo: Array<any> = [];
 
@@ -85,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         FROM chat_rooms
                         WHERE nanoid = ?
                     )`;
-            const values = [server_id, room_id];
+            const values = [server_nanoid, room_nanoid];
             const messages = await new Promise<any[]>((resolve, reject) => {
                 connection.query(selectQuery, values, (error, results) => {
                     if (error) reject(error);
@@ -111,6 +68,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             }
 
+            const channelDetail = {
+                server_id: server_nanoid,
+                room_id: room_nanoid,
+            };
+
             // Format messages in the desired JSON format
             const formattedMessages = messages.map((message) => ({
                 message_id: message.id,
@@ -121,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 content: JSON.parse(message.content),
             }));
 
-            res.status(200).json(formattedMessages);
+            res.status(200).json({ channelDetail, formattedMessages });
         } catch (error) {
             console.error('Error retrieving messages:', error);
             res.status(500).json({ success: false, message: 'Error retrieving messages' });

@@ -33,7 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
     
     useEffect(() => {
-        setToken(Cookies.get('token') || '');
+        const userToken = Cookies.get('token') as string;
+        setToken(userToken);
     }, []);
 
 

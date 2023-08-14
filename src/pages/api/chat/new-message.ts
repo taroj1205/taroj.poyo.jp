@@ -79,17 +79,27 @@ async function insertMessage(token: string, sent_on: Date, server_name: string, 
         });
         const server_id = serverResult[0].id;
 
+        console.log(server_id, room_name);
+
         // Get the room_id from the chat_rooms table
         const roomQuery = `SELECT id FROM chat_rooms WHERE server_id = ? AND nanoid = ?`;
         const roomValues = [server_id, room_name];
         const roomResult = await new Promise<any>((resolve, reject) => {
             connection.query(roomQuery, roomValues, (error: mysql.MysqlError | null, results) => {
-                if (error) reject(error);
-                resolve(results);
+                if (error) {
+                    console.error('Error retrieving room_id:', error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
             });
         });
-        const room_id = roomResult[0].id;
 
+        if (roomResult.length === 0) {
+            throw new Error('Room not found');
+        }
+
+        const room_id = roomResult[0].id;
         // Check if the message has msgType as "m.text" and if it's an emoji
         const isEmojiBody = content.msgtype === 'm.text' && /\p{Emoji}/u.test(content.body);
         content._isEmojiBody = isEmojiBody;
@@ -150,9 +160,9 @@ async function insertMessage(token: string, sent_on: Date, server_name: string, 
             sent_on: message.sent_on,
             content: message.content,
         }));
-        console.log(server_id, room_id);
+        console.log(server_id, server_name, room_id, room_name);
 
-        pusher.trigger(`${server_id}${room_id}`, 'newMessage', newMessage);
+        pusher.trigger(`${server_name},${room_name}`, 'newMessage', newMessage);
     } finally {
         connection.release();
     }
