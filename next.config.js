@@ -21,6 +21,11 @@ module.exports = {
                 destination: '/apps/chat',
                 permanent: true,
             },
+            {
+                source: '/',
+                destination: '/home',
+                permanent: true,
+            }
         ];
     },
 };
