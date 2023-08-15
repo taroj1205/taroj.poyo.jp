@@ -52,6 +52,8 @@ const Apps = () => {
                     content="Index page for taroj.poyo.jp"
                 />
                 <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
+                <link rel="preload" href={githubStatsImage} as="image" />
+                <link rel="preload" href={githubLanguagesImage} as="image" />
                 <title>{t('title.apps')}</title>
             </Head>
             <div
@@ -80,12 +82,14 @@ const Apps = () => {
                             width="auto"
                             src={githubStatsImage}
                             alt={'GitHub Stats'}
+                            loading='lazy'
                         />
                         <img
                             height="180"
                             width="auto"
                             src={githubLanguagesImage}
                             alt={'GitHub Languages Stats'}
+                            loading='lazy'
                         />
                     </div>
                 </div>

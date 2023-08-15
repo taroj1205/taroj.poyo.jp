@@ -15,7 +15,7 @@ import {ComponentPreviews, useInitial} from "../components/dev";
 
 export default function App({Component, pageProps}: AppProps) {
     const router = useRouter();
-    const currentPath = router.pathname.startsWith('/auth/') ? 'auth' : router.pathname === '/' ? 'index' : router.pathname;
+    const currentPath = router.pathname.startsWith('/auth/') ? '/auth' : router.pathname;
 
     useEffect(() => {
         const addFontStyles = (
