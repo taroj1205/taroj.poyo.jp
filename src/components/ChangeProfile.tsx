@@ -1,12 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
+import type { AuthContextValue } from './AuthContext';
 import { validateImage } from 'image-validator';
 import { useTheme } from 'next-themes';
 
 const ChangeProfile = () => {
     const { t } = useTranslation();
-    const { token, user, setUser } = useAuth() || {};
+    const { token, user, setUser, isLoading } = useAuth() as AuthContextValue;
     const [url, setURL] = useState('');
     const [popupOpen, setPopupOpen] = useState(false);
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -16,8 +17,9 @@ const ChangeProfile = () => {
 
     useEffect(() => {
         setMounted(true);
+        console.log(user);
     }, []);
-    if (!mounted) return null; // Prevent rendering on the server-side
+    if (!mounted) return null;
 
     const togglePopup = () => {
         setPopupOpen(!popupOpen);
@@ -97,7 +99,9 @@ const ChangeProfile = () => {
 
     return (
         <>
-            {user && user.picture && (
+            {isLoading ? (
+                <div>Loading...</div>
+            ) : user && user.picture ? (
                 <div className="flex flex-col items-center">
                     <button
                         className="flex items-center text-black dark:text-white px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -173,7 +177,7 @@ const ChangeProfile = () => {
                         </div>
                     )}
                 </div>
-            )}
+            ) : null}
         </>
     );
 };
