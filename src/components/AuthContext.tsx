@@ -1,11 +1,12 @@
 import Cookies from 'js-cookie';
 import { createContext, useState, useContext, useEffect } from 'react';
 
-interface AuthContextValue {
+export interface AuthContextValue {
     token: string;
     setToken: React.Dispatch<React.SetStateAction<string>>;
-    user: ProfileData;
-    setUser: React.Dispatch<React.SetStateAction<ProfileData>>;
+    user: ProfileData | null;
+    setUser: React.Dispatch<React.SetStateAction<ProfileData | null>>;
+    isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -16,22 +17,17 @@ export const useAuth = () => {
 
 
 interface ProfileData {
-    email: string;
-    username: string;
+    email?: string;
+    username?: string;
     picture: string;
-    name: string;
+    name?: string;
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [token, setToken] = useState('');
+    const [user, setUser] = useState<ProfileData | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [user, setUser] = useState<ProfileData>({
-        email: '',
-        username: '',
-        picture: '',
-        name: '',
-    })
-    
     useEffect(() => {
         const userToken = Cookies.get('token') as string;
         setToken(userToken);
@@ -44,6 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const userProfileData = localStorage.getItem('userProfileData');
             console.log(token);
             if (token && !userProfileData) {
+                setIsLoading(true);
                 const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
                     method: 'GET'
                 });
@@ -58,9 +55,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 localStorage.setItem('userProfileData', JSON.stringify(data));
                 setUser(data);
                 console.log(user);
+            } else {
+                setUser(JSON.parse(userProfileData as string));
             }
+            console.log(user);
+            setIsLoading(false);
         } catch (error) {
             console.error('Error fetching user profile data:', error);
+            setIsLoading(false);
         }
     };
 
@@ -69,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, user, setUser }}>
+        <AuthContext.Provider value={{ token, setToken, user, setUser, isLoading }}>
             {children}
         </AuthContext.Provider>
     );
