@@ -102,15 +102,16 @@ const Header = () => {
                             </Link>
                         </nav>
                     </UnmountClosed>
-                    <div className={`md:hidden flex justify-center w-full flex-grow ${isExpanded ? 'pt-2' : 'pt-0'}`}>
+                    <div className={`md:hidden flex justify-center flex-grow`}>
                         <button
                             aria-label="dropdown"
                             onClick={toggleDropdown}
-                            className={`flex items-center ${isExpanded ? 'transform rotate-180' : 'text-gray-500'} transition-all duration-300`}
+                            className={`flex items-center w-full p-2 ${isExpanded ? 'transform rotate-180' : 'text-gray-500'} transition-all duration-300`}
                         >
-                            <FaAngleDown className="text-xl" />
+                            <FaAngleDown className="text-2xl" />
                         </button>
                     </div>
+
                 </div>
                 <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                     <div className="flex items-center relative">
