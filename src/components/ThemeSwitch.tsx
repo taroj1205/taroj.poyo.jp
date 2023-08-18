@@ -16,7 +16,7 @@ const ThemeSwitch: React.FC = () => {
             setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             setLoading(false);
         }
-    }, [theme, mounted]);
+    }, [mounted]);
 
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -29,7 +29,7 @@ const ThemeSwitch: React.FC = () => {
             onClick={toggleTheme}
         >
             {loading ? (
-                <svg className="animate-spin h-6 w-6 text-gray-500" viewBox="0 0 24 24"></svg>
+                <div className="w-5 h-5 border-2 border-gray-300 border-t-white dark:border-t-slate-900 rounded-full animate-spin"></div>
             ) : (
                 theme === 'dark' ? (
                     <FiMoon className="text-indigo-500 w-6 h-6" />
