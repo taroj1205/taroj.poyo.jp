@@ -5,14 +5,18 @@ import { useTheme } from 'next-themes';
 const ThemeSwitch: React.FC = () => {
     const { theme, setTheme } = useTheme();
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     }, []);
 
     useEffect(() => {
-        setLoading(false);
-    }, [theme]);
+        if (mounted) {
+            setLoading(false);
+        }
+    }, [theme, mounted]);
 
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -29,8 +33,7 @@ const ThemeSwitch: React.FC = () => {
 
     return (
         <div
-            // className='rounded-full cursor-pointer md:mr-0 mr-2'
-            className='text-gray-500 md:mr-0 mr-2 cursor-pointer  dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2'
+            className='text-gray-500 md:mr-0 mr-2 cursor-pointer dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2'
             onClick={toggleTheme}
         >
             {theme === 'dark' ? (
