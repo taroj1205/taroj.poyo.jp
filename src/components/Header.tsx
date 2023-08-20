@@ -69,6 +69,7 @@ const Header = () => {
                     <div
                         className="fixed inset-0 z-10"
                         onClick={toggleDropdown}
+                        onTouchMove={() => toggleDropdown()}
                     />
                 )}
                 <div className="relative w-full flex items-center z-[100] justify-between px-0 md:h-10 min-h-[40px]">
