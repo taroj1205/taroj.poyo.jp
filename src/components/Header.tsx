@@ -80,7 +80,7 @@ const Header = () => {
                     <div className="flex flex-col md:flex-row items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
                         <UnmountClosed isOpened={true || false}>
                             <nav
-                                className={`flex ${isExpanded ? 'flex' : 'hidden duration-300 md:flex'
+                                className={`flex ${isExpanded ? 'flex mt-2' : 'hidden duration-300 md:flex'
                                     } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
                             >
                                 <Link href="/"
