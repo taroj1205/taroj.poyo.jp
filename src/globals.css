@@ -5,6 +5,22 @@
 html,
 body {
     margin: 0;
+    overflow: hidden;
+}
+
+html,
+body,
+#__next {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 @layer base {

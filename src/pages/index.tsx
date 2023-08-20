@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -6,8 +6,10 @@ import Contacts from '../components/Contacts';
 import { AiFillHome } from 'react-icons/ai';
 import { FaUser, FaComments, FaCog, FaBlog, FaGithub } from 'react-icons/fa';
 import { useAuth } from '../components/AuthContext';
-import { SiReact, SiNextdotjs, SiMysql, SiTailwindcss } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiTailwindcss } from 'react-icons/si';
 import { IconType } from 'react-icons';
+import Image from 'next/image';
+import Footer from '../components/Footer';
 
 const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string; color: string }) => (
     <div
@@ -95,40 +97,39 @@ const HomePage = () => {
                 <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.index')}</title>
             </Head>
-            <div
-                className="bg-cover bg-no-repeat bg-fixed bg-center h-screen"
-                style={{
-                    backgroundImage: "url('/image/thumbnail/thumbnail.webp')",
-                }}
-            >
-                <div className="flex flex-col justify-center items-center h-full text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
-                    <h1 className="text-4xl md:text-6xl font-bold">
-                        {t('index.welcome')}
-                        {user?.username && ` ${user.username}`}!
-                    </h1>
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 my-6">
-                        {routes.map((route, index) => (
-                            <RouteLink
-                                key={index}
-                                path={route.path}
-                                label={t(`index.${route.label.toLowerCase()}`)}
-                                icon={route.icon}
-                            />
-                        ))}
-                    </div>
+            <div className='fixed inset-0 z-[-10]'>
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" layout="fill" objectFit="cover" />
+            </div>
+            <div style={{ height: 'calc(100vh - 40px)' }} className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
+                <h1 className="text-4xl md:text-6xl font-bold">
+                    {t('index.welcome')}
+                    {user?.username && ` ${user.username}`}!
+                </h1>
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 my-6">
+                    {routes.map((route, index) => (
+                        <RouteLink
+                            key={index}
+                            path={route.path}
+                            label={t(`index.${route.label.toLowerCase()}`)}
+                            icon={route.icon}
+                        />
+                    ))}
                 </div>
             </div>
-            <div className="container mx-auto max-w-5xl py-10 text-black dark:text-white">
-                <div className='mx-4'>
-                    <h2 className="text-2xl md:text-4xl font-bold">{t('index.contact')}</h2>
-                    <Contacts />
-                    <MadeWith />
-                    <h2 className="text-2xl md:text-4xl mt-8 mb-4 font-bold">{t('supported language')}</h2>
-                    <ul className="list-disc list-inside text-lg font-bold">
-                        <li>{t('english')}</li>
-                        <li>{t('japanese')}</li>
-                    </ul>
+            <div className="mx-auto py-10 text-black dark:text-white bg-white dark:bg-zinc-950">
+                <div className='flex items-center justify-center'>
+                    <div className='mx-4 max-w-5xl'>
+                        <h2 className="text-2xl md:text-4xl font-bold">{t('index.contact')}</h2>
+                        <Contacts />
+                        <MadeWith />
+                        <h2 className="text-2xl md:text-4xl mt-8 mb-4 font-bold">{t('supported language')}</h2>
+                        <ul className="list-disc list-inside text-lg font-bold mb-5">
+                            <li>{t('english')}</li>
+                            <li>{t('japanese')}</li>
+                        </ul>
+                    </div>
                 </div>
+                <Footer />
             </div>
         </>
     );
