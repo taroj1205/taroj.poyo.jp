@@ -67,7 +67,7 @@ const Header = () => {
             <div>
                 {isExpanded && (
                     <div
-                        className="fixed inset-0 z-10"
+                        className="fixed inset-0 z-0"
                         onClick={toggleDropdown}
                         onTouchMove={() => toggleDropdown()}
                     />
