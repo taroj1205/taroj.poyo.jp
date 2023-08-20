@@ -63,15 +63,15 @@ const Header = () => {
     }, []);
 
     return (
-        <header className={`relative top-0 z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
+        <header className={`relative top-0 z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`} onTouchMove={() => setIsExpanded(false)}>
+            {isExpanded && (
+                <div
+                    className="fixed inset-0"
+                    onClick={toggleDropdown}
+                    onTouchMove={() => toggleDropdown()}
+                />
+            )}
             <div>
-                {isExpanded && (
-                    <div
-                        className="fixed inset-0 z-0"
-                        onClick={toggleDropdown}
-                        onTouchMove={() => toggleDropdown()}
-                    />
-                )}
                 <div className="relative w-full flex items-center z-[100] justify-between px-0 md:h-10 min-h-[40px]">
                     <div className="flex xl:absolute left-1 xl:left-64 items-center justify-start font-medium w-full md:w-auto">
                         <div className="flex items-center ml-2 xl:ml-0 relative">
