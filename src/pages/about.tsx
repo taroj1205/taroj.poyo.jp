@@ -88,8 +88,7 @@ const About = () => {
                 </div>
             </div>
             <div className='bg-white dark:bg-zinc-950 w-full'>
-                <div className='mb-8'>
-                    <div className='lg:flex lg:flex-col lg:justify-center lg:items-center mb-5 px-4'>
+                    <div className='lg:flex lg:flex-col lg:justify-center lg:items-center px-4'>
                         <MySkills />
                         <h2 className="text-2xl md:text-4xl mt-6 font-bold">
                             {t('ncea.title')}
@@ -106,13 +105,14 @@ const About = () => {
                             {t('about.education.schoolHistory')}
                         </h2>
                         <SchoolHistory />
+                        <div className='mb-5'>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
                             {t('index.contact')}
                         </h2>
-                        <Contacts />
+                            <Contacts />
+                        </div>
                     </div>
                     <Footer />
-                </div>
             </div>
         </>
     );

@@ -63,7 +63,7 @@ const Header = () => {
     }, []);
 
     return (
-        <header className={`relative z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
+        <header className={`relative top-0 z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
             <div>
                 {isExpanded && (
                     <div
