@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -116,7 +116,7 @@ const HomePage = () => {
                     ))}
                 </div>
             </div>
-            <div className="mx-auto py-10 text-black dark:text-white bg-white dark:bg-zinc-950">
+            <div className="mx-auto h-full pt-10 text-black dark:text-white bg-white dark:bg-zinc-950">
                 <div className='flex items-center justify-center'>
                     <div className='mx-4 max-w-5xl'>
                         <h2 className="text-2xl md:text-4xl font-bold">{t('index.contact')}</h2>

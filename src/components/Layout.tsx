@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Header from './Header';
 import { useRouter } from 'next/router';
 
@@ -7,13 +7,15 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-    const router = useRouter();
-
+    const [height, setHeight] = useState('calc(100vh-40px)');
+    useEffect(() => {
+        setHeight(`${window.innerHeight - 40}px`);
+    }, []);
     return (
         <>
             <Header />
             <div className='flex flex-col flex-grow min-h-0'>
-                <div className='h-full w-full overflow-y-auto content absolute'>
+                <div style={{height}} className='w-full overflow-y-auto content absolute'>
                     <main>{children}</main>
                 </div>
             </div>

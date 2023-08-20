@@ -63,12 +63,13 @@ const Header = () => {
     }, []);
 
     return (
-        <header className={`relative z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
+        <header className={`relative top-0 z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`}>
             <div>
                 {isExpanded && (
                     <div
                         className="fixed inset-0 z-10"
                         onClick={toggleDropdown}
+                        onTouchMove={() => toggleDropdown()}
                     />
                 )}
                 <div className="relative w-full flex items-center z-[100] justify-between px-0 md:h-10 min-h-[40px]">
@@ -80,7 +81,7 @@ const Header = () => {
                     <div className="flex flex-col md:flex-row items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
                         <UnmountClosed isOpened={true || false}>
                             <nav
-                                className={`flex ${isExpanded ? 'flex' : 'hidden duration-300 md:flex'
+                                className={`flex ${isExpanded ? 'flex mt-2' : 'hidden duration-300 md:flex'
                                     } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
                             >
                                 <Link href="/"

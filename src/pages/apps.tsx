@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { FaComments } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import Footer from '../components/Footer';
 
 const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; icon: IconType }) => (
     <Link href={path} className="group flex flex-col items-center justify-center p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md bg-white dark:bg-zinc-950 text-black dark:text-white">
@@ -56,17 +58,14 @@ const Apps = () => {
                 <link rel="preload" href={githubLanguagesImage} as="image" />
                 <title>{t('title.apps')}</title>
             </Head>
-            <div
-                className="bg-cover bg-no-repeat bg-fixed bg-center h-screen"
-                style={{
-                    backgroundImage: "url('/image/thumbnail/thumbnail.webp')",
-                }}
-            >
-                <div className="flex flex-col justify-center items-center h-full text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
+            <div className='fixed inset-0 z-[-10]'>
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" layout="fill" objectFit="cover" />
+            </div>
+            <div style={{ height: 'calc(100vh - 40px)' }} className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                     <h1 className="text-4xl md:text-6xl font-bold">
                         {t('apps.list')}
                     </h1>
-                    <div className="grid grid-flow-row gap-4 my-6"> {/*grid-cols-2 lg:grid-cols-3*/}
+                    <div className="grid grid-flow-row gap-4 my-6">
                         {routes.map((route, index) => (
                             <RouteLink
                                 key={index}
@@ -76,7 +75,7 @@ const Apps = () => {
                             />
                         ))}
                     </div>
-                    <div className="py-4 flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center gap-2">
                         <img
                             height="180"
                             width="auto"
@@ -91,7 +90,6 @@ const Apps = () => {
                             alt={'GitHub Languages Stats'}
                             loading='lazy'
                         />
-                    </div>
                 </div>
             </div>
         </>
