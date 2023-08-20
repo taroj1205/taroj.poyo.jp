@@ -14,7 +14,7 @@ const Layout = ({ children }: LayoutProps) => {
             <Header />
             <div className='flex flex-col flex-grow min-h-0'>
                 <div className='h-full w-full overflow-y-auto content absolute'>
-                    <main>{children}</main>
+                    <main className='h-screen'>{children}</main>
                 </div>
             </div>
         </>
