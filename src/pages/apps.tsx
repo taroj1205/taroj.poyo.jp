@@ -38,6 +38,20 @@ const Apps = () => {
         { path: '/apps/chat', label: 'Chat', icon: FaComments },
     ];
 
+    const sceneRef = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const height = window.innerHeight;
+            if (sceneRef.current) {
+                sceneRef.current.style.minHeight = `${height - 40}px`;
+            }
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <>
             <Head>
@@ -61,7 +75,7 @@ const Apps = () => {
             <div className='fixed inset-0 z-[-10]'>
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" layout="fill" objectFit="cover" />
             </div>
-            <div style={{ height: 'calc(100vh - 40px)' }} className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
+            <div ref={sceneRef} style={{ minHeight: 'calc(100vh - 40px)' }} className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                     <h1 className="text-4xl md:text-6xl font-bold">
                         {t('apps.list')}
                     </h1>
