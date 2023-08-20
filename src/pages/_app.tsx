@@ -1,19 +1,18 @@
-import {useEffect} from 'react';
-import {Analytics} from '@vercel/analytics/react';
-import {I18nextProvider} from 'react-i18next';
-import {AppProps} from 'next/app';
+import { useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
+import { I18nextProvider } from 'react-i18next';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import i18n from '../../i18n';
-import {ThemeProvider} from "next-themes";
+import { ThemeProvider } from "next-themes";
 import '../globals.css';
-import {AuthProvider} from '../components/AuthContext';
+import { AuthProvider } from '../components/AuthContext';
 import Layout from '../components/Layout';
-import {useRouter} from 'next/router';
-import {ActiveLinkProvider} from '../components/ActiveContext';
-import {DevSupport} from "@react-buddy/ide-toolbox-next";
-import {ComponentPreviews, useInitial} from "../components/dev";
+import { useRouter } from 'next/router';
+import { ActiveLinkProvider } from '../components/ActiveContext';
+import { DevSupport } from "@react-buddy/ide-toolbox-next";
 
-export default function App({Component, pageProps}: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
     const currentPath = router.pathname.startsWith('/auth/') ? '/auth' : (router.pathname === '/' ? '/index' : router.pathname);
 
@@ -62,8 +61,8 @@ export default function App({Component, pageProps}: AppProps) {
                             type="image/x-icon"
                             href={`/image/icon${currentPath}/favicon.ico`}
                         />
-                        <meta name="theme-color" content="#090808"/>
-                        <meta property='og:type' content='website'/>
+                        <meta name="theme-color" content="#090808" />
+                        <meta property='og:type' content='website' />
                         <meta
                             property="og:image"
                             content="https://raw.githubusercontent.com/taroj1205/taroj1205.github.io/main/thumbnail.png"
@@ -72,8 +71,8 @@ export default function App({Component, pageProps}: AppProps) {
                             property="og:image:alt"
                             content="Shintaro Jokagi Website Thumbnail"
                         />
-                        <meta name="twitter:card" content="summary_large_image"/>
-                        <meta name="twitter:title" content="taroj.poyo.jp"/>
+                        <meta name="twitter:card" content="summary_large_image" />
+                        <meta name="twitter:title" content="taroj.poyo.jp" />
                         <meta
                             name="twitter:description"
                             content="A website for Shintaro Jokagi"
@@ -86,19 +85,15 @@ export default function App({Component, pageProps}: AppProps) {
                             name="twitter:image:alt"
                             content="Shintaro Jokagi Website Thumbnail"
                         />
-                        <meta name="twitter:site" content="@taroj1205"/>
-                        <meta name="twitter:creator" content="@taroj1205"/>
+                        <meta name="twitter:site" content="@taroj1205" />
+                        <meta name="twitter:creator" content="@taroj1205" />
                     </Head>
                     <ThemeProvider attribute="class">
                         <Layout>
-                            <DevSupport ComponentPreviews={ComponentPreviews}
-                                        useInitialHook={useInitial}
-                            >
-                                <Component {...pageProps} />
-                            </DevSupport>
+                            <Component {...pageProps} />
                         </Layout>
                     </ThemeProvider>
-                    <Analytics/>
+                    <Analytics />
                 </ActiveLinkProvider>
             </I18nextProvider>
         </AuthProvider>

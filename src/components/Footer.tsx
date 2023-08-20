@@ -9,8 +9,8 @@ const Footer = () => {
     const router = useRouter();
 
     return (
-        <footer className="w-full bg-white dark:bg-gray-900 p-4 mt-auto">
-            <div className="mx-auto">
+        <footer className="w-full bg-white dark:bg-gray-900 mt-auto">
+            <div className="mx-auto p-4">
                 <div className="flex justify-between items-center mx-auto md:max-w-2xl">
                     <div className="flex flex-col flex-1">
                         <div>

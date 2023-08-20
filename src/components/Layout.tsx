@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import Header from './Header';
-import Footer from './Footer';
 import { useRouter } from 'next/router';
 
 type LayoutProps = {
@@ -9,15 +8,15 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
     const router = useRouter();
-    const { pathname } = router;
 
-    const shouldRenderFooter = pathname === '/' || pathname === '/about'
-    
     return (
         <>
             <Header />
-            <main>{children}</main>
-            {shouldRenderFooter && <Footer />}
+            <div className='flex flex-col flex-grow min-h-0'>
+                <div className='h-full w-full overflow-y-auto content absolute'>
+                    <main>{children}</main>
+                </div>
+            </div>
         </>
     );
 };
