@@ -42,6 +42,20 @@ const Apps = () => {
 
     const sceneRef = React.useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        const handleResize = () => {
+            const height = window.innerHeight;
+            if (sceneRef.current) {
+                sceneRef.current.style.height = `${height - 40}px`;
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, [sceneRef]);
 
     return (
         <>
