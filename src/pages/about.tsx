@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
 import SchoolHistory from '../components/SchoolHistory';
 import Head from 'next/head';
 import Contacts from '../components/Contacts';
@@ -14,7 +14,7 @@ import Image from 'next/image';
 
 
 const About = () => {
-    const { t } = useTranslation('translation');
+    const {t} = useTranslation('translation');
     const sceneRef = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -32,25 +32,26 @@ const About = () => {
     return (
         <>
             <Head>
-                <meta name='title' content='About - taroj.poyo.jp' />
-                <meta name='description' content='About page for taroj.poyo.jp' />
-                <meta property="og:title" content="About - taroj.poyo.jp" />
+                <meta name='title' content='About - taroj.poyo.jp'/>
+                <meta name='description' content='About page for taroj.poyo.jp'/>
+                <meta property="og:title" content="About - taroj.poyo.jp"/>
                 <meta
                     property="og:description"
                     content="About page for taroj.poyo.jp"
                 />
-                <meta name="twitter:title" content="About - taroj.poyo.jp" />
+                <meta name="twitter:title" content="About - taroj.poyo.jp"/>
                 <meta
                     name="twitter:description"
                     content="About page for taroj.poyo.jp"
                 />
-                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image"/>
                 <title>{t('title.about')}</title>
             </Head>
             <div className='fixed inset-0 z-[-10]'>
-                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" layout="fill" objectFit="cover" />
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover"/>
             </div>
-            <div ref={sceneRef} style={{ minHeight: 'calc(100vh - 40px)' }} className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
+            <div ref={sceneRef} style={{minHeight: 'calc(100vh - 40px)'}}
+                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
                 <Image
                     className="pfp rounded-full w-40 mx-auto"
                     src="/image/profile/pfp.webp"
@@ -89,30 +90,31 @@ const About = () => {
             </div>
             <div className='bg-white dark:bg-zinc-950 w-full'>
                 <div className='lg:flex lg:flex-col lg:justify-center lg:items-center px-4'>
-                    <MySkills />
+                    <MySkills/>
                     <h2 className="text-2xl md:text-4xl mt-6 font-bold">
                         {t('ncea.title')}
                     </h2>
                     {i18n.language === 'ja' && (
-                        <Link href="https://www.edukiwi.com/highschool/ncea-ue/" target="_blank" rel="noopener noreferrer" className='flex items-center'>
+                        <Link href="https://www.edukiwi.com/highschool/ncea-ue/" target="_blank"
+                              rel="noopener noreferrer" className='flex items-center'>
                             https://www.edukiwi.com/highschool/ncea-ue/
                         </Link>
                     )}
-                    <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}<RankScore /></p>
-                    <Graph />
-                    <NCEA />
+                    <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}<RankScore/></p>
+                    <Graph/>
+                    <NCEA/>
                     <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
                         {t('about.education.schoolHistory')}
                     </h2>
-                    <SchoolHistory />
+                    <SchoolHistory/>
                     <div className='mb-5'>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
                             {t('index.contact')}
                         </h2>
-                        <Contacts />
+                        <Contacts/>
                     </div>
                 </div>
-                <Footer />
+                <Footer/>
             </div>
         </>
     );
