@@ -56,7 +56,7 @@ const Apps = () => {
                 <meta name="twitter:title" content="Apps - taroj.poyo.jp"/>
                 <meta
                     name="twitter:description"
-                    content="Index page for taroj.poyo.jp"
+                    content="Apps page for taroj.poyo.jp"
                 />
                 <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image"/>
                 <link rel="preload" href={githubStatsImage} as="image"/>
