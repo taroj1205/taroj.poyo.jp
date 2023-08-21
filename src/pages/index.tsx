@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useTranslation} from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -62,7 +62,8 @@ const MadeWith = () => {
 
 const HomePage = () => {
     const {t} = useTranslation();
-    const {user} = useAuth() || {};
+    const { user } = useAuth() || {};
+    const sceneRef = React.useRef<HTMLDivElement>(null);
 
     const routes = [
         {path: '/', label: 'Home', icon: AiFillHome},
@@ -80,6 +81,19 @@ const HomePage = () => {
             icon: FaGithub
         },
     ];
+
+
+    useEffect(() => {
+        const handleResize = () => {
+            const height = window.innerHeight;
+            if (sceneRef.current) {
+                sceneRef.current.style.height = `${height - 40}px`;
+            }
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <>
@@ -102,7 +116,7 @@ const HomePage = () => {
             <div className='fixed inset-0 z-[-10]'>
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover"/>
             </div>
-            <div style={{height: 'calc(100vh - 40px)'}}
+            <div ref={sceneRef} style={{height: 'calc(100vh - 40px)'}}
                  className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('index.welcome')}
