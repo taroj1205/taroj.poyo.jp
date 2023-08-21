@@ -51,9 +51,9 @@ const About = () => {
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover"/>
             </div>
             <div ref={sceneRef} style={{minHeight: 'calc(100vh - 40px)'}}
-                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
+                    className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
                 <Image
-                    className="pfp rounded-full w-40 mx-auto"
+                    className="pfp rounded-full w-28 md:w-40 mx-auto"
                     src="/image/profile/pfp.webp"
                     alt="Profile Picture"
                     width={300}
@@ -65,8 +65,8 @@ const About = () => {
                 <div className="mt-2 md:mt-8 mx-4">
                     <p className="text-lg md:text-lg">
                         {t('about.birthdate')}
-                    </p>
-                    <p className="text-lg md:text-lg">
+                        <br className='hidden md:block' />
+                        <span className='md:hidden'>&nbsp;</span>
                         {t('about.injury')}
                     </p>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl mt-2 md:mt-6 mb-2 md:mb-4 font-bold">
@@ -85,6 +85,7 @@ const About = () => {
                         <li>{t('about.hobby.jumprope')}</li>
                         <li>{t('about.hobby.programming')}</li>
                         <li>{t('about.hobby.reading')}</li>
+                        <li>{t('about.hobby.table tennis')}</li>
                     </ul>
                 </div>
             </div>
@@ -96,7 +97,7 @@ const About = () => {
                     </h2>
                     {i18n.language === 'ja' && (
                         <Link href="https://www.edukiwi.com/highschool/ncea-ue/" target="_blank"
-                              rel="noopener noreferrer" className='flex items-center'>
+                            rel="noopener noreferrer" className='flex items-center'>
                             https://www.edukiwi.com/highschool/ncea-ue/
                         </Link>
                     )}
