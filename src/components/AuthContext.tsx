@@ -17,13 +17,13 @@ export const useAuth = () => {
 
 
 interface ProfileData {
-    email?: string;
+    email: string;
     user_metadata: {
         username: string;
         avatar: string;
     };
     picture: string;
-    name?: string;
+    name: string;
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
