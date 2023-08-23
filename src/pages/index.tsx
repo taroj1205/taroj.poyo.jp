@@ -120,7 +120,7 @@ const HomePage = () => {
                  className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('index.welcome')}
-                    {user?.username && ` ${user.username}`}!
+                    {user?.user_metadata.username && ` ${user.user_metadata.username}`}!
                 </h1>
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 my-6">
                     {routes.map((route, index) => (
