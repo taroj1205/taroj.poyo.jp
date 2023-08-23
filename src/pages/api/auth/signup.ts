@@ -20,6 +20,8 @@ const signupHandler: NextApiHandler = async (req, res) => {
     const avatar = gravatarUrl(email, {size: 200, default: 'retro'});
 
     try {
+        console.log(email, password, username, avatar);
+
         // Sign up the user using Supabase authentication
         const {data: signupData, error: signupError} = await supabase.auth.signUp({
             email,
@@ -27,7 +29,6 @@ const signupHandler: NextApiHandler = async (req, res) => {
             options: {
                 data: {
                     username,
-                    email,
                     avatar
                 },
                 emailRedirectTo: `/api/auth/callback`,
