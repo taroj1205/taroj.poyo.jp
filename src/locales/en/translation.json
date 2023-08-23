@@ -131,7 +131,7 @@
     "forgotPassword": "Forgot password",
     "login": "Login",
     "loginError": "An error occurred during login. Please try again later.",
-    "loginFailed": "Login failed! Please check your credentials and try again.",
+    "loginFailed": "Login failed! Please check your credentials or verify in your mailbox and try again.",
     "logout": "Logout",
     "password": "Password",
     "passwordContainsEmailOrUsername": "Password must not contain your email or username.",

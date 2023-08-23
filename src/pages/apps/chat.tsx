@@ -8,7 +8,20 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../components/AuthContext';
 import Script from 'next/script';
 
-const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
+
+interface ChatMessage {
+    content: {
+        body: string;
+    };
+    sender: {
+        username: string;
+        avatar: string;
+    };
+    sent_on: string;
+    message_id: string;
+}
+
+const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObject<HTMLDivElement>, setRoomName: React.Dispatch<React.SetStateAction<string>>, setServerName: React.Dispatch<React.SetStateAction<string>> }) => {
     const [messages, setMessages] = useState([]);
     const [serverId, setServerId] = useState('');
     const [roomId, setRoomId] = useState('');
@@ -39,8 +52,10 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                         router.push('/verify');
                         return;
                     } else {
-                        setRoomId(data.channelDetail.room_id);
-                        setServerId(data.channelDetail.server_id);
+                        setRoomId(data.channelDetail.room.id);
+                        setRoomName(data.channelDetail.room.name);
+                        setServerId(data.channelDetail.server.id);
+                        setServerName(data.channelDetail.server.name);
                         console.log("Data:", data, data.channelDetail, roomId, serverId);
                         if (data.status === 400) {
                             errorPopup(data.error.toString());
@@ -81,9 +96,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         // Receive new messages from the server
         channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
-            if (token) {
-                addMessage(data);
-            }
+            addMessage([data] as ChatMessage[]);
         });
 
         const messagesContainer = document.getElementById(
@@ -170,24 +183,12 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
             return text;
         }
 
-        interface ChatMessage {
-            content: {
-                body: string;
-            };
-            sender: {
-                username: string;
-                profile_picture: string;
-            };
-            sent_on: string;
-            message_id: string;
-        }
-
         const formatMessage = async (data: ChatMessage) => {
             try {
                 const messageString = data.content.body;
                 const username = data.sender.username;
                 const sent_on = data.sent_on;
-                const profilePicture = data.sender.profile_picture;
+                const profilePicture = data.sender.avatar;
 
                 const messageText = await wrapCodeInTags(messageString);
 
@@ -239,6 +240,9 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                     'min-h-fit'
                 );
 
+                const containerElement = document.getElementById('messages') as HTMLDivElement;;
+                const pCount = containerElement.childElementCount + 1;
+
                 const imageElement = document.createElement('img') as HTMLImageElement;
                 imageElement.setAttribute('src', profilePicture);
                 imageElement.setAttribute('alt', username);
@@ -265,10 +269,11 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                 const messageTextSpan = document.createElement('span');
                 messageTextSpan.classList.add('messageText', 'whitespace-pre-line', 'text-left');
                 messageTextSpan.innerHTML = formattedMessageText;
+                messageTextSpan.id = pCount.toString();
 
                 const pCountSpan = document.createElement('span');
                 pCountSpan.classList.add('mr-1', 'text-xs', 'text-gray-500');
-                pCountSpan.textContent = `${data.message_id}`;
+                pCountSpan.textContent = pCount.toString();
 
                 // Append elements in the correct order
                 usernameContainer.appendChild(pCountSpan);
@@ -653,6 +658,8 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 
 const ChatPage = () => {
     const chatRef = useRef<HTMLDivElement | null>(null);
+    const [roomName, setRoomName] = useState('');
+    const [serverName, setServerName] = useState('');
     const [height, setHeight] = useState(0);
     const router = useRouter();
     const { t } = useTranslation();
@@ -719,11 +726,19 @@ const ChatPage = () => {
                     name="twitter:description"
                     content="Chat page for taroj.poyo.jp"
                 />
-                <title>{t('title.chat')}</title>
+                <title>
+                    {t('title.chat')}
+                    {serverName && (
+                        ` - ${serverName}`
+                    )}
+                    {roomName && (
+                        ` - ${roomName}`
+                    )}
+                </title>
             </Head>
             <div>
                 <div ref={chatRef} className="w-full max-h-full" style={{ height: height }}>
-                    <Chat chatRef={chatRef} />
+                    <Chat chatRef={chatRef} setRoomName={setRoomName} setServerName={setServerName} />
                 </div>
             </div>
         </>

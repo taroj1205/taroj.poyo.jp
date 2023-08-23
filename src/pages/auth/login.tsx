@@ -12,7 +12,7 @@ const Login: React.FC = () => {
     const { t } = useTranslation();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const { user } = useAuth() || {};
+    const { user, setUser, setToken } = useAuth() || {};
 
     useEffect(() => {
         if (user?.email) {
@@ -44,12 +44,13 @@ const Login: React.FC = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Login successful! Received data:', data);
-
-                if (data.token) {
-                    Cookies.set('token', data.token, { expires: 7 });
-                    localStorage.setItem('userProfileData', JSON.stringify(data.user));
-                    // Redirect to /profile page upon successful login
-                    window.location.href = '/profile';
+                const token = data.data.session?.access_token;
+                if (token) {
+                    Cookies.set('token', token);
+                    localStorage.setItem('userProfileData', JSON.stringify(data.data.user));
+                    setUser?.(data.data.user);
+                    setToken?.(token);
+                    router.push('/profile');
                 }
                 // Add any other logic you need here after successful login
             } else {

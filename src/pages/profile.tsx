@@ -1,27 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
-
-interface ProfileData {
-    email: string;
-    username: string;
-    picture: string;
-}
+import {useAuth, AuthContextValue} from '../components/AuthContext';
 
 const Profile = () => {
-    const [user, setUser] = useState<ProfileData>({
-        email: '',
-        username: '',
-        picture: '',
-    });
-    const { t } = useTranslation();
+    const { user } = useAuth() || {} as AuthContextValue;
 
-    useEffect(() => {
-        const userData = localStorage.getItem("userProfileData");
-        if (userData) {
-            setUser(JSON.parse(userData));
-        }
-    }, []);
+    const { t } = useTranslation();
 
     return (
         <>
@@ -43,11 +28,11 @@ const Profile = () => {
             <div className="flex flex-col items-center pt-20">
                 <img
                     className="w-32 h-32 rounded-full mb-4"
-                    src={user.picture ?? undefined}
-                    alt={user.username ?? undefined}
+                    src={user?.user_metadata.avatar}
+                    alt={user?.user_metadata.username}
                 />
-                <h2 className='text-black dark:text-white'>{t('your.username')}: {user.username}</h2>
-                <p className="text-gray-500">{t('your.email')}: {user.email}</p>
+                <h2 className='text-black dark:text-white'>{t('your.username')}: {user?.user_metadata.username}</h2>
+                <p className="text-gray-500">{t('your.email')}: {user?.email}</p>
             </div>
         </>
     );

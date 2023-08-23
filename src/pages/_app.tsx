@@ -10,7 +10,6 @@ import { AuthProvider } from '../components/AuthContext';
 import Layout from '../components/Layout';
 import { useRouter } from 'next/router';
 import { ActiveLinkProvider } from '../components/ActiveContext';
-import { DevSupport } from "@react-buddy/ide-toolbox-next";
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();

@@ -1,18 +1,17 @@
 import Cookies from 'js-cookie';
 import Head from 'next/head';
 import router from 'next/router';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 
-const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
+const Signup: React.FC = () => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [darkMode, setDarkMode] = useState(false);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [error, setError] = useState('');
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
@@ -93,7 +92,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
         if (password === confirmPassword) {
             fetch('/api/auth/signup', {
                 method: 'POST',
-                body: JSON.stringify({ email, username, password }),
+                body: JSON.stringify({email, username, password}),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -117,7 +116,7 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                         setIsPopupShown(true);
                         const expirationDate = new Date(Date.now() + 60000); // Set expiration to 60 seconds from now
                         localStorage.setItem('emailVerificationCooldownExpiration', expirationDate.toISOString());
-                        Cookies.set('token', data.token, { expires: 7 });
+                        Cookies.set('token', data.token, {expires: 7});
                         localStorage.setItem('email', email);
                     }
                 })
@@ -134,12 +133,12 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
     return (
         <>
             <Head>
-                <meta name='title' content='Authenication - taroj.poyo.jp' />
-                <meta name='description' content='Authenication page for taroj.poyo.jp' />
-                <meta property="og:title" content="Authenication - taroj.poyo.jp" />
-                <meta property="og:description" content="Authenication page for taroj.poyo.jp" />
-                <meta name="twitter:title" content="Authenication - taroj.poyo.jp" />
-                <meta name="twitter:description" content="Authenication page for taroj.poyo.jp" />
+                <meta name='title' content='Authenication - taroj.poyo.jp'/>
+                <meta name='description' content='Authenication page for taroj.poyo.jp'/>
+                <meta property="og:title" content="Authenication - taroj.poyo.jp"/>
+                <meta property="og:description" content="Authenication page for taroj.poyo.jp"/>
+                <meta name="twitter:title" content="Authenication - taroj.poyo.jp"/>
+                <meta name="twitter:description" content="Authenication page for taroj.poyo.jp"/>
                 <title>{t('title.auth.signup')}</title>
             </Head>
             <div className="w-96 max-w-full bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto">
@@ -194,37 +193,37 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                     {/* Show password requirements */}
                     <div className="text-gray-700 dark:text-gray-300 text-sm mb-4">
                         {passwordRequirements.map((requirement, index) => (
-                            <p key={index} className={validPassword[index] ? 'text-green-600 before:content-["✔"]' : 'text-red-600 before:content-["✖"]'}>
+                            <p key={index}
+                               className={validPassword[index] ? 'text-green-600 before:content-["✔"]' : 'text-red-600 before:content-["✖"]'}>
                                 {requirement}
                             </p>
                         ))}
                     </div>
-                    {isPasswordValid && (
-                        <div className="mb-6">
-                            <label htmlFor="confirmPassword" className="block text-gray-700 dark:text-gray-300 mb-2">
-                                {t('auth.confirmPassword')}
-                            </label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                required
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                value={confirmPassword}
-                                autoComplete='password'
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                        </div>
-                    )}
+                    <div className="mb-6">
+                        <label htmlFor="confirmPassword" className="block text-gray-700 dark:text-gray-300 mb-2">
+                            {t('auth.confirmPassword')}
+                        </label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            value={confirmPassword}
+                            autoComplete='password'
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    </div>
                     <div className="flex items-center justify-between mb-4">
                         <button
                             type="submit"
                             className={`${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-indigo-500 dark:bg-indigo-700 hover:bg-indigo-600 dark:hover:bg-indigo-800'
-                                } text-white px-4 py-2 rounded-md focus:outline-none`}
+                            } text-white px-4 py-2 rounded-md focus:outline-none`}
                             disabled={isLoading}
                         >
                             {/* Show loading icon if isLoading is true, else show "Signup" text */}
                             {isLoading ? (
-                                <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                                <div
+                                    className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                             ) : (
                                 t('auth.signup')
                             )}
@@ -243,7 +242,8 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                 {signupSuccess && (
                     <div>
                         {/* Overlay div with dark background */}
-                        {isPopupShown && <div className={`fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50`}></div>}
+                        {isPopupShown &&
+                            <div className={`fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50`}></div>}
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
                             <div className="bg-indigo-500 dark:bg-slate-900 text-white rounded-lg p-8 shadow-lg">
                                 <h3 className="text-2xl font-bold mb-4">{t('auth.signupSuccess')}</h3>
@@ -252,10 +252,10 @@ const Signup: React.FC<{ onLoginClick: () => void }> = ({ onLoginClick }) => {
                                     onClick={() => {
                                         setIsPopupShown(false); // Hide the popup when the button is clicked
                                         setSignupSuccess(false);
-                                        router.push('/auth/verify');
+                                        router.push('/auth/login');
                                     }}
                                 >
-                                    {t('auth.verify')}
+                                    {t('auth.login')}
                                 </button>
                             </div>
                         </div>
