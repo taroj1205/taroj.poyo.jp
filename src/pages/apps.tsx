@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
-import {FaChartBar, FaComments} from 'react-icons/fa';
-import {IconType} from 'react-icons';
-import {useTheme} from 'next-themes';
+import { FaChartBar, FaComments } from 'react-icons/fa';
+import { IconType } from 'react-icons';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
-const RouteLink = ({path, label, icon: Icon}: { path: string; label: string; icon: IconType }) => (
+const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; icon: IconType }) => (
     <Link href={path}
-          className="group flex flex-col items-center justify-center p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md bg-white dark:bg-zinc-950 text-black dark:text-white">
+        className="group flex flex-col items-center justify-center p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md bg-white dark:bg-zinc-950 text-black dark:text-white">
         {Icon && (
             <span
                 className="flex justify-center md:group-hover:opacity-10 opacity-100 text-4xl dark:text-white text-black transition-opacity duration-500">
-                <Icon/>
+                <Icon />
             </span>
         )}
         <div
@@ -25,8 +25,8 @@ const RouteLink = ({path, label, icon: Icon}: { path: string; label: string; ico
 );
 
 const Apps = () => {
-    const {t} = useTranslation();
-    const {theme} = useTheme();
+    const { t } = useTranslation();
+    const { theme } = useTheme();
     const [githubStatsImage, setGithubStatsImage] = useState('');
     const [githubLanguagesImage, setGithubLanguagesImage] = useState('');
 
@@ -36,52 +36,73 @@ const Apps = () => {
     }, [theme]);
 
     const routes = [
-        {path: '/apps/chat', label: 'Chat', icon: FaComments},
-        {path: 'https://analytics.umami.is/share/gbBddDRRyRvseyAP/taroj.poyo.jp', label: 'Analytics', icon: FaChartBar},
+        { path: '/apps/chat', label: 'Chat', icon: FaComments },
+        { path: 'https://analytics.umami.is/share/gbBddDRRyRvseyAP/taroj.poyo.jp', label: 'Analytics', icon: FaChartBar },
     ];
 
     const sceneRef = React.useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const handleResize = () => {
-            const height = window.innerHeight;
-            if (sceneRef.current) {
-                sceneRef.current.style.height = `${height - 40}px`;
-            }
-        };
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         const height = window.innerHeight;
+    //         if (sceneRef.current) {
+    //             sceneRef.current.style.height = `${height - 40}px`;
+    //         }
+    //     };
 
-        window.addEventListener('resize', handleResize);
+    //     window.addEventListener('resize', handleResize);
+
+    //     return () => {
+    //         window.removeEventListener('resize', handleResize);
+    //     }
+    // }, [sceneRef]);
+
+    const [height, setHeight] = useState('calc(100vh-40px)');
+    useEffect(() => {
+        const setVisualViewport = () => {
+            setHeight(`${window.innerHeight - 40}px`);
+        }
+        setVisualViewport();
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVisualViewport);
+        }
 
         return () => {
-            window.removeEventListener('resize', handleResize);
-        }
-    }, [sceneRef]);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener(
+                    'resize',
+                    setVisualViewport
+                );
+            }
+        };
+    }, []);
 
     return (
         <>
             <Head>
-                <meta name='title' content='Apps - taroj.poyo.jp'/>
-                <meta name='description' content='Index page for taroj.poyo.jp'/>
-                <meta property="og:title" content="Apps - taroj.poyo.jp"/>
+                <meta name='title' content='Apps - taroj.poyo.jp' />
+                <meta name='description' content='Index page for taroj.poyo.jp' />
+                <meta property="og:title" content="Apps - taroj.poyo.jp" />
                 <meta
                     property="og:description"
                     content="Index page for taroj.poyo.jp"
                 />
-                <meta name="twitter:title" content="Apps - taroj.poyo.jp"/>
+                <meta name="twitter:title" content="Apps - taroj.poyo.jp" />
                 <meta
                     name="twitter:description"
                     content="Apps page for taroj.poyo.jp"
                 />
-                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image"/>
-                <link rel="preload" href={githubStatsImage} as="image"/>
-                <link rel="preload" href={githubLanguagesImage} as="image"/>
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
+                <link rel="preload" href={githubStatsImage} as="image" />
+                <link rel="preload" href={githubLanguagesImage} as="image" />
                 <title>{t('title.apps')}</title>
             </Head>
             <div className='fixed inset-0 z-[-10]'>
-                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover"/>
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover" />
             </div>
-            <div ref={sceneRef} style={{height: 'calc(100vh - 40px)'}}
-                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
+            <div ref={sceneRef} style={{ height }}
+                className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('apps.list')}
                 </h1>
