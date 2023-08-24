@@ -124,6 +124,18 @@
     "content": "Now showing profile picture in chat!",
     "title": "Announcement"
   },
+  "apps": {
+    "chat": {
+      "login": "You must be logged in to send messages",
+      "scroll-to-bottom": "Scroll to bottom",
+      "send": "Send",
+      "title": "Chat",
+      "type a message": "Type a message...",
+      "typing": "Typing..."
+    },
+    "list": "List of apps",
+    "title": "Apps"
+  },
   "auth": {
     "close": "Close",
     "confirmPassword": "Confirm Password",
@@ -145,14 +157,6 @@
     "verificationCode": "Verification Code",
     "verificationCodeResendError": "Verification code resend failed. Please try again later.",
     "verify": "Verify"
-  },
-  "apps": {
-    "title": "Apps",
-    "list": "List of apps",
-    "chat": {
-      "title": "Chat",
-      "login": "You must be logged in to send messages"
-    }
   },
   "change": {
     "already set": "Already set",

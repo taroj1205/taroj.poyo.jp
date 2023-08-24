@@ -106,7 +106,7 @@ const Profile = () => {
                 />
             )}
             {isDropdownOpen && (
-                <div className="absolute top-8 z-[11] right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
+                <div className="absolute top-8 z-[11] right-2 mt-1 w-min-48 w-fit bg-white rounded-md shadow-lg">
                     <div className="py-1">
                         {user && user?.user_metadata.avatar && (
                             <>
