@@ -1,33 +1,33 @@
 import React, { useEffect } from 'react';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
 import Contacts from '../components/Contacts';
-import {AiFillHome} from 'react-icons/ai';
-import {FaBlog, FaCog, FaComments, FaGithub, FaUser} from 'react-icons/fa';
-import {useAuth} from '../components/AuthContext';
-import {SiNextdotjs, SiReact, SiTailwindcss} from 'react-icons/si';
-import {IconType} from 'react-icons';
+import { AiFillHome } from 'react-icons/ai';
+import { FaBlog, FaCog, FaComments, FaGithub, FaUser } from 'react-icons/fa';
+import { useAuth } from '../components/AuthContext';
+import { SiNextdotjs, SiReact, SiTailwindcss } from 'react-icons/si';
+import { IconType } from 'react-icons';
 import Image from 'next/image';
 import Footer from '../components/Footer';
 
-const SkillItem = ({icon: Icon, label, color}: { icon: IconType; label: string; color: string }) => (
+const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string; color: string }) => (
     <div
         className="flex flex-col items-center justify-center my-2 cursor-pointer transition duration-300 transform hover:scale-105 p-4 rounded-lg"
-        style={{backgroundColor: color, color: 'white', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)'}}
+        style={{ backgroundColor: color, color: 'white', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
     >
-        <Icon className="w-16 h-16 mb-2"/>
+        <Icon className="w-16 h-16 mb-2" />
         <span className="text-lg text-center font-semibold">{label}</span>
     </div>
 );
 
-const RouteLink = ({path, label, icon: Icon}: { path: string; label: string; icon: IconType }) => (
+const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; icon: IconType }) => (
     <Link href={path}
-          className="group flex flex-col items-center justify-center p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md bg-white dark:bg-zinc-950 text-black dark:text-white">
+        className="group flex flex-col items-center justify-center p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md bg-white dark:bg-zinc-950 text-black dark:text-white">
         {Icon && (
             <span
                 className="flex justify-center md:group-hover:opacity-10 opacity-100 text-4xl dark:text-white text-black transition-opacity duration-500">
-                <Icon/>
+                <Icon />
             </span>
         )}
         <div
@@ -40,12 +40,12 @@ const RouteLink = ({path, label, icon: Icon}: { path: string; label: string; ico
 
 
 const MadeWith = () => {
-    const {t} = useTranslation('translation'); // Assuming you have translation keys for skill labels
+    const { t } = useTranslation('translation'); // Assuming you have translation keys for skill labels
 
     const skills = [
-        {icon: SiReact, label: t('skill.react'), color: '#0e7696'}, // Blue for React
-        {icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000'}, // Black for Next.js
-        {icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF'} // Blue for Tailwind CSS
+        { icon: SiReact, label: t('skill.react'), color: '#0e7696' }, // Blue for React
+        { icon: SiNextdotjs, label: t('skill.nextjs'), color: '#000000' }, // Black for Next.js
+        { icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF' } // Blue for Tailwind CSS
     ];
 
     return (
@@ -53,7 +53,7 @@ const MadeWith = () => {
             <h2 className="text-2xl md:text-4xl font-bold">{t('skill.madeWith')}</h2>
             <div className="grid grid-cols-3 gap-4 max-w-sm">
                 {skills.map((skill, index) => (
-                    <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color}/>
+                    <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}
             </div>
         </div>
@@ -61,15 +61,15 @@ const MadeWith = () => {
 };
 
 const HomePage = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const { user } = useAuth() || {};
     const sceneRef = React.useRef<HTMLDivElement>(null);
 
     const routes = [
-        {path: '/', label: 'Home', icon: AiFillHome},
-        {path: '/about', label: 'About', icon: FaUser},
-        {path: '/apps/chat', label: 'Chat', icon: FaComments},
-        {path: '/settings', label: 'Settings', icon: FaCog},
+        { path: '/', label: 'Home', icon: AiFillHome },
+        { path: '/about', label: 'About', icon: FaUser },
+        { path: '/apps/chat', label: 'Chat', icon: FaComments },
+        { path: '/settings', label: 'Settings', icon: FaCog },
         {
             path: 'https://taroj1205.hatenablog.com',
             label: 'Blog',
@@ -98,26 +98,26 @@ const HomePage = () => {
     return (
         <>
             <Head>
-                <meta name='title' content='Home - taroj.poyo.jp'/>
-                <meta name='description' content='Index page for taroj.poyo.jp'/>
-                <meta property="og:title" content="Home - taroj.poyo.jp"/>
+                <meta name='title' content='Home - taroj.poyo.jp' />
+                <meta name='description' content='Index page for taroj.poyo.jp' />
+                <meta property="og:title" content="Home - taroj.poyo.jp" />
                 <meta
                     property="og:description"
                     content="Index page for taroj.poyo.jp"
                 />
-                <meta name="twitter:title" content="Home - taroj.poyo.jp"/>
+                <meta name="twitter:title" content="Home - taroj.poyo.jp" />
                 <meta
                     name="twitter:description"
                     content="Index page for taroj.poyo.jp"
                 />
-                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image"/>
+                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
                 <title>{t('title.index')}</title>
             </Head>
             <div className='fixed inset-0 z-[-10]'>
-                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover"/>
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover" />
             </div>
-            <div ref={sceneRef} style={{height: 'calc(100vh - 40px)'}}
-                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
+            <div ref={sceneRef} style={{ height: 'calc(100vh - 40px)' }}
+                className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('index.welcome')}
                     {user?.user_metadata.username && ` ${user.user_metadata.username}`}!
@@ -137,8 +137,8 @@ const HomePage = () => {
                 <div className='flex items-center justify-center'>
                     <div className='mx-4 max-w-5xl'>
                         <h2 className="text-2xl md:text-4xl font-bold">{t('index.contact')}</h2>
-                        <Contacts/>
-                        <MadeWith/>
+                        <Contacts />
+                        <MadeWith />
                         <h2 className="text-2xl md:text-4xl mt-8 mb-4 font-bold">{t('supported language')}</h2>
                         <ul className="list-disc list-inside text-lg font-bold mb-5">
                             <li>{t('english')}</li>
@@ -146,7 +146,7 @@ const HomePage = () => {
                         </ul>
                     </div>
                 </div>
-                <Footer/>
+                <Footer />
             </div>
         </>
     );

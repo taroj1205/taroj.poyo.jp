@@ -48,7 +48,7 @@ const About = () => {
                 <title>{t('title.about')}</title>
             </Head>
             <div className='fixed inset-0 z-[-10]'>
-                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover"/>
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true}/>
             </div>
             <div ref={sceneRef} style={{minHeight: 'calc(100vh - 40px)'}}
                     className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
@@ -92,6 +92,10 @@ const About = () => {
             <div className='bg-white dark:bg-zinc-950 w-full'>
                 <div className='lg:flex lg:flex-col lg:justify-center lg:items-center px-4'>
                     <MySkills/>
+                    <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
+                        {t('about.education.schoolHistory')}
+                    </h2>
+                    <SchoolHistory />
                     <h2 className="text-2xl md:text-4xl mt-6 font-bold">
                         {t('ncea.title')}
                     </h2>
@@ -104,10 +108,6 @@ const About = () => {
                     <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}<RankScore/></p>
                     <Graph/>
                     <NCEA/>
-                    <h2 className="text-2xl md:text-4xl mt-6 mb-4 font-bold">
-                        {t('about.education.schoolHistory')}
-                    </h2>
-                    <SchoolHistory/>
                     <div className='mb-5'>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl mt-6 mb-2 font-bold">
                             {t('index.contact')}
