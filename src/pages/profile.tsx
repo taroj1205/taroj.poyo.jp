@@ -4,7 +4,15 @@ import { useTranslation } from 'react-i18next';
 import {useAuth, AuthContextValue} from '../components/AuthContext';
 
 const Profile = () => {
-    const { user } = useAuth() || {} as AuthContextValue;
+    const { user, isLoading } = useAuth() || {} as AuthContextValue;
+
+    useEffect(() => {
+        if (isLoading === false) {
+            if (!user) {
+                window.location.href = '/auth/login';
+            }
+        }
+    }, [isLoading])
 
     const { t } = useTranslation();
 
