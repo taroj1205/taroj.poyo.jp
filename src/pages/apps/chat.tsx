@@ -109,7 +109,33 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
         // Receive new messages from the server
         channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
+            const chatContainer = document.getElementById('messages') as HTMLDivElement;
+            const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight;
+
             setMessages((prevMessages) => [...prevMessages, ...[data]]);
+
+            console.log('Is scrolled to bottom:', isScrolledToBottom);
+
+            setTimeout(() => {
+                if (isScrolledToBottom) {
+                    const lastDiv = chatContainer.lastElementChild as HTMLDivElement;
+                    console.log(lastDiv);
+                    lastDiv.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+                }
+
+                // Log the last visible div in chatContainer
+                const visibleDivs = Array.from(chatContainer.children).filter((child) => {
+                    const rect = child.getBoundingClientRect();
+                    return rect.top >= 0 && rect.bottom <= chatContainer.clientHeight;
+                });
+
+                if (visibleDivs.length > 0) {
+                    const lastVisibleDiv = visibleDivs[visibleDivs.length - 1] as HTMLDivElement;
+                    console.log('Last visible div content:', lastVisibleDiv.textContent);
+                } else {
+                    console.log('No visible divs in chatContainer.');
+                }
+            }, 300);
         });
 
         const messagesContainer = document.getElementById(
@@ -160,10 +186,10 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                         }
                     );
 
-                    console.log(lowestVisibleElement);
+                    // console.log(lowestVisibleElement);
                     const id = lowestVisibleElement.id;
                     scrollPosRef.current = parseInt(id);
-                    console.log(id);
+                    // console.log(id);
 
                     // Check if the stored ID is null or lower than the current visible element's ID
                     const storedId = parseInt(
@@ -424,11 +450,14 @@ const Main: React.FC<MainProps> = ({
     }, []);
 
     const scrollToBottom = () => {
-        if (messagesRef.current) {
-            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-            console.log(inputContainerHeight);
-        }
+        const chatContainer = document.getElementById(
+            'messages'
+        ) as HTMLDivElement;
+
+        const lastDiv = chatContainer.lastElementChild as HTMLDivElement;
+        lastDiv.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
     };
+
 
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let bottom = false;
