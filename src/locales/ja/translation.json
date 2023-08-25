@@ -124,6 +124,18 @@
     "content": "チャットでプロフィール画像を表示するようになりました！",
     "title": "お知らせ"
   },
+  "apps": {
+    "chat": {
+      "login": "ログインが必要です。",
+      "scroll-to-bottom": "一番下までスクロール",
+      "send": "送信",
+      "title": "チャット",
+      "type a message": "メッセージを入力してください。",
+      "typing": "入力中..."
+    },
+    "list": "アプリ一覧",
+    "title": "アプリ"
+  },
   "auth": {
     "close": "閉じる",
     "confirmPassword": "パスワードの確認",
@@ -131,7 +143,7 @@
     "forgotPassword": "パスワードを忘れた場合",
     "login": "ログイン",
     "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。",
-    "loginFailed": "ログインに失敗しました。入力した情報を確認して、もう一度お試しください。",
+    "loginFailed": "ログインに失敗しました。入力した情報を確認し、メールボックスで確認した上、もう一度お試しください。",
     "logout": "ログアウト",
     "password": "パスワード",
     "passwordContainsEmailOrUsername": "パスワードにはメールアドレスやユーザー名を含めることはできません。",
@@ -154,14 +166,6 @@
     "profile picture URL": "プロフィール画像のURL",
     "set picture": "画像を設定する",
     "theme": "テーマを変える"
-  },
-  "apps": {
-    "title": "アプリ",
-    "list": "アプリ一覧",
-    "chat": {
-      "title": "チャット",
-      "login": "ログインが必要です。"
-    }
   },
   "copied": "コピーしました",
   "current": {

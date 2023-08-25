@@ -7,12 +7,26 @@ import router, { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../components/AuthContext';
 import Script from 'next/script';
+import i18n from '../../../i18n';
 
-const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
-    const [messages, setMessages] = useState([]);
+
+interface ChatMessage {
+    content: {
+        body: string;
+    };
+    sender: {
+        username: string;
+        avatar: string;
+    };
+    sent_on: string;
+    message_id: string;
+}
+
+const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObject<HTMLDivElement>, setRoomName: React.Dispatch<React.SetStateAction<string>>, setServerName: React.Dispatch<React.SetStateAction<string>> }) => {
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [serverId, setServerId] = useState('');
     const [roomId, setRoomId] = useState('');
-    const { token } = useAuth() || {};
+    const { token, user, isLoading } = useAuth() || {};
     const [isLoadingState, setisLoadingState] = useState(false);
 
     const { t } = useTranslation();
@@ -21,43 +35,54 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
     const scrollPosRef = useRef<number>(0);
 
     useEffect(() => {
+        if (isLoading === false) {
+            if (!token || !user) {
+                router.push('/auth/login');
+                return;
+            }
+        }
+    }, [isLoading])
+
+    useEffect(() => {
         const fetchDefaultMessages = async () => {
             try {
-                    console.log('Getting default messages');
-                    const response = await fetch(`/api/chat/default`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    const data = await response.json();
-                    console.log(data);
-                    if (data.error === 401) {
-                        router.push('/auth');
+                console.log('Getting default messages');
+                const response = await fetch(`/api/chat/default`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const data = await response.json();
+                console.log(data);
+                if (data.error === 401) {
+                    router.push('/auth');
+                    return;
+                } else if (data.verified === 0) {
+                    router.push('/verify');
+                    return;
+                } else {
+                    setRoomId(data.channelDetail.room.id);
+                    setRoomName(data.channelDetail.room.name);
+                    setServerId(data.channelDetail.server.id);
+                    setServerName(data.channelDetail.server.name);
+                    console.log("Data:", data, data.channelDetail, roomId, serverId);
+                    if (data.status === 400) {
+                        errorPopup(data.error.toString());
                         return;
-                    } else if (data.verified === 0) {
-                        router.push('/verify');
-                        return;
-                    } else {
-                        setRoomId(data.channelDetail.room_id);
-                        setServerId(data.channelDetail.server_id);
-                        console.log("Data:", data, data.channelDetail, roomId, serverId);
-                        if (data.status === 400) {
-                            errorPopup(data.error.toString());
-                            return;
-                        }
-                        setMessages(data.formattedMessages);
-                        const read = localStorage.getItem('read') || '0';
-                        document.getElementById(read)?.scrollIntoView();
-                        chatRef.current?.classList.remove('animate-pulse');
-                        
-                        document
-                            .getElementById('send-button')
-                            ?.removeAttribute('disabled');
-                        document
-                            .getElementById('input-field')
-                            ?.removeAttribute('disabled');
                     }
+                    setMessages(data.formattedMessages);
+                    const read = localStorage.getItem('read') || '0';
+                    document.getElementById(read)?.scrollIntoView();
+                    chatRef.current?.classList.remove('animate-pulse');
+
+                    document
+                        .getElementById('send-button')
+                        ?.removeAttribute('disabled');
+                    document
+                        .getElementById('input-field')
+                        ?.removeAttribute('disabled');
+                }
             } catch (error: any) {
                 console.error(
                     'An error occurred while fetching default messages:',
@@ -81,9 +106,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         // Receive new messages from the server
         channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
-            if (token) {
-                addMessage(data);
-            }
+            setMessages((prevMessages) => [...prevMessages, ...[data]]);
         });
 
         const messagesContainer = document.getElementById(
@@ -154,164 +177,6 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
         };
 
         messagesContainer.addEventListener('scroll', handleScroll);
-
-        async function wrapCodeInTags(text: string): Promise<string> {
-            const codeRegex = /```(\w*)([\s\S]*?)```/;
-            const match = text.match(codeRegex);
-
-            if (match) {
-                const lang = match[1];
-                const codeContent = match[2];
-                const wrappedCode = `<code${lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
-                    }>${codeContent}</code>`;
-                return text.replace(codeRegex, wrappedCode);
-            }
-
-            return text;
-        }
-
-        interface ChatMessage {
-            content: {
-                body: string;
-            };
-            sender: {
-                username: string;
-                profile_picture: string;
-            };
-            sent_on: string;
-            message_id: string;
-        }
-
-        const formatMessage = async (data: ChatMessage) => {
-            try {
-                const messageString = data.content.body;
-                const username = data.sender.username;
-                const sent_on = data.sent_on;
-                const profilePicture = data.sender.profile_picture;
-
-                const messageText = await wrapCodeInTags(messageString);
-
-                let formattedMessageText = messageText.replace(
-                    /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
-                    (match: any) => {
-                        if (match.startsWith('>>')) {
-                            return `<a href="#${match.slice(
-                                2
-                            )}" class="jump">${match}</a>`;
-                        } else {
-                            return `<a href="${match}" target="_blank">${match}</a>`;
-                        }
-                    }
-                );
-
-                if (
-                    formattedMessageText &&
-                    formattedMessageText.includes('\\')
-                ) {
-                    formattedMessageText = formattedMessageText.replace(
-                        /\\/g,
-                        ''
-                    );
-                }
-
-                const format = navigator.language === 'ja' ? 'ja-JP' : 'en-NZ';
-                const options: Intl.DateTimeFormatOptions = {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    hour12: false,
-                };
-
-                const formatter = new Intl.DateTimeFormat(format, options);
-                const formattedSentOn = formatter
-                    .format(new Date(sent_on))
-                    .replace(',', '.');
-
-                const messageContainer = document.createElement('div');
-                messageContainer.classList.add(
-                    'flex',
-                    'items-start',
-                    'mb-2',
-                    'whitespace-nowrap',
-                    'min-h-fit'
-                );
-
-                const imageElement = document.createElement('img') as HTMLImageElement;
-                imageElement.setAttribute('src', profilePicture);
-                imageElement.setAttribute('alt', username);
-                imageElement.setAttribute('width', '50');
-                imageElement.setAttribute('height', '50');
-                imageElement.classList.add('w-10', 'h-10', 'rounded-full', 'ml-2', 'mr-2');
-
-                const contentContainer = document.createElement('div');
-
-                const usernameContainer = document.createElement('div');
-                usernameContainer.classList.add('flex', 'items-center');
-
-                const usernameSpan = document.createElement('span');
-                usernameSpan.classList.add('text-sm', 'font-semibold');
-                usernameSpan.textContent = `${username}`;
-
-                const sentOnSpan = document.createElement('span');
-                sentOnSpan.classList.add('ml-1', 'text-xs', 'text-gray-500');
-                sentOnSpan.textContent = `${formattedSentOn}`;
-
-                const messageTextContainer = document.createElement('div');
-                messageTextContainer.classList.add('text-sm', 'mr-[1ch]');
-
-                const messageTextSpan = document.createElement('span');
-                messageTextSpan.classList.add('messageText', 'whitespace-pre-line', 'text-left');
-                messageTextSpan.innerHTML = formattedMessageText;
-
-                const pCountSpan = document.createElement('span');
-                pCountSpan.classList.add('mr-1', 'text-xs', 'text-gray-500');
-                pCountSpan.textContent = `${data.message_id}`;
-
-                // Append elements in the correct order
-                usernameContainer.appendChild(pCountSpan);
-                usernameContainer.appendChild(usernameSpan);
-                usernameContainer.appendChild(sentOnSpan);
-
-                messageTextContainer.appendChild(messageTextSpan);
-
-                contentContainer.appendChild(usernameContainer);
-                contentContainer.appendChild(messageTextContainer);
-
-                messageContainer.appendChild(imageElement);
-                messageContainer.appendChild(contentContainer);
-
-                messagesContainer.appendChild(messageContainer);
-            } catch (error) {
-                console.error('Error formatting message:', error);
-            }
-        };
-
-        const addMessage = async (data: Array<any>) => {
-            console.log('Running addMessage() ', data);
-            const messagesContainer = document.getElementById(
-                'messages'
-            ) as HTMLDivElement;
-            console.log(messagesContainer);
-
-            for (let i = 0; i < data.length; i++) {
-                console.log('Item: ', data[i]);
-                await formatMessage(data[i]);
-                const isAtBottom =
-                    messagesContainer.scrollTop +
-                    messagesContainer.clientHeight ===
-                    messagesContainer.scrollHeight;
-                if (isAtBottom) {
-                    messagesContainer.scrollTop =
-                        messagesContainer.scrollHeight;
-                }
-            }
-        };
-
-        addMessage(messages as ChatMessage[]);
-
 
         inputRef.current?.addEventListener('input', () => {
             localStorage.setItem('input', inputRef.current?.value || '');
@@ -470,6 +335,7 @@ const Chat = ({ chatRef }: { chatRef: React.RefObject<HTMLDivElement> }) => {
                     sendMessage={sendMessage}
                     isLoadingState={isLoadingState}
                     scrollPosRef={scrollPosRef}
+                    messages={messages}
                 />
             </Container>
         </>
@@ -481,6 +347,7 @@ interface MainProps {
     sendMessage: () => void;
     isLoadingState: boolean;
     scrollPosRef: React.RefObject<number>;
+    messages: Array<ChatMessage>;
 }
 
 const Main: React.FC<MainProps> = ({
@@ -488,12 +355,14 @@ const Main: React.FC<MainProps> = ({
     sendMessage,
     isLoadingState,
     scrollPosRef,
+    messages,
 }) => {
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
     const [inputContainerHeight, setInputContainerHeight] = useState(0);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [height, setHeight] = useState(0);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -505,7 +374,7 @@ const Main: React.FC<MainProps> = ({
         };
 
         const setVisualViewport = () => {
-            const vv = window.visualViewport;
+            const vv = document.documentElement;
             if (vv) {
                 const root = document.documentElement;
                 root.style.setProperty(
@@ -533,14 +402,14 @@ const Main: React.FC<MainProps> = ({
 
         window.addEventListener('resize', checkIfMobile);
 
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', setVisualViewport);
+        if (document.documentElement) {
+            document.documentElement.addEventListener('resize', setVisualViewport);
         }
 
         return () => {
             window.removeEventListener('resize', checkIfMobile);
-            if (window.visualViewport) {
-                window.visualViewport.removeEventListener(
+            if (document.documentElement) {
+                document.documentElement.removeEventListener(
                     'resize',
                     setVisualViewport
                 );
@@ -588,26 +457,16 @@ const Main: React.FC<MainProps> = ({
 
     return (
         <div
-            className="flex flex-col flex-grow min-h-0 w-full max-h-full fixed top-0"
-            style={{ height: height }}
+            className="flex flex-col min-h-0 w-full max-h-full"
         >
-            <div
-                id="messages"
-                ref={messagesRef}
-                className="overflow-y-auto overflow-x-hidden pt-16"
-                style={{
-                    flex: '1',
-                }}
-            >
-                {/* Messages content */}
-            </div>
+            <MessagesComponent messages={messages} isLoadingState={isLoadingState} height={height} />
             <div className="w-full" style={{ flex: '0' }}>
                 <button
-                    aria-label="Scroll to bottom"
+                    aria-label={t('apps.chat.scroll-to-bottom')}
                     className="whitespace-nowrap text-right bg-gray-300 dark:bg-gray-800 text-black dark:text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
                     onClick={scrollToBottom}
                 >
-                    Scroll to Bottom{' '}
+                    {t('apps.chat.scroll-to-bottom')}{' '}
                     <span className="ml-1 animate-bounce">&#8595;</span>
                 </button>
 
@@ -616,7 +475,7 @@ const Main: React.FC<MainProps> = ({
                         <textarea
                             id="input-field"
                             ref={inputRef}
-                            placeholder={`Type a message...`}
+                            placeholder={t('apps.chat.type a message')}
                             autoFocus
                             disabled
                             rows={1}
@@ -626,7 +485,7 @@ const Main: React.FC<MainProps> = ({
                     </span>
                     <button
                         id="send-button"
-                        aria-label="send button"
+                        aria-label={t('apps.chat.send')}
                         onClick={!isLoadingState ? sendMessage : undefined}
                         disabled={isLoadingState}
                         className="w-12 bottom-0 right-0 sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
@@ -643,23 +502,200 @@ const Main: React.FC<MainProps> = ({
     );
 };
 
+const MessagesComponent: React.FC<{ messages: ChatMessage[], isLoadingState: boolean, height: number }> = ({ messages, isLoadingState, height }) => {
+    const [formattedMessages, setFormattedMessages] = useState<string[]>([]);
+
+    useEffect(() => {
+        const formatMessages = async () => {
+            const formattedArray: string[] = [];
+
+            for (const message of messages) {
+                const formattedMessageHTML = await formatMessageBody(message.content.body);
+                formattedArray.push(formattedMessageHTML);
+            }
+
+            setFormattedMessages(formattedArray);
+        };
+
+        formatMessages();
+    }, [messages]);
+
+    useEffect(() => {
+        messages.forEach(message => {
+            const img = new Image();
+            img.src = message.sender.avatar;
+        });
+    }, [messages]);
+
+    const formatMessageBody = async (messageString: string): Promise<string> => {
+        async function wrapCodeInTags(text: string): Promise<string> {
+            const codeRegex = /```(\w*)([\s\S]*?)```/;
+            const match = text.match(codeRegex);
+
+            if (match) {
+                const lang = match[1];
+                const codeContent = match[2];
+                const wrappedCode = `<code${lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
+                    }>${codeContent}</code>`;
+                return text.replace(codeRegex, wrappedCode);
+            }
+
+            return text;
+        }
+
+        const messageText = await wrapCodeInTags(messageString);
+
+        let formattedMessageText = messageText.replace(
+            /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,
+            (match: any) => {
+                if (match.startsWith('>>')) {
+                    return `<a href="#${match.slice(
+                        2
+                    )}" class="jump">${match}</a>`;
+                } else {
+                    return `<a href="${match}" target="_blank">${match}</a>`;
+                }
+            }
+        );
+
+        if (
+            formattedMessageText &&
+            formattedMessageText.includes('\\')
+        ) {
+            formattedMessageText = formattedMessageText.replace(
+                /\\/g,
+                ''
+            );
+        }
+        return formattedMessageText as string;
+    }
+
+    const formatSentOn = (sent_on: string, lang: string) => {
+        const format = lang === 'ja' ? 'ja-JP' : 'en-NZ';
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: false,
+        };
+
+        const formatter = new Intl.DateTimeFormat(format, options);
+        const formattedSentOn = formatter
+            .format(new Date(sent_on))
+            .replace(',', '.');
+
+        return formattedSentOn;
+    }
+
+    return (
+        <div
+            id="messages"
+            className={`overflow-y-auto overflow-x-hidden ${isLoadingState ? 'animate-pulse' : ''}`}
+            style={{
+                flex: '1',
+            }}
+        >
+            {isLoadingState ? (
+                <div className="w-full h-12 bg-gray-300 dark:bg-gray-800 animate-pulse mb-2"></div>
+            ) : (
+                messages.length === 0 ? (
+                    <PlaceholderMessages count={20} height={height} />
+                ) : (
+                    messages.map((message, index) => {
+                        if (formattedMessages[index] !== undefined) {
+                            return (
+                                <div
+                                    className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
+                                    key={index}
+                                >
+                                    <img
+                                        src={message.sender.avatar}
+                                        alt={message.sender.username}
+                                        width="50"
+                                        height="50"
+                                        className="w-10 h-10 rounded-full ml-2 mr-2"
+                                    />
+                                    <div>
+                                        <div className="flex items-center">
+                                            <span className="mr-1 text-xs text-gray-500">
+                                                {index + 1}
+                                            </span>
+                                            <span className="text-sm font-semibold">
+                                                {message.sender.username}
+                                            </span>
+                                            <span className="ml-1 text-xs text-gray-500">
+                                                {i18n.language === 'ja' ? (
+                                                    <span className="ml-1 text-xs text-gray-500">
+                                                        {formatSentOn(message.sent_on, 'ja')}
+                                                    </span>
+                                                ) : (
+                                                    <span className="ml-1 text-xs text-gray-500">
+                                                        {formatSentOn(message.sent_on, 'en')}
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className="text-sm mr-[1ch]">
+                                            <span
+                                                className="messageText whitespace-pre-line text-left"
+                                                id={message.message_id}
+                                            >
+                                                <span
+                                                    className="messageText whitespace-pre-line text-left"
+                                                    id={message.message_id}
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: formattedMessages[index],
+                                                    }}
+                                                ></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })
+                )
+            )}
+        </div>
+    )
+}
+
+const PlaceholderMessages: React.FC<{ count: number, height: number }> = ({ count, height }) => {
+    const placeholders = Array.from({ length: count }, (_, index) => (
+        <div className="flex mb-2 whitespace-nowrap min-h-fit bg-white dark:bg-gray-800 shadow rounded-lg p-2">
+            <div className="w-10 h-10 bg-gray-300 rounded-full ml-2 mr-2"></div>
+            <div className="flex-grow">
+                <div className="flex items-center mb-1">
+                    <span className="mr-1 text-xs text-gray-500 w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
+                    <span className="text-sm font-semibold bg-gray-300 dark:bg-gray-600 rounded-full w-16 h-4 ml-2"></span>
+                    <span className="ml-1 text-xs text-gray-500 bg-gray-300 dark:bg-gray-600 rounded-full w-12 h-4"></span>
+                </div>
+                <div className="bg-gray-300 dark:bg-gray-600 h-4 rounded-md"></div>
+                <div className="bg-gray-300 dark:bg-gray-600 h-4 rounded-md mt-1"></div>
+                <div className="bg-gray-300 dark:bg-gray-600 h-4 rounded-md mt-1"></div>
+            </div>
+        </div>
+    ));
+    return (
+        <div className="flex flex-col items-left justify-center z-0" style={{height}}>
+            {placeholders}
+        </div>
+    );
+};
+
 interface ContainerProps {
     children: ReactNode;
 }
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
-    return <div className="flex box-border m-0">{children}</div>;
-};
-
-const ChatPage = () => {
-    const chatRef = useRef<HTMLDivElement | null>(null);
-    const [height, setHeight] = useState(0);
-    const router = useRouter();
-    const { t } = useTranslation();
+    const [height, setHeight] = useState('calc(100vh-40px)');
 
     useEffect(() => {
         const setVisualViewport = () => {
-            const vv = window.visualViewport;
+            const vv = document.documentElement;
             if (vv) {
                 const root = document.documentElement;
                 root.style.setProperty(
@@ -670,7 +706,7 @@ const ChatPage = () => {
                     '--vvh',
                     `${document.documentElement.clientHeight}px`
                 );
-                setHeight(document.documentElement.clientHeight);
+                setHeight(`${document.documentElement.clientHeight - 40}px`);
             }
         };
         setVisualViewport();
@@ -678,11 +714,6 @@ const ChatPage = () => {
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', setVisualViewport);
         }
-
-        if (chatRef.current) {
-            chatRef.current.classList.add('animate-pulse');
-        }
-
         return () => {
             if (window.visualViewport) {
                 window.visualViewport.removeEventListener(
@@ -692,6 +723,20 @@ const ChatPage = () => {
             }
         };
     }, [router]);
+    return <div className="flex box-border m-0" style={{ height }}>{children}</div>;
+};
+
+const ChatPage = () => {
+    const chatRef = useRef<HTMLDivElement | null>(null);
+    const [roomName, setRoomName] = useState('');
+    const [serverName, setServerName] = useState('');
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        if (chatRef.current) {
+            chatRef.current.classList.add('animate-pulse');
+        }
+    }, []);
 
     return (
         <>
@@ -719,11 +764,19 @@ const ChatPage = () => {
                     name="twitter:description"
                     content="Chat page for taroj.poyo.jp"
                 />
-                <title>{t('title.chat')}</title>
+                <title>
+                    {t('title.chat')}
+                    {serverName && (
+                        ` - ${serverName}`
+                    )}
+                    {roomName && (
+                        ` - ${roomName}`
+                    )}
+                </title>
             </Head>
             <div>
-                <div ref={chatRef} className="w-full max-h-full" style={{ height: height }}>
-                    <Chat chatRef={chatRef} />
+                <div ref={chatRef} className="w-full max-h-full">
+                    <Chat chatRef={chatRef} setRoomName={setRoomName} setServerName={setServerName} />
                 </div>
             </div>
         </>

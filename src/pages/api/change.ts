@@ -1,7 +1,5 @@
 import { NextApiHandler } from 'next';
-import mysql from 'mysql';
-
-const dbConfig = process.env.DATABASE_URL || '';
+import { createClient } from '@supabase/supabase-js';
 
 const changeHandler: NextApiHandler = async (req, res) => {
     if (req.method !== 'POST') {
@@ -14,42 +12,52 @@ const changeHandler: NextApiHandler = async (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const connection = mysql.createConnection(dbConfig);
+    // Initialize Supabase client
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+    const service_role = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
+    const supabase = createClient(supabaseUrl, service_role, { auth: { autoRefreshToken: false, persistSession: false } });
 
     try {
-        // Fetch the user ID from the user_tokens table using the token
-        const selectUserIdQuery = 'SELECT user_id FROM user_tokens WHERE token = ?';
-        connection.query(selectUserIdQuery, [token], async (error: mysql.MysqlError | null, rows: any[]) => {
-            if (error) {
-                console.error('Error fetching user ID:', error);
+        const userId = req.body.token;
+
+        if (!userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        const { data: user, error: userError } = await supabase.auth.getUser(userId);
+
+        if (userError) {
+            console.error('Error fetching user:', userError);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        if (!user) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        const user_id = user.user.id;
+
+        try {
+        const newPictureURL = req.body.url;
+
+            // Update the user's profile picture in the metadata using Supabase
+            const { error: updateError } = await supabase.auth.admin.updateUserById(
+                user_id,
+                {
+                    user_metadata: { avatar: newPictureURL }
+                }
+            );
+
+            if (updateError) {
+                console.error('Error updating user profile picture:', updateError);
                 return res.status(500).json({ error: 'Internal server error' });
             } else {
-                if (rows.length === 0) {
-                    return res.status(404).json({ error: 'User not found' });
-                }
-
-                const userId = rows[0].user_id;
-                console.log(userId);
-
-                const newPictureURL = req.body.url;
-
-                try {
-                    // Update the user's profile picture in the database with the new image URL
-                    const updateUserQuery = 'UPDATE users SET profile_picture = ? WHERE id = ?';
-                    connection.query(updateUserQuery, [newPictureURL, userId], (error: mysql.MysqlError | null) => {
-                        if (error) {
-                            console.error('Error updating user profile picture:', error);
-                            return res.status(500).json({ error: 'Internal server error' });
-                        } else {
-                            return res.status(200).json({ message: 'Profile picture updated successfully' });
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error validating image URL:', error);
-                    return res.status(400).json({ error: 'Invalid image URL' });
-                }
+                return res.status(200).json({ message: 'Profile picture updated successfully' });
             }
-        });
+        } catch (error) {
+            console.error('Error validating image URL:', error);
+            return res.status(400).json({ error: 'Invalid image URL' });
+        }
     } catch (error) {
         console.error('Error fetching user ID:', error);
         return res.status(500).json({ error: 'Internal server error' });

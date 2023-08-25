@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaUser, FaSignOutAlt, FaSignInAlt, FaCog } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import { useAuth, AuthContextValue } from '../components/AuthContext';
 
 const Profile = () => {
     const { t } = useTranslation();
@@ -12,6 +13,8 @@ const Profile = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
+    const { user } = useAuth() as AuthContextValue;
+
     const toggleDropdown = () => {
         setIsDropdownOpen((prevState) => !prevState);
         setIsOverlayVisible(true);
@@ -21,34 +24,6 @@ const Profile = () => {
         setIsDropdownOpen(false);
         setIsOverlayVisible(false);
     };
-
-    interface ProfileData {
-        email: string;
-        username: string;
-        picture: string;
-        name: string;
-    }
-
-    const [user, setUser] = useState<ProfileData>({
-        email: '',
-        username: '',
-        picture: '',
-        name: '',
-    })
-
-    useEffect(() => {
-        const userData = localStorage.getItem("userProfileData");
-        if (userData) {
-            setUser(JSON.parse(userData));
-        } else {
-            setUser({
-                email: '',
-                username: '',
-                picture: '',
-                name: '',
-            });
-        }
-    }, []);
 
 
     // Function to check if the documentElement has the class 'dark'
@@ -82,10 +57,10 @@ const Profile = () => {
 
     const ChevronDown = ({ color }: { color: string }) => (
         <span className='dark:text-white flex items-center'>
-            {user.picture ? (
+            {user?.user_metadata.avatar ? (
                 <img
                     className="w-8 h-8 rounded-full"
-                    src={user.picture ?? ''}
+                    src={user?.user_metadata.avatar ?? ''}
                     alt="Profile picture"
                 />
             ) : (
@@ -101,8 +76,8 @@ const Profile = () => {
 
     const Svg = (p: JSX.IntrinsicElements['svg']) => (
         <svg
-            width="24"
-            height="24"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             focusable="false"
             role="presentation"
@@ -131,29 +106,9 @@ const Profile = () => {
                 />
             )}
             {isDropdownOpen && (
-                <div className="absolute top-8 z-[11] right-2 mt-1 w-48 bg-white rounded-md shadow-lg">
+                <div className="absolute top-8 z-[11] right-2 mt-1 w-min-48 w-fit bg-white rounded-md shadow-lg">
                     <div className="py-1">
-                        {!user || !user.picture && (
-                            <>
-                                <button
-                                    aria-label="login"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    onClick={() => handleLink('/auth/login')}
-                                >
-                                    <FaSignInAlt className="mr-2 inline" />
-                                    {t('login')}
-                                </button>
-                                <button
-                                    aria-label="go to settings"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    onClick={() => handleLink('/settings')}
-                                >
-                                    <FaCog className="mr-2 inline" />
-                                    {t('settings')}
-                                </button>
-                            </>
-                        )}
-                        {user && user.picture && (
+                        {user && user?.user_metadata.avatar && (
                             <>
                                 <button
                                     aria-label="go to profile"
@@ -161,7 +116,7 @@ const Profile = () => {
                                     onClick={() => handleLink('/profile')}
                                 >
                                     <FaUser className="mr-2 inline" />
-                                    {t('profile')} - {user.username}
+                                    {t('profile')} - {user?.user_metadata.username}
                                 </button>
                                 <button
                                     aria-label="go to settings"
@@ -178,6 +133,26 @@ const Profile = () => {
                                 >
                                     <FaSignOutAlt className="mr-2 inline" />
                                     {t('logout')}
+                                </button>
+                            </>
+                        )}
+                        {!user?.user_metadata.avatar && (
+                            <>
+                                <button
+                                    aria-label="login"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/auth/login')}
+                                >
+                                    <FaSignInAlt className="mr-2 inline" />
+                                    {t('login')}
+                                </button>
+                                <button
+                                    aria-label="go to settings"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleLink('/settings')}
+                                >
+                                    <FaCog className="mr-2 inline" />
+                                    {t('settings')}
                                 </button>
                             </>
                         )}

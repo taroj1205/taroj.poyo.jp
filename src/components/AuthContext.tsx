@@ -17,10 +17,13 @@ export const useAuth = () => {
 
 
 interface ProfileData {
-    email?: string;
-    username?: string;
+    email: string;
+    user_metadata: {
+        username: string;
+        avatar: string;
+    };
     picture: string;
-    name?: string;
+    name: string;
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -29,8 +32,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const userToken = Cookies.get('token') as string;
-        setToken(userToken);
+        const userData = localStorage.getItem("userProfileData");
+        if (userData) {
+            const userDataObj = JSON.parse(userData);
+            setUser(userDataObj);
+            const userMetadata = userDataObj.user_metadata;
+            console.log(userMetadata.username);
+        }
+
+        const userToken = Cookies.get('token');
+        if (userToken) {
+            setToken(userToken);
+        }
     }, []);
 
 
@@ -39,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const token = Cookies.get('token');
             const userProfileData = localStorage.getItem('userProfileData');
             console.log(token);
-            if (token && !userProfileData) {
+            if (token && token.length > 0 && !userProfileData) {
                 setIsLoading(true);
                 const response = await fetch(`/api/profile?token=${encodeURIComponent(token)}`, {
                     method: 'GET'
@@ -55,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 localStorage.setItem('userProfileData', JSON.stringify(data));
                 setUser(data);
                 console.log(user);
-            } else {
+            } else if (userProfileData && userProfileData.length > 0) {
                 setUser(JSON.parse(userProfileData as string));
             }
             console.log(user);

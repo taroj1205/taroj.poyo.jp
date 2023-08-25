@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import { useAuth } from '../../components/AuthContext';
 
 const Logout: React.FC = () => {
     const router = useRouter();
+    const {setUser, setToken} = useAuth() || {};
 
     useEffect(() => {
         // Clear the token cookie
@@ -11,7 +13,9 @@ const Logout: React.FC = () => {
         localStorage.removeItem('userProfileData');
 
         // Reload the page after clearing the cookie
-        window.location.href = '/';
+        setUser?.(null);
+        setToken?.('');
+        router.back();
     }, [router]);
 
     return <div>Logging out...</div>;

@@ -4,6 +4,7 @@ import { useAuth } from './AuthContext';
 import type { AuthContextValue } from './AuthContext';
 import { validateImage } from 'image-validator';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/router';
 
 const ChangeProfile = () => {
     const { t } = useTranslation();
@@ -14,6 +15,7 @@ const ChangeProfile = () => {
     const [error, setError] = useState('');
     const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
+    const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
@@ -40,7 +42,7 @@ const ChangeProfile = () => {
     const handleUrlSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (url && url.trim()) {
-            const newPictureUrl = url.trim();
+            const newPictureUrl = url.trim() as string;
             const validUrl = urlValidation(newPictureUrl);
             if (await validUrl) {
                 try {
@@ -57,14 +59,13 @@ const ChangeProfile = () => {
                     });
 
                     if (response.ok) {
-                        if (setUser) {
-                            setUser((prevUser) => ({
-                                ...prevUser,
-                                picture: newPictureUrl,
-                            }));
-                        }
+                        if (setUser && user) {
+                            // Update user profile data
+                            user.user_metadata.avatar = newPictureUrl;
+                        
+                            setUser({ ...user }); // Update the user context
+                        }                                                               
                         localStorage.setItem('userProfileData', JSON.stringify(user));
-                        window.location.reload();
                     } else {
                         throw new Error('Failed to upload image');
                     }
@@ -101,7 +102,7 @@ const ChangeProfile = () => {
         <>
             {isLoading ? (
                 <div>Loading...</div>
-            ) : user && user.picture ? (
+            ) : user && user.user_metadata.avatar ? (
                 <div className="flex flex-col items-center">
                     <button
                         className="flex items-center text-black dark:text-white px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -137,11 +138,11 @@ const ChangeProfile = () => {
                                 <div className='flex'>
                                     <div className="relative w-32 h-32 mb-4">
                                         <img
-                                            src={user.picture.toString()}
+                                            src={user.user_metadata.avatar.toString()}
                                             alt="Profile picture"
                                             className="rounded-full object-cover w-full h-full cursor-pointer"
                                             onClick={() => {
-                                                window.open(user.picture.toString(), '_blank');
+                                                window.open(user.user_metadata.avatar.toString(), '_blank');
                                             }}
                                         />
                                     </div>
@@ -153,12 +154,12 @@ const ChangeProfile = () => {
                                             <input
                                                 type="text"
                                                 id="profile-picture-url"
-                                                defaultValue={user?.picture}
+                                                defaultValue={user?.user_metadata.avatar}
                                                 onChange={(e) => {
                                                     setURL(e.target.value);
                                                     setError('');
                                                 }}
-                                                className="flex-grow border-none rounded-lg shadow-sm text-black dark:text-white bg-gray-200  h-9 dark:bg-gray-900"
+                                                className="flex-grow text-center border-none rounded-lg shadow-sm text-black dark:text-white bg-gray-200  h-9 dark:bg-gray-900"
                                             />
                                             <button
                                                 type="submit"

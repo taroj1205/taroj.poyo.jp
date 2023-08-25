@@ -1,205 +1,56 @@
-import { NextApiHandler } from 'next';
-import mysql from 'mysql';
-import bcrypt from 'bcrypt';
-import { nanoid } from 'nanoid';
+import {NextApiHandler} from 'next';
+import {createClient} from '@supabase/supabase-js';
 import gravatarUrl from 'gravatar-url';
-import Filter from 'bad-words';
-import formData from 'form-data';
-import Mailgun from 'mailgun.js';
 
-const filter = new Filter();
-const dbConfig = process.env.DATABASE_URL || '';
-const mailgun_api = process.env.MAILGUN_PRIVATE_API || '';
-const mailgun_domain = process.env.MAILGUN_DOMAIN || '';
-const mailgun_address = process.env.MAILGUN_ADDRESS || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {auth: {persistSession: false}});
 
 const signupHandler: NextApiHandler = async (req, res) => {
+    const url = req.headers.host;
+    const protocol = url === 'localhost:3000' ? 'http' : 'https';
+    console.log(`${protocol}://${url}/api/auth/callback`);
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({error: 'Method not allowed'});
     }
 
-    const { email, username, password } = req.body;
+    const {email, username, password} = req.body;
 
-    if (!email || !username || !password) {
-        return res.status(400).json({ error: 'Email, username, and password are required' });
+    if (!email || !password) {
+        return res.status(400).json({error: 'Email and password are required'});
     }
 
-    if (filter.isProfane(email) || filter.isProfane(username) || filter.isProfane(password)) {
-        return res.status(400).json({ error: 'Please avoid using inappropriate language' });
-    }
-
-    // Additional state variables for password validation
-    let isPasswordValid = true;
-    let passwordValidationMessage = '';
-
-    const validatePassword = (password: string) => {
-        // Check if the password contains the email or username
-        if (password.includes(email) || password.includes(username)) {
-            isPasswordValid = false;
-            passwordValidationMessage = 'Password cannot contain email or username';
-            return;
-        }
-
-        // Check if the password is at least 8 characters long
-        if (password.length < 8) {
-            isPasswordValid = false;
-            passwordValidationMessage = 'Password must be at least 8 characters long';
-            return;
-        }
-
-        // Check if the password contains at least one uppercase letter, one lowercase letter, and one digit
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-        if (!password.match(passwordRegex)) {
-            isPasswordValid = false;
-            passwordValidationMessage = 'Password must contain at least one uppercase letter, one lowercase letter, and one digit';
-            return;
-        }
-
-        isPasswordValid = true;
-        passwordValidationMessage = '';
-    };
-
-    validatePassword(password);
-
-    if (!isPasswordValid) {
-        return res.status(400).json({ error: passwordValidationMessage });
-    }
-
-    const connection = mysql.createConnection(dbConfig);
+    const avatar = gravatarUrl(email, {size: 200, default: 'retro'});
 
     try {
-                    const checkExistingUserQuery = `
-        SELECT id FROM users WHERE email = ? OR username = ?
-    `;
+        console.log(email, password, username, avatar);
 
-                    const checkExistingUserParams = [email, username];
+        // Sign up the user using Supabase authentication
+        const {data: signupData, error: signupError} = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    username,
+                    avatar
+                },
+                emailRedirectTo: `${protocol}://${url}/api/auth/callback`,
+            },
+        }) as {data: any, error: any};
 
-                    connection.query(checkExistingUserQuery, checkExistingUserParams, async (error: mysql.MysqlError | null, results: any[]) => {
-                        if (error) {
-                            console.error('Error checking existing user:', error);
-                            return res.status(500).json({ error: 'Internal server error' });
-                        }
+        if (signupError) {
+            console.error('Error signing up:', signupError);
+            return res.status(500).json({error: 'Error signing up'});
+        }
 
-                        if (results.length > 0) {
-                            // User with the same email or username already exists
-                            return res.status(409).json({ error: 'User with this email or username already exists' });
-                        }
-                        // Hash the email, username, and password using bcrypt
-                        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(signupData, username, avatar);
 
-                        const profile_picture = gravatarUrl(email, { size: 200, default: 'identicon' });
-
-                        // Insert the user into the database
-                        const insertUserQuery = `
-                            INSERT INTO users (username, password, email, profile_picture)
-                            VALUES (?, ?, ?, ?)
-                        `;
-
-                        const params = [username, hashedPassword, email, profile_picture];
-
-                        connection.query(insertUserQuery, params, (error: mysql.MysqlError | null, result: mysql.OkPacket) => {
-                            if (error) {
-                                console.error('Error inserting user:', error);
-                                throw new Error('Failed to insert user');
-                            }
-                            const userId = result.insertId;
-
-                            // Generate random token for the user
-                            const token = nanoid(32);
-
-                            // Calculate the token expiration date
-                            const expirationDate = new Date();
-                            expirationDate.setDate(expirationDate.getDate() + 7);
-
-                            // Insert the user_tokens into the database
-                            const insertTokenQuery = `
-                                INSERT INTO user_tokens (user_id, token, expiration_date)
-                                VALUES (?, ?, ?)
-                            `;
-
-                            const tokenParams = [userId, token, expirationDate];
-
-                            console.log(tokenParams);
-
-                            connection.query(insertTokenQuery, tokenParams, (error: mysql.MysqlError | null) => {
-                                if (error) {
-                                    console.error('Error inserting user token:', error);
-                                    throw new Error('Failed to insert user token');
-                                }
-
-                                sendVerificationEmail(email);
-
-                                // User and token insertion successful
-                                return res.status(201).json({ message: 'User created successfully', token });
-                            });
-                        });
-                    });
+        // User and token insertion successful
+        return res.status(201).json({message: 'User created successfully'});
     } catch (error) {
         console.error('Error during signup:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({error: 'Internal server error'});
     }
-};
-
-// Function to send the verification email
-const sendVerificationEmail = async (email: string) => {
-    try {
-        const verificationCode = generateVerificationCode(); // Generate a 6-digit verification code
-        const mailgun = new Mailgun(formData);
-        console.log(mailgun_api);
-        const mg = mailgun.client({ username: 'api', key: mailgun_api });
-
-        const mailData = {
-            from: mailgun_address, // Replace with your sender email address
-            to: email,
-            subject: 'Email Verification Code - taroj.poyo.jp',
-            text: `Your verification code is: ${verificationCode}`,
-            html: `
-                <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 30px;">
-                    <h2 style="color: #4F46E5; font-size: 24px; margin-bottom: 20px;">Email Verification Code</h2>
-                    <p style="font-size: 16px; color: #333;">Your verification code is:</p>
-                    <div style="background-color: #FFFFFF; border-radius: 8px; padding: 10px 20px; margin-top: 10px; display: inline-block;">
-                        <code style="font-size: 20px; font-weight: bold; color: #4F46E5;">${verificationCode}</code>
-                    </div>
-                </div>
-            `,
-        };
-
-        // Send the email through the Mailgun API
-        mg.messages
-            .create(mailgun_domain, mailData)
-            .then(() => {
-                console.log('Verification email sent successfully.');
-
-                // Insert the verification code into the "email" table
-                const connection = mysql.createConnection(dbConfig);
-
-                const insertVerificationCodeQuery = `
-                    INSERT INTO verification (email, code, expiration_date)
-                    VALUES (?, ?, NOW() + INTERVAL 10 MINUTE)
-                `;
-
-                const params = [email, verificationCode];
-
-                connection.query(insertVerificationCodeQuery, params, (error: mysql.MysqlError | null, result: mysql.OkPacket) => {
-                    if (error) {
-                        console.error('Error inserting verification code:', error);
-                        throw new Error('Failed to insert verification code');
-                    }
-                    console.log('Verification code inserted into the email table.');
-                });
-            })
-            .catch((error) => {
-                console.error('Error sending verification email:', error);
-                throw new Error('Failed to send verification email');
-            });
-    } catch (error) {
-        console.error('Error sending verification email:', error);
-    }
-};
-
-// Function to generate a 6-digit verification code
-const generateVerificationCode = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
 export default signupHandler;

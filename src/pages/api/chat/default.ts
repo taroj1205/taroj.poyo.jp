@@ -1,125 +1,163 @@
-// Import necessary libraries
-// Import necessary libraries
 import { NextApiRequest, NextApiResponse } from 'next';
-import mysql from 'mysql';
-import { nanoid } from 'nanoid';
+import { createClient } from '@supabase/supabase-js';
 
-// MySQL database configuration
-const dbConfig = process.env.DATABASE_URL || '';
+// Supabase configuration
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const service_role = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
+const supabase = createClient(supabaseUrl, service_role, { auth: { autoRefreshToken: false, persistSession: false } });
 
 // API endpoint for retrieving messages on load
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
-        // Connect to the MySQL database
-        const connection = mysql.createConnection(dbConfig);
-        connection.connect();
-
         try {
-            const chatRoomsQuery = `SELECT chat_rooms.nanoid AS room_nanoid, chat_servers.nanoid AS server_nanoid
-                                    FROM chat_rooms
-                                    INNER JOIN chat_servers ON chat_rooms.server_id = chat_servers.id
-                                    ORDER BY chat_rooms.id LIMIT 1`;
-            const chatRoomsResult = await new Promise<any>((resolve, reject) => {
-                connection.query(chatRoomsQuery, (error, results) => {
-                    if (error) reject(error);
-                    resolve(results[0]);
-                });
-            });
+            // Retrieve the chat room details
+            const { data: chat_servers, error } = await supabase
+                .from('chat_servers')
+                .select('id, server_name')
+                .order('id', { ascending: true }) as { data: any, error: any };
 
-            if (!chatRoomsResult) {
-                const now = new Date().toISOString().replace('Z', '');
-                const generatedServerNanoid = nanoid(30);
-                const generatedRoomNanoid = nanoid(30);
+            console.log(error);
 
-                connection.query(
-                    `INSERT INTO chat_servers (server_name, created_at, last_login, nanoid)
-                    VALUES (?, ?, NULL, ?)
-                    ON DUPLICATE KEY UPDATE nanoid = VALUES(nanoid)`,
-                    ['default', now, generatedServerNanoid],
-                    (error, serverResult) => {
-                        if (error) {
-                            console.error('Error creating default server:', error);
-                            res.status(500).json({ success: false, message: 'Failed to create default server' });
-                            return;
-                        }
+            console.log(chat_servers);
 
-                        connection.query(
-                            `INSERT INTO chat_rooms (room_name, server_id, nanoid)
-                            VALUES (?, ?, ?)`,
-                            ['default', serverResult.insertId, generatedRoomNanoid],
-                            (error, roomResult) => {
-                                if (error) {
-                                    console.error('Error creating default room:', error);
-                                    res.status(500).json({ success: false, message: 'Failed to create default room' });
-                                    return;
-                                }
+            if (chat_servers?.length === 0) {
 
-                                // Retry the GET request now that the default server and room are created
-                                handler(req, res);
-                            }
-                        );
-                    }
-                );
+                // Insert default server and room if they don't exist
+                const { data: insertedServer, error } = await supabase.from('chat_servers').insert([
+                    {
+                        server_name: 'Default',
 
+                    },
+                ]) as { data: any, error: any };
+
+                if (error) {
+                    console.error('Error inserting chat server:', error);
+                    return; // or handle the error appropriately
+                }
+
+                const { data: id } = await supabase
+                    .from('chat_servers')
+                    .select('id')
+                    .order('id', { ascending: true }) as { data: any, error: any };
+
+                const insertedId = id[0].id;
+
+                console.log('Inserted default server:', insertedId);
+
+                const { data: insertedRoom, error: roomInsertError } = await supabase
+                    .from('chat_rooms')
+                    .insert([
+                        {
+                            room_name: 'English',
+                            server_id: insertedId,
+                        },
+                    ]);
+
+                if (roomInsertError) {
+                    console.error('Error inserting chat room:', roomInsertError);
+                    return; // or handle the error appropriately
+                }
+
+                console.log(insertedRoom);
+
+                // Retry the GET request now that the default server and room are created
+                console.log('Creating default server and room...');
+                return handler(req, res);
+            }
+
+            // Retrieve messages and sender info
+
+            const server_id = chat_servers[0].id;
+            const server_name = chat_servers[0].server_name;
+
+            const { data: chat_rooms, error: chat_roomError } = await supabase
+                .from('chat_rooms')
+                .select('id, room_name, chat_servers(id)') as { data: any, error: any };
+
+            if (chat_roomError) {
+                console.error('Error retrieving chat room:', chat_roomError);
                 return;
             }
 
-            const { server_nanoid, room_nanoid } = chatRoomsResult;
+            console.log('Server id:', server_id);
+            console.log('Chat room ids:', chat_rooms);
 
-            const senderInfo: Array<any> = [];
+            const room_id = chat_rooms[0].id;
+            const room_name = chat_rooms[0].room_name;
 
-            // Retrieve messages from the messages table
-            const selectQuery = `SELECT *
-                    FROM messages
-                    WHERE server_id = (
-                        SELECT id
-                        FROM chat_servers
-                        WHERE nanoid = ?
-                    ) AND room_id = (
-                        SELECT id
-                        FROM chat_rooms
-                        WHERE nanoid = ?
-                    )`;
-            const values = [server_nanoid, room_nanoid];
-            const messages = await new Promise<any[]>((resolve, reject) => {
-                connection.query(selectQuery, values, (error, results) => {
-                    if (error) reject(error);
-                    resolve(results);
-                });
-            });
+            const selectedChatRoom = chat_rooms.find((chatRoom: any) => chatRoom.chat_servers.id === server_id);
 
-            // Get unique user IDs from messages
-            const userIds = [...new Set(messages.map((message) => message.user_id))];
+            console.log("Selected chat room:", selectedChatRoom);
 
-            // Retrieve sender info for each user ID
-            for (const userId of userIds) {
-                if (!senderInfo[userId]) {
-                    const selectUserQuery = `SELECT username, profile_picture FROM users WHERE id = ?`;
-                    const userValues = [userId];
-                    const user = await new Promise<any>((resolve, reject) => {
-                        connection.query(selectUserQuery, userValues, (error, results) => {
-                            if (error) reject(error);
-                            resolve(results[0]);
-                        });
-                    });
-                    senderInfo[userId] = user;
-                }
+            if (selectedChatRoom) {
+                const selectedRoomId = selectedChatRoom.id;
+                const selectedRoomName = selectedChatRoom.room_name;
+
+                console.log('Selected Room ID:', selectedRoomId);
+                console.log('Selected Room Name:', selectedRoomName);
+            } else {
+                console.error('No matching chat room found for the selected server.');
+                res.status(400).json({ success: false, message: 'No matching chat room found' });
+                return;
             }
 
+            const { data: messages, error: messageError } = await supabase
+                .from('chat_messages')
+                .select('*, users:id')
+                .match({ server_id, room_id }) as { data: any[], error: any };
+
+            if (messageError) {
+                console.error('Error retrieving messages:', messageError);
+                return;
+            }
+
+            console.log(messages);
+
             const channelDetail = {
-                server_id: server_nanoid,
-                room_id: room_nanoid,
+                server: {
+                    id: server_id,
+                    name: server_name
+                },
+                room: {
+                    id: room_id,
+                    name: room_name
+                }
             };
+
+            const senderInfo = {} as any;
+            const userId = messages[0].user_id;
+
+            console.log('User ID:', userId);
+
+            if (!senderInfo[userId]) {
+                const { data: user, error: userError } = await supabase
+                    .auth.admin.getUserById(userId)
+
+                if (userError) {
+                    console.error('Error retrieving user:', userError);
+                    res.status(500).json({ success: false, message: 'Error retrieving user' });
+                    return;
+                }
+                senderInfo[userId] = user;
+                console.log(senderInfo[userId].user.user_metadata.username);
+                console.log(senderInfo[userId].user.user_metadata.avatar);
+            }
 
             // Format messages in the desired JSON format
             const formattedMessages = messages.map((message) => ({
                 message_id: message.id,
-                sender: senderInfo[message.user_id],
+                sender: {
+                    username: senderInfo[message.user_id].user.user_metadata.username,
+                    avatar: senderInfo[message.user_id].user.user_metadata.avatar,
+                },
                 server_id: message.server_id,
                 room_id: message.room_id,
                 sent_on: message.sent_on,
-                content: JSON.parse(message.content),
+                content: message.content,
             }));
+
+
+            console.log('Retrieved and formatted messages:', formattedMessages);
 
             res.status(200).json({ channelDetail, formattedMessages });
         } catch (error) {
