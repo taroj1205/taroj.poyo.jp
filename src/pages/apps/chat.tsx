@@ -24,6 +24,7 @@ interface ChatMessage {
 
 const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObject<HTMLDivElement>, setRoomName: React.Dispatch<React.SetStateAction<string>>, setServerName: React.Dispatch<React.SetStateAction<string>> }) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [messageLoading, setMessageLoading] = useState(true);
     const [serverId, setServerId] = useState('');
     const [roomId, setRoomId] = useState('');
     const { token, user, isLoading } = useAuth() || {};
@@ -82,6 +83,8 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     document
                         .getElementById('input-field')
                         ?.removeAttribute('disabled');
+
+                    setMessageLoading(false);
                 }
             } catch (error: any) {
                 console.error(
@@ -106,7 +109,33 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
         // Receive new messages from the server
         channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
+            const chatContainer = document.getElementById('messages') as HTMLDivElement;
+            const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight;
+
             setMessages((prevMessages) => [...prevMessages, ...[data]]);
+
+            console.log('Is scrolled to bottom:', isScrolledToBottom);
+
+            setTimeout(() => {
+                if (isScrolledToBottom) {
+                    const lastDiv = chatContainer.lastElementChild as HTMLDivElement;
+                    console.log(lastDiv);
+                    lastDiv.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+                }
+
+                // Log the last visible div in chatContainer
+                const visibleDivs = Array.from(chatContainer.children).filter((child) => {
+                    const rect = child.getBoundingClientRect();
+                    return rect.top >= 0 && rect.bottom <= chatContainer.clientHeight;
+                });
+
+                if (visibleDivs.length > 0) {
+                    const lastVisibleDiv = visibleDivs[visibleDivs.length - 1] as HTMLDivElement;
+                    console.log('Last visible div content:', lastVisibleDiv.textContent);
+                } else {
+                    console.log('No visible divs in chatContainer.');
+                }
+            }, 300);
         });
 
         const messagesContainer = document.getElementById(
@@ -157,10 +186,10 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                         }
                     );
 
-                    console.log(lowestVisibleElement);
+                    // console.log(lowestVisibleElement);
                     const id = lowestVisibleElement.id;
                     scrollPosRef.current = parseInt(id);
-                    console.log(id);
+                    // console.log(id);
 
                     // Check if the stored ID is null or lower than the current visible element's ID
                     const storedId = parseInt(
@@ -336,6 +365,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     isLoadingState={isLoadingState}
                     scrollPosRef={scrollPosRef}
                     messages={messages}
+                    messageLoading={messageLoading}
                 />
             </Container>
         </>
@@ -348,6 +378,7 @@ interface MainProps {
     isLoadingState: boolean;
     scrollPosRef: React.RefObject<number>;
     messages: Array<ChatMessage>;
+    messageLoading: boolean;
 }
 
 const Main: React.FC<MainProps> = ({
@@ -356,6 +387,7 @@ const Main: React.FC<MainProps> = ({
     isLoadingState,
     scrollPosRef,
     messages,
+    messageLoading,
 }) => {
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
@@ -418,11 +450,14 @@ const Main: React.FC<MainProps> = ({
     }, []);
 
     const scrollToBottom = () => {
-        if (messagesRef.current) {
-            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-            console.log(inputContainerHeight);
-        }
+        const chatContainer = document.getElementById(
+            'messages'
+        ) as HTMLDivElement;
+
+        const lastDiv = chatContainer.lastElementChild as HTMLDivElement;
+        lastDiv.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
     };
+
 
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let bottom = false;
@@ -459,7 +494,7 @@ const Main: React.FC<MainProps> = ({
         <div
             className="flex flex-col min-h-0 w-full max-h-full"
         >
-            <MessagesComponent messages={messages} isLoadingState={isLoadingState} height={height} />
+            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height} />
             <div className="w-full" style={{ flex: '0' }}>
                 <button
                     aria-label={t('apps.chat.scroll-to-bottom')}
@@ -502,7 +537,7 @@ const Main: React.FC<MainProps> = ({
     );
 };
 
-const MessagesComponent: React.FC<{ messages: ChatMessage[], isLoadingState: boolean, height: number }> = ({ messages, isLoadingState, height }) => {
+const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boolean, height: number }> = ({ messages, messageLoading, height }) => {
     const [formattedMessages, setFormattedMessages] = useState<string[]>([]);
 
     useEffect(() => {
@@ -593,71 +628,67 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], isLoadingState: boo
     return (
         <div
             id="messages"
-            className={`overflow-y-auto overflow-x-hidden ${isLoadingState ? 'animate-pulse' : ''}`}
+            className={`overflow-y-auto overflow-x-hidden ${messageLoading ? 'animate-pulse' : ''}`}
             style={{
                 flex: '1',
             }}
         >
-            {isLoadingState ? (
-                <div className="w-full h-12 bg-gray-300 dark:bg-gray-800 animate-pulse mb-2"></div>
+            {messageLoading ? (
+                <PlaceholderMessages count={20} height={height} />
             ) : (
-                messages.length === 0 ? (
-                    <PlaceholderMessages count={20} height={height} />
-                ) : (
-                    messages.map((message, index) => {
-                        if (formattedMessages[index] !== undefined) {
-                            return (
-                                <div
-                                    className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
-                                    key={index}
-                                >
-                                    <img
-                                        src={message.sender.avatar}
-                                        alt={message.sender.username}
-                                        width="50"
-                                        height="50"
-                                        className="w-10 h-10 rounded-full ml-2 mr-2"
-                                    />
-                                    <div>
-                                        <div className="flex items-center">
-                                            <span className="mr-1 text-xs text-gray-500">
-                                                {index + 1}
-                                            </span>
-                                            <span className="text-sm font-semibold">
-                                                {message.sender.username}
-                                            </span>
-                                            <span className="ml-1 text-xs text-gray-500">
-                                                {i18n.language === 'ja' ? (
-                                                    <span className="ml-1 text-xs text-gray-500">
-                                                        {formatSentOn(message.sent_on, 'ja')}
-                                                    </span>
-                                                ) : (
-                                                    <span className="ml-1 text-xs text-gray-500">
-                                                        {formatSentOn(message.sent_on, 'en')}
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="text-sm mr-[1ch]">
+                messages.map((message, index) => {
+                    if (formattedMessages[index] !== undefined) {
+                        return (
+                            <div
+                                className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
+                                key={index}
+                            >
+                                <img
+                                    src={message.sender.avatar}
+                                    alt={message.sender.username}
+                                    width="50"
+                                    height="50"
+                                    className="w-10 h-10 rounded-full ml-2 mr-2"
+                                />
+                                <div>
+                                    <div className="flex items-center">
+                                        <span className="mr-1 text-xs text-gray-500">
+                                            {index + 1}
+                                        </span>
+                                        <span className="text-sm font-semibold">
+                                            {message.sender.username}
+                                        </span>
+                                        <span className="ml-1 text-xs text-gray-500">
+                                            {i18n.language === 'ja' ? (
+                                                <span className="ml-1 text-xs text-gray-500">
+                                                    {formatSentOn(message.sent_on, 'ja')}
+                                                </span>
+                                            ) : (
+                                                <span className="ml-1 text-xs text-gray-500">
+                                                    {formatSentOn(message.sent_on, 'en')}
+                                                </span>
+                                            )}
+                                        </span>
+                                    </div>
+                                    <div className="text-sm mr-[1ch]">
+                                        <span
+                                            className="messageText whitespace-pre-line text-left"
+                                            id={message.message_id}
+                                        >
                                             <span
                                                 className="messageText whitespace-pre-line text-left"
                                                 id={message.message_id}
-                                            >
-                                                <span
-                                                    className="messageText whitespace-pre-line text-left"
-                                                    id={message.message_id}
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: formattedMessages[index],
-                                                    }}
-                                                ></span>
-                                            </span>
-                                        </div>
+                                                dangerouslySetInnerHTML={{
+                                                    __html: formattedMessages[index],
+                                                }}
+                                            ></span>
+                                        </span>
                                     </div>
                                 </div>
-                            );
-                        }
-                    })
-                )
+                            </div>
+                        );
+                    }
+                })
             )}
         </div>
     )
@@ -680,7 +711,7 @@ const PlaceholderMessages: React.FC<{ count: number, height: number }> = ({ coun
         </div>
     ));
     return (
-        <div className="flex flex-col items-left justify-center z-0" style={{height}}>
+        <div className="flex flex-col items-left justify-center z-0" style={{ height }}>
             {placeholders}
         </div>
     );
