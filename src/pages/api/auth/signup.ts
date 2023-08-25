@@ -7,6 +7,9 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {auth: {persistSession: false}});
 
 const signupHandler: NextApiHandler = async (req, res) => {
+    const url = req.headers.host;
+    const protocol = url === 'localhost:3000' ? 'http' : 'https';
+    console.log(`${protocol}://${url}/api/auth/callback`);
     if (req.method !== 'POST') {
         return res.status(405).json({error: 'Method not allowed'});
     }
@@ -31,7 +34,7 @@ const signupHandler: NextApiHandler = async (req, res) => {
                     username,
                     avatar
                 },
-                emailRedirectTo: `/api/auth/callback`,
+                emailRedirectTo: `${protocol}://${url}/api/auth/callback`,
             },
         }) as {data: any, error: any};
 
