@@ -125,22 +125,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             };
 
             const senderInfo = {} as any;
-            const userId = messages[0].user_id;
+            for (const message of messages) {
+                const userId = message.user_id;
 
-            console.log('User ID:', userId);
+                console.log('User ID:', userId);
 
-            if (!senderInfo[userId]) {
-                const { data: user, error: userError } = await supabase
-                    .auth.admin.getUserById(userId)
+                if (!senderInfo[userId]) {
+                    const { data: user, error: userError } = await supabase
+                        .auth.admin.getUserById(userId);
 
-                if (userError) {
-                    console.error('Error retrieving user:', userError);
-                    res.status(500).json({ success: false, message: 'Error retrieving user' });
-                    return;
+                    if (userError) {
+                        console.error('Error retrieving user:', userError);
+                        res.status(500).json({ success: false, message: 'Error retrieving user' });
+                        continue; // Continue to the next iteration if there's an error
+                    }
+
+                    senderInfo[userId] = user;
+                    console.log('Username:', senderInfo[userId].user.user_metadata.username);
+                    console.log('Avatar:', senderInfo[userId].user.user_metadata.avatar);
                 }
-                senderInfo[userId] = user;
-                console.log(senderInfo[userId].user.user_metadata.username);
-                console.log(senderInfo[userId].user.user_metadata.avatar);
             }
 
             // Format messages in the desired JSON format
