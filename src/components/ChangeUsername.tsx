@@ -1,25 +1,17 @@
-import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
-import { useAuth } from './AuthContext';
-import type { AuthContextValue } from './AuthContext';
-import { validateImage } from 'image-validator';
-import { useTheme } from 'next-themes';
+import { useAuth, AuthContextValue } from "./AuthContext";
+import { useState } from "react";
+import { useTheme } from "next-themes";
+import { useTranslation } from "react-i18next";
 
-const ChangeProfile = () => {
-    const { t } = useTranslation();
+const ChangeUsername = () => {
+    const { t } = useTranslation()
     const { token, user, setUser, isLoading } = useAuth() as AuthContextValue;
-    const [url, setURL] = useState('');
+    const [isValidUsername, setValidUsername] = useState(true);
+    const [username, setUsername] = useState('');
     const [popupOpen, setPopupOpen] = useState(false);
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [error, setError] = useState('');
-    const [mounted, setMounted] = useState(false);
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const { theme } = useTheme();
-
-    useEffect(() => {
-        setMounted(true);
-        console.log(user);
-    }, []);
-    if (!mounted) return null;
 
     const togglePopup = () => {
         setPopupOpen(!popupOpen);
@@ -28,21 +20,21 @@ const ChangeProfile = () => {
         setError('');
     };
 
-    const urlValidation = async (url: string) => {
-        let isValidImage = await validateImage(url);
-        console.log(isValidImage);
-        if (url.trim() === user?.picture) {
-            isValidImage = false;
-        }
-        return isValidImage;
+    const checkUsername = (name: string) => {
+        const regex = new RegExp(/^[A-Za-z0-9]{3,}(_[A-Za-z0-9]+)?(\.[A-Za-z0-9]+)?$/);
+        setUsername(name)
+        if (username.length >= 3 && !regex.test(username))
+            setValidUsername(false);
+        else
+            setValidUsername(true);
     };
 
-    const handleUrlSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleUrlSubmit = async (event: React.MouseEvent) => {
         event.preventDefault();
-        if (url && url.trim()) {
-            const newPictureUrl = url.trim() as string;
-            const validUrl = urlValidation(newPictureUrl);
-            if (await validUrl) {
+        if (username && username.trim()) {
+            const newUsername = username.trim() as string;
+            console.log(newUsername)
+            if (isValidUsername) {
                 try {
                     const response = await fetch('/api/change', {
                         method: 'POST',
@@ -50,28 +42,29 @@ const ChangeProfile = () => {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            method: 'picture',
-                            url: newPictureUrl,
+                            method: 'username',
+                            username: newUsername,
                             token,
-                        }),
+                        })
                     });
 
                     if (response.ok) {
-                        if (setUser && user) {
+                        if (user) {
                             // Update user profile data
-                            user.user_metadata.avatar = newPictureUrl;
-                        
-                            setUser({ ...user }); // Update the user context
-                        }                                                               
+                            user.user_metadata.username = newUsername
+
+                            setUser({ ...user}); // Update the user context
+                        }
                         localStorage.setItem('userProfileData', JSON.stringify(user));
                     } else {
-                        throw new Error('Failed to upload image');
+                        throw new Error('Failed to update username.')
                     }
+
                 } catch (error) {
                     console.error(error);
                 }
             } else {
-                setError('Invalid URL');
+                setError('Invalid username.')
             }
         }
     };
@@ -107,7 +100,7 @@ const ChangeProfile = () => {
                         aria-label='change profile picture button'
                         onClick={togglePopup}
                     >
-                        {t('change.profile picture')}
+                        {t('change.profile username')}
                         {
                             isOverlayVisible ? (
                                 <ChevronDown color={theme === 'dark' ? 'white' : 'black'} />
@@ -123,7 +116,7 @@ const ChangeProfile = () => {
                     )}
                     {popupOpen && (
                         <div className="fixed inset-0 z-[11] flex items-center justify-center h-fit w-fit m-auto">
-                            <div className="w-96 max-w-[90%] bg-white p-2 rounded-lg shadow-lg dark:bg-gray-800">
+                            <div className="w-72 max-w-[90%] bg-white p-2 rounded-lg shadow-lg dark:bg-gray-800">
                                 <div className="flex justify-end pr-1">
                                     <button
                                         className="text-gray-600 dark:text-white"
@@ -133,28 +126,18 @@ const ChangeProfile = () => {
                                         X
                                     </button>
                                 </div>
-                                <div className='flex'>
-                                    <div className="relative w-32 h-32 mb-4">
-                                        <img
-                                            src={user.user_metadata.avatar.toString()}
-                                            alt="Profile picture"
-                                            className="rounded-full object-cover w-full h-full cursor-pointer"
-                                            onClick={() => {
-                                                window.open(user.user_metadata.avatar.toString(), '_blank');
-                                            }}
-                                        />
-                                    </div>
-                                    <div className='flex flex-col ml-2'>
-                                        <h2 className="text-xl font-semibold mb-2">
-                                            {t('change.profile picture URL')}
+                                <div className='flex justify-center'>
+                                    <div className='flex flex-col mb-3'>
+                                        <h2 className="text-xl font-semibold text-center mb-1">
+                                            {t('change.profile username new')}
                                         </h2>
-                                        <form className="flex items-center flex-col" onSubmit={handleUrlSubmit}>
+                                        <form className="flex items-center flex-col">
                                             <input
                                                 type="text"
                                                 id="profile-picture-url"
-                                                defaultValue={user?.user_metadata.avatar}
+                                                defaultValue={user?.user_metadata.username}
                                                 onChange={(e) => {
-                                                    setURL(e.target.value);
+                                                    checkUsername(e.target.value);
                                                     setError('');
                                                 }}
                                                 className="flex-grow text-center border-none rounded-lg shadow-sm text-black dark:text-white bg-gray-200  h-9 dark:bg-gray-900"
@@ -163,8 +146,9 @@ const ChangeProfile = () => {
                                                 type="submit"
                                                 aria-label='change'
                                                 className="w-full mt-2 text-black dark:text-white bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:bg-gray-700 dark:hover:bg-gray-700 dark:bg-gray-900 h-9"
+                                                onClick={(e) => handleUrlSubmit(e)}
                                             >
-                                                {t('change.set picture')}
+                                                {t('change.set username')}
                                             </button>
                                         </form>
                                         {error && (
@@ -178,7 +162,7 @@ const ChangeProfile = () => {
                 </div>
             ) : null}
         </>
-    );
-};
+    )
+}
 
-export default ChangeProfile;
+export default ChangeUsername

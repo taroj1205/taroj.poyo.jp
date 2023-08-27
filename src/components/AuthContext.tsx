@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (userToken) {
             setToken(userToken);
         }
-    }, []);
+    }, [ ]);
 
 
     const fetchUserProfileData = async () => {

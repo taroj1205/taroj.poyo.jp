@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import CustomSelect from '../components/SelectTheme';
 import ChangeProfile from '../components/ChangeProfile';
+import ChangeUsername from '../components/ChangeUsername';
 
 const Settings = () => {
     const { t } = useTranslation();
@@ -27,8 +28,9 @@ const Settings = () => {
             <div className="container mx-auto p-4 flex flex-col items-center pt-20">
                 <h1 className="text-2xl font-bold mb-4">{t('settings')}</h1>
                 <div className="mb-4">
-                    <div className="mb-4">
+                    <div className="flex flex-col gap-y-4 mb-4">
                         <ChangeProfile />
+                        <ChangeUsername />
                     </div>
                     <div className="flex items-center justify-center mb-4">
                         <div className="bg-gray-200 dark:bg-gray-800 p-2 rounded-md">

@@ -162,8 +162,11 @@
     "already set": "すでに設定されています",
     "image link": "画像リンク",
     "language": "言語を変える",
+    "profile username": "ユーザー名を変更",
+    "profile username new": "新しいユーザー名",
     "profile picture": "プロフィール画像を変更",
     "profile picture URL": "プロフィール画像のURL",
+    "set username": "ユーザー名を設定する",
     "set picture": "画像を設定する",
     "theme": "テーマを変える"
   },
