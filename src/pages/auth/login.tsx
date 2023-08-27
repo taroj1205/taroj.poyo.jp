@@ -111,18 +111,6 @@ const Login: React.FC = () => {
                             {viewPassword ?
                                 <div className="flex justify-center items-center">
                                     <input
-                                        type="password"
-                                        id="password"
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                        value={password}
-                                        autoComplete='password'
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                    <FiEye onClick={handleEyeViewer} className="ml-2 cursor-pointer"/>
-                                </div> :
-                                <div className="flex justify-center items-center">
-                                    <input
                                         type="text"
                                         id="password"
                                         required
@@ -132,6 +120,18 @@ const Login: React.FC = () => {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                     <FiEyeOff onClick={handleEyeViewer} className="ml-2 cursor-pointer"/>
+                                </div> :
+                                <div className="flex justify-center items-center">
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        required
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                        value={password}
+                                        autoComplete='password'
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    <FiEye onClick={handleEyeViewer} className="ml-2 cursor-pointer"/>
                                 </div>
                             }
                         </div>
