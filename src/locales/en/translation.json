@@ -162,8 +162,11 @@
     "already set": "Already set",
     "image link": "Image link",
     "language": "Change language",
+    "profile username": "Change profile username",
+    "profile username new": "New username",
     "profile picture": "Change profile picture",
     "profile picture URL": "Profile picture URL",
+    "set username": "Set username",
     "set picture": "Set Picture",
     "theme": "Change theme"
   },

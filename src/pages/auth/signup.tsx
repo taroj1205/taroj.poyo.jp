@@ -1,8 +1,9 @@
 import Cookies from 'js-cookie';
 import Head from 'next/head';
 import router from 'next/router';
-import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Signup: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -11,9 +12,10 @@ const Signup: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [error, setError] = useState('');
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [viewPassword, setViewPassword] = useState(false);
     const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
     const [validPassword, setValidPassword] = useState([true, false, false]);
     const [isPopupShown, setIsPopupShown] = useState(false);
@@ -92,7 +94,7 @@ const Signup: React.FC = () => {
         if (password === confirmPassword) {
             fetch('/api/auth/signup', {
                 method: 'POST',
-                body: JSON.stringify({email, username, password}),
+                body: JSON.stringify({ email, username, password }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -116,7 +118,7 @@ const Signup: React.FC = () => {
                         setIsPopupShown(true);
                         const expirationDate = new Date(Date.now() + 60000); // Set expiration to 60 seconds from now
                         localStorage.setItem('emailVerificationCooldownExpiration', expirationDate.toISOString());
-                        Cookies.set('token', data.token, {expires: 7});
+                        Cookies.set('token', data.token, { expires: 7 });
                         localStorage.setItem('email', email);
                     }
                 })
@@ -129,16 +131,20 @@ const Signup: React.FC = () => {
         }
     };
 
+    // Sets password viewer to true/false
+    const handleEyeViewer = () => {
+        setViewPassword(v => v = !v);
+    };
 
     return (
         <>
             <Head>
-                <meta name='title' content='Authenication - taroj.poyo.jp'/>
-                <meta name='description' content='Authenication page for taroj.poyo.jp'/>
-                <meta property="og:title" content="Authenication - taroj.poyo.jp"/>
-                <meta property="og:description" content="Authenication page for taroj.poyo.jp"/>
-                <meta name="twitter:title" content="Authenication - taroj.poyo.jp"/>
-                <meta name="twitter:description" content="Authenication page for taroj.poyo.jp"/>
+                <meta name='title' content='Authenication - taroj.poyo.jp' />
+                <meta name='description' content='Authenication page for taroj.poyo.jp' />
+                <meta property="og:title" content="Authenication - taroj.poyo.jp" />
+                <meta property="og:description" content="Authenication page for taroj.poyo.jp" />
+                <meta name="twitter:title" content="Authenication - taroj.poyo.jp" />
+                <meta name="twitter:description" content="Authenication page for taroj.poyo.jp" />
                 <title>{t('title.auth.signup')}</title>
             </Head>
             <div className="w-96 max-w-full bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto">
@@ -177,15 +183,33 @@ const Signup: React.FC = () => {
                         <label htmlFor="password" className="block text-gray-700 dark:text-gray-300 mb-2">
                             {t('auth.password')}
                         </label>
-                        <input
-                            type="password"
-                            id="password"
-                            required
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                            value={password}
-                            autoComplete='password'
-                            onChange={(e) => handlePasswordChange(e)}
-                        />
+                        {viewPassword ?
+                            <div className="flex justify-center items-center">
+                                <input
+                                    type="text"
+                                    id="password"
+                                    required
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                    value={password}
+                                    autoComplete='password'
+                                    onChange={(e) => handlePasswordChange(e)}
+                                />
+                                <FiEyeOff onClick={handleEyeViewer} className="ml-2 cursor-pointer" />
+                            </div>
+                            :
+                            <div className="flex justify-center items-center">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    required
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                    value={password}
+                                    autoComplete='password'
+                                    onChange={(e) => handlePasswordChange(e)}
+                                />
+                                <FiEye onClick={handleEyeViewer} className="ml-2 cursor-pointer" />
+                            </div>
+                        }
                     </div>
                     {passwordValidationMessage && (
                         <p className="text-red-500 mb-2">{passwordValidationMessage}</p>
@@ -194,7 +218,7 @@ const Signup: React.FC = () => {
                     <div className="text-gray-700 dark:text-gray-300 text-sm mb-4">
                         {passwordRequirements.map((requirement, index) => (
                             <p key={index}
-                               className={validPassword[index] ? 'text-green-600 before:content-["✔"]' : 'text-red-600 before:content-["✖"]'}>
+                                className={validPassword[index] ? 'text-green-600 before:content-["✔"]' : 'text-red-600 before:content-["✖"]'}>
                                 {requirement}
                             </p>
                         ))}
@@ -217,7 +241,7 @@ const Signup: React.FC = () => {
                         <button
                             type="submit"
                             className={`${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-indigo-500 dark:bg-indigo-700 hover:bg-indigo-600 dark:hover:bg-indigo-800'
-                            } text-white px-4 py-2 rounded-md focus:outline-none`}
+                                } text-white px-4 py-2 rounded-md focus:outline-none`}
                             disabled={isLoading}
                         >
                             {/* Show loading icon if isLoading is true, else show "Signup" text */}
