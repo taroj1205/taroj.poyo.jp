@@ -85,14 +85,14 @@ const Header = () => {
                                     } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
                             >
                                 <Link href="/"
-                                    className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
+                                    className={`flex items-center text-center hover:text-blue-600 dark:hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
                                         } transition-all duration-300`}
                                 >
                                     <FaHome className="mr-1 text-xl mb-1 md:mb-0" />
                                     <span className="text-base">{t('header.home')}</span>
                                 </Link>
                                 <Link href="/about"
-                                    className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/about')
+                                    className={`flex items-center text-center hover:text-blue-600 dark:hover:text-blue-600 px-2 ${isActive('/about')
                                         ? 'border-b-2 border-blue-600 text-blue-600'
                                         : 'border-b-2 border-transparent text-black dark:text-white'
                                         } transition-all duration-300`}
@@ -101,7 +101,7 @@ const Header = () => {
                                     <span className="text-base">{t('header.about')}</span>
                                 </Link>
                                 <Link href="/apps"
-                                    className={`flex items-center text-center hover:text-blue-600 px-2 ${isActive('/apps')
+                                    className={`flex items-center text-center hover:text-blue-600 dark:hover:text-blue-600 px-2 ${isActive('/apps')
                                         ? 'border-b-2 border-blue-600 text-blue-600'
                                         : 'border-b-2 border-transparent text-black dark:text-white'
                                         } transition-all duration-300`}
