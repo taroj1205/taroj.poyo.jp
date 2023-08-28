@@ -6,6 +6,7 @@ import { FaChartBar, FaComments } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import i18n from '../../i18n';
 
 const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; icon: IconType }) => (
     <Link href={path}
@@ -29,11 +30,14 @@ const Apps = () => {
     const { theme } = useTheme();
     const [githubStatsImage, setGithubStatsImage] = useState('');
     const [githubLanguagesImage, setGithubLanguagesImage] = useState('');
+    const [wakatimeImage, setWakatimeImage] = useState('');
+    const lang = i18n.language;
 
     useEffect(() => {
-        setGithubStatsImage(`https://github-readme-stats.vercel.app/api?username=taroj1205&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true&theme=${theme}`);
-        setGithubLanguagesImage(`https://github-readme-stats.vercel.app/api/top-langs/?username=taroj1205&show_icons=true&hide_border=true&layout=compact&langs_count=10&theme=${theme}`);
-    }, [theme]);
+        setGithubStatsImage(`https://github-readme-stats.vercel.app/api?username=taroj1205&show_icons=true&locale=${lang}&hide_border=true&rank_icon=percentile&theme=${theme}`);
+        setGithubLanguagesImage(`https://github-readme-stats.vercel.app/api/top-langs/?username=taroj1205&show_icons=true&locale=${lang}&hide_border=true&layout=compact&langs_count=10&rank_icon=percentile&theme=${theme}`);
+        setWakatimeImage(`https://github-readme-stats.vercel.app/api/wakatime?username=taroj1205&hide_border=true&locale=${lang}&theme=${theme}`);
+    }, [theme, lang]);
 
     const routes = [
         { path: '/apps/chat', label: 'Chat', icon: FaComments },
@@ -94,8 +98,12 @@ const Apps = () => {
                     content="Apps page for taroj.poyo.jp"
                 />
                 <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
-                <link rel="preload" href={githubStatsImage} as="image" />
-                <link rel="preload" href={githubLanguagesImage} as="image" />
+                <link rel="preload" href="https://github-readme-stats.vercel.app/api?username=taroj1205&show_icons=true&locale=ja&hide_border=true&rank_icon=percentile&theme=dark" as="image" />
+                <link rel="preload" href="https://github-readme-stats.vercel.app/api?username=taroj1205&show_icons=true&locale=en&hide_border=true&rank_icon=percentile&theme=light" as="image" />
+                <link rel="preload" href="https://github-readme-stats.vercel.app/api/top-langs/?username=taroj1205&show_icons=true&locale=ja&hide_border=true&layout=compact&langs_count=10&rank_icon=percentile&theme=dark" as="image" />
+                <link rel="preload" href="https://github-readme-stats.vercel.app/api/top-langs/?username=taroj1205&show_icons=true&locale=en&hide_border=true&layout=compact&langs_count=10&rank_icon=percentile&theme=light" as="image" />
+                <link rel="preload" href="https://github-readme-stats.vercel.app/api/wakatime?username=taroj1205&hide_border=true&locale=en&theme=dark" as="image" />
+                <link rel="preload" href="https://github-readme-stats.vercel.app/api/wakatime?username=taroj1205&hide_border=true&locale=ja&theme=light" as="image" />
                 <title>{t('title.apps')}</title>
             </Head>
             <div className='fixed inset-0 z-[-10]'>
@@ -118,19 +126,29 @@ const Apps = () => {
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     <img
-                        height="180"
+                        height="200"
                         width="auto"
                         src={githubStatsImage}
                         alt={'GitHub Stats'}
                         loading='lazy'
                     />
                     <img
-                        height="180"
+                        height="200"
                         width="auto"
                         src={githubLanguagesImage}
                         alt={'GitHub Languages Stats'}
                         loading='lazy'
                     />
+                    <Link href="https://wakatime.com/@taroj1205">
+                        <img
+                            height="200"
+                            width="auto"
+                            src={wakatimeImage}
+                            alt={'Wakatime Image'}
+                            loading='lazy'
+                            className='border-none'
+                        />
+                    </Link>
                 </div>
             </div>
         </>
