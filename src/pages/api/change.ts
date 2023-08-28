@@ -1,6 +1,7 @@
 import { NextApiHandler } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
+// Methods have to be implemented (avatar, username, etc)
 const changeHandler: NextApiHandler = async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -38,22 +39,43 @@ const changeHandler: NextApiHandler = async (req, res) => {
         const user_id = user.user.id;
 
         try {
-        const newPictureURL = req.body.url;
+            const newPictureURL = req.body.url || undefined;
+            const newUsername = req.body.username || undefined;
+            
+            if (newPictureURL !== undefined) {
+                // Update the user's profile picture in the metadata using Supabase
+                const { error: updateError } = await supabase.auth.admin.updateUserById(
+                    user_id,
+                    {
+                        user_metadata: { avatar: newPictureURL }
+                    }
+                );
 
-            // Update the user's profile picture in the metadata using Supabase
-            const { error: updateError } = await supabase.auth.admin.updateUserById(
-                user_id,
-                {
-                    user_metadata: { avatar: newPictureURL }
+                if (updateError) {
+                    console.error('Error updating user profile picture:', updateError);
+                    return res.status(500).json({ error: 'Internal server error' });
+                } else {
+                    return res.status(200).json({ message: 'Profile picture updated successfully' });
                 }
-            );
-
-            if (updateError) {
-                console.error('Error updating user profile picture:', updateError);
-                return res.status(500).json({ error: 'Internal server error' });
-            } else {
-                return res.status(200).json({ message: 'Profile picture updated successfully' });
             }
+
+            if (newUsername !== undefined) {
+                // Update the user's username using Supabase
+                const {error: updateError} = await supabase.auth.admin.updateUserById(
+                    user_id,
+                    {
+                    user_metadata: { username: newUsername }
+                    }
+                )
+
+                if (updateError) {
+                    console.error('Error updating user username:', updateError);
+                    return res.status(500).json({ error: 'Internal server error' })
+                } else {
+                    return res.status(200).json({ message: 'Username updated successfully' })
+                }
+            }
+
         } catch (error) {
             console.error('Error validating image URL:', error);
             return res.status(400).json({ error: 'Invalid image URL' });

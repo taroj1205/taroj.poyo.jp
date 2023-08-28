@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import Head from 'next/head';
 import { useAuth } from '../../components/AuthContext';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -12,13 +13,14 @@ const Login: React.FC = () => {
     const { t } = useTranslation();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const [viewPassword, setViewPassword] = useState(false);
     const { user, setUser, setToken } = useAuth() || {};
 
     useEffect(() => {
         if (user?.email) {
             router.push('/profile');
         }
-    },[user]);
+    }, [user]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -67,6 +69,11 @@ const Login: React.FC = () => {
         }
     };
 
+    // Sets password viewer to true/false
+    const handleEyeViewer = () => {
+        setViewPassword(v => v = !v);
+    };
+
     return (
         <>
             <Head>
@@ -101,15 +108,32 @@ const Login: React.FC = () => {
                             <label htmlFor="password" className="block text-gray-700 dark:text-gray-300 mb-2">
                                 {t('auth.password')}
                             </label>
-                            <input
-                                type="password"
-                                id="password"
-                                required
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                value={password}
-                                autoComplete='password'
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+                            {viewPassword ?
+                                <div className="flex justify-center items-center">
+                                    <input
+                                        type="text"
+                                        id="password"
+                                        required
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                        value={password}
+                                        autoComplete='password'
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    <FiEyeOff onClick={handleEyeViewer} className="ml-2 cursor-pointer"/>
+                                </div> :
+                                <div className="flex justify-center items-center">
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        required
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                        value={password}
+                                        autoComplete='password'
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    <FiEye onClick={handleEyeViewer} className="ml-2 cursor-pointer"/>
+                                </div>
+                            }
                         </div>
                         <div className="flex items-center justify-between mb-4">
                             <button
