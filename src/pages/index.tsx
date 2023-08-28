@@ -40,7 +40,7 @@ const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; i
 
 
 const MadeWith = () => {
-    const { t } = useTranslation('translation'); // Assuming you have translation keys for skill labels
+    const { t } = useTranslation(); // Assuming you have translation keys for skill labels
 
     const skills = [
         { icon: SiReact, label: t('skill.react'), color: '#0e7696' }, // Blue for React
@@ -118,9 +118,12 @@ const HomePage = () => {
             </div>
             <div ref={sceneRef} style={{ height: 'calc(100vh - 40px)' }}
                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
-                <h1 className="text-4xl md:text-6xl font-bold">
-                    {t('index.welcome')}
-                    {user?.user_metadata.username && ` ${user.user_metadata.username}`}!
+                <h1 className="text-7xl font-bold flex justify-center items-center flex-col">
+                    <div className="stack" style={{ '--stacks': '3' }}>
+                        <span style={{ '--index': '0' }}>{t('index.welcome')}</span>
+                        <span style={{ '--index': '1' }}>{t('index.welcome')}</span>
+                        <span style={{ '--index': '2' }}>{t('index.welcome')}</span>
+                    </div>
                 </h1>
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 my-6">
                     {routes.map((route, index) => (
