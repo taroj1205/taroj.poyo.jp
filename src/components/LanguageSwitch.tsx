@@ -130,7 +130,6 @@ export default ({ isHeader }: { isHeader: boolean }) => {
             }
         >
             <Select
-                autoFocus
                 backspaceRemovesValue={false}
                 components={{ DropdownIndicator, IndicatorSeparator: null }}
                 controlShouldRenderValue={false}
