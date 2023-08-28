@@ -109,7 +109,7 @@ const Apps = () => {
             <div className='fixed inset-0 z-[-10]'>
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} objectFit="cover" />
             </div>
-            <div ref={sceneRef} style={{ height }}
+            <div ref={sceneRef} style={{ minHeight: height }}
                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('apps.list')}
