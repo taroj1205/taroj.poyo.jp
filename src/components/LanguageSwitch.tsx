@@ -6,15 +6,7 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { ImEarth } from 'react-icons/im';
 import { FiGlobe } from 'react-icons/fi';
-
-const selectStyles: StylesConfig<LanguageOption, false> = {
-    control: (provided) => ({
-        ...provided,
-        minWidth: 240,
-        margin: 8,
-    }),
-    menu: () => ({ boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)' }),
-};
+import { useTheme } from 'next-themes';
 
 export default ({ isHeader }: { isHeader: boolean }) => {
     const { t, i18n } = useTranslation();
@@ -94,6 +86,50 @@ export default ({ isHeader }: { isHeader: boolean }) => {
         );
     };
 
+    const theme = useTheme();
+
+    const [currentTheme, setCurrentTheme] = useState(theme.theme === 'dark' ? 'dark' : 'light');
+
+    useEffect(() => {
+        setCurrentTheme(theme.theme ?? 'light');
+        console.log(theme.theme);
+    }, [theme]);
+
+    const selectStyles: StylesConfig<LanguageOption, false> = {
+        control: (provided) => ({
+            ...provided,
+            minWidth: 240,
+            margin: 8,
+            backgroundColor: currentTheme.toString() === 'dark' ? 'rgb(49, 67, 97)' : 'white',
+            borderColor: currentTheme.toString() === 'dark' ? 'rgb(30 41 59)' : 'rgb(204, 204, 204)',
+        }),
+        menu: () => ({
+            boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)',
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: currentTheme.toString() === 'dark' ? 'rgb(204, 204, 204)' : 'rgb(30 41 59)'
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: currentTheme.toString() === 'dark' ? 'rgb(204, 204, 204)' : 'rgb(30 41 59)'
+        }),
+        option: (provided, { isFocused, isSelected }) => ({
+            ...provided,
+            ...(isFocused && !isSelected
+                ? {
+                    backgroundColor: currentTheme === 'light' ? '#DEEBFF' : 'rgb(23, 31, 45)',
+                }
+                : {}),
+            ...(!isSelected ? {
+                ":active": {
+                    backgroundColor: currentTheme === 'light' ? '#B2D4FF' : 'rgb(16, 22, 33)',
+                }
+            }
+            : {}),
+        })
+    };
+
     const handleLanguageChange = (language: string) => {
         const lang = router.locale as string;
         console.log(language, lang);
@@ -121,7 +157,7 @@ export default ({ isHeader }: { isHeader: boolean }) => {
                 >
                     <span className='dark:text-white flex items-center'>
                         {isOpen ? (
-                            <ChevronDown isHeader={isHeader} color={isDarkMode ? 'white' : 'black'} />
+                            <ChevronDown isHeader={isHeader} color={currentTheme === 'dark' ? 'white' : 'black'} />
                         ) : (
                             <ChevronDown isHeader={isHeader} color="gray" />
                         )}
@@ -157,7 +193,7 @@ export default ({ isHeader }: { isHeader: boolean }) => {
 
 const Menu = (props: JSX.IntrinsicElements['div']) => {
     return (
-        <div className='bg-white text-black rounded-md shadow-sm mt-2 absolute z-10' {...props} />
+        <div className='bg-white dark:bg-slate-800 text-black dark:text-white rounded-md shadow-sm mt-2 absolute z-10' {...props} />
     );
 };
 const Blanket = (props: JSX.IntrinsicElements['div']) => (
