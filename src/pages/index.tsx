@@ -119,10 +119,10 @@ const HomePage = () => {
             <div ref={sceneRef} style={{ height: 'calc(100vh - 40px)' }}
                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60">
                 <h1 className="text-7xl font-bold flex justify-center items-center flex-col">
-                    <div className="stack" style={{ '--stacks': '3' }}>
-                        <span style={{ '--index': '0' }}>{t('index.welcome')}</span>
-                        <span style={{ '--index': '1' }}>{t('index.welcome')}</span>
-                        <span style={{ '--index': '2' }}>{t('index.welcome')}</span>
+                    <div className="stack" style={{ ['--stacks' as any]: '3' }}>
+                        <span style={{ ['--index' as any]: '0' }}>{t('index.welcome')}</span>
+                        <span style={{ ['--index' as any]: '1' }}>{t('index.welcome')}</span>
+                        <span style={{ ['--index' as any]: '2' }}>{t('index.welcome')}</span>
                     </div>
                 </h1>
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 my-6">
