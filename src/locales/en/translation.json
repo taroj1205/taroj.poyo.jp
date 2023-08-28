@@ -137,6 +137,7 @@
     "title": "Apps"
   },
   "auth": {
+    "cancel": "Cancel",
     "close": "Close",
     "confirmPassword": "Confirm Password",
     "email": "Email",
@@ -145,14 +146,19 @@
     "loginError": "An error occurred during login. Please try again later.",
     "loginFailed": "Login failed! Please check your credentials or verify in your mailbox and try again.",
     "logout": "Logout",
+    "newPassword": "New Password",
     "password": "Password",
     "passwordContainsEmailOrUsername": "Password must not contain your email or username.",
     "passwordMinLength": "Password must be at least 8 characters long.",
     "passwordRequirements": "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
     "resend": "Resend",
+    "samePassword": "Passwords cannot be the same. Please try again.",
     "signup": "Sign Up",
     "signupDupe": "Account already exists",
     "signupSuccess": "Successfully signed up!",
+    "updatePassword": "Update Password",
+    "updatePasswordFailed": "Failed to update password. Please try again later.",
+    "updatePasswordSuccess": "Password updated successfully!",
     "username": "Username",
     "verificationCode": "Verification Code",
     "verificationCodeResendError": "Verification code resend failed. Please try again later.",
@@ -265,7 +271,8 @@
       "emailVerification": "Email Verification",
       "forgotPassword": "Forgot password",
       "login": "Login",
-      "signup": "Sign Up"
+      "signup": "Sign Up",
+      "updatePassword": "Update Password"
     },
     "chat": "Chat",
     "index": "Home",

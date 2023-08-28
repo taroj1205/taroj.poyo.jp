@@ -137,6 +137,7 @@
     "title": "アプリ"
   },
   "auth": {
+    "cancel": "キャンセル",
     "close": "閉じる",
     "confirmPassword": "パスワードの確認",
     "email": "メールアドレス",
@@ -145,14 +146,19 @@
     "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。",
     "loginFailed": "ログインに失敗しました。入力した情報を確認し、メールボックスで確認した上、もう一度お試しください。",
     "logout": "ログアウト",
+    "newPassword": "新しいパスワード",
     "password": "パスワード",
     "passwordContainsEmailOrUsername": "パスワードにはメールアドレスやユーザー名を含めることはできません。",
     "passwordMinLength": "パスワードは少なくとも8文字である必要があります。",
     "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。",
     "resend": "再送信",
+    "samePassword": "同じパスワードは使用できません。もう一度お試しください。",
     "signup": "登録",
     "signupDupe": "アカウントが既に存在しています",
     "signupSuccess": "サインアップに成功しました！",
+    "updatePassword": "パスワードを更新する",
+    "updatePasswordFailed": "パスワードの更新に失敗しました。後でもう一度お試しください。",
+    "updatePasswordSuccess": "パスワードが正常に更新されました！",
     "username": "ユーザー名",
     "verificationCode": "確認コード",
     "verificationCodeResendError": "認証コードの再送信に失敗しました。後でもう一度お試しください。",
@@ -265,7 +271,8 @@
       "emailVerification": "メール確認",
       "forgotPassword": "パスワードを忘れた",
       "login": "ログイン",
-      "signup": "登録する"
+      "signup": "登録する",
+      "updatePassword": "パスワードを更新する"
     },
     "chat": "チャット",
     "index": "ホームページ",
