@@ -215,7 +215,7 @@
     "routes": "Links",
     "settings": "Settings",
     "title": "Homepage",
-    "welcome": "Welcome"
+    "welcome": "Welcome!"
   },
   "japanese": "Japanese",
   "language": "Language",
@@ -258,7 +258,7 @@
   "submit": "Submit",
   "submitting": "Submitting...",
   "success": "Success!",
-  "supported language": "Supported language",
+  "supported language": "Supported languages",
   "theme": {
     "dark": "Dark",
     "light": "Light",

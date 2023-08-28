@@ -56,7 +56,7 @@ const Profile = () => {
     };
 
     const ChevronDown = ({ color }: { color: string }) => (
-        <span className='dark:text-white flex items-center'>
+        <span className='text-gray-700 dark:text-white flex items-center'>
             {user?.user_metadata.avatar ? (
                 <img
                     className="w-8 h-8 rounded-full"
@@ -64,7 +64,7 @@ const Profile = () => {
                     alt="Profile picture"
                 />
             ) : (
-                <FaCog className="text-black dark:text-white" size={20} style={{ marginRight: -2 }} />
+                <FaCog className="text-black text-gray-700 dark:text-white" size={20} style={{ marginRight: -2 }} />
             )}
             <Svg className='flex items-center'>
                 <path
@@ -106,13 +106,13 @@ const Profile = () => {
                 />
             )}
             {isDropdownOpen && (
-                <div className="absolute top-8 z-[11] right-2 mt-1 w-min-48 w-fit bg-white rounded-md shadow-lg">
+                <div className="absolute top-8 z-[11] right-2 mt-1 w-min-48 w-fit bg-white dark:bg-slate-800 rounded-md shadow-lg">
                     <div className="py-1">
                         {user && user?.user_metadata.avatar && (
                             <>
                                 <button
                                     aria-label="go to profile"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-slate-900"
                                     onClick={() => handleLink('/profile')}
                                 >
                                     <FaUser className="mr-2 inline" />
@@ -120,7 +120,7 @@ const Profile = () => {
                                 </button>
                                 <button
                                     aria-label="go to settings"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-slate-900"
                                     onClick={() => handleLink('/settings')}
                                 >
                                     <FaCog className="mr-2 inline" />
@@ -128,7 +128,7 @@ const Profile = () => {
                                 </button>
                                 <button
                                     aria-label="logout"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-slate-900"
                                     onClick={() => handleLink('/auth/logout')}
                                 >
                                     <FaSignOutAlt className="mr-2 inline" />
@@ -140,7 +140,7 @@ const Profile = () => {
                             <>
                                 <button
                                     aria-label="login"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-900"
                                     onClick={() => handleLink('/auth/login')}
                                 >
                                     <FaSignInAlt className="mr-2 inline" />
@@ -148,7 +148,7 @@ const Profile = () => {
                                 </button>
                                 <button
                                     aria-label="go to settings"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-900"
                                     onClick={() => handleLink('/settings')}
                                 >
                                     <FaCog className="mr-2 inline" />
