@@ -2,6 +2,7 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import GoBackLogin from '../../components/GoBackLogin';
+import { useRouter } from 'next/router';
 
 const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick }) => {
     const [email, setEmail] = useState('');
@@ -10,19 +11,38 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
     const [isSuccess, setIsSuccess] = useState(false);
     const { t } = useTranslation();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setIsLoading(true); // Show loading state
+    const router = useRouter();
 
-        // Simulating API call delay with setTimeout (Replace this with your actual API call)
-        setTimeout(() => {
-            // Add your logic to submit the forgot password request here
-            console.log('Forgot Password Email:', email);
-            // You can make API calls or any other logic to handle the forgot password request
-            setIsSubmitted(true);
-            setIsLoading(false);
-            setIsSuccess(true); // Show success state
-        }, 2000);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+        if (email.length > 0) {
+            console.log(email);
+            try {
+                const response = await fetch('/api/auth/reset/password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                if (response.ok) {
+                    console.log('Forgot Password Email:', email);
+                    setIsSubmitted(true);
+                    setIsLoading(false);
+                    setIsSuccess(true); // Show success state
+                } else {
+                    setIsLoading(false);
+                    setIsSuccess(false);
+                    console.log(response);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                setIsLoading(false);
+                setIsSuccess(false); // Show error state
+            }
+        }
     };
 
     return (
@@ -62,7 +82,7 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                                     type="email"
                                     id="email"
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                        value={email}
+                                    value={email}
                                     autoComplete='email'
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -73,7 +93,7 @@ const ForgotPassword: React.FC<{ onGoBackClick: () => void }> = ({ onGoBackClick
                                     className={`bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md focus:outline-none ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     disabled={isLoading}
                                 >
-                                        {isLoading ? t('submitting') : t('submit')}
+                                    {isLoading ? t('submitting') : t('submit')}
                                 </button>
                                 <GoBackLogin />
                             </div>

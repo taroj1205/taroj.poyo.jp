@@ -711,7 +711,7 @@ const PlaceholderMessages: React.FC<{ count: number, height: number }> = ({ coun
         </div>
     ));
     return (
-        <div className="flex flex-col items-left justify-center z-0" style={{ height }}>
+        <div className="flex flex-col items-left justify-center z-0" style={{ height }} key={count}>
             {placeholders}
         </div>
     );
