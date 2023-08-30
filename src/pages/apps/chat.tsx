@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../components/AuthContext';
 import Script from 'next/script';
 import i18n from '../../../i18n';
+import { AiFillDelete } from 'react-icons/ai';
 
 interface ChatMessage {
     content: {
@@ -19,6 +20,7 @@ interface ChatMessage {
     };
     sent_on: string;
     message_id: string;
+    deleted_at: null | string;
 }
 
 const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObject<HTMLDivElement>, setRoomName: React.Dispatch<React.SetStateAction<string>>, setServerName: React.Dispatch<React.SetStateAction<string>> }) => {
@@ -312,6 +314,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     },
                     sent_on: '',
                     message_id: (count).toString(),
+                    deleted_at: null
                 }
             ]);
         }
@@ -582,6 +585,8 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
     const [formattedMessages, setFormattedMessages] = useState<string[]>([]);
     const [formattedSendingMessages, setFormattedSendingMessages] = useState<string[]>([]);
 
+    const { t } = useTranslation();
+
     useEffect(() => {
         const formatMessages = async (messagesArray: ChatMessage[]) => {
             const formattedArray: string[] = [];
@@ -686,6 +691,7 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
 
         return formattedSentOn;
     }
+    let deletedMessageCount = 0 as number;
 
     return (
         <div
@@ -700,7 +706,8 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
             ) : (
                 <>
                     {messages.map((message, index) => {
-                        if (formattedMessages[index] !== undefined) {
+                        if (formattedMessages[index] !== undefined && message.deleted_at === null) {
+                            deletedMessageCount = 0;
                             return (
                                 <div
                                     className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
@@ -746,6 +753,35 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                                                     }}
                                                 ></span>
                                             </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        } else if (message.deleted_at !== null) {
+                            deletedMessageCount++;
+                            console.log(message.deleted_at);
+                            const nextMessage = messages[index + 1];
+                            const isNextMessageDeleted = nextMessage && nextMessage.deleted_at;
+                            if (isNextMessageDeleted) return;
+                            return (
+                                <div
+                                    className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
+                                    key={index}
+                                >
+                                    <AiFillDelete className="w-10 h-10 text-white rounded-full ml-2 mr-2 bg-slate-400 dark:bg-slate-600" />
+                                    <div>
+                                        <div className="flex items-center">
+                                            <div className="text-sm mr-[1ch]">
+                                                <span
+                                                    className="messageText whitespace-pre-line text-left"
+                                                    id={message.message_id}
+                                                >
+                                                    <span
+                                                        className="messageText whitespace-pre-line text-left text-red-500"
+                                                        id={message.message_id}
+                                                    >{t('apps.chat.deleted')}{deletedMessageCount > 1 && ` x${deletedMessageCount}`}</span>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -805,7 +841,8 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                         }
                     })}
                 </>
-            )}
+            )
+            }
         </div>
     )
 }

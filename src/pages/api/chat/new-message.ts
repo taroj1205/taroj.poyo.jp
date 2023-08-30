@@ -98,6 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 room_id,
                 sent_on: insertedMessage[0].sent_on,
                 content,
+                deleted_at: null,
             };
 
             pusher.trigger(`${server_id},${room_id}`, 'newMessage', newMessage);
