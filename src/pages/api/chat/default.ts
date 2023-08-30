@@ -104,7 +104,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const { data: messages, error: messageError } = await supabase
                 .from('chat_messages')
                 .select('*, users:id')
-                .match({ server_id, room_id }) as { data: any[], error: any };
+                .match({ server_id, room_id })
+                .is('deleted_at', null) as { data: any[], error: any };
 
             if (messageError) {
                 console.error('Error retrieving messages:', messageError);
