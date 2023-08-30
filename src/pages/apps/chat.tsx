@@ -9,7 +9,6 @@ import { useAuth } from '../../components/AuthContext';
 import Script from 'next/script';
 import i18n from '../../../i18n';
 
-
 interface ChatMessage {
     content: {
         body: string;
@@ -28,7 +27,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
     const [serverId, setServerId] = useState('');
     const [roomId, setRoomId] = useState('');
     const { token, user, isLoading } = useAuth() || {};
-    const [isLoadingState, setisLoadingState] = useState(false);
+    const [sendingMessage, setSendingMessage] = useState<ChatMessage[]>([]);
 
     const { t } = useTranslation();
 
@@ -111,6 +110,11 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
             console.log('Received new message: ', data);
             const chatContainer = document.getElementById('messages') as HTMLDivElement;
             const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight;
+
+            // delete the item with data.message_id = sendingMessage.message_id
+            setSendingMessage((prevSendingMessage) =>
+                prevSendingMessage.filter((message) => parseInt(message.message_id) !== parseInt(data.message_id))
+            );
 
             setMessages((prevMessages) => [...prevMessages, ...[data]]);
 
@@ -271,8 +275,48 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
             inputRef.current.value = '';
         }
 
+        if (user && message && message.length > 0) {
+            // const formatSentOn = (sent_on: string, lang: string) => {
+            //     const format = lang === 'ja' ? 'ja-JP' : 'en-NZ';
+            //     const options: Intl.DateTimeFormatOptions = {
+            //         year: 'numeric',
+            //         month: 'long',
+            //         day: 'numeric',
+            //         hour: 'numeric',
+            //         minute: 'numeric',
+            //         second: 'numeric',
+            //         hour12: false,
+            //     };
+
+            //     const formatter = new Intl.DateTimeFormat(format, options);
+            //     const formattedSentOn = formatter
+            //         .format(new Date(sent_on))
+            //         .replace(',', '.');
+
+            //     return formattedSentOn;
+            // }
+            console.log(messages);
+            const lastMessage = parseInt(messages[messages.length - 1].message_id) || 0;
+            const count = lastMessage + 1;
+            console.log(count);
+
+            setSendingMessage((prevSendingMessage) => [
+                ...prevSendingMessage,
+                {
+                    content: {
+                        body: message
+                    },
+                    sender: {
+                        username: user.user_metadata.username,
+                        avatar: user.user_metadata.avatar
+                    },
+                    sent_on: '',
+                    message_id: (count).toString(),
+                }
+            ]);
+        }
+
         if (message && message.length < 500) {
-            setisLoadingState(true); // set loading state to true
             console.log('User id:', token);
             if (!token) {
                 errorPopup(t('apps.chat.login'));
@@ -294,7 +338,6 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                 }),
             })
                 .then(async (response) => {
-                    setisLoadingState(false); // set loading state to false
                     console.log(response); // log the response
 
                     if (response.status !== 200) {
@@ -327,8 +370,6 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                 })
                 .catch((error) => {
                     console.error('Error sending message:', error);
-                    setisLoadingState(false); // set loading state to false
-
                     if (inputRef.current) {
                         const inputValue = localStorage.getItem('input');
                         if (inputValue !== null) {
@@ -362,10 +403,10 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                 <Main
                     inputRef={inputRef}
                     sendMessage={sendMessage}
-                    isLoadingState={isLoadingState}
+                    messageLoading={messageLoading}
                     scrollPosRef={scrollPosRef}
                     messages={messages}
-                    messageLoading={messageLoading}
+                    sendingMessage={sendingMessage}
                 />
             </Container>
         </>
@@ -375,19 +416,19 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
 interface MainProps {
     inputRef: React.RefObject<HTMLTextAreaElement>;
     sendMessage: () => void;
-    isLoadingState: boolean;
+    messageLoading: boolean;
     scrollPosRef: React.RefObject<number>;
     messages: Array<ChatMessage>;
-    messageLoading: boolean;
+    sendingMessage: Array<ChatMessage>;
 }
 
 const Main: React.FC<MainProps> = ({
     inputRef,
     sendMessage,
-    isLoadingState,
+    messageLoading,
     scrollPosRef,
     messages,
-    messageLoading,
+    sendingMessage,
 }) => {
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
@@ -494,7 +535,7 @@ const Main: React.FC<MainProps> = ({
         <div
             className="flex flex-col min-h-0 w-full max-h-full"
         >
-            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height} />
+            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height} sendingMessage={sendingMessage} />
             <div className="w-full" style={{ flex: '0' }}>
                 <button
                     aria-label={t('apps.chat.scroll-to-bottom')}
@@ -521,11 +562,11 @@ const Main: React.FC<MainProps> = ({
                     <button
                         id="send-button"
                         aria-label={t('apps.chat.send')}
-                        onClick={!isLoadingState ? sendMessage : undefined}
-                        disabled={isLoadingState}
+                        onClick={!messageLoading ? sendMessage : undefined}
+                        disabled={messageLoading}
                         className="w-12 bottom-0 right-0 sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                     >
-                        {isLoadingState ? (
+                        {messageLoading ? (
                             <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                         ) : (
                             <FaPaperPlane className="text-white" />
@@ -537,30 +578,51 @@ const Main: React.FC<MainProps> = ({
     );
 };
 
-const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boolean, height: number }> = ({ messages, messageLoading, height }) => {
+const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boolean, height: number, sendingMessage: ChatMessage[] }> = ({ messages, messageLoading, height, sendingMessage }) => {
     const [formattedMessages, setFormattedMessages] = useState<string[]>([]);
+    const [formattedSendingMessages, setFormattedSendingMessages] = useState<string[]>([]);
 
     useEffect(() => {
-        const formatMessages = async () => {
+        const formatMessages = async (messagesArray: ChatMessage[]) => {
             const formattedArray: string[] = [];
 
-            for (const message of messages) {
+            for (const message of messagesArray) {
                 const formattedMessageHTML = await formatMessageBody(message.content.body);
                 formattedArray.push(formattedMessageHTML);
             }
 
-            setFormattedMessages(formattedArray);
+            return formattedArray;
         };
 
-        formatMessages();
-    }, [messages]);
+        console.log(messages);
+        console.log(sendingMessage);
 
-    useEffect(() => {
-        messages.forEach(message => {
-            const img = new Image();
-            img.src = message.sender.avatar;
-        });
-    }, [messages]);
+        if (messages.length > 0) {
+            formatMessages(messages).then(formattedArray => {
+                setFormattedMessages(formattedArray);
+            });
+            messages.forEach(message => {
+                console.log(message);
+                console.log(message.sender);
+                console.log(message.sender.avatar);
+                const img = new Image();
+                img.src = message.sender.avatar;
+            });
+        }
+
+        if (sendingMessage.length > 0) {
+            formatMessages(sendingMessage).then(formattedArray => {
+                setFormattedSendingMessages(formattedArray);
+            });
+            sendingMessage.forEach(message => {
+                console.log(message);
+                console.log(message.sender);
+                console.log(message.sender.avatar);
+                const img = new Image();
+                img.src = message.sender.avatar;
+            });
+        }
+    }, [messages, sendingMessage]);
 
     const formatMessageBody = async (messageString: string): Promise<string> => {
         async function wrapCodeInTags(text: string): Promise<string> {
@@ -636,59 +698,113 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
             {messageLoading ? (
                 <PlaceholderMessages count={20} height={height} />
             ) : (
-                messages.map((message, index) => {
-                    if (formattedMessages[index] !== undefined) {
-                        return (
-                            <div
-                                className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
-                                key={index}
-                            >
-                                <img
-                                    src={message.sender.avatar}
-                                    alt={message.sender.username}
-                                    width="50"
-                                    height="50"
-                                    className="w-10 h-10 rounded-full ml-2 mr-2"
-                                />
-                                <div>
-                                    <div className="flex items-center">
-                                        <span className="mr-1 text-xs text-gray-500">
-                                            {index + 1}
-                                        </span>
-                                        <span className="text-sm font-semibold">
-                                            {message.sender.username}
-                                        </span>
-                                        <span className="ml-1 text-xs text-gray-500">
-                                            {i18n.language === 'ja' ? (
-                                                <span className="ml-1 text-xs text-gray-500">
-                                                    {formatSentOn(message.sent_on, 'ja')}
-                                                </span>
-                                            ) : (
-                                                <span className="ml-1 text-xs text-gray-500">
-                                                    {formatSentOn(message.sent_on, 'en')}
-                                                </span>
-                                            )}
-                                        </span>
-                                    </div>
-                                    <div className="text-sm mr-[1ch]">
-                                        <span
-                                            className="messageText whitespace-pre-line text-left"
-                                            id={message.message_id}
-                                        >
+                <>
+                    {messages.map((message, index) => {
+                        if (formattedMessages[index] !== undefined) {
+                            return (
+                                <div
+                                    className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
+                                    key={index}
+                                >
+                                    <img
+                                        src={message.sender.avatar}
+                                        alt={message.sender.username}
+                                        width="50"
+                                        height="50"
+                                        className="w-10 h-10 rounded-full ml-2 mr-2"
+                                    />
+                                    <div>
+                                        <div className="flex items-center">
+                                            <span className="mr-1 text-xs text-gray-500">
+                                                {message.message_id}
+                                            </span>
+                                            <span className="text-sm font-semibold">
+                                                {message.sender.username}
+                                            </span>
+                                            <span className="ml-1 text-xs text-gray-500">
+                                                {i18n.language === 'ja' ? (
+                                                    <span className="ml-1 text-xs text-gray-500">
+                                                        {formatSentOn(message.sent_on, 'ja')}
+                                                    </span>
+                                                ) : (
+                                                    <span className="ml-1 text-xs text-gray-500">
+                                                        {formatSentOn(message.sent_on, 'en')}
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className="text-sm mr-[1ch]">
                                             <span
                                                 className="messageText whitespace-pre-line text-left"
                                                 id={message.message_id}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: formattedMessages[index],
-                                                }}
-                                            ></span>
-                                        </span>
+                                            >
+                                                <span
+                                                    className="messageText whitespace-pre-line text-left"
+                                                    id={message.message_id}
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: formattedMessages[index],
+                                                    }}
+                                                ></span>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    }
-                })
+                            );
+                        }
+                    })}
+                    {sendingMessage.map((message, index) => {
+                        if (formattedSendingMessages[index] !== undefined) {
+                            return (
+                                <div
+                                    className={`flex opacity-50 mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
+                                    key={index}
+                                >
+                                    <img
+                                        src={message.sender.avatar}
+                                        alt={message.sender.username}
+                                        width="50"
+                                        height="50"
+                                        className="w-10 h-10 rounded-full ml-2 mr-2"
+                                    />
+                                    <div>
+                                        <div className="flex items-center">
+                                            <span className="mr-1 text-xs text-gray-500">
+                                                {message.message_id}
+                                            </span>
+                                            <span className="text-sm font-semibold">
+                                                {message.sender.username}
+                                            </span>
+                                            {/* <span className="ml-1 text-xs text-gray-500">
+                                                    {i18n.language === 'ja' ? (
+                                                        <span className="ml-1 text-xs text-gray-500">
+                                                            {formatSentOn(message.sent_on, 'ja')}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="ml-1 text-xs text-gray-500">
+                                                            {formatSentOn(message.sent_on, 'en')}
+                                                        </span>
+                                                    )}
+                                                </span> */}
+                                        </div>
+                                        <div className="text-sm mr-[1ch]">
+                                            <span
+                                                className="messageText whitespace-pre-line text-left"
+                                                id={message.message_id}
+                                            >
+                                                <span
+                                                    className="messageText whitespace-pre-line text-left"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: formattedSendingMessages[index],
+                                                    }}
+                                                ></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })}
+                </>
             )}
         </div>
     )
@@ -796,13 +912,7 @@ const ChatPage = () => {
                     content="Chat page for taroj.poyo.jp"
                 />
                 <title>
-                    {t('title.chat')}
-                    {serverName && (
-                        ` - ${serverName}`
-                    )}
-                    {roomName && (
-                        ` - ${roomName}`
-                    )}
+                    {`${t('title.chat')} ${serverName ? `- ${serverName}` : ''} ${roomName ? `- ${roomName}` : ''}`}
                 </title>
             </Head>
             <div>
