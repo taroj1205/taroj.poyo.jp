@@ -645,7 +645,9 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
             return text;
         }
 
-        const messageText = await wrapCodeInTags(messageString);
+        console.log(messageString);
+
+        const messageText = messageString !== undefined ? await wrapCodeInTags(messageString) : '';
 
         let formattedMessageText = messageText.replace(
             /((?:>>\d+)|(?:https?:\/\/[^\s]+))/g,

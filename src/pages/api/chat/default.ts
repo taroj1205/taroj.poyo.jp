@@ -148,19 +148,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
 
             // Format messages in the desired JSON format
-            const formattedMessages = messages.map((message) => ({
-                message_id: message.id,
-                sender: {
-                    username: senderInfo[message.user_id].user.user_metadata.username,
-                    avatar: senderInfo[message.user_id].user.user_metadata.avatar,
-                },
-                server_id: message.server_id,
-                room_id: message.room_id,
-                sent_on: message.sent_on,
-                content: message.content,
-                deleted_at: message.deleted_at,
-            }));
-
+            const formattedMessages = messages.map((message) => {
+                const isDeleted = message.deleted_at !== null;
+                return {
+                    message_id: message.id,
+                    sender: {
+                        username: isDeleted ? "" : senderInfo[message.user_id].user.user_metadata.username,
+                        avatar: isDeleted ? "" : senderInfo[message.user_id].user.user_metadata.avatar,
+                    },
+                    server_id: message.server_id,
+                    room_id: message.room_id,
+                    sent_on: message.sent_on,
+                    content: isDeleted ? "" : message.content,
+                    deleted_at: message.deleted_at,
+                };
+            });
 
             console.log('Retrieved and formatted messages:', formattedMessages);
 
