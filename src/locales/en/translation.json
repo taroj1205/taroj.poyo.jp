@@ -131,7 +131,8 @@
       "send": "Send",
       "title": "Chat",
       "type a message": "Type a message...",
-      "typing": "Typing..."
+      "typing": "Typing...",
+      "deleted": "Deleted message"
     },
     "list": "List of apps",
     "title": "Apps"
