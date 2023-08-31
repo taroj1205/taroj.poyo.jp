@@ -9,18 +9,28 @@ import { useAuth } from '../../components/AuthContext';
 import Script from 'next/script';
 import i18n from '../../../i18n';
 import { AiFillDelete } from 'react-icons/ai';
+import { v4 as uuidv4 } from 'uuid'
+
 
 interface ChatMessage {
-    content: {
-        body: string;
-    };
+    content: string;
     sender: {
         username: string;
         avatar: string;
     };
+    uuid: string;
     sent_on: string;
     message_id: string;
     deleted_at: null | string;
+}
+
+interface ChatPreviewMessage {
+    content: string;
+    sender: {
+        username: string;
+        avatar: string;
+    };
+    uuid: string;
 }
 
 const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObject<HTMLDivElement>, setRoomName: React.Dispatch<React.SetStateAction<string>>, setServerName: React.Dispatch<React.SetStateAction<string>> }) => {
@@ -29,7 +39,9 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
     const [serverId, setServerId] = useState('');
     const [roomId, setRoomId] = useState('');
     const { token, user, isLoading } = useAuth() || {};
-    const [sendingMessage, setSendingMessage] = useState<ChatMessage[]>([]);
+    const [sendingMessage, setSendingMessage] = useState<ChatPreviewMessage[]>([]);
+    const [bottomScroll, setBottomScroll] = useState(false);
+    const [messageData, setMessageData] = useState<any>({});
 
     const { t } = useTranslation();
 
@@ -57,6 +69,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                 });
                 const data = await response.json();
                 console.log(data);
+                console.log(data.messages[0].server.id, data.messages[0].server.name);
                 if (data.error === 401) {
                     router.push('/auth');
                     return;
@@ -64,18 +77,39 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     router.push('/verify');
                     return;
                 } else {
-                    setRoomId(data.channelDetail.room.id);
-                    setRoomName(data.channelDetail.room.name);
-                    setServerId(data.channelDetail.server.id);
-                    setServerName(data.channelDetail.server.name);
-                    console.log("Data:", data, data.channelDetail, roomId, serverId);
+                    setMessageData(data);
+                    console.log(data.messages[0].server.id, data.messages[0].server.name);
+                    setServerId(data.messages[0].server.id);
+                    setServerName(data.messages[0].server.name);
+                    const currentLocale = router.locale === 'ja' ? '日本語' : 'English';
+
+                    console.log(currentLocale);
+
+                    const matchingRoom = data.messages[0].server.room.find((room: any) => room.name === currentLocale);
+                    console.log(matchingRoom);
+
+                    if (matchingRoom) {
+                        console.log(matchingRoom.id);
+                        console.log(matchingRoom.name);
+                        console.log(matchingRoom.messages);
+                        setRoomId(matchingRoom.id);
+                        setRoomName(matchingRoom.name);
+                        setMessages(matchingRoom.messages);
+                    } else {
+                        // Handle the case where the current locale doesn't match any room
+                        console.error('No matching room found for the current locale.');
+                    }
+                    console.log("Data:", data, data.messages, roomId, serverId);
                     if (data.status === 400) {
                         errorPopup(data.error.toString());
                         return;
                     }
-                    setMessages(data.formattedMessages);
                     const read = localStorage.getItem('read') || '0';
-                    document.getElementById(read)?.scrollIntoView();
+                    const readElement = document.getElementById(read) as HTMLDivElement;
+                    readElement?.scrollTo({
+                        top: readElement.scrollHeight,
+                        behavior: 'smooth',
+                    });;
                     chatRef.current?.classList.remove('animate-pulse');
 
                     document
@@ -101,67 +135,76 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
     }, []);
 
     useEffect(() => {
+        if (Object.keys(messageData).length > 0) {
+            const lang = i18n.language;
+            console.log(lang);
+
+            const currentLocale = lang === 'ja' ? '日本語' : 'English';
+
+            console.log(currentLocale);
+            console.log(messageData);
+
+            const matchingRoom = messageData.messages[0].server.room.find((room: any) => room.name === currentLocale);
+            console.log(matchingRoom);
+
+            if (matchingRoom) {
+                console.log(matchingRoom.id);
+                console.log(matchingRoom.name);
+                console.log(matchingRoom.messages);
+                setRoomId(matchingRoom.id);
+                setRoomName(matchingRoom.name);
+                setMessages(matchingRoom.messages);
+            } else {
+                // Handle the case where the current locale doesn't match any room
+                console.error('No matching room found for the current locale.');
+            }
+        }
+    }, [i18n.language])
+
+    useEffect(() => {
+        if (!token || token.length < 0 || !user || messages.toString() === '') return;
+
         const pusher = new Pusher('cd4e43e93ec6d4f424db', {
             cluster: 'ap1',
         });
 
         const channel = pusher.subscribe(`${serverId},${roomId}`);
+        console.log(channel);
 
         // Receive new messages from the server
         channel.bind(`newMessage`, (data: any) => {
             console.log('Received new message: ', data);
             const chatContainer = document.getElementById('messages') as HTMLDivElement;
-            const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight;
 
+            console.log("currently saved sending messages:", sendingMessage);
+            console.log(messages[0], data.message_id);
             // delete the item with data.message_id = sendingMessage.message_id
             setSendingMessage((prevSendingMessage) =>
-                prevSendingMessage.filter((message) => parseInt(message.message_id) !== parseInt(data.message_id))
+                prevSendingMessage.filter((message) => message.uuid.toString() !== data.uuid.toString())
             );
 
             setMessages((prevMessages) => [...prevMessages, ...[data]]);
 
-            console.log('Is scrolled to bottom:', isScrolledToBottom);
-
-            setTimeout(() => {
-                if (isScrolledToBottom) {
-                    const lastDiv = chatContainer.lastElementChild as HTMLDivElement;
-                    console.log(lastDiv);
-                    lastDiv.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
-                }
-
-                // Log the last visible div in chatContainer
-                const visibleDivs = Array.from(chatContainer.children).filter((child) => {
-                    const rect = child.getBoundingClientRect();
-                    return rect.top >= 0 && rect.bottom <= chatContainer.clientHeight;
-                });
-
-                if (visibleDivs.length > 0) {
-                    const lastVisibleDiv = visibleDivs[visibleDivs.length - 1] as HTMLDivElement;
-                    console.log('Last visible div content:', lastVisibleDiv.textContent);
-                } else {
-                    console.log('No visible divs in chatContainer.');
-                }
-            }, 300);
+            console.log("currently saved sending messages:", sendingMessage);
         });
 
+        console.log('script loaded!');
+
+        return () => {
+            pusher.unsubscribe(`${serverId}${roomId}`);
+        };
+    }, [roomId, i18n.language]);
+
+    useEffect(() => {
         const messagesContainer = document.getElementById(
             'messages'
         ) as HTMLDivElement;
 
-        const handleKeyDown = (event: any) => {
-            console.log(event.key);
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
-            }
-        };
-
-        if (inputRef.current) {
-            inputRef.current.addEventListener('keydown', handleKeyDown);
-        }
 
         const handleScroll = () => {
             if (!messagesContainer) return;
+
+            setBottomScroll(messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight);
 
             const rect = messagesContainer.getBoundingClientRect();
             const containerBottomVisible =
@@ -239,16 +282,25 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
             }
         }
 
-        console.log('script loaded!');
+        const handleKeyDown = (event: any) => {
+            console.log(event.key);
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        };
+
+        if (inputRef.current) {
+            inputRef.current.addEventListener('keydown', handleKeyDown);
+        }
 
         return () => {
-            pusher.unsubscribe(`${serverId}${roomId}`);
+            messagesContainer.removeEventListener('scroll', handleScroll);
             if (inputRef.current) {
                 inputRef.current.removeEventListener('keydown', handleKeyDown);
             }
-            messagesContainer.removeEventListener('scroll', handleScroll);
-        };
-    }, [messages]);
+        }
+    })
 
     const errorPopup = (message: string) => {
         const popup = document.createElement('div') as HTMLDivElement;
@@ -277,6 +329,8 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
             inputRef.current.value = '';
         }
 
+        const uuid = uuidv4();
+
         if (user && message && message.length > 0) {
             // const formatSentOn = (sent_on: string, lang: string) => {
             //     const format = lang === 'ja' ? 'ja-JP' : 'en-NZ';
@@ -297,26 +351,22 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
 
             //     return formattedSentOn;
             // }
+
             console.log(messages);
-            const lastMessage = parseInt(messages[messages.length - 1].message_id) || 0;
-            const count = lastMessage + 1;
-            console.log(count);
 
             setSendingMessage((prevSendingMessage) => [
                 ...prevSendingMessage,
                 {
-                    content: {
-                        body: message
-                    },
+                    content: message,
+                    uuid,
                     sender: {
                         username: user.user_metadata.username,
                         avatar: user.user_metadata.avatar
                     },
-                    sent_on: '',
-                    message_id: (count).toString(),
-                    deleted_at: null
                 }
             ]);
+
+            console.log(sendingMessage);
         }
 
         if (message && message.length < 500) {
@@ -338,6 +388,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     server_id: serverId,
                     room_id: roomId,
                     content: message,
+                    uuid,
                 }),
             })
                 .then(async (response) => {
@@ -407,7 +458,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     inputRef={inputRef}
                     sendMessage={sendMessage}
                     messageLoading={messageLoading}
-                    scrollPosRef={scrollPosRef}
+                    bottomScroll={bottomScroll}
                     messages={messages}
                     sendingMessage={sendingMessage}
                 />
@@ -420,16 +471,16 @@ interface MainProps {
     inputRef: React.RefObject<HTMLTextAreaElement>;
     sendMessage: () => void;
     messageLoading: boolean;
-    scrollPosRef: React.RefObject<number>;
+    bottomScroll: boolean;
     messages: Array<ChatMessage>;
-    sendingMessage: Array<ChatMessage>;
+    sendingMessage: Array<ChatPreviewMessage>;
 }
 
 const Main: React.FC<MainProps> = ({
     inputRef,
     sendMessage,
     messageLoading,
-    scrollPosRef,
+    bottomScroll,
     messages,
     sendingMessage,
 }) => {
@@ -498,8 +549,10 @@ const Main: React.FC<MainProps> = ({
             'messages'
         ) as HTMLDivElement;
 
-        const lastDiv = chatContainer.lastElementChild as HTMLDivElement;
-        lastDiv.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        chatContainer?.scrollTo({
+            top: chatContainer.scrollHeight,
+            behavior: 'smooth',
+        });
     };
 
 
@@ -538,7 +591,7 @@ const Main: React.FC<MainProps> = ({
         <div
             className="flex flex-col min-h-0 w-full max-h-full"
         >
-            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height} sendingMessage={sendingMessage} />
+            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height} sendingMessage={sendingMessage} bottomScroll={bottomScroll} />
             <div className="w-full" style={{ flex: '0' }}>
                 <button
                     aria-label={t('apps.chat.scroll-to-bottom')}
@@ -581,18 +634,18 @@ const Main: React.FC<MainProps> = ({
     );
 };
 
-const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boolean, height: number, sendingMessage: ChatMessage[] }> = ({ messages, messageLoading, height, sendingMessage }) => {
+const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boolean, height: number, sendingMessage: ChatPreviewMessage[], bottomScroll: boolean }> = ({ messages, messageLoading, height, sendingMessage, bottomScroll }) => {
     const [formattedMessages, setFormattedMessages] = useState<string[]>([]);
     const [formattedSendingMessages, setFormattedSendingMessages] = useState<string[]>([]);
 
     const { t } = useTranslation();
 
     useEffect(() => {
-        const formatMessages = async (messagesArray: ChatMessage[]) => {
+        const formatMessages = async (messagesArray: ChatPreviewMessage[]) => {
             const formattedArray: string[] = [];
 
             for (const message of messagesArray) {
-                const formattedMessageHTML = await formatMessageBody(message.content.body);
+                const formattedMessageHTML = await formatMessageBody(message.content);
                 formattedArray.push(formattedMessageHTML);
             }
 
@@ -607,9 +660,6 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                 setFormattedMessages(formattedArray);
             });
             messages.forEach(message => {
-                console.log(message);
-                console.log(message.sender);
-                console.log(message.sender.avatar);
                 const img = new Image();
                 img.src = message.sender.avatar;
             });
@@ -620,9 +670,6 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                 setFormattedSendingMessages(formattedArray);
             });
             sendingMessage.forEach(message => {
-                console.log(message);
-                console.log(message.sender);
-                console.log(message.sender.avatar);
                 const img = new Image();
                 img.src = message.sender.avatar;
             });
@@ -644,8 +691,6 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
 
             return text;
         }
-
-        console.log(messageString);
 
         const messageText = messageString !== undefined ? await wrapCodeInTags(messageString) : '';
 
@@ -694,6 +739,18 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
         return formattedSentOn;
     }
     let deletedMessageCount = 0 as number;
+
+    useEffect(() => {
+        if (bottomScroll) {
+            const chatContainer = document.getElementById(
+                'messages'
+            );
+            chatContainer?.scrollTo({
+                top: chatContainer.scrollHeight,
+                behavior: 'smooth',
+            });
+        }
+    })
 
     return (
         <div
@@ -746,15 +803,10 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                                             <span
                                                 className="messageText whitespace-pre-line text-left"
                                                 id={message.message_id}
-                                            >
-                                                <span
-                                                    className="messageText whitespace-pre-line text-left"
-                                                    id={message.message_id}
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: formattedMessages[index],
-                                                    }}
-                                                ></span>
-                                            </span>
+                                                dangerouslySetInnerHTML={{
+                                                    __html: formattedMessages[index],
+                                                }}
+                                            ></span>
                                         </div>
                                     </div>
                                 </div>
@@ -806,9 +858,6 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                                     />
                                     <div>
                                         <div className="flex items-center">
-                                            <span className="mr-1 text-xs text-gray-500">
-                                                {message.message_id}
-                                            </span>
                                             <span className="text-sm font-semibold">
                                                 {message.sender.username}
                                             </span>
@@ -827,15 +876,10 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                                         <div className="text-sm mr-[1ch]">
                                             <span
                                                 className="messageText whitespace-pre-line text-left"
-                                                id={message.message_id}
-                                            >
-                                                <span
-                                                    className="messageText whitespace-pre-line text-left"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: formattedSendingMessages[index],
-                                                    }}
-                                                ></span>
-                                            </span>
+                                                dangerouslySetInnerHTML={{
+                                                    __html: formattedSendingMessages[index],
+                                                }}
+                                            ></span>
                                         </div>
                                     </div>
                                 </div>

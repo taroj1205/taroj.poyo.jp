@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'POST') {
         try {
 
-            const { server_id, room_id, token }: { server_id: string, room_id: string, token: string } = req.body;
+            const { server_id, room_id, token, uuid, content }: { server_id: string, room_id: string, token: string, uuid: string, content: string } = req.body;
 
             const { userId } = await authenticateUser(token) as any;
 
@@ -36,10 +36,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return;
             }
 
-            const content: any = {};
-            content.body = req.body.content;
+            // content.body = req.body.content;
 
-            content._isEmojiBody = content.msgtype === 'm.text' && /\p{Emoji}/u.test(content.body);
+            // content._isEmojiBody = content.msgtype === 'm.text' && /\p{Emoji}/u.test(content.body);
 
             console.log(userId, content, server_id, room_id);
 
@@ -52,6 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         server_id,
                         room_id,
                         content,
+                        uuid,
                     },
                 ])
                 .select('*') as { data: any, error: any };
@@ -98,6 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 room_id,
                 sent_on: insertedMessage[0].sent_on,
                 content,
+                uuid,
                 deleted_at: null,
             };
 
