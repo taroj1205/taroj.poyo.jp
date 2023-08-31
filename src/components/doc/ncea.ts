@@ -46,6 +46,11 @@ const ncea: NceaData = {
             "credits": "4",
             "achievement": "Merit"
         },
+        "3.9": {
+            "assessment": "Investigate bivariate measurement data",
+            "credits": "4",
+            "achievement": "Achieved"
+        },
         "3.10": {
             "assessment": "Use statistical methods to make a formal inference",
             "credits": "4",
