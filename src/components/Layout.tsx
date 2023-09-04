@@ -28,9 +28,9 @@ const Layout = ({ children }: LayoutProps) => {
     }, []);
     return (
         <>
-            <Header />
             <div className='flex flex-col flex-grow min-h-0'>
-                <div style={{ height }} className='w-full content absolute'>
+                <div className='w-full content absolute'>
+                    <Header />
                     <main>{children}</main>
                 </div>
             </div>

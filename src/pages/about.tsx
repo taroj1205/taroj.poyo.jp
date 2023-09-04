@@ -21,7 +21,7 @@ const About = () => {
         const handleResize = () => {
             const height = window.innerHeight;
             if (sceneRef.current) {
-                sceneRef.current.style.minHeight = `${height - 40}px`;
+                sceneRef.current.style.minHeight = `${height}px`;
             }
         };
         handleResize();
@@ -50,17 +50,10 @@ const About = () => {
             <div className='fixed inset-0 z-[-10]'>
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} className='object-cover' />
             </div>
-            <div ref={sceneRef} style={{ minHeight: 'calc(100vh - 40px)' }}
+            <div ref={sceneRef} style={{ minHeight: '100vh' }}
                 className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
                 <Fade>
-                    <Image
-                        className="pfp rounded-full w-28 md:w-40 mx-auto"
-                        src="/image/profile/pfp.webp"
-                        alt="Profile Picture"
-                        width={300}
-                        height={300}
-                    />
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl text-center mt-2 md:mt-8 font-bold">
+                    <h1 className="text-5xl lg:text-6xl text-center mt-2 md:mt-8 font-bold">
                         {t('about.title')}
                     </h1>
                     <div className="mt-2 md:mt-8 mx-4">
@@ -81,13 +74,22 @@ const About = () => {
                         <h2 className="text-2xl md:text-3xl lg:text-4xl mt-2 md:mt-6 mb-2 md:mb-4 font-bold">
                             {t('about.hobbies')}
                         </h2>
-                        <ul className="list-disc list-inside text-lg md:text-lg">
-                            <li>{t('about.hobby.kendama')}</li>
-                            <li>{t('about.hobby.jumprope')}</li>
-                            <li>{t('about.hobby.programming')}</li>
-                            <li>{t('about.hobby.reading')}</li>
-                            <li>{t('about.hobby.table tennis')}</li>
-                        </ul>
+                        <div className='flex flex-row'>
+                            <ul className="list-disc list-inside text-lg md:text-lg">
+                                <li>{t('about.hobby.kendama')}</li>
+                                <li>{t('about.hobby.jumprope')}</li>
+                                <li>{t('about.hobby.programming')}</li>
+                                <li>{t('about.hobby.reading')}</li>
+                                <li>{t('about.hobby.table tennis')}</li>
+                            </ul>
+                            <Image
+                                className="pfp rounded-full w-28 h-28 md:w-40 md:h-40 mx-auto"
+                                src="/image/profile/pfp.webp"
+                                alt="Profile Picture"
+                                width={300}
+                                height={300}
+                            />
+                        </div>
                     </div>
                 </Fade>
             </div>
