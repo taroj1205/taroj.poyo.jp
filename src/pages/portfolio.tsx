@@ -63,7 +63,6 @@ const RouteLink = ({ path, label, icon: Icon, backgroundColor }: { path: string;
 
 const Portfolio = () => {
     const { t } = useTranslation();
-    const sceneRef = React.useRef<HTMLDivElement>(null);
 
     const routes = [
         { path: '/', label: 'Home', icon: AiFillHome, backgroundColor: 'bg-blue-400 dark:bg-blue-800' },
@@ -127,9 +126,8 @@ const Portfolio = () => {
     React.useEffect(() => {
         const handleResize = () => {
             const height = window.innerHeight;
-            if (sceneRef.current) {
-                sceneRef.current.style.height = `${height}px`;
-            }
+            const parallax = document.getElementById('parallax') as HTMLDivElement;
+            parallax.style.height = `${height}px`;
         };
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -159,8 +157,8 @@ const Portfolio = () => {
             <ParallaxBanner
                 layers={[background, headline, foreground, gradientOverlay]}
                 className="aspect-[2/1] bg-gray-900 pt-[40px] h-screen"
-                ref={sceneRef}
                 style={{ height: '100vh' }}
+                id='parallax'
             />
             <div className="mx-auto h-full pt-10 text-black dark:text-white">
                 <div className='flex items-center justify-center bg-white dark:bg-zinc-950'>
