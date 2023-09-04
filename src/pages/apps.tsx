@@ -107,7 +107,7 @@ const Apps = () => {
                 <title>{t('title.apps')}</title>
             </Head>
             <div className='fixed inset-0 z-[-10]'>
-                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} className='object-cover' />
+                <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} className='object-right object-cover' />
             </div>
             <div ref={sceneRef} style={{ minHeight: height }}
                 className="flex flex-col justify-center items-center py-14 text-black dark:text-white  dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 inset-0">
