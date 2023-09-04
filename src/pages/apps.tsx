@@ -125,20 +125,24 @@ const Apps = () => {
                     ))}
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                    <img
-                        height="200"
-                        width="auto"
-                        src={githubStatsImage}
-                        alt={'GitHub Stats'}
-                        loading='lazy'
-                    />
-                    <img
-                        height="200"
-                        width="auto"
-                        src={githubLanguagesImage}
-                        alt={'GitHub Languages Stats'}
-                        loading='lazy'
-                    />
+                    <Link href="https:/github.com/taroj1205">
+                        <img
+                            height="200"
+                            width="auto"
+                            src={githubStatsImage}
+                            alt={'GitHub Stats'}
+                            loading='lazy'
+                        />
+                    </Link>
+                    <Link href="https:/github.com/taroj1205">
+                        <img
+                            height="200"
+                            width="auto"
+                            src={githubLanguagesImage}
+                            alt={'GitHub Languages Stats'}
+                            loading='lazy'
+                        />
+                    </Link>
                     <Link href="https://wakatime.com/@taroj1205">
                         <img
                             height="200"
