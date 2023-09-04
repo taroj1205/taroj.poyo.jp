@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { UnmountClosed } from 'react-collapse';
 import Link from 'next/link';
-import ThemeSwitch from './ThemeSwitch';
+import ThemeToggle from './ThemeToggle';
 import { useActiveLink } from './ActiveContext';
 
 const Header = () => {
@@ -124,7 +124,7 @@ const Header = () => {
                     </div>
                     <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                         <div className="flex items-center relative">
-                            <ThemeSwitch />
+                            <ThemeToggle />
                             <Profile />
                         </div>
                     </div>

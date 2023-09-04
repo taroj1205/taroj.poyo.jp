@@ -11,7 +11,6 @@ import i18n from '../../../i18n';
 import { AiFillDelete } from 'react-icons/ai';
 import { v4 as uuidv4 } from 'uuid'
 
-
 interface ChatMessage {
     content: string;
     sender: {
@@ -55,7 +54,7 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                 return;
             }
         }
-    }, [isLoading])
+    }, [isLoading]);
 
     useEffect(() => {
         const fetchDefaultMessages = async () => {

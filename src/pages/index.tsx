@@ -5,7 +5,6 @@ import Head from 'next/head';
 import Contacts from '../components/Contacts';
 import { AiFillHome } from 'react-icons/ai';
 import { FaBlog, FaCog, FaComments, FaGithub, FaUser } from 'react-icons/fa';
-import { useAuth } from '../components/AuthContext';
 import { SiNextdotjs, SiReact, SiTailwindcss } from 'react-icons/si';
 import { IconType } from 'react-icons';
 import Image from 'next/image';
@@ -63,7 +62,6 @@ const MadeWith = () => {
 
 const HomePage = () => {
     const { t } = useTranslation();
-    const { user } = useAuth() || {};
     const sceneRef = React.useRef<HTMLDivElement>(null);
 
     const routes = [
