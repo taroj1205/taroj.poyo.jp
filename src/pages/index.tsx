@@ -154,14 +154,12 @@ const Portfolio = () => {
                 <link rel="preload" href="/image/parallax/foreground.webp" as="image" />
                 <title>{t('title.index')}</title>
             </Head>
-            <Fade>
-                <ParallaxBanner
-                    layers={[background, headline, foreground, gradientOverlay]}
-                    className="aspect-[2/1] bg-gray-900 pt-[40px] h-screen"
-                    style={{ height: '100vh' }}
-                    id='parallax'
-                />
-            </Fade>
+            <ParallaxBanner
+                layers={[background, headline, foreground, gradientOverlay]}
+                className="aspect-[2/1] bg-gray-900 pt-[40px] h-screen"
+                style={{ height: '100vh' }}
+                id='parallax'
+            />
             <div className="mx-auto h-full pt-10 text-black dark:text-white">
                 <div className='flex items-center justify-center bg-white dark:bg-zinc-950'>
                     <div>
