@@ -89,7 +89,7 @@ export default function App({ Component, pageProps }: AppProps) {
                             <meta name="twitter:site" content="@taroj1205" />
                             <meta name="twitter:creator" content="@taroj1205" />
                         </Head>
-                        <ThemeProvider attribute="class">
+                        <ThemeProvider attribute="class" enableSystem={true}>
                             <Layout>
                                 <Component {...pageProps} />
                             </Layout>

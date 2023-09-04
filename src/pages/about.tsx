@@ -51,7 +51,7 @@ const About = () => {
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} className='object-right object-cover' />
             </div>
             <div ref={sceneRef} style={{ minHeight: '100vh' }}
-                className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-70">
+                className="flex flex-col justify-center items-center text-black dark:text-white dark:bg-zinc-950 bg-white bg-opacity-70 dark:bg-opacity-70">
                 <Fade>
                     <div className='flex flex-row items-center md:items-start'>
                         <Image
