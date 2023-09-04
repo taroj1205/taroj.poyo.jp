@@ -64,7 +64,7 @@ const Apps = () => {
     const [height, setHeight] = useState('calc(100vh-40px)');
     useEffect(() => {
         const setVisualViewport = () => {
-            setHeight(`${window.innerHeight - 40}px`);
+            setHeight(`${window.innerHeight}px`);
         }
         setVisualViewport();
 
