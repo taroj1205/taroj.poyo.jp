@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { UnmountClosed } from 'react-collapse';
 import Link from 'next/link';
-import ThemeSwitch from './ThemeSwitch';
+import ThemeToggle from './ThemeToggle';
 import { useActiveLink } from './ActiveContext';
 
 const Header = () => {
@@ -16,6 +16,8 @@ const Header = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { activeLink, setActiveLink } = useActiveLink();
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [scrolled, setScrolled] = useState(0);
+    const [headerSyle, setHeaderStyle] = useState('absolute');
 
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
@@ -24,6 +26,10 @@ const Header = () => {
     const isActive = (path: string) => {
         return activeLink === path;
     };
+
+    useEffect(() => {
+        setHeaderStyle(`router.asPath === '/apps/chat' ? 'relative' : 'absolute'`);
+    }, [router])
 
     useEffect(() => {
         console.log(scrollProgress);
@@ -47,23 +53,31 @@ const Header = () => {
             const windowHeight = window.innerHeight as number;
             const fullHeight = main.scrollHeight as number;
             if (!fullHeight) return;
-            const scrollTop = main.scrollTop as number;
-            if (windowHeight === fullHeight) {setScrollProgress(0); return;}
+            const scrollTop = window.scrollY as number;
+            if (windowHeight === fullHeight) { setScrollProgress(0); return; }
             const progress = (scrollTop / (fullHeight - windowHeight)) * 100;
             setScrollProgress(progress);
+            setScrolled(scrollTop);
+            if (router.asPath !== '/apps/chat') {
+                if (scrollTop > 1000) {
+                    setHeaderStyle('fixed');
+                } else {
+                    setHeaderStyle('absolute');
+                }
+            }
         };
 
-        const main = document.querySelector('.content') as HTMLDivElement;
-        main.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll);
 
         return () => {
-            main.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
             setScrollProgress(0);
+            setScrolled(0);
         };
     }, []);
 
     return (
-        <header className={`relative top-0 z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`} onTouchMove={() => setIsExpanded(false)}>
+        <header className={`${router.asPath === '/apps/chat' ? 'relative' : headerSyle} top-0 z-[2] whitespace-nowrap w-full bg-white dark:bg-slate-900 shadow-xl transition-all duration-350 ease`} onTouchMove={() => setIsExpanded(false)}>
             {isExpanded && (
                 <div
                     className="fixed inset-0"
@@ -124,16 +138,16 @@ const Header = () => {
                     </div>
                     <div className="flex xl:absolute right-1 xl:right-64 items-center justify-end font-medium w-full md:w-auto">
                         <div className="flex items-center relative">
-                            <ThemeSwitch />
+                            <ThemeToggle />
                             <Profile />
                         </div>
                     </div>
+                    {isLoading && (
+                        <div className={`absolute top-0 left-0 w-full h-full opacity-25 bg-blue-600 transition-all duration-500 ease-in-out loading-bar`} />
+                    )}
                 </div>
-                {isLoading && (
-                    <div className="absolute bottom-0 left-0 w-full h-full opacity-25 bg-blue-600 transition-all duration-500 ease-in-out loading-bar" />
-                )}
             </div>
-            <div className='progress' style={{ width: scrollProgress + '%' }}></div>
+            <div className={`progress ${scrolled > 1000 ? 'opacity-100' : 'opacity-0'}`} style={{ width: scrollProgress + '%' }}></div>
         </header >
     );
 };

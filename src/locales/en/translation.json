@@ -126,13 +126,13 @@
   },
   "apps": {
     "chat": {
+      "deleted": "Deleted message",
       "login": "You must be logged in to send messages",
       "scroll-to-bottom": "Scroll to bottom",
       "send": "Send",
       "title": "Chat",
       "type a message": "Type a message...",
-      "typing": "Typing...",
-      "deleted": "Deleted message"
+      "typing": "Typing..."
     },
     "list": "List of apps",
     "title": "Apps"
@@ -169,12 +169,12 @@
     "already set": "Already set",
     "image link": "Image link",
     "language": "Change language",
-    "profile username": "Change profile username",
-    "profile username new": "New username",
     "profile picture": "Change profile picture",
     "profile picture URL": "Profile picture URL",
-    "set username": "Set username",
+    "profile username": "Change profile username",
+    "profile username new": "New username",
     "set picture": "Set Picture",
+    "set username": "Set username",
     "theme": "Change theme"
   },
   "copied": "Copied!",
@@ -213,6 +213,7 @@
     "email": "Email",
     "github": "GitHub",
     "home": "Home",
+    "links": "Links",
     "routes": "Links",
     "settings": "Settings",
     "title": "Homepage",
