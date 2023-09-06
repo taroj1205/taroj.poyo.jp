@@ -79,7 +79,7 @@ const NCEA = () => {
                 </p>
                 <Graph data={subjects} />
                 <NceaTable subjects={subjects} />
-                <NceaForm subjects={subjects} setSubjects={setSubjects} isEditing={isEditing} setSavedSubjects={setSavedSubjects} />
+                <NceaForm subjects={subjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
             </div>
         </>
     );
