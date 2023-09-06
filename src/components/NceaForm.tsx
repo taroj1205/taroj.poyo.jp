@@ -95,6 +95,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                 console.log('Data submitted successfully');
                 localStorage.setItem('subjects', JSON.stringify(subjects));
                 setSavedSubjects(subjects);
+                setIsEditing(false);
             } else {
                 // Handle error, e.g., show an error message
                 console.error('Failed to submit data');
