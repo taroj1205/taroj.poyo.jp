@@ -10,7 +10,7 @@ const Logout: React.FC = () => {
     useEffect(() => {
         // Clear the token cookie
         Cookies.remove('token');
-        localStorage.removeItem('userProfileData');
+        localStorage.clear();
 
         // Reload the page after clearing the cookie
         setUser?.(null);

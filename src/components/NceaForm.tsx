@@ -11,7 +11,7 @@ interface Subject {
     [key: string]: string;
 }
 
-const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>, isEditing: boolean }> = ({ subjects, setSubjects, isEditing }) => {
+const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>, isEditing: boolean, setSavedSubjects: React.Dispatch<React.SetStateAction<Subject[]>> }> = ({ subjects, setSubjects, isEditing, setSavedSubjects }) => {
     const { token } = useAuth() || {} as AuthContextValue;
 
     const handleAddSubject = () => {
@@ -94,6 +94,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                 // Handle success, e.g., show a success message
                 console.log('Data submitted successfully');
                 localStorage.setItem('subjects', JSON.stringify(subjects));
+                setSavedSubjects(subjects);
             } else {
                 // Handle error, e.g., show an error message
                 console.error('Failed to submit data');
@@ -108,6 +109,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         const storedSubjects = localStorage.getItem('subjects');
         if (storedSubjects) {
             setSubjects(JSON.parse(storedSubjects));
+            setSavedSubjects(JSON.parse(storedSubjects));
         }
     }, [token])
 
@@ -152,7 +154,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                     <label htmlFor={`credits-${index}`}>Credits</label>
                                     <input
                                         type="number"
-                                        step="0.01"
+                                        step="1"
                                         id={`credits-${index}`}
                                         value={subjectInfo.credits}
                                         onChange={(e) => handleChange(index, 'credits', e.target.value)}

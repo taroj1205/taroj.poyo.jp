@@ -112,7 +112,7 @@ const Index = () => {
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} className='object-right object-cover' />
             </div>
             <div ref={sceneRef} style={{ minHeight: height }}
-                className="flex flex-col justify-center items-center py-14 text-black dark:text-white  dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 inset-0">
+                className="flex flex-col items-center py-14 text-black dark:text-white  dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 inset-0">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('apps.list')}
                 </h1>
@@ -126,7 +126,7 @@ const Index = () => {
                         />
                     ))}
                 </div>
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-col items-center justify-center gap-4">
                     <Link href="https:/github.com/taroj1205">
                         <img
                             height="200"
