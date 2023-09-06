@@ -53,7 +53,7 @@ const NCEA = () => {
                 <h1 className="text-4xl font-bold mb-4">{t('ncea.ncea information')}</h1>
                 {subjects && subjects[0].subject.length > 0 && subjects[0].standardNumber.length > 0 && subjects[0].name.length > 0 && subjects[0].credits.length > 0 && subjects[0].achievement.length > 0 ? (
                     <>
-                        <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}{<RankScore subjects={subjects} />}
+                        <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}{<RankScore subjects={savedSubjects} />}
                             <button
                                 onClick={() => { setIsEditing(!isEditing); setSubjects(savedSubjects); }}
                                 className="ml-2 text-base bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -67,7 +67,7 @@ const NCEA = () => {
                     <p className='text-lg font-bold mt-2'>{t('ncea.noData')}</p>
                 )}
                 <NceaTable subjects={subjects} />
-                <NceaForm subjects={subjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
+                <NceaForm subjects={subjects} savedSubjects={savedSubjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
             </div>
         </>
     );

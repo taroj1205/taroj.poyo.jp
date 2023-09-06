@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth, AuthContextValue } from '../components/AuthContext';
 import { Tooltip } from 'react-tooltip';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +12,12 @@ interface Subject {
     [key: string]: string;
 }
 
-const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>; isEditing: boolean, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>; setSavedSubjects: React.Dispatch<React.SetStateAction<Subject[]>> }> = ({ subjects, setSubjects, isEditing, setIsEditing, setSavedSubjects }) => {
+const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>; isEditing: boolean, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>; setSavedSubjects: React.Dispatch<React.SetStateAction<Subject[]>> }> = ({ subjects, savedSubjects, setSubjects, isEditing, setIsEditing, setSavedSubjects }) => {
     const { token } = useAuth() || {} as AuthContextValue;
     const { t } = useTranslation();
+    const [sending, setSending] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const [uniqueSubjects, setUniqueSubjects] = useState(Array.from(new Set(savedSubjects.map(subject => subject.subject))));
 
     const handleAddSubject = () => {
         setSubjects([...subjects, { subject: '', standardNumber: '', name: '', credits: '', achievement: '' }]);
@@ -31,6 +34,11 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         updatedSubjects[index][field] = value.trim();
         setSubjects(updatedSubjects);
     };
+
+    useEffect(() => {
+        setUniqueSubjects(Array.from(new Set(subjects.map(subject => subject.subject))));
+        console.log(Array.from(new Set(subjects.map(subject => subject.subject))));
+    }, [subjects])
 
     const newData = () => {
         navigator.clipboard.readText()
@@ -74,6 +82,10 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         navigator.clipboard.writeText(data)
             .then(() => {
                 console.log('Data copied to clipboard');
+                setCopied(true);
+                setTimeout(() => {
+                    setCopied(false);
+                }, 2000);
             })
             .catch(err => {
                 console.error('Failed to copy data to clipboard: ', err);
@@ -82,29 +94,37 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
 
     const submitInfo = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            const response = await fetch('/api/ncea/insert', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(subjects),
-            });
+        if (subjects !== savedSubjects) {
+            setSending(true);
+            try {
+                const response = await fetch('/api/ncea/insert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(subjects),
+                });
 
-            if (response.ok) {
-                // Handle success, e.g., show a success message
-                console.log('Data submitted successfully');
-                localStorage.setItem('subjects', JSON.stringify(subjects));
-                setSavedSubjects(subjects);
-                setIsEditing(false);
-            } else {
-                // Handle error, e.g., show an error message
-                console.error('Failed to submit data');
+                if (response.ok) {
+                    // Handle success, e.g., show a success message
+                    console.log('Data submitted successfully');
+                    localStorage.setItem('subjects', JSON.stringify(subjects));
+                    setSavedSubjects(subjects);
+                    setIsEditing(false);
+                    setSending(false);
+                } else {
+                    // Handle error, e.g., show an error message
+                    console.error('Failed to submit data');
+                    setSending(false);
+                }
+            } catch (error) {
+                // Handle network or other errors
+                console.error('An error occurred:', error);
+                setSending(false);
             }
-        } catch (error) {
-            // Handle network or other errors
-            console.error('An error occurred:', error);
+        } else {
+            setIsEditing(false);
         }
     };
 
@@ -184,7 +204,13 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                         placeholder="Calculus"
                                         className="border p-2 rounded-md border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 w-full"
                                         required
+                                        list={`subject-list-${index}`}
                                     />
+                                    <datalist id={`subject-list-${index}`}>
+                                        {uniqueSubjects.map((subject) => (
+                                            <option key={subject} value={subject} />
+                                        ))}
+                                    </datalist>
                                 </div>
                                 <div className="mb-2 w-[10ch]">
                                     <label className='mb-2' htmlFor={`standardNumber-${index}`}>Number</label>
@@ -287,18 +313,26 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                 htmlFor="exportClipboard"
                                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 cursor-pointer"
                                 onClick={exportData}
+                                data-tooltip-content={copied ? t('copied') : t('copy')}
+                                data-tooltip-place="top"
+                                data-tooltip-id="export"
                             >
                                 Export
                             </label>
+                            <Tooltip id='export' />
                         </div>
-                        {token &&
+                        {token && !sending ? (
                             <button
                                 type='submit'
-                                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                className="bg-blue-500 text-white px-4 py-2 min-w-16 rounded-lg hover:bg-blue-600"
                             >
                                 Save
                             </button>
-                        }
+                        ) : (
+                            <button className="bg-blue-600 text-white px-4 py-2 min-w-16 rounded-lg hover:bg-blue-700 flex items-center justify-center cursor-not" disabled>
+                                <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                            </button>
+                        )}
                     </div>
                 </form >
             </div >
