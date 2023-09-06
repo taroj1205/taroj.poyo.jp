@@ -242,14 +242,14 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                             </div>
                         </div>
                     ))}
-                    <div className='flex justify-between'>
+                    <div className='flex flex-col md:flex-row md:justify-between gap-2 md:gap-0'>
                         <button
                             onClick={handleAddSubject}
                             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                         >
                             Add Subject
                         </button>
-                        <div>
+                        <div className='flex flex-col md:flex-row text-center gap-2'>
                             {token &&
                                 < label
                                     htmlFor="exportClipboard"
