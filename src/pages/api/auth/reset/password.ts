@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
-import { urlencoded } from 'express';
 
 // Supabase configuration
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
@@ -31,5 +30,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     }
 
-    return res.status(405).end(); // Method not allowed
+    return res.status(405).end();
 }

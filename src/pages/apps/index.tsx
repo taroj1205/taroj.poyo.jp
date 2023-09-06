@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
 import { FaChartBar, FaComments } from 'react-icons/fa';
+import { TbSchool } from 'react-icons/tb';
 import { IconType } from 'react-icons';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import i18n from '../../i18n';
+import i18n from '../../../i18n';
 
 const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; icon: IconType }) => (
     <Link href={path}
@@ -25,7 +26,7 @@ const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; i
     </Link>
 );
 
-const Apps = () => {
+const Index = () => {
     const { t } = useTranslation();
     const { theme } = useTheme();
     const [githubStatsImage, setGithubStatsImage] = useState('');
@@ -41,6 +42,7 @@ const Apps = () => {
 
     const routes = [
         { path: '/apps/chat', label: 'Chat', icon: FaComments },
+        { path: '/apps/ncea', label: 'NCEA', icon: TbSchool },
         { path: 'https://analytics.umami.is/share/gbBddDRRyRvseyAP/taroj.poyo.jp', label: 'Analytics', icon: FaChartBar },
     ];
 
@@ -110,11 +112,11 @@ const Apps = () => {
                 <Image alt='thumbnail image' src="/image/thumbnail/thumbnail.webp" fill={true} className='object-right object-cover' />
             </div>
             <div ref={sceneRef} style={{ minHeight: height }}
-                className="flex flex-col justify-center items-center py-14 text-black dark:text-white  dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 inset-0">
+                className="flex flex-col items-center py-14 text-black dark:text-white  dark:bg-zinc-950 bg-white bg-opacity-60 dark:bg-opacity-60 inset-0">
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('apps.list')}
                 </h1>
-                <div className="grid grid-flow-row grid-cols-2 gap-4 my-6">
+                <div className="flex flex-wrap gap-4 my-6">
                     {routes.map((route, index) => (
                         <RouteLink
                             key={index}
@@ -124,7 +126,7 @@ const Apps = () => {
                         />
                     ))}
                 </div>
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-col items-center justify-center gap-4">
                     <Link href="https:/github.com/taroj1205">
                         <img
                             height="200"
@@ -159,4 +161,4 @@ const Apps = () => {
     );
 };
 
-export default Apps;
+export default Index;

@@ -17,18 +17,22 @@ const Header = () => {
     const { activeLink, setActiveLink } = useActiveLink();
     const [scrollProgress, setScrollProgress] = useState(0);
     const [scrolled, setScrolled] = useState(0);
-    const [headerSyle, setHeaderStyle] = useState('absolute');
+    const [headerSyle, setHeaderStyle] = useState('fixed');
 
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
     };
 
     const isActive = (path: string) => {
+        if (activeLink.startsWith('/apps/')) {
+            return path === '/apps';
+        }
         return activeLink === path;
     };
 
     useEffect(() => {
-        setHeaderStyle(`router.asPath === '/apps/chat' ? 'relative' : 'absolute'`);
+        const style = router.asPath === '/apps/chat' ? 'relative' : 'fixed';
+        setHeaderStyle(style);
     }, [router])
 
     useEffect(() => {
@@ -58,13 +62,13 @@ const Header = () => {
             const progress = (scrollTop / (fullHeight - windowHeight)) * 100;
             setScrollProgress(progress);
             setScrolled(scrollTop);
-            if (router.asPath !== '/apps/chat') {
-                if (scrollTop > 1000) {
-                    setHeaderStyle('fixed');
-                } else {
-                    setHeaderStyle('absolute');
-                }
-            }
+            // if (router.asPath !== '/apps/chat') {
+            //     if (scrollTop > 1000) {
+            //         setHeaderStyle('fixed');
+            //     } else {
+            //         setHeaderStyle('relative');
+            //     }
+            // }
         };
 
         window.addEventListener('scroll', handleScroll);
