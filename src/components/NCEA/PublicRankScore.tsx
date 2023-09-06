@@ -39,26 +39,27 @@ const RankScore: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
         .sort((a, b) => rankScores[b] - rankScores[a])
         .slice(0, 5);
 
+    const topSubjectsData = subjects
+        .filter(subject => topSubjects.includes(subject.subject)) // Filter subjects that are in the topSubjects list
+        .sort((a, b) => {
+            const achievementOrder: { [key: string]: number } = {
+                'Excellence': 0,
+                'Merit': 1,
+                'Achieved': 2,
+                'Not Achieved': 3
+            };
+
+            return achievementOrder[a.achievement] - achievementOrder[b.achievement];
+        });
+
     // Calculate the total rank score for the top subjects while considering a maximum of 80 credits
     let totalTopRankScore = 0;
     let totalCredits = 0;
-    let subjectData: Subject[] = [];
 
-    // Assuming 'topSubjects' is an array of subject names and 'rankScores' is an object with subject scores
-    subjectData = subjects.sort((a, b) => {
-        const achievementOrder: { [key: string]: number } = {
-            Excellence: 0,
-            Merit: 1,
-            Achieved: 2,
-        };
-
-        return achievementOrder[a.achievement] - achievementOrder[b.achievement];
-    })
-
-    console.log('Subject data:', subjectData);
+    console.log('Subject data:', topSubjectsData);
 
     // Iterate through subjectData and add credits to the total
-    subjectData.forEach((data) => {
+    topSubjectsData.forEach((data) => {
         const isFirstDigit3 = data.standardNumber.charAt(0) === '3';
         if (totalCredits < 80 && isFirstDigit3) {
             const credits = parseInt(data.credits);

@@ -177,6 +177,7 @@
     "set username": "Set username",
     "theme": "Change theme"
   },
+  "copy": "Copy",
   "copied": "Copied!",
   "current": {
     "theme": "Current theme:"
