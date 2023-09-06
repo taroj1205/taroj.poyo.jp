@@ -321,17 +321,19 @@ const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubject
                             </label>
                             <Tooltip id='export' />
                         </div>
-                        {token && !sending ? (
-                            <button
-                                type='submit'
-                                className="bg-blue-500 text-white px-4 py-2 min-w-16 rounded-lg hover:bg-blue-600"
-                            >
-                                Save
-                            </button>
-                        ) : (
-                            <button className="bg-blue-600 text-white px-4 py-2 min-w-16 rounded-lg hover:bg-blue-700 flex items-center justify-center cursor-not" disabled>
-                                <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
-                            </button>
+                        {token && (
+                            !sending ? (
+                                <button
+                                    type='submit'
+                                    className="bg-blue-500 text-white px-4 py-2 min-w-16 rounded-lg hover:bg-blue-600"
+                                >
+                                    Save
+                                </button>
+                            ) : (
+                                <button className="bg-blue-600 text-white px-4 py-2 min-w-16 rounded-lg hover:bg-blue-700 flex items-center justify-center cursor-not" disabled>
+                                    <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                                </button>
+                            )
                         )}
                     </div>
                 </form >
