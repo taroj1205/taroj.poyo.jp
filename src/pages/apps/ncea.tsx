@@ -58,13 +58,6 @@ const NCEA = () => {
                     name="twitter:description"
                     content="NCEA Calculator page for taroj.poyo.jp"
                 />
-                <link rel="preload" href="/image/thumbnail/thumbnail.webp" as="image" />
-                <link rel="preload" href="https://github-readme-stats.vercel.app/api?username=taroj1205&show_icons=true&locale=ja&hide_border=true&rank_icon=percentile&theme=dark" as="image" />
-                <link rel="preload" href="https://github-readme-stats.vercel.app/api?username=taroj1205&show_icons=true&locale=en&hide_border=true&rank_icon=percentile&theme=light" as="image" />
-                <link rel="preload" href="https://github-readme-stats.vercel.app/api/top-langs/?username=taroj1205&show_icons=true&locale=ja&hide_border=true&layout=compact&langs_count=10&rank_icon=percentile&theme=dark" as="image" />
-                <link rel="preload" href="https://github-readme-stats.vercel.app/api/top-langs/?username=taroj1205&show_icons=true&locale=en&hide_border=true&layout=compact&langs_count=10&rank_icon=percentile&theme=light" as="image" />
-                <link rel="preload" href="https://github-readme-stats.vercel.app/api/wakatime?username=taroj1205&hide_border=true&locale=en&theme=dark" as="image" />
-                <link rel="preload" href="https://github-readme-stats.vercel.app/api/wakatime?username=taroj1205&hide_border=true&locale=ja&theme=light" as="image" />
                 <title>{t('title.apps.ncea calculator')}</title>
             </Head>
             <div className='pt-14 lg:flex lg:flex-col lg:justify-center lg:items-center px-4'>

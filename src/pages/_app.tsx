@@ -79,10 +79,6 @@ export default function App({ Component, pageProps }: AppProps) {
                                 content="A website for Shintaro Jokagi"
                             />
                             <meta
-                                name="twitter:image"
-                                content="/image/thumbnail/thumbnail.webp"
-                            />
-                            <meta
                                 name="twitter:image:alt"
                                 content="Shintaro Jokagi Website Thumbnail"
                             />
