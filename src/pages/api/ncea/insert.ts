@@ -58,12 +58,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // Update the existing row
             const { data, error: updateError } = await supabase
                 .from('ncea_data')
-                .upsert([
-                    {
-                        user_id: userId,
-                        subjects: requestBody,
-                    },
-                ], { onConflict: 'user_id' });
+                .update({
+                    subjects: requestBody,
+                })
+                .eq('user_id', userId);
 
             if (updateError) {
                 console.log(updateError);
@@ -73,12 +71,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // Insert a new row
             const { data, error: insertError } = await supabase
                 .from('ncea_data')
-                .insert([
-                    {
-                        user_id: userId,
-                        subjects: requestBody,
-                    },
-                ]);
+                .insert({
+                    user_id: userId,
+                    subjects: requestBody,
+                });
 
             if (insertError) {
                 console.log(insertError);

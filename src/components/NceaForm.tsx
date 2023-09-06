@@ -106,6 +106,39 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         }
     };
 
+    const loadData = async () => {
+        try {
+            const response = await fetch(`/api/ncea/data?token=${encodeURIComponent(token)}`, {
+                method: 'GET',
+            });
+
+            // Parse the API response
+            const responseData = await response.json();
+
+            console.log(responseData.subjects);
+
+            // Check if subjects is present in the response
+            if (responseData.subjects) {
+                // Handle success, e.g., show a success message
+                console.log('Data retrieved successfully');
+
+                // Store subjects in local storage
+                localStorage.setItem('nceaData', JSON.stringify(responseData.subjects));
+
+                // Set nceaData as the new data
+                setSavedSubjects(responseData.subjects);
+                setSubjects(responseData.subjects);
+                // setIsEditing(false);
+            } else {
+                // Handle error if nceaData is not present in the response
+                console.error('Failed to retrieve nceaData from the API response');
+            }
+        } catch (error) {
+            // Handle network or other errors
+            console.error('An error occurred:', error);
+        }
+    }
+
     useEffect(() => {
         const storedSubjects = localStorage.getItem('subjects');
         if (storedSubjects) {
@@ -217,6 +250,15 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                             Add Subject
                         </button>
                         <div>
+                            {token &&
+                                < label
+                                    htmlFor="exportClipboard"
+                                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 cursor-pointer"
+                                    onClick={loadData}
+                                >
+                                    Load from Saved
+                                </label>
+                            }
                             <label
                                 htmlFor="jsonClipboard"
                                 data-tooltip-content="Example JSON format: [{&quot;subject&quot;:&quot;Calculus&quot;,&quot;standardNumber&quot;:&quot;3.3&quot;,&quot;name&quot;:&quot;Apply trigonometric methods in solving problems&quot;,&quot;credits&quot;:&quot;4&quot;,&quot;achievement&quot;:&quot;Excellence&quot;}]"
@@ -243,8 +285,8 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                             Save
                         </button>
                     </div>
-                </form>
-            </div>
+                </form >
+            </div >
         );
     } else {
         return null;

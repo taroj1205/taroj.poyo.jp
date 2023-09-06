@@ -23,9 +23,9 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
                     </tr>
                 </thead>
                 <tbody className="text-black dark:text-white">
-                    {subjects.map((subject) => (
+                    {subjects.map((subject, index) => (
                         <tr
-                            key={subject.subject}
+                            key={index}
                             className={
                                 subjects.indexOf(subject) % 2 === 0
                                     ? 'bg-gray-100 dark:bg-gray-800'
