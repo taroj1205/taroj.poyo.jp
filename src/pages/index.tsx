@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import Contacts from '../components/Contacts';
 import { useTranslation } from 'react-i18next';
 import { AiFillHome } from 'react-icons/ai';
-import { FaBlog, FaCog, FaComments, FaGithub, FaUser } from 'react-icons/fa';
+import { FaBlog, FaCog, FaCubes, FaGithub, FaUser } from 'react-icons/fa';
 import { SiNextdotjs, SiReact, SiTailwindcss } from 'react-icons/si';
 import { IconType } from 'react-icons';
 import { Fade } from "react-awesome-reveal";
@@ -67,7 +67,7 @@ const Portfolio = () => {
     const routes = [
         { path: '/', label: 'Home', icon: AiFillHome, backgroundColor: 'bg-blue-400 dark:bg-blue-800' },
         { path: '/about', label: 'About', icon: FaUser, backgroundColor: 'bg-green-400 dark:bg-green-800' },
-        { path: '/apps/chat', label: 'Chat', icon: FaComments, backgroundColor: 'bg-red-400 dark:bg-red-800' },
+        { path: '/apps', label: 'Apps', icon: FaCubes, backgroundColor: 'bg-red-400 dark:bg-red-800' },
         { path: '/settings', label: 'Settings', icon: FaCog, backgroundColor: 'bg-purple-400 dark:bg-purple-800' },
         {
             path: 'https://taroj1205.hatenablog.com',
