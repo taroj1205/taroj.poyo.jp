@@ -231,10 +231,13 @@
     "achievement": "成績",
     "credits": "クレジット",
     "currentRankScore": "現在のランクスコア：",
+    "edit": "データを編集",
+    "ncea information": "NCEAの詳細情報",
+    "noData": "ランクスコアとグラフを見るにはデータを記入する必要があります。",
     "rankScore": "ランクスコア",
+    "standard": "スタンダード",
     "subjects": "科目",
-    "title": "National Certificate of Education レベル 3",
-    "standard": "スタンダード"
+    "title": "National Certificate of Education レベル 3"
   },
   "profile": "プロフィール",
   "resetRequestInstructions": "パスワードをリセットするための手順が記載されたメールが、登録されたメールアドレスに送信されました。",

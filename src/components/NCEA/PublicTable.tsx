@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../AuthContext';
 
 interface Subject {
     subject: string;
@@ -13,7 +14,13 @@ interface Subject {
 const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
     const { t } = useTranslation();
 
+    const {token} = useAuth() || {};
+
     const [loading, setLoading] = useState(true);
+
+    if (loading || !token) {
+        return null;
+    }
 
     useEffect(() => {
         setLoading(false);
@@ -45,10 +52,6 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
             0
         );
     });
-
-    if (loading) {
-        return null;
-    }
 
     return (
         <div className="overflow-x-auto max-w-full mb-4">

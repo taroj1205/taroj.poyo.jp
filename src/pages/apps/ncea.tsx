@@ -21,8 +21,6 @@ const NCEA = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [savedSubjects, setSavedSubjects] = React.useState<Subject[]>([]);
-    const { isLoading, token, user } = useAuth() || {};
-    const router = useRouter();
 
     const [subjects, setSubjects] = useState<Subject[]>([
         {
@@ -33,15 +31,6 @@ const NCEA = () => {
             achievement: '',
         },
     ]);
-
-    useEffect(() => {
-        if (isLoading === false) {
-            if (!token || !user) {
-                router.push('/auth/login');
-                return;
-            }
-        }
-    }, [isLoading]);
 
     return (
         <>
@@ -61,16 +50,22 @@ const NCEA = () => {
                 <title>{t('title.apps.ncea calculator')}</title>
             </Head>
             <div className='pt-14 lg:flex lg:flex-col lg:justify-center lg:items-center px-4'>
-                <h1 className="text-4xl font-bold mb-4">NCEA Information</h1>
-                <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}{<RankScore subjects={subjects} />}
-                    <button
-                        onClick={() => { setIsEditing(!isEditing); setSubjects(savedSubjects); }}
-                        className="ml-2 text-base bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                    >
-                        {isEditing ? 'Cancel' : 'Edit'}
-                    </button>
-                </p>
-                <Graph data={subjects} />
+                <h1 className="text-4xl font-bold mb-4">{t('ncea.ncea information')}</h1>
+                {subjects && subjects[0].subject.length > 0 && subjects[0].standardNumber.length > 0 && subjects[0].name.length > 0 && subjects[0].credits.length > 0 && subjects[0].achievement.length > 0 ? (
+                    <>
+                        <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}{<RankScore subjects={subjects} />}
+                            <button
+                                onClick={() => { setIsEditing(!isEditing); setSubjects(savedSubjects); }}
+                                className="ml-2 text-base bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                            >
+                                {isEditing ? 'Cancel' : 'Edit'}
+                            </button>
+                        </p>
+                        <Graph data={subjects} />
+                    </>
+                ) : (
+                    <p className='text-lg font-bold mt-2'>{t('ncea.noData')}</p>
+                )}
                 <NceaTable subjects={subjects} />
                 <NceaForm subjects={subjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
             </div>
