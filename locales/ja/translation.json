@@ -114,8 +114,7 @@
       "jumprope": "縄跳び",
       "kendama": "けん玉",
       "programming": "プログラミング",
-      "reading": "ニュースを読む",
-      "table tennis": "卓球"
+      "reading": "ニュースを読む"
     },
     "injury": "2020年7月に膝の怪我（ACL）の手術。",
     "title": "僕について"
@@ -124,42 +123,23 @@
     "content": "チャットでプロフィール画像を表示するようになりました！",
     "title": "お知らせ"
   },
-  "apps": {
-    "chat": {
-      "deleted": "削除されました",
-      "login": "ログインが必要です。",
-      "scroll-to-bottom": "一番下までスクロール",
-      "send": "送信",
-      "title": "チャット",
-      "type a message": "メッセージを入力してください。",
-      "typing": "入力中..."
-    },
-    "list": "アプリ一覧",
-    "title": "アプリ"
-  },
   "auth": {
-    "cancel": "キャンセル",
     "close": "閉じる",
     "confirmPassword": "パスワードの確認",
     "email": "メールアドレス",
     "forgotPassword": "パスワードを忘れた場合",
     "login": "ログイン",
     "loginError": "ログイン中にエラーが発生しました。後でもう一度お試しください。",
-    "loginFailed": "ログインに失敗しました。入力した情報を確認し、メールボックスで確認した上、もう一度お試しください。",
+    "loginFailed": "ログインに失敗しました。入力した情報を確認して、もう一度お試しください。",
     "logout": "ログアウト",
-    "newPassword": "新しいパスワード",
     "password": "パスワード",
     "passwordContainsEmailOrUsername": "パスワードにはメールアドレスやユーザー名を含めることはできません。",
     "passwordMinLength": "パスワードは少なくとも8文字である必要があります。",
     "passwordRequirements": "パスワードには少なくとも1つの大文字、1つの小文字、および1つの数字を含める必要があります。",
     "resend": "再送信",
-    "samePassword": "同じパスワードは使用できません。もう一度お試しください。",
     "signup": "登録",
     "signupDupe": "アカウントが既に存在しています",
     "signupSuccess": "サインアップに成功しました！",
-    "updatePassword": "パスワードを更新する",
-    "updatePasswordFailed": "パスワードの更新に失敗しました。後でもう一度お試しください。",
-    "updatePasswordSuccess": "パスワードが正常に更新されました！",
     "username": "ユーザー名",
     "verificationCode": "確認コード",
     "verificationCodeResendError": "認証コードの再送信に失敗しました。後でもう一度お試しください。",
@@ -171,11 +151,16 @@
     "language": "言語を変える",
     "profile picture": "プロフィール画像を変更",
     "profile picture URL": "プロフィール画像のURL",
-    "profile username": "ユーザー名を変更",
-    "profile username new": "新しいユーザー名",
     "set picture": "画像を設定する",
-    "set username": "ユーザー名を設定する",
     "theme": "テーマを変える"
+  },
+  "apps": {
+    "title": "アプリ",
+    "list": "アプリ一覧",
+    "chat": {
+      "title": "チャット",
+      "login": "ログインが必要です。"
+    }
   },
   "copied": "コピーしました",
   "current": {
@@ -206,19 +191,16 @@
   },
   "index": {
     "about": "自己紹介",
-    "analytics": "統計",
     "blog": "ブログ",
     "chat": "チャット",
     "contact": "連絡先",
     "email": "メール",
     "github": "GitHub",
     "home": "ホーム",
-    "links": "リンク",
-    "ncea": "NCEA",
     "routes": "リンク",
     "settings": "設定",
     "title": "ホームページ",
-    "welcome": "ようこそ！"
+    "welcome": "ようこそ"
   },
   "japanese": "日本語",
   "language": "言語",
@@ -274,8 +256,7 @@
       "emailVerification": "メール確認",
       "forgotPassword": "パスワードを忘れた",
       "login": "ログイン",
-      "signup": "登録する",
-      "updatePassword": "パスワードを更新する"
+      "signup": "登録する"
     },
     "chat": "チャット",
     "index": "ホームページ",

@@ -1,6 +1,6 @@
-interface NceaData {
-    [key: string]: {
-        [key: string]: {
+export interface NceaData {
+    [key: string]: { // subject
+        [key: string]: { // standard number
             assessment: string;
             credits: string;
             achievement: string;

@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
 import { FaChartBar, FaComments } from 'react-icons/fa';
+import { TbSchool } from 'react-icons/tb';
 import { IconType } from 'react-icons';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import i18n from '../../i18n';
+import i18n from '../../../i18n';
 
 const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; icon: IconType }) => (
     <Link href={path}
@@ -25,7 +26,7 @@ const RouteLink = ({ path, label, icon: Icon }: { path: string; label: string; i
     </Link>
 );
 
-const Apps = () => {
+const Index = () => {
     const { t } = useTranslation();
     const { theme } = useTheme();
     const [githubStatsImage, setGithubStatsImage] = useState('');
@@ -41,6 +42,7 @@ const Apps = () => {
 
     const routes = [
         { path: '/apps/chat', label: 'Chat', icon: FaComments },
+        { path: '/apps/ncea', label: 'NCEA', icon: TbSchool },
         { path: 'https://analytics.umami.is/share/gbBddDRRyRvseyAP/taroj.poyo.jp', label: 'Analytics', icon: FaChartBar },
     ];
 
@@ -114,7 +116,7 @@ const Apps = () => {
                 <h1 className="text-4xl md:text-6xl font-bold">
                     {t('apps.list')}
                 </h1>
-                <div className="grid grid-flow-row grid-cols-2 gap-4 my-6">
+                <div className="flex flex-wrap gap-4 my-6">
                     {routes.map((route, index) => (
                         <RouteLink
                             key={index}
@@ -159,4 +161,4 @@ const Apps = () => {
     );
 };
 
-export default Apps;
+export default Index;

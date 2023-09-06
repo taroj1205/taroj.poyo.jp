@@ -1,0 +1,271 @@
+{
+    "about": {
+        "birthdate": "Born on 5th of December 2005, in Tokyo. Moved to Ehime after the 2011 earthquake.",
+        "countries": "Countries I've lived in",
+        "country": {
+            "japan": "Japan",
+            "newzealand": "New Zealand",
+            "philippines": "The Philippines"
+        },
+        "education": {
+            "headings": {
+                "duration": "Period",
+                "end": "End",
+                "grade": "Year Level",
+                "location": "Location",
+                "schoolName": "Name",
+                "start": "Start"
+            },
+            "schoolHistory": "Academic Background",
+            "schools": [
+                {
+                    "duration": "About a year",
+                    "end": "05/2010",
+                    "grade": "First and Second Year of Kindergarten",
+                    "location": "Tokyo",
+                    "name": "Tokyo Tomonokai Setagaya Infant Life Group",
+                    "start": "04/2009"
+                },
+                {
+                    "duration": "A year",
+                    "end": "04/2011",
+                    "grade": "Second Year of Kindergarten",
+                    "location": "Tokyo",
+                    "name": "Kinuta Kindergarten",
+                    "start": "05/2010"
+                },
+                {
+                    "duration": "A year",
+                    "end": "03/2012",
+                    "grade": "Last (3rd) year of Kindergarten",
+                    "location": "Ehime",
+                    "name": "Wakakusa Kindergarten",
+                    "start": "05/2011"
+                },
+                {
+                    "duration": "2 months",
+                    "end": "06/2012",
+                    "grade": "Year 1",
+                    "location": "Ehime",
+                    "name": "Habu Elementary School",
+                    "start": "04/2012"
+                },
+                {
+                    "duration": "4.5 years",
+                    "end": "12/2016",
+                    "grade": "Year 1 to Year 5",
+                    "location": "Ehime",
+                    "name": "Hiura Elementary School",
+                    "start": "06/2012"
+                },
+                {
+                    "duration": "A year",
+                    "end": "12/2017",
+                    "grade": "Year 7",
+                    "location": "Auckland",
+                    "name": "Balmoral Intermediate",
+                    "start": "02/2017"
+                },
+                {
+                    "duration": "3 months",
+                    "end": "03/2018",
+                    "grade": "Year 6",
+                    "location": "Ehime",
+                    "name": "Hiura Elementary School",
+                    "start": "01/2018"
+                },
+                {
+                    "duration": "3 months",
+                    "end": "07/2018",
+                    "grade": "-",
+                    "location": "Cebu",
+                    "name": "Takahari English School",
+                    "start": "04/2018"
+                },
+                {
+                    "duration": "2 to 3 Weeks",
+                    "end": "07/2018",
+                    "grade": "Year 7",
+                    "location": "Ehime",
+                    "name": "Kuwabara Junior High School",
+                    "start": "07/2018"
+                },
+                {
+                    "duration": "A year",
+                    "end": "05/2019",
+                    "grade": "Year 8",
+                    "location": "Cebu",
+                    "name": "Centre for International Education British School",
+                    "start": "08/2018"
+                },
+                {
+                    "duration": "5 years",
+                    "end": "12/2023",
+                    "grade": "Year 9 to Year 13",
+                    "location": "Auckland",
+                    "name": "Westlake Boys High School (Expected graduation)",
+                    "start": "08/2018"
+                }
+            ]
+        },
+        "events": "Important events",
+        "hobbies": "Hobbies",
+        "hobby": {
+            "jumprope": "Jump rope",
+            "kendama": "Kendama",
+            "programming": "Programming",
+            "reading": "Reading news"
+        },
+        "injury": "Underwent surgery for an ACL injury on the knee in July 2020.",
+        "title": "About me"
+    },
+    "announcement": {
+        "content": "Now showing profile picture in chat!",
+        "title": "Announcement"
+    },
+    "auth": {
+        "close": "Close",
+        "confirmPassword": "Confirm Password",
+        "email": "Email",
+        "forgotPassword": "Forgot password",
+        "login": "Login",
+        "loginError": "An error occurred during login. Please try again later.",
+        "loginFailed": "Login failed! Please check your credentials and try again.",
+        "logout": "Logout",
+        "password": "Password",
+        "passwordContainsEmailOrUsername": "Password must not contain your email or username.",
+        "passwordMinLength": "Password must be at least 8 characters long.",
+        "passwordRequirements": "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
+        "resend": "Resend",
+        "signup": "Sign Up",
+        "signupDupe": "Account already exists",
+        "signupSuccess": "Successfully signed up!",
+        "username": "Username",
+        "verificationCode": "Verification Code",
+        "verificationCodeResendError": "Verification code resend failed. Please try again later.",
+        "verify": "Verify"
+    },
+    "apps": {
+        "title": "Apps",
+        "list": "List of apps",
+        "chat": {
+            "title": "Chat",
+            "login": "You must be logged in to send messages"
+        }
+    },
+    "change": {
+        "already set": "Already set",
+        "image link": "Image link",
+        "language": "Change language",
+        "profile picture": "Change profile picture",
+        "profile picture URL": "Profile picture URL",
+        "set picture": "Set Picture",
+        "theme": "Change theme"
+    },
+    "copied": "Copied!",
+    "current": {
+        "theme": "Current theme:"
+    },
+    "english": "English",
+    "footer": {
+        "about": "About",
+        "all_rights_reserved": "All rights reserved",
+        "chat": "Chat",
+        "contact_info": "Contact information",
+        "edit_on_github": "Edit on GitHub",
+        "home": "Home",
+        "settings": "Settings",
+        "sitemap": "Sitemap",
+        "suggest": "Suggest change"
+    },
+    "goBack": "Go Back",
+    "gravatar": {
+        "message": "Please go to Gravatar to change your profile picture. We apologize for any inconvenience.",
+        "signupMessage": "If you haven't signed up for Gravatar yet, please do so at:"
+    },
+    "header": {
+        "about": "About",
+        "apps": "Apps",
+        "chat": "Chat",
+        "home": "Home"
+    },
+    "index": {
+        "about": "About",
+        "blog": "Blog",
+        "chat": "Chat",
+        "contact": "Contact me",
+        "email": "Email",
+        "github": "GitHub",
+        "home": "Home",
+        "routes": "Links",
+        "settings": "Settings",
+        "title": "Homepage",
+        "welcome": "Welcome"
+    },
+    "japanese": "Japanese",
+    "language": "Language",
+    "login": "Login",
+    "logout": "Logout",
+    "moreWaysToLogin": "More ways to login planned",
+    "name": "Shintaro Jokagi",
+    "ncea": {
+        "achievement": "Achievement",
+        "credits": "Credits",
+        "currentRankScore": "Current Rank Score: ",
+        "rankScore": "Rank Score",
+        "subjects": "Subjects",
+        "title": "National Certificate of Education Level 3"
+    },
+    "profile": "Profile",
+    "resetRequestInstructions": "An email with instructions to reset your password has been sent to your registered email address.",
+    "resetRequestSent": "Password Reset Request Sent",
+    "search": "Search...",
+    "settings": "Settings",
+    "signInWithGoogle": "Sign In with Google",
+    "skill": {
+        "css": "CSS",
+        "express": "Express",
+        "flask": "Flask",
+        "html": "HTML",
+        "javascript": "JavaScript",
+        "madeWith": "This website uses these:",
+        "mysql": "MySQL",
+        "nextjs": "Next.js",
+        "nodejs": "Node.js",
+        "postgres": "PostgreSQL",
+        "python": "Python",
+        "react": "React.js",
+        "sqlite3": "SQLite3",
+        "tailwind": "Tailwind",
+        "title": "Skills",
+        "typescript": "TypeScript"
+    },
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "success": "Success!",
+    "supported language": "Supported language",
+    "theme": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+    },
+    "title": {
+        "about": "About",
+        "apps": "Apps",
+        "auth": {
+            "emailVerification": "Email Verification",
+            "forgotPassword": "Forgot password",
+            "login": "Login",
+            "signup": "Sign Up"
+        },
+        "chat": "Chat",
+        "index": "Home",
+        "profile": "Profile",
+        "settings": "Settings"
+    },
+    "welcome": "Welcome!",
+    "your": {
+        "email": "Your email",
+        "username": "Your username"
+    }
+}
