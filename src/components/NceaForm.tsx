@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAuth, AuthContextValue } from '../components/AuthContext';
 import { Tooltip } from 'react-tooltip';
+import { useTranslation } from 'react-i18next';
 
 interface Subject {
     subject: string;
@@ -13,6 +14,7 @@ interface Subject {
 
 const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>; isEditing: boolean, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>; setSavedSubjects: React.Dispatch<React.SetStateAction<Subject[]>> }> = ({ subjects, setSubjects, isEditing, setIsEditing, setSavedSubjects }) => {
     const { token } = useAuth() || {} as AuthContextValue;
+    const { t } = useTranslation();
 
     const handleAddSubject = () => {
         setSubjects([...subjects, { subject: '', standardNumber: '', name: '', credits: '', achievement: '' }]);
@@ -165,14 +167,14 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         return (
             <div className="p-4">
                 <h2 className="text-2xl font-bold mb-4">
-                    Edit NCEA Data
+                    {t('ncea.edit')}
                 </h2>
                 <form onSubmit={(e) => submitInfo(e)}>
                     {subjects.map((subjectInfo, index) => (
                         <div key={index} className="mb-4 bg-white dark:bg-slate-900 p-2 border rounded-lg border-gray-200 dark:border-gray-700">
                             <div className="flex flex-col lg:flex-row">
                                 <div className="mb-2 flex-grow">
-                                    <label htmlFor={`subject-${index}`}>Subject</label>
+                                    <label className='mb-2' htmlFor={`subject-${index}`}>Subject</label>
                                     <input
                                         type="text"
                                         id={`subject-${index}`}
@@ -185,7 +187,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                     />
                                 </div>
                                 <div className="mb-2 w-[10ch]">
-                                    <label htmlFor={`standardNumber-${index}`}>Number</label>
+                                    <label className='mb-2' htmlFor={`standardNumber-${index}`}>Number</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -199,7 +201,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                     />
                                 </div>
                                 <div className="mb-2 w-[10ch]">
-                                    <label htmlFor={`credits-${index}`}>Credits</label>
+                                    <label className='mb-2' htmlFor={`credits-${index}`}>Credits</label>
                                     <input
                                         type="number"
                                         step="1"
@@ -213,7 +215,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                     />
                                 </div>
                                 <div className="mb-2 flex-grow">
-                                    <label htmlFor={`name-${index}`}>Name</label>
+                                    <label className='mb-2' htmlFor={`name-${index}`}>Name</label>
                                     <input
                                         type="text"
                                         id={`name-${index}`}
@@ -225,7 +227,7 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                     />
                                 </div>
                                 <div className="mb-2 flex-grow">
-                                    <label htmlFor={`achievement-${index}`}>Achievement</label>
+                                    <label className='mb-2' htmlFor={`achievement-${index}`}>Achievement</label>
                                     <select
                                         id={`achievement-${index}`}
                                         value={subjectInfo.achievement}
@@ -289,12 +291,14 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                 Export
                             </label>
                         </div>
-                        <button
-                            type='submit'
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                        >
-                            Save
-                        </button>
+                        {token &&
+                            <button
+                                type='submit'
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                            >
+                                Save
+                            </button>
+                        }
                     </div>
                 </form >
             </div >
