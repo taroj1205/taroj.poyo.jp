@@ -11,7 +11,7 @@ interface Subject {
     [key: string]: string;
 }
 
-const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>, isEditing: boolean, setSavedSubjects: React.Dispatch<React.SetStateAction<Subject[]>> }> = ({ subjects, setSubjects, isEditing, setSavedSubjects }) => {
+const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>; isEditing: boolean, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>; setSavedSubjects: React.Dispatch<React.SetStateAction<Subject[]>> }> = ({ subjects, setSubjects, isEditing, setIsEditing, setSavedSubjects }) => {
     const { token } = useAuth() || {} as AuthContextValue;
 
     const handleAddSubject = () => {
@@ -111,7 +111,8 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
             setSubjects(JSON.parse(storedSubjects));
             setSavedSubjects(JSON.parse(storedSubjects));
         } else {
-            setSubjects([{ subject: '', standardNumber: '', name: '', credits: '', achievement: '' }]);
+            setSavedSubjects(subjects);
+            setIsEditing(true);
         }
     }, [token])
 
@@ -196,12 +197,14 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
                                 </div>
                             </div>
                             <div className="col-span-2 text-right">
-                                <button
-                                    onClick={() => handleRemoveSubject(index)}
-                                    className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md"
-                                >
-                                    Remove
-                                </button>
+                                {subjects.length > 1 && (
+                                    <button
+                                        onClick={() => handleRemoveSubject(index)}
+                                        className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md"
+                                    >
+                                        Remove
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}
