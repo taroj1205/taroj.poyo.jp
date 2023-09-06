@@ -150,6 +150,17 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         }
     }, [token])
 
+    useEffect(() => {
+        if (!isEditing) {
+            const sortedSubjects = [...subjects].sort((a, b) => {
+                const levelA = parseFloat(a.standardNumber);
+                const levelB = parseFloat(b.standardNumber);
+                return levelA - levelB;
+            });
+            setSubjects(sortedSubjects);
+        }
+    }, [isEditing]);
+
     if (isEditing) {
         return (
             <div className="p-4">

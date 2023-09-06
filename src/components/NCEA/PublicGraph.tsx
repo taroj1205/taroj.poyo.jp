@@ -25,16 +25,24 @@ const Graph: React.FC<{ data: Subject[] }> = ({ data }) => {
         // Combine subjects with the same name and calculate total rank score
         const groupedData: { subject: string; totalRankScore: number }[] = [];
         data.forEach((subject) => {
-            const existingSubject = groupedData.find((item) => item.subject === subject.subject);
-            const rankScore = subject.achievement === 'Achieved' ? parseInt(subject.credits, 10) * 2 :
-                subject.achievement === 'Merit' ? parseInt(subject.credits, 10) * 3 :
-                    subject.achievement === 'Excellence' ? parseInt(subject.credits, 10) * 4 : 0;
-            if (existingSubject) {
-                existingSubject.totalRankScore += rankScore;
-            } else {
-                groupedData.push({ subject: subject.subject, totalRankScore: rankScore });
+            // Check if the first digit of the standard number is "3"
+            const isFirstDigit3 = subject.standardNumber.charAt(0) === '3';
+
+            // Only include subjects with standard numbers starting with "3" in rank score calculation
+            if (isFirstDigit3) {
+                const existingSubject = groupedData.find((item) => item.subject === subject.subject);
+                const rankScore = subject.achievement === 'Achieved' ? parseInt(subject.credits, 10) * 2 :
+                    subject.achievement === 'Merit' ? parseInt(subject.credits, 10) * 3 :
+                        subject.achievement === 'Excellence' ? parseInt(subject.credits, 10) * 4 : 0;
+                if (existingSubject) {
+                    existingSubject.totalRankScore += rankScore;
+                } else {
+                    groupedData.push({ subject: subject.subject, totalRankScore: rankScore });
+                }
             }
         });
+
+        groupedData.sort((a, b) => b.totalRankScore - a.totalRankScore);
 
         // Prepare data for pie and bar chart
         const rankCredits = {
@@ -229,7 +237,7 @@ const Graph: React.FC<{ data: Subject[] }> = ({ data }) => {
 
     if (data) {
         return (
-            <div className="w-full max-w-3xl py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-0 lg:gap-4">
+            <div className="w-full py-4 flex flex-wrap justify-center gap-4 md:gap-0 lg:gap-4">
                 <div className='max-w-7xl w-fit'>
                     <canvas id="rankScorePieChart"></canvas>
                 </div>

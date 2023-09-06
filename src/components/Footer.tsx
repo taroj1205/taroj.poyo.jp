@@ -49,8 +49,8 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/chat" className="text-blue-700 dark:text-blue-500 hover:underline">
-                                    {t('footer.chat')}
+                                <Link href="/apps" className="text-blue-700 dark:text-blue-500 hover:underline">
+                                    {t('footer.apps')}
                                 </Link>
                             </li>
                             <li>

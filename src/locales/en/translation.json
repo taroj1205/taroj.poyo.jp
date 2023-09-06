@@ -185,6 +185,7 @@
   "footer": {
     "about": "About",
     "all_rights_reserved": "All rights reserved",
+    "apps": "Apps",
     "chat": "Chat",
     "contact_info": "Contact information",
     "edit_on_github": "Edit on GitHub",
@@ -231,6 +232,7 @@
     "credits": "Credits",
     "currentRankScore": "Current Rank Score: ",
     "rankScore": "Rank Score",
+    "standard": "Standard",
     "subjects": "Subjects",
     "title": "National Certificate of Education Level 3"
   },

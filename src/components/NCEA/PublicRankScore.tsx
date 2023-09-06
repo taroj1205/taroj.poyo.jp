@@ -59,7 +59,8 @@ const RankScore: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
 
     // Iterate through subjectData and add credits to the total
     subjectData.forEach((data) => {
-        if (totalCredits < 80) {
+        const isFirstDigit3 = data.standardNumber.charAt(0) === '3';
+        if (totalCredits < 80 && isFirstDigit3) {
             const credits = parseInt(data.credits);
             const achievement = data.achievement;
             // Check if adding these credits would exceed the maximum of 80 credits
@@ -73,13 +74,13 @@ const RankScore: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
 
                 if (remainingCredits > 0) {
                     console.log(achievement);
-                        const creditsForLevel = Math.min(parseInt(data.credits), remainingCredits);
-                        const rankScore = calculateSpecificRankScore(achievement, creditsForLevel);
-                        totalTopRankScore += rankScore;
-                        totalCredits += creditsForLevel;
+                    const creditsForLevel = Math.min(parseInt(data.credits), remainingCredits);
+                    const rankScore = calculateSpecificRankScore(achievement, creditsForLevel);
+                    totalTopRankScore += rankScore;
+                    totalCredits += creditsForLevel;
 
-                        console.log(`Adding ${creditsForLevel} credits for subject '${data.subject}' with ${achievement} credits, rank score ${rankScore}`);
-                        remainingCredits -= creditsForLevel;
+                    console.log(`Adding ${creditsForLevel} credits for subject '${data.subject}' with ${achievement} credits, rank score ${rankScore}`);
+                    remainingCredits -= creditsForLevel;
                 }
 
                 return;
