@@ -110,6 +110,8 @@ const NCEA: React.FC<{ subjects: Subject[]; setSubjects: React.Dispatch<React.Se
         if (storedSubjects) {
             setSubjects(JSON.parse(storedSubjects));
             setSavedSubjects(JSON.parse(storedSubjects));
+        } else {
+            setSubjects([{ subject: '', standardNumber: '', name: '', credits: '', achievement: '' }]);
         }
     }, [token])
 
