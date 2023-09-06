@@ -269,7 +269,10 @@
   },
   "title": {
     "about": "About",
-    "apps": "Apps",
+    "apps": {
+      "index": "Apps",
+      "ncea calculator": "NCEA Calculator"
+    },
     "auth": {
       "emailVerification": "Email Verification",
       "forgotPassword": "Forgot password",

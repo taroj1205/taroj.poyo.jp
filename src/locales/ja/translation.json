@@ -269,7 +269,10 @@
   },
   "title": {
     "about": "自己紹介",
-    "apps": "アプリ",
+    "apps": {
+      "index": "アプリ",
+      "ncea calculator": "NCEA 計算機"
+    },
     "auth": {
       "emailVerification": "メール確認",
       "forgotPassword": "パスワードを忘れた",
