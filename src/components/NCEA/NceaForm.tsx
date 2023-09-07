@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth, AuthContextValue } from '../components/AuthContext';
+import { useAuth, AuthContextValue } from '../AuthContext';
 import { Tooltip } from 'react-tooltip';
 import { useTranslation } from 'react-i18next';
 
