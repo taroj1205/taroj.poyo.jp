@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import NceaForm from '../../components/NceaForm';
+import NceaForm from '../../components/NCEA/NceaForm';
 import Graph from '../../components/NCEA/PublicGraph';
 import RankScore from '../../components/NCEA/PublicRankScore';
 import { useTranslation } from 'react-i18next';
 import NceaTable from '../../components/NCEA/PublicTable';
-import { useAuth } from '../../components/AuthContext';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 interface Subject {
@@ -36,11 +34,11 @@ const NCEA = () => {
         <>
             <Head>
                 <meta name='title' content='NCEA Calculator - taroj.poyo.jp' />
-                <meta name='description' content='Index page for taroj.poyo.jp' />
+                <meta name='description' content='NCEA Calculator page for taroj.poyo.jp' />
                 <meta property="og:title" content="NCEA Calculator - taroj.poyo.jp" />
                 <meta
                     property="og:description"
-                    content="Index page for taroj.poyo.jp"
+                    content="NCEA Calculator page for taroj.poyo.jp"
                 />
                 <meta name="twitter:title" content="NCEA Calculator - taroj.poyo.jp" />
                 <meta
@@ -66,7 +64,7 @@ const NCEA = () => {
                 ) : (
                     <p className='text-lg font-bold mt-2'>{t('ncea.noData')}</p>
                 )}
-                <NceaTable subjects={subjects} />
+                <NceaTable subjects={savedSubjects} />
                 <NceaForm subjects={subjects} savedSubjects={savedSubjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
             </div>
         </>

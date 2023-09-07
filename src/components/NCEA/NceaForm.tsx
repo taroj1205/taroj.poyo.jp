@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth, AuthContextValue } from '../components/AuthContext';
+import { useAuth, AuthContextValue } from '../AuthContext';
 import { Tooltip } from 'react-tooltip';
 import { useTranslation } from 'react-i18next';
 
@@ -145,7 +145,7 @@ const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubject
                 console.log('Data retrieved successfully');
 
                 // Store subjects in local storage
-                localStorage.setItem('nceaData', JSON.stringify(responseData.subjects));
+                localStorage.setItem('subjects', JSON.stringify(responseData.subjects));
 
                 // Set nceaData as the new data
                 setSavedSubjects(responseData.subjects);
