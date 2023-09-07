@@ -64,7 +64,7 @@ const NCEA = () => {
                 ) : (
                     <p className='text-lg font-bold mt-2'>{t('ncea.noData')}</p>
                 )}
-                <NceaTable subjects={subjects} />
+                <NceaTable subjects={savedSubjects} />
                 <NceaForm subjects={subjects} savedSubjects={savedSubjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
             </div>
         </>
