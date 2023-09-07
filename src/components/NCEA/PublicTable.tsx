@@ -18,7 +18,7 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
 
     const [loading, setLoading] = useState(true);
 
-    if (loading || !token) {
+    if (loading) {
         return null;
     }
 
