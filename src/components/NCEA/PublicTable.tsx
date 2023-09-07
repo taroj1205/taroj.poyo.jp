@@ -24,7 +24,7 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
 
     useEffect(() => {
         setLoading(false);
-    }, []);
+    });
 
     // Function to categorize subjects into levels
     const categorizeSubjects = (subjects: Subject[]) => {
