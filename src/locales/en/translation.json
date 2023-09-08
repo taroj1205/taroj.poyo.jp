@@ -177,8 +177,8 @@
     "set username": "Set username",
     "theme": "Change theme"
   },
-  "copy": "Copy",
   "copied": "Copied!",
+  "copy": "Copy",
   "current": {
     "theme": "Current theme:"
   },
@@ -209,6 +209,7 @@
   "index": {
     "about": "About",
     "analytics": "Analytics",
+    "apps": "Apps",
     "blog": "Blog",
     "chat": "Chat",
     "contact": "Contact me",

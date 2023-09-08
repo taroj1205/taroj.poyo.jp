@@ -49,7 +49,7 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
         return null;
     } else {
         return (
-            <div className="overflow-x-auto max-w-full mb-4">
+            <div className="overflow-x-auto max-w-5xl mb-4">
                 <table className="w-fit table-auto rounded-lg overflow-hidden border-collapse whitespace-nowrap transition-shadow duration-300 shadow-md hover:shadow-lg text-base md:text-lg">
                     {Object.keys(categorizedSubjects)
                         .sort((a, b) => Number(b) - Number(a))

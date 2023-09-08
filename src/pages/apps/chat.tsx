@@ -1,15 +1,15 @@
 // @refresh disable
-import React, { useEffect, useState, useRef, ReactNode } from 'react';
+import React, {ReactNode, useEffect, useRef, useState} from 'react';
 import Head from 'next/head';
 import Pusher from 'pusher-js';
-import { FaPaperPlane } from 'react-icons/fa';
-import router, { useRouter } from 'next/router';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../components/AuthContext';
+import {FaPaperPlane} from 'react-icons/fa';
+import router from 'next/router';
+import {useTranslation} from 'react-i18next';
+import {useAuth} from '../../components/AuthContext';
 import Script from 'next/script';
 import i18n from '../../../i18n';
-import { AiFillDelete } from 'react-icons/ai';
-import { v4 as uuidv4 } from 'uuid'
+import {AiFillDelete} from 'react-icons/ai';
+import {v4 as uuidv4} from 'uuid'
 
 interface ChatMessage {
     content: string;
@@ -32,17 +32,21 @@ interface ChatPreviewMessage {
     uuid: string;
 }
 
-const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObject<HTMLDivElement>, setRoomName: React.Dispatch<React.SetStateAction<string>>, setServerName: React.Dispatch<React.SetStateAction<string>> }) => {
+const Chat = ({chatRef, setRoomName, setServerName}: {
+    chatRef: React.RefObject<HTMLDivElement>,
+    setRoomName: React.Dispatch<React.SetStateAction<string>>,
+    setServerName: React.Dispatch<React.SetStateAction<string>>
+}) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [messageLoading, setMessageLoading] = useState(true);
     const [serverId, setServerId] = useState('');
     const [roomId, setRoomId] = useState('');
-    const { token, user, isLoading } = useAuth() || {};
+    const {token, user, isLoading} = useAuth() || {};
     const [sendingMessage, setSendingMessage] = useState<ChatPreviewMessage[]>([]);
     const [bottomScroll, setBottomScroll] = useState(false);
     const [messageData, setMessageData] = useState<any>({});
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const scrollPosRef = useRef<number>(0);
@@ -95,8 +99,8 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                         setRoomName(matchingRoom.name);
                         setMessages(matchingRoom.messages);
                     } else {
-                        // Handle the case where the current locale doesn't match any room
-                        console.error('No matching room found for the current locale.');
+                        // Handle the case where the current [locale] doesn't match any room
+                        console.error('No matching room found for the current [locale].');
                     }
                     console.log("Data:", data, data.messages, roomId, serverId);
                     if (data.status === 400) {
@@ -108,7 +112,8 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                     readElement?.scrollTo({
                         top: readElement.scrollHeight,
                         behavior: 'smooth',
-                    });;
+                    });
+
                     chatRef.current?.classList.remove('animate-pulse');
 
                     document
@@ -154,8 +159,8 @@ const Chat = ({ chatRef, setRoomName, setServerName }: { chatRef: React.RefObjec
                 setRoomName(matchingRoom.name);
                 setMessages(matchingRoom.messages);
             } else {
-                // Handle the case where the current locale doesn't match any room
-                console.error('No matching room found for the current locale.');
+                // Handle the case where the current [locale] doesn't match any room
+                console.error('No matching room found for the current [locale].');
             }
         }
     }, [i18n.language])
@@ -476,19 +481,19 @@ interface MainProps {
 }
 
 const Main: React.FC<MainProps> = ({
-    inputRef,
-    sendMessage,
-    messageLoading,
-    bottomScroll,
-    messages,
-    sendingMessage,
-}) => {
+                                       inputRef,
+                                       sendMessage,
+                                       messageLoading,
+                                       bottomScroll,
+                                       messages,
+                                       sendingMessage,
+                                   }) => {
     const [isMobile, setIsMobile] = useState(false);
     const messagesRef = useRef<HTMLDivElement>(null);
     const [inputContainerHeight, setInputContainerHeight] = useState(0);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [height, setHeight] = useState(0);
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -590,8 +595,9 @@ const Main: React.FC<MainProps> = ({
         <div
             className="flex flex-col min-h-0 w-full max-h-full"
         >
-            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height} sendingMessage={sendingMessage} bottomScroll={bottomScroll} />
-            <div className="w-full" style={{ flex: '0' }}>
+            <MessagesComponent messages={messages} messageLoading={messageLoading} height={height}
+                               sendingMessage={sendingMessage} bottomScroll={bottomScroll}/>
+            <div className="w-full" style={{flex: '0'}}>
                 <button
                     aria-label={t('apps.chat.scroll-to-bottom')}
                     className="whitespace-nowrap text-right bg-gray-300 dark:bg-gray-800 text-black dark:text-gray-200 rounded-tl-lg rounded-tr-lg px-2 py-1 w-full text-xs" // Modify the classes for height, font size, and background color
@@ -622,9 +628,10 @@ const Main: React.FC<MainProps> = ({
                         className="w-12 bottom-0 right-0 sm:w-auto min-w-[56px] h-11 rounded-br-lg bg-green-500 cursor-pointer flex items-center justify-center"
                     >
                         {messageLoading ? (
-                            <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                            <div
+                                className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                         ) : (
-                            <FaPaperPlane className="text-white" />
+                            <FaPaperPlane className="text-white"/>
                         )}
                     </button>
                 </div>
@@ -633,11 +640,17 @@ const Main: React.FC<MainProps> = ({
     );
 };
 
-const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boolean, height: number, sendingMessage: ChatPreviewMessage[], bottomScroll: boolean }> = ({ messages, messageLoading, height, sendingMessage, bottomScroll }) => {
+const MessagesComponent: React.FC<{
+    messages: ChatMessage[],
+    messageLoading: boolean,
+    height: number,
+    sendingMessage: ChatPreviewMessage[],
+    bottomScroll: boolean
+}> = ({messages, messageLoading, height, sendingMessage, bottomScroll}) => {
     const [formattedMessages, setFormattedMessages] = useState<string[]>([]);
     const [formattedSendingMessages, setFormattedSendingMessages] = useState<string[]>([]);
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         const formatMessages = async (messagesArray: ChatPreviewMessage[]) => {
@@ -684,7 +697,7 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                 const lang = match[1];
                 const codeContent = match[2];
                 const wrappedCode = `<code${lang === 'aa' ? ' class="textar-aa"' : ` lang="${lang}"`
-                    }>${codeContent}</code>`;
+                }>${codeContent}</code>`;
                 return text.replace(codeRegex, wrappedCode);
             }
 
@@ -760,7 +773,7 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
             }}
         >
             {messageLoading ? (
-                <PlaceholderMessages count={20} height={height} />
+                <PlaceholderMessages count={20} height={height}/>
             ) : (
                 <>
                     {messages.map((message, index) => {
@@ -821,7 +834,8 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
                                     className={`flex mb-2 whitespace-nowrap min-h-fit ${index === 0 ? 'mt-2' : ''}`}
                                     key={index}
                                 >
-                                    <AiFillDelete className="w-10 h-10 text-white rounded-full ml-2 mr-2 bg-slate-400 dark:bg-slate-600" />
+                                    <AiFillDelete
+                                        className="w-10 h-10 text-white rounded-full ml-2 mr-2 bg-slate-400 dark:bg-slate-600"/>
                                     <div>
                                         <div className="flex items-center">
                                             <div className="text-sm mr-[1ch]">
@@ -892,15 +906,18 @@ const MessagesComponent: React.FC<{ messages: ChatMessage[], messageLoading: boo
     )
 }
 
-const PlaceholderMessages: React.FC<{ count: number, height: number }> = ({ count, height }) => {
-    const placeholders = Array.from({ length: count }, (_, index) => (
+const PlaceholderMessages: React.FC<{ count: number, height: number }> = ({count, height}) => {
+    const placeholders = Array.from({length: count}, (_, index) => (
         <div className="flex mb-2 whitespace-nowrap min-h-fit bg-white dark:bg-gray-800 shadow rounded-lg p-2">
             <div className="w-10 h-10 bg-gray-300 rounded-full ml-2 mr-2"></div>
             <div className="flex-grow">
                 <div className="flex items-center mb-1">
-                    <span className="mr-1 text-xs text-gray-500 w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
-                    <span className="text-sm font-semibold bg-gray-300 dark:bg-gray-600 rounded-full w-16 h-4 ml-2"></span>
-                    <span className="ml-1 text-xs text-gray-500 bg-gray-300 dark:bg-gray-600 rounded-full w-12 h-4"></span>
+                    <span
+                        className="mr-1 text-xs text-gray-500 w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
+                    <span
+                        className="text-sm font-semibold bg-gray-300 dark:bg-gray-600 rounded-full w-16 h-4 ml-2"></span>
+                    <span
+                        className="ml-1 text-xs text-gray-500 bg-gray-300 dark:bg-gray-600 rounded-full w-12 h-4"></span>
                 </div>
                 <div className="bg-gray-300 dark:bg-gray-600 h-4 rounded-md"></div>
                 <div className="bg-gray-300 dark:bg-gray-600 h-4 rounded-md mt-1"></div>
@@ -909,7 +926,7 @@ const PlaceholderMessages: React.FC<{ count: number, height: number }> = ({ coun
         </div>
     ));
     return (
-        <div className="flex flex-col items-left justify-center z-0" style={{ height }} key={count}>
+        <div className="flex flex-col items-left justify-center z-0" style={{height}} key={count}>
             {placeholders}
         </div>
     );
@@ -919,7 +936,7 @@ interface ContainerProps {
     children: ReactNode;
 }
 
-const Container: React.FC<ContainerProps> = ({ children }) => {
+const Container: React.FC<ContainerProps> = ({children}) => {
     const [height, setHeight] = useState('calc(100vh-40px)');
 
     useEffect(() => {
@@ -952,14 +969,14 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
             }
         };
     }, [router]);
-    return <div className="flex box-border m-0" style={{ height }}>{children}</div>;
+    return <div className="flex box-border m-0" style={{height}}>{children}</div>;
 };
 
 const ChatPage = () => {
     const chatRef = useRef<HTMLDivElement | null>(null);
     const [roomName, setRoomName] = useState('');
     const [serverName, setServerName] = useState('');
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (chatRef.current) {
@@ -980,15 +997,15 @@ const ChatPage = () => {
                     rel="stylesheet"
                     type="text/css"
                 />
-                <Script defer src="https://js.pusher.com/7.2/pusher.min.js" />
-                <meta name='title' content='Chat - taroj.poyo.jp' />
-                <meta name='description' content='Chat page for taroj.poyo.jp' />
-                <meta property="og:title" content="Chat - taroj.poyo.jp" />
+                <Script defer src="https://js.pusher.com/7.2/pusher.min.js"/>
+                <meta name='title' content='Chat - taroj.poyo.jp'/>
+                <meta name='description' content='Chat page for taroj.poyo.jp'/>
+                <meta property="og:title" content="Chat - taroj.poyo.jp"/>
                 <meta
                     property="og:description"
                     content="Chat page for taroj.poyo.jp"
                 />
-                <meta name="twitter:title" content="Chat - taroj.poyo.jp" />
+                <meta name="twitter:title" content="Chat - taroj.poyo.jp"/>
                 <meta
                     name="twitter:description"
                     content="Chat page for taroj.poyo.jp"
@@ -999,7 +1016,7 @@ const ChatPage = () => {
             </Head>
             <div>
                 <div ref={chatRef} className="w-full max-h-full">
-                    <Chat chatRef={chatRef} setRoomName={setRoomName} setServerName={setServerName} />
+                    <Chat chatRef={chatRef} setRoomName={setRoomName} setServerName={setServerName}/>
                 </div>
             </div>
         </>
