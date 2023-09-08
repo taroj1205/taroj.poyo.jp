@@ -157,7 +157,7 @@ const Portfolio = () => {
             <Fade>
                 <ParallaxBanner
                     layers={[background, headline, foreground, gradientOverlay]}
-                    className="aspect-[2/1] bg-gray-900 pt-[40px] h-screen"
+                    className="aspect-[2/1] bg-gray-900 h-screen"
                     style={{ height: '100vh' }}
                     id='parallax'
                 />
