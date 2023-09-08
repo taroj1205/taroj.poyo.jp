@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { SiReact, SiNextdotjs, SiNodedotjs, SiTypescript, SiMysql, SiSqlite, SiPython, SiFlask, SiExpress } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiNodedotjs, SiTypescript, SiMysql, SiSqlite, SiPython, SiFlask, SiExpress, SiTailwindcss } from 'react-icons/si';
 import { IconType } from 'react-icons';
 
 const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string; color: string }) => (
@@ -14,7 +14,7 @@ const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string
 );
 
 const MySkills = () => {
-    const { t } = useTranslation('translation');
+    const { t } = useTranslation();
 
     const skills = [
         { icon: SiReact, label: t('skill.react'), color: '#0e7696' },
@@ -25,13 +25,14 @@ const MySkills = () => {
         { icon: SiMysql, label: t('skill.mysql'), color: '#00758f' },
         { icon: SiSqlite, label: t('skill.sqlite3'), color: '#003b57' },
         { icon: SiPython, label: t('skill.python'), color: '#3776ab' },
-        { icon: SiFlask, label: t('skill.flask'), color: '#0074D9' }
+        { icon: SiFlask, label: t('skill.flask'), color: '#0074D9' },
+        { icon: SiTailwindcss, label: t('skill.tailwind'), color: '#4C51BF' }
     ];
 
     return (
         <div className="py-4 rounded-lg">
             <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">{t('skill.title')}</h2>
-            <div className="max-w-sm lg:max-w-5xl max-auto grid grid-cols-3 lg:grid-cols-9 gap-4">
+            <div className="max-w-[150px] tm:max-w-xs md:max-w-xl lg:max-w-5xl max-auto grid grid-cols-1 tm:grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4">
                 {skills.map((skill, index) => (
                     <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}

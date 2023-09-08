@@ -4,6 +4,10 @@ module.exports = {
     darkMode: 'class',
     theme: {
         extend: {
+            "screens": {
+                'tm': '430px',
+                'small': '320px',
+            },
             fontFamily: {
                 textar: [
                     'Textar',

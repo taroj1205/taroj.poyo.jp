@@ -11,7 +11,6 @@ import { IconType } from 'react-icons';
 import { Fade } from "react-awesome-reveal";
 import Link from 'next/link';
 import Head from 'next/head';
-import Image from 'next/image';
 
 const MadeWith = () => {
     const { t } = useTranslation(); // Assuming you have translation keys for skill labels
@@ -46,7 +45,7 @@ const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string
 
 const RouteLink = ({ path, label, icon: Icon, backgroundColor }: { path: string; label: string; icon: IconType; backgroundColor: string }) => (
     <Link href={path}
-        className={`group flex flex-col w-28 items-center justify-center p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md text-white ${backgroundColor}`}>
+        className={`group flex flex-col w-28 p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md text-white ${backgroundColor}`}>
         {Icon && (
             <span
                 className="flex justify-center md:group-hover:opacity-10 opacity-100 text-4xl dark:text-white text-black transition-opacity duration-500">
@@ -167,7 +166,7 @@ const Portfolio = () => {
                     <div>
                         <Fade className='mx-4 max-w-5xl'>
                             <h2 className="text-2xl md:text-4xl font-bold">{t('index.links')}</h2>
-                            <div className="flex flex-wrap gap-4 py-6 md:flex-nowrap justify-start md:justify-center"
+                            <div className="flex flex-wrap gap-4 py-6 justify-center items-center"
                             >
                                 {routes.map((route, index) => (
                                     <RouteLink
@@ -180,7 +179,9 @@ const Portfolio = () => {
                                 ))}
                             </div>
                             <h2 className="text-2xl md:text-4xl font-bold">{t('index.contact')}</h2>
-                            <Contacts />
+                            <div className='flex items-center md:items-start justify-center md:justify-start'>
+                                <Contacts />
+                            </div>
                             <MadeWith />
                             <h2 className="text-2xl md:text-4xl mt-8 mb-4 font-bold">{t('supported language')}</h2>
                             <ul className="list-disc list-inside text-lg font-bold mb-5">
