@@ -23,7 +23,7 @@ const Footer = () => {
                         </div>
                         <div>
                             <Link
-                                href="https://crowdin.com/project/taroj1205/se"
+                                href="https://crowdin.com/project/taroj1205/"
                                 className="flex mt-2"
                             >
                                 <span className="flex items-center bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-black text-black dark:text-white font-bold py-2 px-4 rounded-lg">
