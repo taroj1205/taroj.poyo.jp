@@ -61,7 +61,7 @@
         {
           "duration": "1年",
           "end": "2017年12月",
-          "grade": "Year 7",
+          "grade": "7年生",
           "location": "オークランド",
           "name": "Balmoral Intermediate",
           "start": "2017年2月"
@@ -93,7 +93,7 @@
         {
           "duration": "1年",
           "end": "2019年5月",
-          "grade": "Year 8",
+          "grade": "8年生",
           "location": "セブ",
           "name": "Centre for International Education British School",
           "start": "2018年8月"
@@ -178,7 +178,7 @@
     "theme": "テーマを変える"
   },
   "copied": "コピーしました",
-  "copy": "Copy",
+  "copy": "コピー",
   "current": {
     "theme": "現在のテーマ:"
   },
@@ -262,7 +262,7 @@
     "python": "Python",
     "react": "React.js",
     "sqlite3": "SQLite3",
-    "tailwind": "Tailwind",
+    "tailwind": "TailwindCSS",
     "title": "スキル",
     "typescript": "TypeScript"
   },
