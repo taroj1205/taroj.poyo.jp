@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { AiOutlineEdit } from 'react-icons/ai';
 
 const Footer = () => {
-    const { t } = useTranslation('translation');
+    const { t } = useTranslation();
     const router = useRouter();
 
     return (
@@ -23,14 +23,12 @@ const Footer = () => {
                         </div>
                         <div>
                             <Link
-                                href={`https://github.com/taroj1205/taroj.poyo.jp/edit/dev/src/pages${router.pathname === '/'
-                                    ? '/index'
-                                    : `${router.pathname}`}.tsx`}
+                                href="https://crowdin.com/project/taroj1205/"
                                 className="flex mt-2"
                             >
                                 <span className="flex items-center bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-black text-black dark:text-white font-bold py-2 px-4 rounded-lg">
                                     <AiOutlineEdit className="mr-2" />
-                                    {t('footer.edit_on_github')}
+                                    {t('footer.edit_on_crowdin')}
                                 </span>
                             </Link>
                         </div>

@@ -193,7 +193,8 @@
     "home": "Home",
     "settings": "Settings",
     "sitemap": "Sitemap",
-    "suggest": "Suggest change"
+    "suggest": "Suggest change",
+    "edit_on_crowdin": "Edit translation"
   },
   "goBack": "Go Back",
   "gravatar": {
