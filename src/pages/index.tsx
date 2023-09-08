@@ -167,7 +167,7 @@ const Portfolio = () => {
                     <div>
                         <Fade className='mx-4 max-w-5xl'>
                             <h2 className="text-2xl md:text-4xl font-bold">{t('index.links')}</h2>
-                            <div className="flex flex-wrap gap-4 py-6 md:flex-nowrap justify-center"
+                            <div className="flex flex-wrap gap-4 py-6 md:flex-nowrap justify-start md:justify-center"
                             >
                                 {routes.map((route, index) => (
                                     <RouteLink
