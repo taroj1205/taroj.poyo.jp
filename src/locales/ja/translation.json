@@ -193,7 +193,8 @@
     "home": "ホーム",
     "settings": "設定",
     "sitemap": "サイトマップ",
-    "suggest": "変更を提案する"
+    "suggest": "変更を提案する",
+    "edit_on_crowdin": "翻訳を編集"
   },
   "goBack": "戻る",
   "gravatar": {
