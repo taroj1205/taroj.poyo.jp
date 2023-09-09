@@ -94,6 +94,12 @@ const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubject
 
     const submitInfo = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(token);
+        if (!token) {
+            setSavedSubjects(subjects);
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            setIsEditing(false);
+        }
         if (subjects !== savedSubjects) {
             setSending(true);
             try {
@@ -289,15 +295,13 @@ const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubject
                             Add Subject
                         </button>
                         <div className='flex flex-col md:flex-row text-center gap-2'>
-                            {token &&
-                                < label
-                                    htmlFor="exportClipboard"
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 cursor-pointer"
-                                    onClick={loadData}
-                                >
-                                    Load from Saved
-                                </label>
-                            }
+                            < label
+                                htmlFor="exportClipboard"
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 cursor-pointer"
+                                onClick={loadData}
+                            >
+                                Load from Saved
+                            </label>
                             <label
                                 htmlFor="jsonClipboard"
                                 data-tooltip-content="Example JSON format: [{&quot;subject&quot;:&quot;Calculus&quot;,&quot;standardNumber&quot;:&quot;3.3&quot;,&quot;name&quot;:&quot;Apply trigonometric methods in solving problems&quot;,&quot;credits&quot;:&quot;4&quot;,&quot;achievement&quot;:&quot;Excellence&quot;}]"
@@ -321,7 +325,7 @@ const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubject
                             </label>
                             <Tooltip id='export' />
                         </div>
-                        {token && (
+                        {
                             !sending ? (
                                 <button
                                     type='submit'
@@ -334,7 +338,7 @@ const NCEA: React.FC<{ subjects: Subject[]; savedSubjects: Subject[]; setSubject
                                     <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                                 </button>
                             )
-                        )}
+                        }
                     </div>
                 </form >
             </div >

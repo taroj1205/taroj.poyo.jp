@@ -22,7 +22,7 @@ const MySkills = () => {
         { icon: SiNodedotjs, label: t('skill.nodejs'), color: '#336633' },
         { icon: SiExpress, label: t('skill.express'), color: '#000000' },
         { icon: SiTypescript, label: t('skill.typescript'), color: '#3178c6' },
-        { icon: SiMysql, label: t('skill.mysql'), color: '#00758f' },
+        { icon: SiMysql, label: t('skill.mysql'), color: '#4479a1' },
         { icon: SiSqlite, label: t('skill.sqlite3'), color: '#003b57' },
         { icon: SiPython, label: t('skill.python'), color: '#3776ab' },
         { icon: SiFlask, label: t('skill.flask'), color: '#0074D9' },
@@ -32,7 +32,7 @@ const MySkills = () => {
     return (
         <div className="py-4 rounded-lg">
             <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">{t('skill.title')}</h2>
-            <div className="max-w-[150px] tm:max-w-xs md:max-w-xl lg:max-w-5xl max-auto grid grid-cols-1 tm:grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4">
+            <div className="max-w-[150px] tm:max-w-xs md:max-w-xl lg:max-w-7xl max-auto grid grid-cols-1 tm:grid-cols-2 md:grid-cols-5 gap-4">
                 {skills.map((skill, index) => (
                     <SkillItem key={index} icon={skill.icon} label={skill.label} color={skill.color} />
                 ))}

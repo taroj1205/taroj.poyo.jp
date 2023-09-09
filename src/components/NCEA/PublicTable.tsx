@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../AuthContext';
 
 interface Subject {
     subject: string;
@@ -55,14 +53,16 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
                         .sort((a, b) => Number(b) - Number(a))
                         .map((level) => (
                             <React.Fragment key={level}>
-                                <tr className="bg-teal-700">
-                                    <td className="py-2 px-4" colSpan={2}>
-                                        <strong>Level {level}</strong>
-                                    </td>
-                                    <td className="py-2 px-4" colSpan={2}>
-                                        <strong>Credits {totalCredits[level]}</strong>
-                                    </td>
-                                </tr>
+                                <thead>
+                                    <tr className="bg-teal-700 text-white">
+                                        <td className="py-2 px-4" colSpan={2}>
+                                            <strong>Level {level}</strong>
+                                        </td>
+                                        <td className="py-2 px-4" colSpan={2}>
+                                            <strong>Credits {totalCredits[level]}</strong>
+                                        </td>
+                                    </tr>
+                                </thead>
                                 {categorizedSubjects[level].map((subject, index) => {
                                     console.log('index', index);
                                     if (index > 0) {
@@ -70,21 +70,35 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
                                     }
                                     return (
                                         <React.Fragment key={index}>
-                                            <tbody>
+                                            <thead>
                                                 {index === 0 && (
                                                     <tr className="bg-gray-300 dark:bg-gray-700">
-                                                        <td className="py-2 px-4" colSpan={4}>
+                                                        <td className="py-2 px-4" colSpan={3}>
                                                             <strong>{subject.subject}</strong>
+                                                            {' - '}
+                                                            <strong>
+                                                                {categorizedSubjects[level]
+                                                                    .filter((subject) => subject.subject === categorizedSubjects[level][index].subject)
+                                                                    .reduce((acc, subject) => acc + parseInt(subject.credits), 0)} credits
+                                                            </strong>
                                                         </td>
                                                     </tr>
                                                 )}
                                                 {index > 0 && subject.subject !== categorizedSubjects[level][index - 1].subject && (
                                                     <tr className="bg-gray-300 dark:bg-gray-700">
-                                                        <td className="py-2 px-4" colSpan={4}>
+                                                        <td className="py-2 px-4" colSpan={3}>
                                                             <strong>{subject.subject}</strong>
+                                                            {' - '}
+                                                            <strong>
+                                                                {categorizedSubjects[level]
+                                                                    .filter((subject) => subject.subject === categorizedSubjects[level][index].subject)
+                                                                    .reduce((acc, subject) => acc + parseInt(subject.credits), 0)} credits
+                                                            </strong>
                                                         </td>
                                                     </tr>
                                                 )}
+                                            </thead>
+                                            <tbody>
                                                 <tr
                                                     key={index}
                                                     className={

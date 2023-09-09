@@ -128,6 +128,12 @@ const Signup: React.FC = () => {
                 });
         } else {
             console.error('Password and confirm password do not match');
+            setIsLoading(false);
+            setError(t('auth.signupError'));
+            formRef.current?.classList.add('shake-animation');
+            setTimeout(() => {
+                formRef.current?.classList.remove('shake-animation');
+            }, 500);
         }
     };
 
@@ -147,7 +153,7 @@ const Signup: React.FC = () => {
                 <meta name="twitter:description" content="Authenication page for taroj.poyo.jp" />
                 <title>{t('title.auth.signup')}</title>
             </Head>
-            <div className="w-96 max-w-full bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto">
+            <div className="w-96 max-w-full bg-gray-100 dark:bg-gray-900 rounded-lg p-8 shadow-lg mx-auto mt-20">
                 <h2 className="text-2xl font-bold mb-6">{t('title.auth.signup')}</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <form onSubmit={handleSubmit} ref={formRef}>

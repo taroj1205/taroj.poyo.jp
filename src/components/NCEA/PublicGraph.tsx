@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +17,19 @@ const Graph: React.FC<{ data: Subject[] }> = ({ data }) => {
     const pieChartRef = useRef<Chart | null>(null);
     const pieBarChartRef = useRef<Chart | null>(null);
     const barChartRef = useRef<Chart | null>(null);
+    const [selectedLevels, setSelectedLevels] = useState<string[]>(["Level 1", "Level 2", "Level 3"]);
     const { t, i18n } = useTranslation();
 
-    console.log(data);
+    const handleLevelSelection = (level: string) => {
+        if (selectedLevels.includes(level)) {
+            // If the level is already selected, remove it from the selectedLevels array
+            setSelectedLevels(selectedLevels.filter((selectedLevel) => selectedLevel !== level));
+        } else {
+            // If the level is not selected, add it to the selectedLevels array
+            setSelectedLevels([...selectedLevels, level]);
+        }
+    };
+
     if (data) {
         useEffect(() => {
             // Combine subjects with the same name and calculate total rank score
@@ -44,13 +54,21 @@ const Graph: React.FC<{ data: Subject[] }> = ({ data }) => {
 
             groupedData.sort((a, b) => b.totalRankScore - a.totalRankScore);
 
+            console.log("Selected levels:", selectedLevels, data[0].standardNumber.split('.')[0]);
+
+            const filteredData = data.filter((subject) =>
+                selectedLevels.includes(`Level ${subject.standardNumber.split('.')[0] as string}`)
+            );
+
+            console.log('Filtered data:', filteredData);
+
             // Prepare data for pie and bar chart
             const rankCredits = {
                 Achieved: 0,
                 Merit: 0,
                 Excellence: 0,
             };
-            data.forEach((subject) => {
+            filteredData.forEach((subject) => {
                 const credits = parseInt(subject.credits, 10);
                 if (subject.achievement === 'Achieved') {
                     rankCredits.Achieved += credits;
@@ -119,132 +137,172 @@ const Graph: React.FC<{ data: Subject[] }> = ({ data }) => {
                 }
             });
 
-            const ctxPieBar = document.getElementById('rankCreditsPieBarChart') as HTMLCanvasElement;
-            const rankCreditsPieBarChart = new Chart(ctxPieBar, {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(rankCredits),
-                    datasets: [
-                        {
-                            label: 'Credits',
-                            data: Object.values(rankCredits),
-                            backgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56',
-                            ],
-                            borderWidth: 1,
-                        },
-                    ],
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
+            if (selectedLevels.length > 0) {
+                const ctxPieBar = document.getElementById('rankCreditsPieBarChart') as HTMLCanvasElement;
+                const rankCreditsPieBarChart = new Chart(ctxPieBar, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(rankCredits),
+                        datasets: [
+                            {
+                                label: 'Credits',
+                                data: Object.values(rankCredits),
+                                backgroundColor: [
+                                    '#FF6384',
+                                    '#36A2EB',
+                                    '#FFCE56',
+                                ],
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    font: {
+                                        family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                                        size: 13,
+                                    },
+                                    color: theme === 'dark' ? '#fff' : '#000',
+                                },
+                            },
+                            title: {
+                                display: true,
+                                text: i18n.language === 'ja' ? 'クレジット' : 'Credits',
                                 font: {
                                     family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                                    size: 13,
+                                    size: 16,
+                                    weight: 'bold',
                                 },
                                 color: theme === 'dark' ? '#fff' : '#000',
                             },
                         },
-                        title: {
-                            display: true,
-                            text: i18n.language === 'ja' ? 'クレジット' : 'Credits',
-                            font: {
-                                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                                size: 16,
-                                weight: 'bold',
-                            },
-                            color: theme === 'dark' ? '#fff' : '#000',
-                        },
+                        maintainAspectRatio: false,
                     },
-                    maintainAspectRatio: false,
-                },
-            });
+                });
 
 
-            const ctxBar = document.getElementById('rankCreditsBarChart') as HTMLCanvasElement;
-            const rankCreditsBarChart = new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(rankCredits),
-                    datasets: [
-                        {
-                            label: 'Credits',
-                            data: Object.values(rankCredits),
-                            backgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56',
-                            ],
-                            borderWidth: 1,
-                        },
-                    ],
-                },
-                options: {
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: true,
-                            text: i18n.language === 'ja' ? 'クレジット' : 'Credits',
-                            font: {
-                                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                                size: 16,
-                                weight: 'bold',
+                const ctxBar = document.getElementById('rankCreditsBarChart') as HTMLCanvasElement;
+                const rankCreditsBarChart = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(rankCredits),
+                        datasets: [
+                            {
+                                label: 'Credits',
+                                data: Object.values(rankCredits),
+                                backgroundColor: [
+                                    '#FF6384',
+                                    '#36A2EB',
+                                    '#FFCE56',
+                                ],
+                                borderWidth: 1,
                             },
-                            color: theme === 'dark' ? '#fff' : '#000',
-                        },
+                        ],
                     },
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            ticks: {
+                    options: {
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: true,
+                                text: i18n.language === 'ja' ? 'クレジット' : 'Credits',
                                 font: {
                                     family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                                    size: 13,
+                                    size: 16,
+                                    weight: 'bold',
                                 },
                                 color: theme === 'dark' ? '#fff' : '#000',
                             },
-                            grid: {
-                                color: theme === 'dark' ? '#c4c4c4' : '#e5e5e5',
-                            },
                         },
-                        x: {
-                            ticks: {
-                                font: {
-                                    family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                                    size: 13,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                ticks: {
+                                    font: {
+                                        family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                                        size: 13,
+                                    },
+                                    color: theme === 'dark' ? '#fff' : '#000',
+                                },
+                                grid: {
+                                    color: theme === 'dark' ? '#c4c4c4' : '#e5e5e5',
                                 },
                             },
-                            grid: {
-                                color: theme === 'dark' ? '#c4c4c4' : '#e5e5e5',
+                            x: {
+                                ticks: {
+                                    font: {
+                                        family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                                        size: 13,
+                                    },
+                                },
+                                grid: {
+                                    color: theme === 'dark' ? '#c4c4c4' : '#e5e5e5',
+                                },
                             },
                         },
                     },
-                },
-            });
+                });
 
+                pieBarChartRef.current = rankCreditsPieBarChart as Chart;
+                barChartRef.current = rankCreditsBarChart as Chart;
+            }
             pieChartRef.current = rankScorePieChart as Chart;
-            pieBarChartRef.current = rankCreditsPieBarChart as Chart;
-            barChartRef.current = rankCreditsBarChart as Chart;
-        }, [theme, i18n.language, data]);
+        }, [theme, i18n.language, data, selectedLevels]);
 
         return (
             <div className="w-full py-4 flex flex-wrap justify-center gap-4 md:gap-0 lg:gap-4">
                 <div className='max-w-7xl w-fit'>
                     <canvas id="rankScorePieChart"></canvas>
                 </div>
-                <div className='max-w-6xl w-fit'>
-                    <canvas id="rankCreditsPieBarChart"></canvas>
-                </div>
-                <div className='max-w-5xl w-fit ml-0 mr-2'>
-                    <canvas id="rankCreditsBarChart"></canvas>
+                {selectedLevels.length > 0 &&
+                    <>
+                        <div className='max-w-6xl w-fit'>
+                            <canvas id="rankCreditsPieBarChart"></canvas>
+                        </div>
+                        <div className='max-w-5xl w-fit ml-0 mr-2'>
+                            <canvas id="rankCreditsBarChart"></canvas>
+                        </div>
+                    </>
+                }
+                <div className='fixed right-2 bottom-2'>
+                    <div className='flex items-center justify-center gap-2'>
+                        <label className='inline-flex items-center'>
+                            <input
+                                type="checkbox"
+                                value="Level 1"
+                                checked={selectedLevels.includes("Level 1")}
+                                onChange={() => handleLevelSelection("Level 1")}
+                                className="rounded border-gray-300 text-blue-500 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                            />
+                            <span className="ml-2">Level 1</span>
+                        </label>
+                        <label className='inline-flex items-center'>
+                            <input
+                                type="checkbox"
+                                value="Level 2"
+                                checked={selectedLevels.includes("Level 2")}
+                                onChange={() => handleLevelSelection("Level 2")}
+                                className="rounded border-gray-300 text-blue-500 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                            />
+                            <span className="ml-2">Level 2</span>
+                        </label>
+                        <label className='inline-flex items-center'>
+                            <input
+                                type="checkbox"
+                                value="Level 3"
+                                checked={selectedLevels.includes("Level 3")}
+                                onChange={() => handleLevelSelection("Level 3")}
+                                className="rounded border-gray-300 text-blue-500 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                            />
+                            <span className="ml-2">Level 3</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         );
