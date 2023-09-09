@@ -163,7 +163,8 @@
     "username": "Username",
     "verificationCode": "Verification Code",
     "verificationCodeResendError": "Verification code resend failed. Please try again later.",
-    "verify": "Verify"
+    "verify": "Verify",
+    "signupError": "Password and confirm password do not match."
   },
   "change": {
     "already set": "Already set",
@@ -236,7 +237,7 @@
     "currentRankScore": "Current Rank Score: ",
     "edit": "Edit data",
     "ncea information": "NCEA information",
-    "noData": "Please enter data for rank score and graphs.",
+    "noData": "Please enter data for rank score and graphs and hit save.",
     "rankScore": "Rank Score",
     "standard": "Standard",
     "subjects": "Subjects",

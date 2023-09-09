@@ -18,7 +18,6 @@ const Header = () => {
     const [scrollProgress, setScrollProgress] = useState(0);
     const [scrolled, setScrolled] = useState(0);
     const [headerSyle, setHeaderStyle] = useState('fixed');
-
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);
     };

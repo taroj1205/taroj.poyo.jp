@@ -64,7 +64,7 @@ const Profile = () => {
                     alt="Profile picture"
                 />
             ) : (
-                <FaCog className="text-black text-gray-700 dark:text-white" size={20} style={{ marginRight: -2 }} />
+                <FaCog className="text-black dark:text-white" size={20} style={{ marginRight: -2 }} />
             )}
             <Svg className='flex items-center'>
                 <path

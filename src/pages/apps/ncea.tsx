@@ -18,7 +18,13 @@ interface Subject {
 const NCEA = () => {
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
-    const [savedSubjects, setSavedSubjects] = React.useState<Subject[]>([]);
+    const [savedSubjects, setSavedSubjects] = React.useState<Subject[]>([{
+        subject: '',
+        standardNumber: '',
+        name: '',
+        credits: '',
+        achievement: '',
+    },]);
 
     const [subjects, setSubjects] = useState<Subject[]>([
         {
@@ -49,7 +55,7 @@ const NCEA = () => {
             </Head>
             <div className='pt-14 lg:flex lg:flex-col lg:justify-center lg:items-center px-4'>
                 <h1 className="text-4xl font-bold mb-4">{t('ncea.ncea information')}</h1>
-                {subjects && subjects[0].subject.length > 0 && subjects[0].standardNumber.length > 0 && subjects[0].name.length > 0 && subjects[0].credits.length > 0 && subjects[0].achievement.length > 0 ? (
+                {savedSubjects && savedSubjects[0].subject.length > 0 && savedSubjects[0].standardNumber.length > 0 && savedSubjects[0].name.length > 0 && savedSubjects[0].credits.length > 0 && savedSubjects[0].achievement.length > 0 ? (
                     <>
                         <p className='text-lg font-bold mt-2'>{t('ncea.currentRankScore')}{<RankScore subjects={savedSubjects} />}
                             <button
@@ -59,12 +65,12 @@ const NCEA = () => {
                                 {isEditing ? 'Cancel' : 'Edit'}
                             </button>
                         </p>
-                        <Graph data={subjects} />
+                        <Graph data={savedSubjects} />
+                        <NceaTable subjects={savedSubjects} />
                     </>
                 ) : (
                     <p className='text-lg font-bold mt-2'>{t('ncea.noData')}</p>
                 )}
-                <NceaTable subjects={savedSubjects} />
                 <NceaForm subjects={subjects} savedSubjects={savedSubjects} setSubjects={setSubjects} isEditing={isEditing} setIsEditing={setIsEditing} setSavedSubjects={setSavedSubjects} />
             </div>
         </>
