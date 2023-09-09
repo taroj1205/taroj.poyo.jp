@@ -163,7 +163,8 @@
     "username": "ユーザー名",
     "verificationCode": "確認コード",
     "verificationCodeResendError": "認証コードの再送信に失敗しました。後でもう一度お試しください。",
-    "verify": "確認する"
+    "verify": "確認する",
+    "signupError": "パスワードと確認用パスワードが一致しません。"
   },
   "change": {
     "already set": "すでに設定されています",
