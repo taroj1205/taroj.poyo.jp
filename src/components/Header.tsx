@@ -150,7 +150,8 @@ const Header = () => {
                     )}
                 </div>
             </div>
-            <div className={`progress ${scrolled > 1000 ? 'opacity-100' : 'opacity-0'}`} style={{ width: scrollProgress + '%' }}></div>
+            {/* ${scrolled > 1000 ? 'opacity-100' : 'opacity-0'} */}
+            <div className='progress' style={{ width: scrollProgress + '%' }}></div>
         </header >
     );
 };
