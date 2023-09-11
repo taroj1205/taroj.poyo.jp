@@ -937,7 +937,7 @@ interface ContainerProps {
 }
 
 const Container: React.FC<ContainerProps> = ({children}) => {
-    const [height, setHeight] = useState('calc(100vh-40px)');
+    const [height, setHeight] = useState('100vh');
 
     useEffect(() => {
         const setVisualViewport = () => {
