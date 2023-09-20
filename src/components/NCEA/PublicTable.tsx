@@ -25,7 +25,9 @@ const NceaTable: React.FC<{ subjects: Subject[] }> = ({ subjects }) => {
             if (!categorizedLevels[level]) {
                 categorizedLevels[level] = [];
             }
+            // Sort the subjects by name before pushing them into the categorizedLevels object
             categorizedLevels[level].push(subject);
+            categorizedLevels[level].sort((a, b) => a.subject.localeCompare(b.subject));
         });
 
         return categorizedLevels;
