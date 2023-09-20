@@ -8,3 +8,4 @@ node_modules
 .env.development.local
 .fleet
 !.idea/rcb-settings.xml
+yarn.lock

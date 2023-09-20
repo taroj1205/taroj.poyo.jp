@@ -100,10 +100,14 @@ const Graph: React.FC<{ data: Subject[] }> = ({ data }) => {
                             data: groupedData.map((subject) => subject.totalRankScore),
                             backgroundColor: [
                                 '#FF6384',
+                                '#FFCE56', // Yellow
+                                '#4BC0C0', // Green
                                 '#36A2EB',
-                                '#FFCE56',
-                                '#4BC0C0',
                                 '#9966FF',
+                                '#6600CC', // Purple (Added for variety)
+                                '#FF6600', // Orange (Added for variety)
+                                '#00FF00', // Lime Green (Added for variety)
+                                '#0000FF', // Blue
                             ],
                             borderWidth: 1,
                         },
