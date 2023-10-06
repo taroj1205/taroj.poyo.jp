@@ -45,7 +45,7 @@ const SkillItem = ({ icon: Icon, label, color }: { icon: IconType; label: string
 
 const RouteLink = ({ path, label, icon: Icon, backgroundColor }: { path: string; label: string; icon: IconType; backgroundColor: string }) => (
     <Link href={path}
-        className={`group flex flex-col w-28 p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md text-white ${backgroundColor}`}>
+        className={`group flex flex-col items-center justify-center w-28 p-5 rounded-lg hover:bg-opacity-70 transition-colors shadow-md text-white ${backgroundColor}`}>
         {Icon && (
             <span
                 className="flex justify-center md:group-hover:opacity-10 opacity-100 text-4xl dark:text-white text-black transition-opacity duration-500">
@@ -53,7 +53,7 @@ const RouteLink = ({ path, label, icon: Icon, backgroundColor }: { path: string;
             </span>
         )}
         <div
-            className="flex justify-center md:group-hover:opacity-100 md:opacity-0 md:absolute transition-opacity duration-500"
+            className="flex justify-center items-center md:group-hover:opacity-100 md:opacity-0 md:absolute transition-opacity duration-500"
         >
             <span className="text-lg font-bold dark:text-white text-black">{label}</span>
         </div>
