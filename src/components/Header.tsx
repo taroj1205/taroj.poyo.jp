@@ -98,8 +98,7 @@ const Header = () => {
                     <div className="flex flex-col md:flex-row items-center font-medium text-black dark:text-white space-x-0 md:space-x-2.5 flex-grow justify-center">
                         <UnmountClosed isOpened={true || false}>
                             <nav
-                                className={`flex ${isExpanded ? 'flex mt-2' : 'hidden duration-300 md:flex'
-                                    } flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
+                                className={`flex ${isExpanded ? 'flex mt-2' : 'hidden duration-300 md:flex'} flex-col md:flex-row items-center gap-1 font-medium text-black dark:text-white`}
                             >
                                 <Link href="/"
                                     className={`flex items-center text-center hover:text-blue-600 dark:hover:text-blue-600 px-2 ${isActive('/') ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-black dark:text-white'
